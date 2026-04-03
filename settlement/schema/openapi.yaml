@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: Settlement Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Settlement-Modul.
+    Dieses Modul umfasst Settlement-Batches, Settlement-Items,
+    Settlement-Results sowie deterministische Settlement-Aktionen.
+    Die Struktur ist stabil, auditierbar und vollständig
+    kompatibel mit regulatorischen Anforderungen.
+
+paths:
+
+  /rpc/settlement_start_batch:
+    post:
+      summary: Neuen Settlement-Batch starten
+      operationId: settlement_start_batch
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_batch_type:
+                  type: string
+                in_metadata:
+                  type: object
+      responses:
+        '200':
+          description: ID des gestarteten Settlement-Batches
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/settlement_add_item:
+    post:
+      summary: Clearing-Result in offenen Settlement-Batch einfügen
+      operationId: settlement_add_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_clearing_result_id:
+                  type: string
+                  format: uuid
+                in_metadata:
+                  type: object
+              required:
+                - in_clearing_result_id
+      responses:
+        '200':
+          description: ID des erzeugten Settlement-Items
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/settlement_close_batch:
+    post:
+      summary: Offenen Settlement-Batch schließen
+      operationId: settlement_close_batch
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_metadata:
+                  type: object
+      responses:
+        '200':
+          description: ID des geschlossenen Settlement-Batches
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+components:
+
+  schemas:
+
+    SettlementBatch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_number:
+          type: integer
+        batch_type:
+          type: string
+        status:
+          type: string
+        opened_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        account_count:
+          type: integer
+        total_net_amount:
+          type: number
+        metadata:
+          type: object
+
+    SettlementItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_id:
+          type: string
+          format: uuid
+        clearing_result_id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        total_debit:
+          type: number
+        total_credit:
+          type: number
+        net_amount:
+          type: number
+        currency:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    SettlementResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        total_debit:
+          type: number
+        total_credit:
+          type: number
+        net_amount:
+          type: number
+        currency:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object

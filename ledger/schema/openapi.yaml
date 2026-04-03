@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Ledger Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Ledger-Modul.
+    Dieses Modul umfasst Ledger-Accounts, Ledger-Einträge,
+    Journal-Sichten sowie deterministische Buchungsaktionen.
+    Die Struktur ist stabil, auditierbar und vollständig
+    kompatibel mit regulatorischen Anforderungen.
+
+paths:
+
+  /rpc/post_entry:
+    post:
+      summary: Einzelbuchung durchführen
+      operationId: post_entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_account_id:
+                  type: string
+                  format: uuid
+                in_direction:
+                  type: string
+                in_amount:
+                  type: number
+                in_reference_id:
+                  type: string
+                  format: uuid
+                  nullable: true
+                in_reference_type:
+                  type: string
+                  nullable: true
+                in_description:
+                  type: string
+                  nullable: true
+              required:
+                - in_account_id
+                - in_direction
+                - in_amount
+      responses:
+        '200':
+          description: Ledger-Eintrags-ID
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/post_transfer:
+    post:
+      summary: Transfer zwischen zwei Accounts durchführen
+      operationId: post_transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_source_account_id:
+                  type: string
+                  format: uuid
+                in_target_account_id:
+                  type: string
+                  format: uuid
+                in_amount:
+                  type: number
+                in_reference_id:
+                  type: string
+                  format: uuid
+                  nullable: true
+                in_reference_type:
+                  type: string
+                  nullable: true
+                in_description:
+                  type: string
+                  nullable: true
+              required:
+                - in_source_account_id
+                - in_target_account_id
+                - in_amount
+      responses:
+        '200':
+          description: IDs der erzeugten Ledger-Einträge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  debit_entry_id:
+                    type: string
+                    format: uuid
+                  credit_entry_id:
+                    type: string
+                    format: uuid
+
+  /rpc/reverse_entry:
+    post:
+      summary: Ledger-Eintrag umkehren
+      operationId: reverse_entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_ledger_entry_id:
+                  type: string
+                  format: uuid
+              required:
+                - in_ledger_entry_id
+      responses:
+        '200':
+          description: ID der Gegenbuchung
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+components:
+
+  schemas:
+
+    LedgerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        reference_id:
+          type: string
+          format: uuid
+          nullable: true
+        reference_type:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        occurred_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    LedgerAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        classification:
+          type: string
+        category:
+          type: string
+        currency:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    LedgerJournalEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        ledger_entry_id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        ledger_account_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        classification:
+          type: string
+        category:
+          type: string
+        reference_id:
+          type: string
+          format: uuid
+          nullable: true
+        reference_type:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        metadata:
+          type: object

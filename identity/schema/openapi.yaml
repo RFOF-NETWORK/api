@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: Identity Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Identity-Modul.
+    Dieses Modul umfasst Benutzer, Rollen, Berechtigungen, Sessions,
+    Profilinformationen sowie zugehörige Aktionen und Ereignisse.
+    Die Struktur ist deterministisch, modular und vollständig auditierbar.
+
+paths:
+
+  /rpc/login:
+    post:
+      summary: Benutzer-Login
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_username:
+                  type: string
+                in_password:
+                  type: string
+              required:
+                - in_username
+                - in_password
+      responses:
+        '200':
+          description: Session-ID
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/logout:
+    post:
+      summary: Benutzer-Logout
+      operationId: logout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_session_id:
+                  type: string
+                  format: uuid
+              required:
+                - in_session_id
+      responses:
+        '200':
+          description: Logout erfolgreich oder nicht
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /rpc/assign_role:
+    post:
+      summary: Rolle zuweisen
+      operationId: assign_role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_user_id:
+                  type: string
+                  format: uuid
+                in_role_id:
+                  type: string
+                  format: uuid
+              required:
+                - in_user_id
+                - in_role_id
+      responses:
+        '200':
+          description: Erfolg oder bereits vorhanden
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /rpc/revoke_role:
+    post:
+      summary: Rolle entziehen
+      operationId: revoke_role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_user_id:
+                  type: string
+                  format: uuid
+                in_role_id:
+                  type: string
+                  format: uuid
+              required:
+                - in_user_id
+                - in_role_id
+      responses:
+        '200':
+          description: Erfolg oder nicht vorhanden
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+components:
+
+  schemas:
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        issued_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        user_agent:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        locale:
+          type: string
+        timezone:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time

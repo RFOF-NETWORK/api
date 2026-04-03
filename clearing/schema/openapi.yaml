@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: Clearing Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Clearing-Modul.
+    Dieses Modul umfasst Clearing-Batches, Clearing-Items,
+    Clearing-Results sowie deterministische Clearing-Aktionen.
+    Die Struktur ist stabil, auditierbar und vollständig
+    kompatibel mit regulatorischen Anforderungen.
+
+paths:
+
+  /rpc/start_batch:
+    post:
+      summary: Neuen Clearing-Batch starten
+      operationId: start_batch
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_batch_type:
+                  type: string
+                in_metadata:
+                  type: object
+      responses:
+        '200':
+          description: ID des gestarteten Batches
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/add_item:
+    post:
+      summary: Ledger-Eintrag zum offenen Batch hinzufügen
+      operationId: add_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_ledger_entry_id:
+                  type: string
+                  format: uuid
+                in_metadata:
+                  type: object
+                  nullable: true
+              required:
+                - in_ledger_entry_id
+      responses:
+        '200':
+          description: ID des erzeugten Clearing-Items
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/close_batch:
+    post:
+      summary: Offenen Clearing-Batch schließen
+      operationId: close_batch
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_metadata:
+                  type: object
+      responses:
+        '200':
+          description: ID des geschlossenen Batches
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+components:
+
+  schemas:
+
+    ClearingBatch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_number:
+          type: integer
+        batch_type:
+          type: string
+        status:
+          type: string
+        opened_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        entry_count:
+          type: integer
+        total_amount:
+          type: number
+        metadata:
+          type: object
+
+    ClearingItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_id:
+          type: string
+          format: uuid
+        ledger_entry_id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    ClearingResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        batch_id:
+          type: string
+          format: uuid
+        account_id:
+          type: string
+          format: uuid
+        total_debit:
+          type: number
+        total_credit:
+          type: number
+        net_amount:
+          type: number
+        currency:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object

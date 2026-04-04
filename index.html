@@ -11,10 +11,12 @@
     #container { padding:20px; }
     .item { padding:12px; border:1px solid #222; border-radius:8px; margin-bottom:8px; background:#111; cursor:pointer; }
     .item:hover { background:#1a1a1a; }
-    .title { font-size:18px; margin-bottom:10px; }
-    pre { white-space:pre-wrap; background:#111; padding:12px; border-radius:8px; border:1px solid #222; overflow-x:auto; }
+    .title { font-size:20px; margin-bottom:6px; }
+    .meta { font-size:12px; color:#aaa; margin-bottom:10px; }
     .back { margin-bottom:20px; display:inline-block; }
     .path { font-size:12px; color:#888; margin-bottom:10px; }
+    .block { padding:12px; border-radius:8px; border:1px solid #222; background:#111; }
+    h1,h2,h3 { margin-top:10px; }
   </style>
 </head>
 <body>
@@ -28,34 +30,45 @@
 </div>
 
 <script>
-// GitHub Repo
+// Repo-Konfiguration
 const owner = "RFOF-NETWORK";
 const repo = "api";
 const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
 
-// Hilfsfunktion: Dateiname → Titel
+// Dateiname → Titel
 function normalizeTitle(name) {
   return name
     .replace(/\.[^/.]+$/, "")        // Endung entfernen
     .replace(/[_-]/g, " ")           // Unterstriche/Bindestriche entfernen
     .replace(/\s+/g, " ")            // Mehrfache Spaces entfernen
     .trim()
-    .replace(/\b\w/g, c => c.toUpperCase()); // Wörter kapitalisieren
+    .replace(/\b\w/g, c => c.toUpperCase());
 }
 
-// Markdown Renderer (minimal, deterministisch)
+// Dateiendung → Typ
+function fileType(path) {
+  if (path.endsWith(".md")) return "Dokumentation";
+  if (path.endsWith(".sql")) return "Regeln / Constraints / Queries";
+  if (path.endsWith(".json")) return "Schema / Struktur";
+  if (path.endsWith(".yaml") || path.endsWith(".yml")) return "Konfiguration";
+  if (path.endsWith(".txt")) return "Beschreibung";
+  if (path.endsWith(".js")) return "Script / Logik";
+  return "Ressource";
+}
+
+// Minimaler Markdown-Renderer
 function renderMarkdown(md) {
   return md
     .replace(/^### (.*$)/gim, "<h3>$1</h3>")
     .replace(/^## (.*$)/gim, "<h2>$1</h2>")
     .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-    .replace(/\*\*(.*)\*\*/gim, "<b>$1</b>")
-    .replace(/\*(.*)\*/gim, "<i>$1</i>")
+    .replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>")
+    .replace(/\*(.*?)\*/gim, "<i>$1</i>")
     .replace(/^- (.*)/gim, "<li>$1</li>")
     .replace(/\n\n/g, "<br><br>");
 }
 
-// Dateien & Ordner laden
+// Ordnerinhalt laden
 async function loadPath(path = "") {
   const res = await fetch(`${apiBase}/${path}`);
   const data = await res.json();
@@ -84,28 +97,40 @@ async function loadPath(path = "") {
   });
 }
 
-// Datei laden & funktional rendern
+// Datei laden & funktional darstellen (ohne Rohcode)
 async function loadFile(path) {
   const res = await fetch(`${apiBase}/${path}`);
   const data = await res.json();
   const decoded = atob(data.content.replace(/\n/g, ""));
+  const lines = decoded.split("\n").length;
 
   const content = document.getElementById("content");
   const title = normalizeTitle(path.split("/").pop());
+  const type = fileType(path);
+
+  const backPath = path.split("/").slice(0, -1).join("/");
 
   content.innerHTML = `
-    <a class="back" href="#" onclick="loadPath('${path.split("/").slice(0, -1).join("/")}')">← Zurück</a>
+    <a class="back" href="#" onclick="loadPath('${backPath}')">← Zurück</a>
     <div class="title">${title}</div>
+    <div class="meta">${type} · ${lines} Zeilen</div>
   `;
 
   if (path.endsWith(".md")) {
-    content.innerHTML += `<div>${renderMarkdown(decoded)}</div>`;
+    content.innerHTML += `<div class="block">${renderMarkdown(decoded)}</div>`;
   } else {
-    content.innerHTML += `<pre>${decoded}</pre>`;
+    // Funktionale Darstellung: nur Meta, kein Code
+    content.innerHTML += `
+      <div class="block">
+        <p>Diese Ressource ist Teil der API-Definition und wird im Repository als <b>${type}</b> geführt.</p>
+        <p>Sie umfasst <b>${lines}</b> Zeilen und ist für die Funktion dieses Moduls relevant.</p>
+        <p>Technische Details liegen im Repo und bleiben deterministisch über die Dateien definiert.</p>
+      </div>
+    `;
   }
 }
 
-// Startseite = API Explorer
+// Startseite = API-Explorer
 loadPath();
 </script>
 

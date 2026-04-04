@@ -1,0 +1,181 @@
+openapi: 3.1.0
+info:
+  title: Liquidity Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Liquidity-Modul.
+    Dieses Modul umfasst Liquidity-Pools, Liquidity-Positions,
+    Liquidity-Flows sowie deterministische Liquidity-Aktionen.
+    Die Struktur ist stabil, auditierbar und vollständig
+    kompatibel mit regulatorischen Anforderungen.
+
+paths:
+
+  /rpc/liquidity_create_liquidity_pool:
+    post:
+      summary: Neuen Liquidity-Pool erzeugen
+      operationId: liquidity_create_liquidity_pool
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_pool_type:
+                  type: string
+                in_currency:
+                  type: string
+                in_treasury_account_id:
+                  type: string
+                  format: uuid
+                in_metadata:
+                  type: object
+              required:
+                - in_pool_type
+                - in_currency
+      responses:
+        '200':
+          description: ID des erzeugten Liquidity-Pools
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/liquidity_record_liquidity_flow:
+    post:
+      summary: Liquidity-Flow erfassen (inflow/outflow)
+      operationId: liquidity_record_liquidity_flow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_liquidity_pool_id:
+                  type: string
+                  format: uuid
+                in_direction:
+                  type: string
+                in_amount:
+                  type: number
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_liquidity_pool_id
+                - in_direction
+                - in_amount
+                - in_currency
+      responses:
+        '200':
+          description: ID des erzeugten Liquidity-Flows
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/liquidity_reconcile_liquidity_positions:
+    post:
+      summary: Liquidity-Position rekonsolidieren
+      operationId: liquidity_reconcile_liquidity_positions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_liquidity_pool_id:
+                  type: string
+                  format: uuid
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_liquidity_pool_id
+                - in_currency
+      responses:
+        '200':
+          description: ID der neuen Liquidity-Position
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+components:
+
+  schemas:
+
+    LiquidityPool:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        pool_number:
+          type: integer
+        pool_type:
+          type: string
+        treasury_account_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    LiquidityPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        liquidity_pool_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        balance:
+          type: number
+        reserved_balance:
+          type: number
+        available_balance:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    LiquidityFlow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        liquidity_pool_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object

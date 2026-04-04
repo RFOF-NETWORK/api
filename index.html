@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-NETWORK – API A–L</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; background:#05060a; color:#f5f5f5; }
+    header { padding:16px 20px; border-bottom:1px solid #222; background:#05060a; position:sticky; top:0; }
+    h1 { font-size:20px; margin:0 0 4px; }
+    h2 { font-size:16px; margin:16px 0 8px; }
+    .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; background:#111827; color:#9ca3af; margin-right:4px; }
+    .container { padding:16px 16px 40px; max-width:900px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns:1fr; gap:12px; }
+    @media (min-width:720px) { .grid { grid-template-columns:1fr 1fr; } }
+    .card { border:1px solid #1f2933; border-radius:10px; padding:12px 12px 10px; background:#020617; }
+    .card h3 { margin:0 0 4px; font-size:15px; }
+    .card p { margin:0 0 6px; font-size:13px; color:#9ca3af; }
+    .meta { font-size:11px; color:#6b7280; }
+    a { color:#38bdf8; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .section-title { margin-top:20px; font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:#9ca3af; }
+    footer { padding:16px; font-size:11px; color:#6b7280; border-top:1px solid #111827; margin-top:24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="tag">RFOF-NETWORK</div>
+    <h1>API A–L – Systemübersicht</h1>
+    <div class="meta">GPCB · ECCU · Clearing · RFOF-GOLDEN · Audit · Ledger · Federation</div>
+  </header>
+
+  <main class="container">
+    <div class="section-title">Architektur</div>
+    <p class="meta">
+      Diese Seite beschreibt nur, was die <strong>API A–L</strong> kann. 
+      Alle Funktionen sind bereits im Repository <code>api/</code> definiert – 
+      Frontend muss nur noch UI/Flows darauf aufsetzen.
+    </p>
+
+    <div class="section-title">Module A–L</div>
+    <div class="grid">
+      <div class="card">
+        <h3>A – identity</h3>
+        <p>Login, Sessions, Identitäten, Basis für GPCB/ECCU‑Zugriff.</p>
+        <div class="meta">Ordner: <code>api/identity/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>B – accounts</h3>
+        <p>Konten, IBAN/Account‑Struktur, Zuordnung zu Identitäten.</p>
+        <div class="meta">Ordner: <code>api/accounts/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>C – ledger</h3>
+        <p>Doppelte Buchführung, Journal, Finanzlogik, Audit‑Trail.</p>
+        <div class="meta">Ordner: <code>api/ledger/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>D – documents</h3>
+        <p>Dokumente, Workflows, Schemas für GPCB/ECCU‑Prozesse.</p>
+        <div class="meta">Ordner: <code>api/documents/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>E – compliance</h3>
+        <p>Regelprüfungen, Compliance‑Events, Audit‑Entscheidungslogik.</p>
+        <div class="meta">Ordner: <code>api/compliance/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>F – federation</h3>
+        <p>Node‑Health, Trust‑Matrix, Föderations‑Topologie für ECCU/GPCB.</p>
+        <div class="meta">Ordner: <code>api/federation/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>G – shared</h3>
+        <p>Globale Typen, Utils, Policies – Basis für alle Module.</p>
+        <div class="meta">Ordner: <code>api/shared/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>H – config</h3>
+        <p>Konfiguration, Environment, System‑Schalter, Feature‑Flags.</p>
+        <div class="meta">Ordner: <code>api/config/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>I – scripts</h3>
+        <p>Migrations, Seeds, Batch‑Jobs, Wartungsskripte.</p>
+        <div class="meta">Ordner: <code>api/scripts/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>J – tests</h3>
+        <p>Testfälle, Fixtures, Assertions für alle Kernmodule.</p>
+        <div class="meta">Ordner: <code>api/tests/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>K – docs</h3>
+        <p>Architektur, Events, Module, Governance, OpenAPI‑Beschreibung.</p>
+        <div class="meta">Ordner: <code>api/docs/</code></div>
+      </div>
+
+      <div class="card">
+        <h3>L – INDEX</h3>
+        <p>Meta‑Index der API, Übersicht A–L, Build‑Status.</p>
+        <div class="meta">Datei: <code>api/INDEX.md</code></div>
+      </div>
+    </div>
+
+    <div class="section-title">Technische Referenzen</div>
+    <p class="meta">
+      • API‑Index: <code>api/INDEX.md</code><br/>
+      • Endpunkte: <code>api/docs/endpoints.md</code><br/>
+      • OpenAPI‑Beschreibung: <code>api/docs/openapi.md</code><br/>
+      • Lizenz: <code>api/LICENSE.md</code>
+    </p>
+  </main>
+
+  <footer>
+    RFOF-NETWORK · GPCB · ECCU · RFOF-GOLDEN · Clearing · Treasury · Settlement · Liquidity
+  </footer>
+</body>
+</html>

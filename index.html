@@ -2,58 +2,112 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF-NETWORK – API A–L Übersicht</title>
+  <title>RFOF-NETWORK – API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; background:#0a0a0a; color:#f5f5f5; }
     header { padding:20px; border-bottom:1px solid #222; background:#0a0a0a; }
     h1 { margin:0; font-size:22px; }
-    nav a { color:#38bdf8; margin-right:15px; text-decoration:none; }
-    nav a:hover { text-decoration:underline; }
     #container { padding:20px; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:15px; margin-top:20px; }
-    .card { padding:15px; background:#111; border:1px solid #222; border-radius:8px; }
-    .card:hover { background:#1a1a1a; }
-    .card h2 { margin:0 0 10px 0; font-size:18px; }
-    footer { margin-top:40px; padding:20px; border-top:1px solid #222; color:#777; font-size:13px; }
+    .item { padding:12px; border:1px solid #222; border-radius:8px; margin-bottom:8px; background:#111; cursor:pointer; }
+    .item:hover { background:#1a1a1a; }
+    .title { font-size:18px; margin-bottom:10px; }
+    pre { white-space:pre-wrap; background:#111; padding:12px; border-radius:8px; border:1px solid #222; overflow-x:auto; }
+    .back { margin-bottom:20px; display:inline-block; }
+    .path { font-size:12px; color:#888; margin-bottom:10px; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>RFOF-NETWORK – API A–L</h1>
-  <nav>
-    <a href="browser.html">Explorer</a>
-    <a href="frontend.md">Frontend</a>
-    <a href="INDEX.md">Index</a>
-    <a href="openapi.md">OpenAPI</a>
-    <a href="endpoints.md">Endpoints</a>
-  </nav>
+  <h1>RFOF-NETWORK – API</h1>
 </header>
 
 <div id="container">
-  <p>Diese Seite zeigt die modulare A–L Struktur der RFOF-NETWORK API.  
-  Inhalte, Dateien und Funktionen werden nicht statisch definiert, sondern dynamisch über den Explorer geladen.</p>
-
-  <div class="grid">
-    <div class="card"><h2>A</h2><p>identity</p></div>
-    <div class="card"><h2>B</h2><p>accounts</p></div>
-    <div class="card"><h2>C</h2><p>ledger</p></div>
-    <div class="card"><h2>D</h2><p>documents</p></div>
-    <div class="card"><h2>E</h2><p>compliance</p></div>
-    <div class="card"><h2>F</h2><p>federation</p></div>
-    <div class="card"><h2>G</h2><p>shared</p></div>
-    <div class="card"><h2>H</h2><p>config</p></div>
-    <div class="card"><h2>I</h2><p>scripts</p></div>
-    <div class="card"><h2>J</h2><p>tests</p></div>
-    <div class="card"><h2>K</h2><p>docs</p></div>
-    <div class="card"><h2>L</h2><p>INDEX</p></div>
-  </div>
+  <div id="content"></div>
 </div>
 
-<footer>
-  RFOF-NETWORK · GPCB · ECCU · RFOF-GOLDEN · Clearing · Treasury · Settlement · Liquidity
-</footer>
+<script>
+// GitHub Repo
+const owner = "RFOF-NETWORK";
+const repo = "api";
+const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
+
+// Hilfsfunktion: Dateiname → Titel
+function normalizeTitle(name) {
+  return name
+    .replace(/\.[^/.]+$/, "")        // Endung entfernen
+    .replace(/[_-]/g, " ")           // Unterstriche/Bindestriche entfernen
+    .replace(/\s+/g, " ")            // Mehrfache Spaces entfernen
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase()); // Wörter kapitalisieren
+}
+
+// Markdown Renderer (minimal, deterministisch)
+function renderMarkdown(md) {
+  return md
+    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+    .replace(/\*\*(.*)\*\*/gim, "<b>$1</b>")
+    .replace(/\*(.*)\*/gim, "<i>$1</i>")
+    .replace(/^- (.*)/gim, "<li>$1</li>")
+    .replace(/\n\n/g, "<br><br>");
+}
+
+// Dateien & Ordner laden
+async function loadPath(path = "") {
+  const res = await fetch(`${apiBase}/${path}`);
+  const data = await res.json();
+
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+
+  if (path !== "") {
+    const backPath = path.split("/").slice(0, -1).join("/");
+    content.innerHTML += `<a class="back" href="#" onclick="loadPath('${backPath}')">← Zurück</a>`;
+    content.innerHTML += `<div class="path">/${path}</div>`;
+  }
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = normalizeTitle(item.name);
+
+    if (item.type === "dir") {
+      div.onclick = () => loadPath(item.path);
+    } else {
+      div.onclick = () => loadFile(item.path);
+    }
+
+    content.appendChild(div);
+  });
+}
+
+// Datei laden & funktional rendern
+async function loadFile(path) {
+  const res = await fetch(`${apiBase}/${path}`);
+  const data = await res.json();
+  const decoded = atob(data.content.replace(/\n/g, ""));
+
+  const content = document.getElementById("content");
+  const title = normalizeTitle(path.split("/").pop());
+
+  content.innerHTML = `
+    <a class="back" href="#" onclick="loadPath('${path.split("/").slice(0, -1).join("/")}')">← Zurück</a>
+    <div class="title">${title}</div>
+  `;
+
+  if (path.endsWith(".md")) {
+    content.innerHTML += `<div>${renderMarkdown(decoded)}</div>`;
+  } else {
+    content.innerHTML += `<pre>${decoded}</pre>`;
+  }
+}
+
+// Startseite = API Explorer
+loadPath();
+</script>
 
 </body>
 </html>

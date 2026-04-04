@@ -4,41 +4,17 @@ info:
   version: 1.0.0
   description: >
     OpenAPI-Spezifikation für das Settlement-Modul.
-    Dieses Modul umfasst Settlement-Batches, Settlement-Items,
-    Settlement-Results sowie deterministische Settlement-Aktionen.
+    Dieses Modul umfasst Settlement-Accounts, Settlement-Positions,
+    Settlement-Flows sowie deterministische Settlement-Aktionen.
     Die Struktur ist stabil, auditierbar und vollständig
     kompatibel mit regulatorischen Anforderungen.
 
 paths:
 
-  /rpc/settlement_start_batch:
+  /rpc/settlement_create_settlement_account:
     post:
-      summary: Neuen Settlement-Batch starten
-      operationId: settlement_start_batch
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                in_batch_type:
-                  type: string
-                in_metadata:
-                  type: object
-      responses:
-        '200':
-          description: ID des gestarteten Settlement-Batches
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-
-  /rpc/settlement_add_item:
-    post:
-      summary: Clearing-Result in offenen Settlement-Batch einfügen
-      operationId: settlement_add_item
+      summary: Neuen Settlement-Account erzeugen
+      operationId: settlement_create_settlement_account
       requestBody:
         required: true
         content:
@@ -46,38 +22,90 @@ paths:
             schema:
               type: object
               properties:
-                in_clearing_result_id:
+                in_account_type:
+                  type: string
+                in_currency:
+                  type: string
+                in_treasury_account_id:
+                  type: string
+                  format: uuid
+                in_liquidity_pool_id:
                   type: string
                   format: uuid
                 in_metadata:
                   type: object
               required:
-                - in_clearing_result_id
+                - in_account_type
+                - in_currency
       responses:
         '200':
-          description: ID des erzeugten Settlement-Items
+          description: ID des erzeugten Settlement-Accounts
           content:
             application/json:
               schema:
                 type: string
                 format: uuid
 
-  /rpc/settlement_close_batch:
+  /rpc/settlement_record_settlement_flow:
     post:
-      summary: Offenen Settlement-Batch schließen
-      operationId: settlement_close_batch
+      summary: Settlement-Flow erfassen (credit/debit)
+      operationId: settlement_record_settlement_flow
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
+                in_settlement_account_id:
+                  type: string
+                  format: uuid
+                in_direction:
+                  type: string
+                in_amount:
+                  type: number
+                in_currency:
+                  type: string
                 in_metadata:
                   type: object
+              required:
+                - in_settlement_account_id
+                - in_direction
+                - in_amount
+                - in_currency
       responses:
         '200':
-          description: ID des geschlossenen Settlement-Batches
+          description: ID des erzeugten Settlement-Flows
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/settlement_reconcile_settlement_positions:
+    post:
+      summary: Settlement-Position rekonsolidieren
+      operationId: settlement_reconcile_settlement_positions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_settlement_account_id:
+                  type: string
+                  format: uuid
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_settlement_account_id
+                - in_currency
+      responses:
+        '200':
+          description: ID der neuen Settlement-Position
           content:
             application/json:
               schema:
@@ -88,83 +116,72 @@ components:
 
   schemas:
 
-    SettlementBatch:
+    SettlementAccount:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        batch_number:
+        settlement_account_number:
           type: integer
-        batch_type:
+        account_type:
           type: string
-        status:
-          type: string
-        opened_at:
-          type: string
-          format: date-time
-        closed_at:
-          type: string
-          format: date-time
-          nullable: true
-        account_count:
-          type: integer
-        total_net_amount:
-          type: number
-        metadata:
-          type: object
-
-    SettlementItem:
-      type: object
-      properties:
-        id:
+        treasury_account_id:
           type: string
           format: uuid
-        batch_id:
+        liquidity_pool_id:
           type: string
           format: uuid
-        clearing_result_id:
-          type: string
-          format: uuid
-        account_id:
-          type: string
-          format: uuid
-        total_debit:
-          type: number
-        total_credit:
-          type: number
-        net_amount:
-          type: number
         currency:
           type: string
+        active:
+          type: boolean
         created_at:
           type: string
           format: date-time
         metadata:
           type: object
 
-    SettlementResult:
+    SettlementPosition:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        batch_id:
+        settlement_account_id:
           type: string
           format: uuid
-        account_id:
-          type: string
-          format: uuid
-        total_debit:
-          type: number
-        total_credit:
-          type: number
-        net_amount:
-          type: number
         currency:
           type: string
+        balance:
+          type: number
+        reserved_balance:
+          type: number
+        available_balance:
+          type: number
         created_at:
           type: string
           format: date-time
         metadata:
           type: object
+
+    SettlementFlow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        settlement_account_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object  type: object

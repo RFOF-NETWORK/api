@@ -4,18 +4,20 @@
 -- Beschreibung:
 --   Diese Datei definiert alle domänenspezifischen Typen des Settlement-Moduls.
 --   Die Typen sind stabil, deterministisch, auditierbar und dienen der
---   Vereinheitlichung von Batch-Typen, Statuswerten und Ereignisklassen.
+--   Vereinheitlichung von Settlement-Account-Typen, Flow-Richtungen und
+--   Ereignisklassen.
 
 ------------------------------------------------------------
--- Settlement-Batch-Typen
+-- Settlement-Account-Typen
 ------------------------------------------------------------
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_batch_type') THEN
-        CREATE TYPE settlement_batch_type AS ENUM (
-            'intraday',
-            'end_of_day',
-            'manual',
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_account_type') THEN
+        CREATE TYPE settlement_account_type AS ENUM (
+            'nostro',
+            'vostro',
+            'internal',
+            'reserve',
             'system'
         );
     END IF;
@@ -23,43 +25,29 @@ END;
 $$;
 
 ------------------------------------------------------------
--- Settlement-Batch-Status
+-- Settlement-Flow-Richtungen
 ------------------------------------------------------------
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_batch_status') THEN
-        CREATE TYPE settlement_batch_status AS ENUM (
-            'open',
-            'closed'
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_flow_direction') THEN
+        CREATE TYPE settlement_flow_direction AS ENUM (
+            'credit',
+            'debit'
         );
     END IF;
 END;
 $$;
 
 ------------------------------------------------------------
--- Settlement-Operationstypen
-------------------------------------------------------------
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_operation_type') THEN
-        CREATE TYPE settlement_operation_type AS ENUM (
-            'batch_started',
-            'item_added',
-            'batch_closed'
-        );
-    END IF;
-END;
-$$;
-
-------------------------------------------------------------
--- Settlement-Ereignisklasse
+-- Settlement-Ereignisklassen
 ------------------------------------------------------------
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'settlement_event_class') THEN
         CREATE TYPE settlement_event_class AS ENUM (
-            'batch_event',
-            'item_event'
+            'account_event',
+            'flow_event',
+            'position_event'
         );
     END IF;
 END;

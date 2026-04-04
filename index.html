@@ -1,115 +1,207 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF-NETWORK – API</title>
+  <title>RFOF API Index</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; background:#0a0a0a; color:#f5f5f5; }
-    header { padding:20px; border-bottom:1px solid #222; background:#0a0a0a; }
-    h1 { margin:0; font-size:22px; }
-    #container { padding:20px; }
-    .module { padding:16px; border:1px solid #222; border-radius:8px; margin-bottom:12px; background:#111; cursor:pointer; }
-    .module:hover { background:#1a1a1a; }
-    .title { font-size:20px; margin-bottom:6px; }
-    .meta { font-size:12px; color:#aaa; margin-bottom:10px; }
-    .block { padding:12px; border-radius:8px; border:1px solid #222; background:#111; margin-top:10px; }
-    .back { margin-bottom:20px; display:inline-block; }
+    body { margin:0; font-family:system-ui, -apple-system, sans-serif; background:#05060a; color:#f5f5f5; }
+    header { padding:12px 16px; border-bottom:1px solid #222; display:flex; align-items:center; justify-content:space-between; }
+    .brand { font-weight:600; letter-spacing:0.04em; font-size:14px; text-transform:uppercase; color:#9ca3af; }
+    .dropdown { position:relative; }
+    .dropdown-button {
+      background:#111827; color:#e5e7eb; border:1px solid #374151;
+      padding:6px 10px; border-radius:6px; font-size:13px;
+      display:flex; align-items:center; gap:6px; cursor:pointer;
+    }
+    .dropdown-button span.label { text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#9ca3af; }
+    .dropdown-menu {
+      position:absolute; top:100%; left:0; margin-top:4px;
+      background:#020617; border:1px solid #1f2937; border-radius:8px;
+      min-width:220px; max-height:320px; overflow:auto; padding:4px 0;
+      box-shadow:0 18px 40px rgba(0,0,0,0.65); z-index:20; display:none;
+    }
+    .dropdown-item {
+      padding:7px 12px; font-size:13px; display:flex; flex-direction:column;
+      gap:2px; cursor:pointer;
+    }
+    .dropdown-item:hover { background:#0b1120; }
+    .dropdown-item-title { font-weight:500; color:#e5e7eb; text-transform:capitalize; }
+    .dropdown-item-sub { font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:0.08em; }
+    main { padding:16px; }
+    .module-title { font-size:18px; font-weight:600; margin-bottom:4px; text-transform:capitalize; }
+    .module-sub { font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:16px; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+    .pill {
+      font-size:11px; padding:4px 8px; border-radius:999px;
+      border:1px solid #1f2937; color:#9ca3af; text-transform:uppercase; letter-spacing:0.08em;
+    }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+    .card {
+      border-radius:10px; border:1px solid #111827; background:#020617;
+      padding:10px 11px; display:flex; flex-direction:column; gap:4px;
+    }
+    .card-title { font-size:12px; font-weight:500; color:#e5e7eb; text-transform:uppercase; letter-spacing:0.08em; }
+    .card-sub { font-size:11px; color:#6b7280; }
+    .muted { color:#6b7280; font-size:11px; }
   </style>
 </head>
 <body>
-
 <header>
-  <h1>RFOF-NETWORK – API</h1>
+  <div class="brand">RFOF · API</div>
+  <div class="dropdown">
+    <button class="dropdown-button" id="moduleDropdownButton">
+      <span class="label">Module</span>
+      <span id="moduleDropdownCurrent">–</span>
+      <span>▾</span>
+    </button>
+    <div class="dropdown-menu" id="moduleDropdownMenu"></div>
+  </div>
 </header>
 
-<div id="container">
-  <div id="content">Lade API…</div>
-</div>
+<main>
+  <div id="moduleView">
+    <!-- dynamic -->
+  </div>
+</main>
 
 <script>
-// Repo-Konfiguration
-const owner = "RFOF-NETWORK";
-const repo = "api";
-const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
+  // --- 1. Repo-Module (aus /api) ---
+  const REPO_MODULES = [
+    "accounts",
+    "clearing",
+    "compliance",
+    "config",
+    "docs",
+    "documents",
+    "federation",
+    "identity",
+    "ledger",
+    "liquidity",
+    "scripts",
+    "settlement",
+    "shared",
+    "tests",
+    "treasury"
+  ];
 
-// Dateiname → Modulname
-function normalizeModule(name) {
-  return name
-    .replace(/[_-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, c => c.toUpperCase());
-}
+  // --- 2. Technische Module (Ausschlussliste) ---
+  const TECHNICAL_MODULES = new Set([
+    "config",
+    "docs",
+    "scripts",
+    "shared",
+    "tests"
+  ]);
 
-// Dateityp → Funktion
-function functionalType(path) {
-  if (path.endsWith(".md")) return "Dokumentation";
-  if (path.endsWith(".sql")) return "Regeln / Validierungen / Constraints";
-  if (path.endsWith(".json")) return "Schema / Strukturdefinition";
-  if (path.endsWith(".yaml") || path.endsWith(".yml")) return "Konfiguration";
-  if (path.endsWith(".txt")) return "Beschreibung";
-  if (path.endsWith(".js")) return "Logik / Script";
-  return "Ressource";
-}
+  // --- 3. UI-Module = Repo-Module – technische Module ---
+  const UI_MODULES = REPO_MODULES.filter(m => !TECHNICAL_MODULES.has(m));
 
-// API laden → Module extrahieren
-async function loadAPI() {
-  const res = await fetch(apiBase);
-  const root = await res.json();
-
-  const modules = root.filter(item => item.type === "dir");
-
-  const content = document.getElementById("content");
-  content.innerHTML = "";
-
-  for (const mod of modules) {
-    const moduleName = normalizeModule(mod.name);
-
-    const moduleDiv = document.createElement("div");
-    moduleDiv.className = "module";
-    moduleDiv.innerHTML = `
-      <div class="title">${moduleName}</div>
-      <div class="meta">API‑Modul</div>
-    `;
-    moduleDiv.onclick = () => loadModule(mod.path, moduleName);
-
-    content.appendChild(moduleDiv);
+  // --- 4. Hilfsfunktionen ---
+  function capitalizeName(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
   }
-}
 
-// Modul laden → Funktionen extrahieren
-async function loadModule(path, moduleName) {
-  const res = await fetch(`${apiBase}/${path}`);
-  const files = await res.json();
+  function moduleDescriptor(name) {
+    return {
+      id: name,
+      label: capitalizeName(name),
+      kind: "API Module"
+    };
+  }
 
-  const content = document.getElementById("content");
-  content.innerHTML = `
-    <a class="back" href="#" onclick="loadAPI()">← Zurück zur API</a>
-    <div class="title">${moduleName}</div>
-    <div class="meta">Modul‑Definition</div>
-  `;
+  function renderModuleDropdown() {
+    const menu = document.getElementById("moduleDropdownMenu");
+    menu.innerHTML = "";
+    UI_MODULES
+      .map(moduleDescriptor)
+      .forEach(mod => {
+        const item = document.createElement("div");
+        item.className = "dropdown-item";
+        item.dataset.moduleId = mod.id;
+        item.innerHTML = `
+          <div class="dropdown-item-title">${mod.label}</div>
+          <div class="dropdown-item-sub">${mod.kind}</div>
+        `;
+        item.addEventListener("click", () => {
+          selectModule(mod.id);
+          menu.style.display = "none";
+        });
+        menu.appendChild(item);
+      });
+  }
 
-  files.forEach(file => {
-    if (file.type !== "file") return;
+  function renderModuleView(moduleId) {
+    const container = document.getElementById("moduleView");
+    const label = capitalizeName(moduleId);
 
-    const funcName = normalizeModule(file.name.replace(/\.[^/.]+$/, ""));
-    const funcType = functionalType(file.name);
+    container.innerHTML = `
+      <div class="module-title">${label}</div>
+      <div class="module-sub">API MODULE · ${moduleId}</div>
 
-    const block = document.createElement("div");
-    block.className = "block";
-    block.innerHTML = `
-      <b>${funcName}</b><br>
-      <span style="color:#aaa">${funcType}</span>
+      <div class="pill-row">
+        <span class="pill">Resources</span>
+        <span class="pill">Actions</span>
+        <span class="pill">Events</span>
+        <span class="pill">Schemas</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">Resources</div>
+          <div class="card-sub">All resource definitions for this module.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Actions</div>
+          <div class="card-sub">Executable operations exposed by this module.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Events</div>
+          <div class="card-sub">Domain events emitted by this module.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Schemas</div>
+          <div class="card-sub">Validation and data contracts for this module.</div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:14px;">
+        Module is UI-visible because it exists in the API repo and is not in the technical exclusion set.
+      </p>
     `;
+  }
 
-    content.appendChild(block);
-  });
-}
+  function selectModule(moduleId) {
+    const current = document.getElementById("moduleDropdownCurrent");
+    current.textContent = capitalizeName(moduleId);
+    renderModuleView(moduleId);
+  }
 
-// Startseite = API‑Übersicht
-loadAPI();
+  // --- 5. Dropdown-Interaktion ---
+  (function init() {
+    const btn = document.getElementById("moduleDropdownButton");
+    const menu = document.getElementById("moduleDropdownMenu");
+
+    btn.addEventListener("click", () => {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = "none";
+      }
+    });
+
+    renderModuleDropdown();
+
+    if (UI_MODULES.length > 0) {
+      selectModule(UI_MODULES[0]);
+    } else {
+      document.getElementById("moduleDropdownCurrent").textContent = "None";
+      document.getElementById("moduleView").innerHTML =
+        '<p class="muted">No UI modules available.</p>';
+    }
+  })();
 </script>
-
 </body>
 </html>

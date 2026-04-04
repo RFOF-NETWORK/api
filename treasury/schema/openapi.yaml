@@ -1,0 +1,182 @@
+openapi: 3.1.0
+info:
+  title: Treasury Module API
+  version: 1.0.0
+  description: >
+    OpenAPI-Spezifikation für das Treasury-Modul.
+    Dieses Modul umfasst Treasury-Accounts, Treasury-Positions,
+    Treasury-Flows sowie deterministische Treasury-Aktionen.
+    Die Struktur ist stabil, auditierbar und vollständig
+    kompatibel mit regulatorischen Anforderungen.
+
+paths:
+
+  /rpc/treasury_create_treasury_account:
+    post:
+      summary: Neuen Treasury-Account erzeugen
+      operationId: treasury_create_treasury_account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_account_id:
+                  type: string
+                  format: uuid
+                in_account_type:
+                  type: string
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_account_id
+                - in_account_type
+                - in_currency
+      responses:
+        '200':
+          description: ID des erzeugten Treasury-Accounts
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/treasury_record_flow:
+    post:
+      summary: Treasury-Flow erfassen (inflow/outflow)
+      operationId: treasury_record_flow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_treasury_account_id:
+                  type: string
+                  format: uuid
+                in_direction:
+                  type: string
+                in_amount:
+                  type: number
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_treasury_account_id
+                - in_direction
+                - in_amount
+                - in_currency
+      responses:
+        '200':
+          description: ID des erzeugten Treasury-Flows
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+  /rpc/treasury_reconcile_positions:
+    post:
+      summary: Treasury-Position rekonsolidieren
+      operationId: treasury_reconcile_positions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_treasury_account_id:
+                  type: string
+                  format: uuid
+                in_currency:
+                  type: string
+                in_metadata:
+                  type: object
+              required:
+                - in_treasury_account_id
+                - in_currency
+      responses:
+        '200':
+          description: ID der neuen Treasury-Position
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+
+components:
+
+  schemas:
+
+    TreasuryAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        treasury_account_number:
+          type: integer
+        account_type:
+          type: string
+        account_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    TreasuryPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        treasury_account_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        balance:
+          type: number
+        reserved_balance:
+          type: number
+        available_balance:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+
+    TreasuryFlow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        treasury_account_id:
+          type: string
+          format: uuid
+        direction:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object

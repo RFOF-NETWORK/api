@@ -1,0 +1,9 @@
+{
+  "environment": "production",
+  "log_level": "info",
+  "max_connections": 100,
+  "feature_flags": {
+    "beta_mode": false,
+    "audit_trail": true
+  }
+}

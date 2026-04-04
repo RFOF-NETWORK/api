@@ -2,48 +2,168 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF API Index</title>
+  <title>RFOF · API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { margin:0; font-family:system-ui, -apple-system, sans-serif; background:#05060a; color:#f5f5f5; }
-    header { padding:12px 16px; border-bottom:1px solid #222; display:flex; align-items:center; justify-content:space-between; }
-    .brand { font-weight:600; letter-spacing:0.04em; font-size:14px; text-transform:uppercase; color:#9ca3af; }
+    :root {
+      color-scheme: dark;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#020617;
+      color:#e5e7eb;
+    }
+    header {
+      padding:10px 14px;
+      border-bottom:1px solid #111827;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:#020617;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .brand {
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:#9ca3af;
+    }
     .dropdown { position:relative; }
     .dropdown-button {
-      background:#111827; color:#e5e7eb; border:1px solid #374151;
-      padding:6px 10px; border-radius:6px; font-size:13px;
-      display:flex; align-items:center; gap:6px; cursor:pointer;
+      background:#020617;
+      color:#e5e7eb;
+      border:1px solid #1f2937;
+      padding:6px 10px;
+      border-radius:7px;
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
     }
-    .dropdown-button span.label { text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#9ca3af; }
+    .dropdown-button span.label {
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      font-size:10px;
+      color:#9ca3af;
+    }
     .dropdown-menu {
-      position:absolute; top:100%; left:0; margin-top:4px;
-      background:#020617; border:1px solid #1f2937; border-radius:8px;
-      min-width:220px; max-height:320px; overflow:auto; padding:4px 0;
-      box-shadow:0 18px 40px rgba(0,0,0,0.65); z-index:20; display:none;
+      position:absolute;
+      top:100%;
+      right:0;
+      margin-top:4px;
+      background:#020617;
+      border:1px solid #1f2937;
+      border-radius:8px;
+      min-width:220px;
+      max-height:320px;
+      overflow:auto;
+      padding:4px 0;
+      box-shadow:0 18px 40px rgba(0,0,0,0.7);
+      display:none;
+      z-index:20;
     }
     .dropdown-item {
-      padding:7px 12px; font-size:13px; display:flex; flex-direction:column;
-      gap:2px; cursor:pointer;
+      padding:7px 12px;
+      font-size:13px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      cursor:pointer;
     }
     .dropdown-item:hover { background:#0b1120; }
-    .dropdown-item-title { font-weight:500; color:#e5e7eb; text-transform:capitalize; }
-    .dropdown-item-sub { font-size:11px; color:#6b7280; text-transform:uppercase; letter-spacing:0.08em; }
-    main { padding:16px; }
-    .module-title { font-size:18px; font-weight:600; margin-bottom:4px; text-transform:capitalize; }
-    .module-sub { font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:16px; }
-    .pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+    .dropdown-item-title {
+      font-weight:500;
+      color:#e5e7eb;
+      text-transform:capitalize;
+    }
+    .dropdown-item-sub {
+      font-size:10px;
+      color:#6b7280;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+    }
+    main { padding:14px; }
+    .module-title {
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:2px;
+      text-transform:capitalize;
+    }
+    .module-sub {
+      font-size:11px;
+      color:#9ca3af;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      margin-bottom:14px;
+    }
+    .pill-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:14px;
+    }
     .pill {
-      font-size:11px; padding:4px 8px; border-radius:999px;
-      border:1px solid #1f2937; color:#9ca3af; text-transform:uppercase; letter-spacing:0.08em;
+      font-size:11px;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid #1f2937;
+      color:#9ca3af;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      cursor:pointer;
+      background:#020617;
     }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
-    .card {
-      border-radius:10px; border:1px solid #111827; background:#020617;
-      padding:10px 11px; display:flex; flex-direction:column; gap:4px;
+    .pill.active {
+      border-color:#4b5563;
+      background:#020617;
+      color:#e5e7eb;
     }
-    .card-title { font-size:12px; font-weight:500; color:#e5e7eb; text-transform:uppercase; letter-spacing:0.08em; }
-    .card-sub { font-size:11px; color:#6b7280; }
-    .muted { color:#6b7280; font-size:11px; }
+    .section-header {
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.14em;
+      color:#9ca3af;
+      margin-bottom:6px;
+    }
+    .section-sub {
+      font-size:11px;
+      color:#6b7280;
+      margin-bottom:10px;
+    }
+    .list {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom:14px;
+    }
+    .item {
+      border-radius:8px;
+      border:1px solid #111827;
+      background:#020617;
+      padding:8px 9px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .item-title {
+      font-size:12px;
+      font-weight:500;
+      color:#e5e7eb;
+    }
+    .item-sub {
+      font-size:11px;
+      color:#6b7280;
+    }
+    .muted {
+      font-size:11px;
+      color:#6b7280;
+    }
   </style>
 </head>
 <body>
@@ -60,13 +180,11 @@
 </header>
 
 <main>
-  <div id="moduleView">
-    <!-- dynamic -->
-  </div>
+  <div id="moduleView"></div>
 </main>
 
 <script>
-  // --- 1. Repo-Module (aus /api) ---
+  // --- 1. Repo-Module (statisch aus /api-Struktur abgeleitet) ---
   const REPO_MODULES = [
     "accounts",
     "clearing",
@@ -97,7 +215,21 @@
   // --- 3. UI-Module = Repo-Module – technische Module ---
   const UI_MODULES = REPO_MODULES.filter(m => !TECHNICAL_MODULES.has(m));
 
-  // --- 4. Hilfsfunktionen ---
+  // --- 4. Statische Modul-Datenstruktur (Platzhalter, Frontend-seitig erweiterbar) ---
+  // Hier kann später ein Parser oder eine API echte Inhalte einfüllen.
+  const MODULE_DATA = {};
+  UI_MODULES.forEach(m => {
+    MODULE_DATA[m] = {
+      id: m,
+      label: capitalizeName(m),
+      resources: [],
+      actions: [],
+      events: [],
+      schemas: []
+    };
+  });
+
+  // --- 5. Hilfsfunktionen ---
   function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
@@ -110,6 +242,23 @@
     };
   }
 
+  function getCurrentHashState() {
+    const hash = window.location.hash.replace(/^#/, "");
+    const params = new URLSearchParams(hash);
+    return {
+      module: params.get("module") || (UI_MODULES[0] || null),
+      view: params.get("view") || "resources"
+    };
+  }
+
+  function setHashState(moduleId, view) {
+    const params = new URLSearchParams();
+    params.set("module", moduleId);
+    params.set("view", view);
+    window.location.hash = params.toString();
+  }
+
+  // --- 6. Dropdown-Rendering ---
   function renderModuleDropdown() {
     const menu = document.getElementById("moduleDropdownMenu");
     menu.innerHTML = "";
@@ -124,60 +273,112 @@
           <div class="dropdown-item-sub">${mod.kind}</div>
         `;
         item.addEventListener("click", () => {
-          selectModule(mod.id);
+          const state = getCurrentHashState();
+          setHashState(mod.id, state.view || "resources");
           menu.style.display = "none";
         });
         menu.appendChild(item);
       });
   }
 
-  function renderModuleView(moduleId) {
+  // --- 7. Modul-View-Rendering ---
+  const VIEWS = ["resources", "actions", "events", "schemas"];
+
+  const VIEW_META = {
+    resources: {
+      title: "Resources",
+      description: "All resource definitions for this module."
+    },
+    actions: {
+      title: "Actions",
+      description: "Executable operations exposed by this module."
+    },
+    events: {
+      title: "Events",
+      description: "Domain events emitted by this module."
+    },
+    schemas: {
+      title: "Schemas",
+      description: "Validation and data contracts for this module."
+    }
+  };
+
+  function renderModuleView(moduleId, view) {
     const container = document.getElementById("moduleView");
-    const label = capitalizeName(moduleId);
+    const module = MODULE_DATA[moduleId];
+    if (!module) {
+      container.innerHTML = `<p class="muted">Unknown module: ${moduleId}</p>`;
+      return;
+    }
+
+    const currentView = VIEWS.includes(view) ? view : "resources";
+    const meta = VIEW_META[currentView];
+
+    const pillsHtml = VIEWS.map(v => {
+      const active = v === currentView ? "pill active" : "pill";
+      return `<span class="${active}" data-view="${v}">${VIEW_META[v].title}</span>`;
+    }).join("");
+
+    const items = module[currentView] || [];
+    let listHtml = "";
+
+    if (items.length === 0) {
+      listHtml = `<p class="muted">No ${meta.title.toLowerCase()} defined for this module yet.</p>`;
+    } else {
+      listHtml = `<div class="list">` + items.map(it => `
+        <div class="item">
+          <div class="item-title">${it.name}</div>
+          <div class="item-sub">${it.description || ""}</div>
+        </div>
+      `).join("") + `</div>`;
+    }
 
     container.innerHTML = `
-      <div class="module-title">${label}</div>
-      <div class="module-sub">API MODULE · ${moduleId}</div>
+      <div class="module-title">${module.label}</div>
+      <div class="module-sub">API MODULE · ${module.id.toUpperCase()}</div>
 
-      <div class="pill-row">
-        <span class="pill">Resources</span>
-        <span class="pill">Actions</span>
-        <span class="pill">Events</span>
-        <span class="pill">Schemas</span>
+      <div class="pill-row" id="viewPills">
+        ${pillsHtml}
       </div>
 
-      <div class="grid">
-        <div class="card">
-          <div class="card-title">Resources</div>
-          <div class="card-sub">All resource definitions for this module.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Actions</div>
-          <div class="card-sub">Executable operations exposed by this module.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Events</div>
-          <div class="card-sub">Domain events emitted by this module.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Schemas</div>
-          <div class="card-sub">Validation and data contracts for this module.</div>
-        </div>
-      </div>
+      <div class="section-header">${meta.title}</div>
+      <div class="section-sub">${meta.description}</div>
 
-      <p class="muted" style="margin-top:14px;">
+      ${listHtml}
+
+      <p class="muted">
         Module is UI-visible because it exists in the API repo and is not in the technical exclusion set.
       </p>
     `;
+
+    const pills = container.querySelectorAll("#viewPills .pill");
+    pills.forEach(p => {
+      p.addEventListener("click", () => {
+        const v = p.getAttribute("data-view");
+        setHashState(moduleId, v);
+      });
+    });
+
+    const currentLabel = document.getElementById("moduleDropdownCurrent");
+    currentLabel.textContent = module.label;
   }
 
-  function selectModule(moduleId) {
-    const current = document.getElementById("moduleDropdownCurrent");
-    current.textContent = capitalizeName(moduleId);
-    renderModuleView(moduleId);
+  // --- 8. Hash-Routing ---
+  function handleHashChange() {
+    const state = getCurrentHashState();
+    if (!state.module || !UI_MODULES.includes(state.module)) {
+      if (UI_MODULES.length > 0) {
+        setHashState(UI_MODULES[0], "resources");
+      } else {
+        document.getElementById("moduleView").innerHTML =
+          '<p class="muted">No UI modules available.</p>';
+      }
+      return;
+    }
+    renderModuleView(state.module, state.view);
   }
 
-  // --- 5. Dropdown-Interaktion ---
+  // --- 9. Init ---
   (function init() {
     const btn = document.getElementById("moduleDropdownButton");
     const menu = document.getElementById("moduleDropdownMenu");
@@ -193,14 +394,8 @@
     });
 
     renderModuleDropdown();
-
-    if (UI_MODULES.length > 0) {
-      selectModule(UI_MODULES[0]);
-    } else {
-      document.getElementById("moduleDropdownCurrent").textContent = "None";
-      document.getElementById("moduleView").innerHTML =
-        '<p class="muted">No UI modules available.</p>';
-    }
+    window.addEventListener("hashchange", handleHashChange);
+    handleHashChange();
   })();
 </script>
 </body>

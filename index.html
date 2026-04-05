@@ -1,402 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF · API</title>
+  <title>API HOME – META‑UI‑SYSTEM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      color-scheme: dark;
+    body { margin:0; font-family:system-ui, sans-serif; background:#0a0c10; color:#f5f5f5; }
+    header { padding:14px 22px; background:#0f1117; display:flex; justify-content:space-between; align-items:center; }
+    nav { display:flex; gap:14px; flex-wrap:wrap; }
+    nav button {
+      background:#1a1d27; color:#fff; border:none; padding:7px 14px;
+      border-radius:6px; cursor:pointer; font-size:14px;
     }
-    * { box-sizing:border-box; }
-    body {
-      margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:#020617;
-      color:#e5e7eb;
+    nav button.dropdown { position:relative; padding-right:22px; }
+    nav button.dropdown::after {
+      content:"▾"; position:absolute; right:8px; top:50%; transform:translateY(-50%);
+      font-size:11px; opacity:0.7;
     }
-    header {
-      padding:10px 14px;
-      border-bottom:1px solid #111827;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      background:#020617;
-      position:sticky;
-      top:0;
-      z-index:10;
+    main { padding:24px; display:flex; flex-wrap:wrap; gap:24px; }
+    section {
+      background:#0f1117; padding:20px; border-radius:10px;
+      flex:1; min-width:300px;
     }
-    .brand {
-      font-size:13px;
-      font-weight:600;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:#9ca3af;
-    }
-    .dropdown { position:relative; }
-    .dropdown-button {
-      background:#020617;
-      color:#e5e7eb;
-      border:1px solid #1f2937;
-      padding:6px 10px;
-      border-radius:7px;
-      font-size:12px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      cursor:pointer;
-    }
-    .dropdown-button span.label {
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      font-size:10px;
-      color:#9ca3af;
-    }
-    .dropdown-menu {
-      position:absolute;
-      top:100%;
-      right:0;
-      margin-top:4px;
-      background:#020617;
-      border:1px solid #1f2937;
-      border-radius:8px;
-      min-width:220px;
-      max-height:320px;
-      overflow:auto;
-      padding:4px 0;
-      box-shadow:0 18px 40px rgba(0,0,0,0.7);
-      display:none;
-      z-index:20;
-    }
-    .dropdown-item {
-      padding:7px 12px;
-      font-size:13px;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      cursor:pointer;
-    }
-    .dropdown-item:hover { background:#0b1120; }
-    .dropdown-item-title {
-      font-weight:500;
-      color:#e5e7eb;
-      text-transform:capitalize;
-    }
-    .dropdown-item-sub {
-      font-size:10px;
-      color:#6b7280;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-    }
-    main { padding:14px; }
-    .module-title {
-      font-size:18px;
-      font-weight:600;
-      margin-bottom:2px;
-      text-transform:capitalize;
-    }
-    .module-sub {
-      font-size:11px;
-      color:#9ca3af;
-      text-transform:uppercase;
-      letter-spacing:0.14em;
-      margin-bottom:14px;
-    }
-    .pill-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-bottom:14px;
-    }
-    .pill {
-      font-size:11px;
-      padding:4px 9px;
-      border-radius:999px;
-      border:1px solid #1f2937;
-      color:#9ca3af;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      cursor:pointer;
-      background:#020617;
-    }
-    .pill.active {
-      border-color:#4b5563;
-      background:#020617;
-      color:#e5e7eb;
-    }
-    .section-header {
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.14em;
-      color:#9ca3af;
-      margin-bottom:6px;
-    }
-    .section-sub {
-      font-size:11px;
-      color:#6b7280;
-      margin-bottom:10px;
-    }
-    .list {
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom:14px;
-    }
-    .item {
-      border-radius:8px;
-      border:1px solid #111827;
-      background:#020617;
-      padding:8px 9px;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .item-title {
-      font-size:12px;
-      font-weight:500;
-      color:#e5e7eb;
-    }
-    .item-sub {
-      font-size:11px;
-      color:#6b7280;
-    }
-    .muted {
-      font-size:11px;
-      color:#6b7280;
-    }
+    h1, h2, h3 { margin-top:0; }
+    ul { margin:0; padding-left:20px; }
+    .tag { font-size:11px; opacity:0.7; text-transform:uppercase; margin-bottom:6px; }
+    .two-col { display:flex; gap:20px; flex-wrap:wrap; }
+    .two-col > div { flex:1; min-width:240px; }
+    code { background:#1a1d27; padding:2px 4px; border-radius:4px; }
   </style>
 </head>
+
 <body>
+
 <header>
-  <div class="brand">RFOF · API</div>
-  <div class="dropdown">
-    <button class="dropdown-button" id="moduleDropdownButton">
-      <span class="label">Module</span>
-      <span id="moduleDropdownCurrent">–</span>
-      <span>▾</span>
-    </button>
-    <div class="dropdown-menu" id="moduleDropdownMenu"></div>
-  </div>
+  <div><strong>RFOF NETWORK</strong> – API HOME</div>
+  <nav>
+    <button class="dropdown">Home</button>
+    <button>Wallet</button>
+    <button>Profil</button>
+    <button>Settings</button>
+    <button>Staking</button>
+    <button class="dropdown">GPCB</button>
+    <button class="dropdown">ECCU</button>
+    <button class="dropdown">RFOF‑GOLDEN‑Chain</button>
+    <button>UserGuide</button>
+    <button>SystemOverview</button>
+    <button>API Marketplace</button>
+    <button class="dropdown">API Documentation</button>
+  </nav>
 </header>
 
 <main>
-  <div id="moduleView"></div>
-</main>
 
-<script>
-  // --- 1. Repo-Module (statisch aus /api-Struktur abgeleitet) ---
-  const REPO_MODULES = [
-    "accounts",
-    "clearing",
-    "compliance",
-    "config",
-    "docs",
-    "documents",
-    "federation",
-    "identity",
-    "ledger",
-    "liquidity",
-    "scripts",
-    "settlement",
-    "shared",
-    "tests",
-    "treasury"
-  ];
+  <!-- API HOME -->
+  <section>
+    <div class="tag">API HOME</div>
+    <h1>META‑UI‑SYSTEM</h1>
+    <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier gerendert.</p>
+    <ul>
+      <li>Globale Module: Wallet, Profil, Settings, Staking</li>
+      <li>Meta‑Systeme: GPCB, ECCU, RFOF‑GOLDEN‑Chain</li>
+      <li>Meta‑Ebenen: UserGuide, SystemOverview</li>
+      <li>Kommerzielle Ebene: API Marketplace</li>
+      <li>Wissensebene: API Documentation</li>
+    </ul>
+  </section>
 
-  // --- 2. Technische Module (Ausschlussliste) ---
-  const TECHNICAL_MODULES = new Set([
-    "config",
-    "docs",
-    "scripts",
-    "shared",
-    "tests"
-  ]);
+  <!-- Globale Meta-Module -->
+  <section>
+    <div class="tag">Globale Meta‑Module</div>
+    <h2>Wallet / Profil / Settings / Staking</h2>
+    <ul>
+      <li><strong>Wallet:</strong> globales Asset‑ & Konto‑Modul</li>
+      <li><strong>Profil:</strong> Identität, Rollen, Berechtigungen</li>
+      <li><strong>Settings:</strong> System‑ & UI‑Konfiguration</li>
+      <li><strong>Staking:</strong> Lock‑, Reward‑ & Yield‑Mechanismen</li>
+    </ul>
+  </section>
 
-  // --- 3. UI-Module = Repo-Module – technische Module ---
-  const UI_MODULES = REPO_MODULES.filter(m => !TECHNICAL_MODULES.has(m));
+  <!-- GPCB -->
+  <section>
+    <div class="tag">Meta‑System</div>
+    <h2>GPCB</h2>
+    <ul>
+      <li>Wallet</li>
+      <li>Profil</li>
+      <li>Settings</li>
+      <li>Staking</li>
+      <li>UserGuide</li>
+      <li>SystemOverview</li>
+    </ul>
+  </section>
 
-  // --- 4. Statische Modul-Datenstruktur (Platzhalter, Frontend-seitig erweiterbar) ---
-  // Hier kann später ein Parser oder eine API echte Inhalte einfüllen.
-  const MODULE_DATA = {};
-  UI_MODULES.forEach(m => {
-    MODULE_DATA[m] = {
-      id: m,
-      label: capitalizeName(m),
-      resources: [],
-      actions: [],
-      events: [],
-      schemas: []
-    };
-  });
+  <!-- ECCU -->
+  <section>
+    <div class="tag">Meta‑System</div>
+    <h2>ECCU</h2>
+    <ul>
+      <li>Wallet</li>
+      <li>Profil</li>
+      <li>Settings</li>
+      <li>Staking</li>
+      <li>UserGuide</li>
+      <li>SystemOverview</li>
+    </ul>
+  </section>
 
-  // --- 5. Hilfsfunktionen ---
-  function capitalizeName(name) {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  }
+  <!-- RFOF-GOLDEN-Chain -->
+  <section>
+    <div class="tag">Meta‑System</div>
+    <h2>RFOF‑GOLDEN‑Chain</h2>
+    <ul>
+      <li>Wallet</li>
+      <li>Profil</li>
+      <li>Settings</li>
+      <li>Staking</li>
+      <li>UserGuide</li>
+      <li>SystemOverview</li>
+    </ul>
+  </section>
 
-  function moduleDescriptor(name) {
-    return {
-      id: name,
-      label: capitalizeName(name),
-      kind: "API Module"
-    };
-  }
+  <!-- API Marketplace -->
+  <section>
+    <div class="tag">Kommerzielle Ebene</div>
+    <h2>API Marketplace</h2>
+    <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, monatliche Kosten.</p>
+    <ul>
+      <li>Module als Produkte</li>
+      <li>Tarife & Pläne</li>
+      <li>Billing & Subscription</li>
+    </ul>
+  </section>
 
-  function getCurrentHashState() {
-    const hash = window.location.hash.replace(/^#/, "");
-    const params = new URLSearchParams(hash);
-    return {
-      module: params.get("module") || (UI_MODULES[0] || null),
-      view: params.get("view") || "resources"
-    };
-  }
+  <!-- API Documentation -->
+  <section>
+    <div class="tag">Wissensebene</div>
+    <h2>API Documentation</h2>
 
-  function setHashState(moduleId, view) {
-    const params = new URLSearchParams();
-    params.set("module", moduleId);
-    params.set("view", view);
-    window.location.hash = params.toString();
-  }
+    <div class="two-col">
 
-  // --- 6. Dropdown-Rendering ---
-  function renderModuleDropdown() {
-    const menu = document.getElementById("moduleDropdownMenu");
-    menu.innerHTML = "";
-    UI_MODULES
-      .map(moduleDescriptor)
-      .forEach(mod => {
-        const item = document.createElement("div");
-        item.className = "dropdown-item";
-        item.dataset.moduleId = mod.id;
-        item.innerHTML = `
-          <div class="dropdown-item-title">${mod.label}</div>
-          <div class="dropdown-item-sub">${mod.kind}</div>
-        `;
-        item.addEventListener("click", () => {
-          const state = getCurrentHashState();
-          setHashState(mod.id, state.view || "resources");
-          menu.style.display = "none";
-        });
-        menu.appendChild(item);
-      });
-  }
-
-  // --- 7. Modul-View-Rendering ---
-  const VIEWS = ["resources", "actions", "events", "schemas"];
-
-  const VIEW_META = {
-    resources: {
-      title: "Resources",
-      description: "All resource definitions for this module."
-    },
-    actions: {
-      title: "Actions",
-      description: "Executable operations exposed by this module."
-    },
-    events: {
-      title: "Events",
-      description: "Domain events emitted by this module."
-    },
-    schemas: {
-      title: "Schemas",
-      description: "Validation and data contracts for this module."
-    }
-  };
-
-  function renderModuleView(moduleId, view) {
-    const container = document.getElementById("moduleView");
-    const module = MODULE_DATA[moduleId];
-    if (!module) {
-      container.innerHTML = `<p class="muted">Unknown module: ${moduleId}</p>`;
-      return;
-    }
-
-    const currentView = VIEWS.includes(view) ? view : "resources";
-    const meta = VIEW_META[currentView];
-
-    const pillsHtml = VIEWS.map(v => {
-      const active = v === currentView ? "pill active" : "pill";
-      return `<span class="${active}" data-view="${v}">${VIEW_META[v].title}</span>`;
-    }).join("");
-
-    const items = module[currentView] || [];
-    let listHtml = "";
-
-    if (items.length === 0) {
-      listHtml = `<p class="muted">No ${meta.title.toLowerCase()} defined for this module yet.</p>`;
-    } else {
-      listHtml = `<div class="list">` + items.map(it => `
-        <div class="item">
-          <div class="item-title">${it.name}</div>
-          <div class="item-sub">${it.description || ""}</div>
-        </div>
-      `).join("") + `</div>`;
-    }
-
-    container.innerHTML = `
-      <div class="module-title">${module.label}</div>
-      <div class="module-sub">API MODULE · ${module.id.toUpperCase()}</div>
-
-      <div class="pill-row" id="viewPills">
-        ${pillsHtml}
+      <div>
+        <h3>Benutzer‑Dokumentation</h3>
+        <ul>
+          <li>API‑Home.md</li>
+          <li>GPCB.md</li>
+          <li>ECCU.md</li>
+          <li>RFOF‑GOLDEN‑Chain.md</li>
+          <li>UserGuide.md</li>
+          <li>SystemOverview.md</li>
+        </ul>
       </div>
 
-      <div class="section-header">${meta.title}</div>
-      <div class="section-sub">${meta.description}</div>
+      <div>
+        <h3>Entwickler‑Dokumentation</h3>
+        <ul>
+          <li>API‑Index.md</li>
+          <li>Modules.md</li>
+          <li>Endpoints.md</li>
+          <li>Actions.md</li>
+          <li>Events.md</li>
+          <li>Schemas.md</li>
+          <li>IntegrationGuide.md</li>
+        </ul>
+      </div>
 
-      ${listHtml}
+    </div>
+  </section>
 
-      <p class="muted">
-        Module is UI-visible because it exists in the API repo and is not in the technical exclusion set.
-      </p>
-    `;
+</main>
 
-    const pills = container.querySelectorAll("#viewPills .pill");
-    pills.forEach(p => {
-      p.addEventListener("click", () => {
-        const v = p.getAttribute("data-view");
-        setHashState(moduleId, v);
-      });
-    });
-
-    const currentLabel = document.getElementById("moduleDropdownCurrent");
-    currentLabel.textContent = module.label;
-  }
-
-  // --- 8. Hash-Routing ---
-  function handleHashChange() {
-    const state = getCurrentHashState();
-    if (!state.module || !UI_MODULES.includes(state.module)) {
-      if (UI_MODULES.length > 0) {
-        setHashState(UI_MODULES[0], "resources");
-      } else {
-        document.getElementById("moduleView").innerHTML =
-          '<p class="muted">No UI modules available.</p>';
-      }
-      return;
-    }
-    renderModuleView(state.module, state.view);
-  }
-
-  // --- 9. Init ---
-  (function init() {
-    const btn = document.getElementById("moduleDropdownButton");
-    const menu = document.getElementById("moduleDropdownMenu");
-
-    btn.addEventListener("click", () => {
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!btn.contains(e.target) && !menu.contains(e.target)) {
-        menu.style.display = "none";
-      }
-    });
-
-    renderModuleDropdown();
-    window.addEventListener("hashchange", handleHashChange);
-    handleHashChange();
-  })();
-</script>
 </body>
 </html>

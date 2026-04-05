@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF-NETWORK – API Explorer</title>
+  <title>RFOF‑NETWORK – API Explorer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Syntax Highlighting -->
@@ -15,22 +15,24 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0a0a0a;
-      --bg-alt: #111;
-      --border: #222;
-      --text: #f5f5f5;
-      --accent: #38bdf8;
-      --error-bg: #330000;
-      --error-border: #ff6b6b;
+      --bg:#0a0a0a;
+      --bg-alt:#111;
+      --border:#222;
+      --text:#f5f5f5;
+      --muted:#888;
+      --accent:#38bdf8;
+      --error-bg:#330000;
+      --error-border:#ff6b6b;
     }
     body.light {
-      --bg: #f5f5f5;
-      --bg-alt: #ffffff;
-      --border: #ddd;
-      --text: #111;
-      --accent: #2563eb;
-      --error-bg: #ffe5e5;
-      --error-border: #dc2626;
+      --bg:#f5f5f5;
+      --bg-alt:#ffffff;
+      --border:#ddd;
+      --text:#111;
+      --muted:#555;
+      --accent:#2563eb;
+      --error-bg:#ffe5e5;
+      --error-border:#dc2626;
     }
 
     body {
@@ -39,6 +41,7 @@
       background:var(--bg);
       color:var(--text);
     }
+
     header {
       padding:20px;
       border-bottom:1px solid var(--border);
@@ -46,13 +49,14 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:16px;
-      flex-wrap:wrap;
     }
+
     h1 { margin:0; font-size:20px; }
     a { color:var(--accent); text-decoration:none; }
     a:hover { text-decoration:underline; }
+
     #container { padding:20px; }
+
     .item {
       padding:10px;
       border:1px solid var(--border);
@@ -61,7 +65,8 @@
       background:var(--bg-alt);
       cursor:pointer;
     }
-    .item:hover { background:rgba(255,255,255,0.03); }
+    .item:hover { background:rgba(255,255,255,0.05); }
+
     pre {
       white-space:pre-wrap;
       background:var(--bg-alt);
@@ -70,9 +75,10 @@
       border:1px solid var(--border);
       overflow-x:auto;
     }
-    .path { font-size:12px; color:#888; margin-bottom:10px; }
-    body.light .path { color:#666; }
+
+    .path { font-size:12px; color:var(--muted); margin-bottom:10px; }
     .back { margin-bottom:20px; display:inline-block; }
+
     .error {
       color:var(--error-border);
       padding:10px;
@@ -92,6 +98,7 @@
       border:1px solid var(--border);
     }
     #apiTester h2 { margin-top:0; }
+
     #apiTester input,
     #apiTester textarea,
     #apiTester select {
@@ -105,6 +112,7 @@
       font-family:inherit;
       font-size:14px;
     }
+
     #apiTester button {
       padding:10px 16px;
       background:var(--accent);
@@ -116,11 +124,13 @@
       margin-right:8px;
       margin-top:4px;
     }
+
     #apiTester button.secondary {
       background:transparent;
       color:var(--accent);
       border:1px solid var(--accent);
     }
+
     #apiResponse {
       margin-top:20px;
       background:var(--bg-alt);
@@ -164,25 +174,14 @@
       font-size:13px;
     }
 
-    code.hljs {
-      background:transparent;
-    }
-
-    @media (max-width:600px) {
-      header { padding:12px; }
-      #container { padding:12px; }
-      #apiTester { padding:12px; }
-    }
+    code.hljs { background:transparent; }
   </style>
 </head>
+
 <body>
 
 <header>
   <h1>API Explorer</h1>
-  <nav>
-    <a href="browser.html">Startseite</a> |
-    <a href="frontend.md">Frontend</a>
-  </nav>
   <button id="themeToggle" onclick="toggleTheme()">Dark/Light</button>
 </header>
 
@@ -225,10 +224,6 @@
 </div>
 
 <script>
-const owner = "RFOF-NETWORK";
-const repo = "api";
-const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
-
 /* Theme */
 function toggleTheme() {
   document.body.classList.toggle('light');
@@ -243,6 +238,11 @@ document.querySelectorAll('.tab').forEach(tab => {
     document.getElementById(tab.dataset.tab).classList.add('active');
   });
 });
+
+/* GitHub API Explorer */
+const owner = "RFOF-NETWORK";
+const repo = "api";
+const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
 
 async function loadPath(path = "") {
   try {

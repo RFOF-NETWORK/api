@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>API HOME – META‑UI‑SYSTEM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     :root {
       color-scheme: dark;
@@ -34,9 +35,7 @@
     .brand { font-weight:600; font-size:15px; }
     .brand span { color:var(--accent); }
     nav { display:flex; flex-wrap:wrap; gap:8px; }
-    .nav-group {
-      position:relative;
-    }
+    .nav-group { position:relative; }
     .nav-btn {
       background:#0f172a;
       color:var(--text);
@@ -71,9 +70,7 @@
       color:var(--text);
       text-decoration:none;
     }
-    .nav-menu a:hover {
-      background:rgba(148,163,184,.15);
-    }
+    .nav-menu a:hover { background:rgba(148,163,184,.15); }
     .nav-group.open .nav-menu { display:block; }
 
     main {
@@ -107,15 +104,6 @@
     ul { margin:6px 0 0; padding-left:18px; font-size:13px; }
     li { margin-bottom:3px; }
 
-    .grid-2 {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-    }
-    @media (max-width:700px) {
-      .grid-2 { grid-template-columns:1fr; }
-    }
-
     .pill-row {
       display:flex;
       flex-wrap:wrap;
@@ -146,13 +134,18 @@
       color:var(--accent);
       text-decoration:none;
     }
-    .link-chip:hover {
-      background:#0b1120;
-    }
+    .link-chip:hover { background:#0b1120; }
 
-    .subhead { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-top:4px; }
+    .subhead {
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-top:4px;
+    }
   </style>
 </head>
+
 <body>
 
 <header>
@@ -162,20 +155,16 @@
 
   <nav>
     <div class="nav-group">
-      <button class="nav-btn" data-menu="home">
-        Home <span class="icon">▾</span>
-      </button>
+      <button class="nav-btn" data-menu="home">Home <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-home">
         <a href="#api-home">API HOME</a>
         <a href="#meta-backend">META‑BACKEND</a>
-        <a href="browser.html" target="_blank">API Explorer (browser.html)</a>
+        <a href="browser.html" target="_blank">API Explorer</a>
       </div>
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn" data-menu="global">
-        Global Modules <span class="icon">▾</span>
-      </button>
+      <button class="nav-btn" data-menu="global">Global Modules <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-global">
         <a href="#wallet">Wallet</a>
         <a href="#profil">Profil</a>
@@ -185,9 +174,7 @@
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn" data-menu="systems">
-        Meta‑Systeme <span class="icon">▾</span>
-      </button>
+      <button class="nav-btn" data-menu="systems">Meta‑Systeme <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-systems">
         <a href="#gpcb">GPCB</a>
         <a href="#eccu">ECCU</a>
@@ -196,9 +183,7 @@
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn" data-menu="docs">
-        Documentation <span class="icon">▾</span>
-      </button>
+      <button class="nav-btn" data-menu="docs">Documentation <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-docs">
         <a href="#docs-user">Benutzer‑Dokumentation</a>
         <a href="#docs-dev">Entwickler‑Dokumentation</a>
@@ -207,9 +192,7 @@
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn" data-menu="market">
-        API Marketplace <span class="icon">▾</span>
-      </button>
+      <button class="nav-btn" data-menu="market">API Marketplace <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-market">
         <a href="#marketplace">Übersicht</a>
       </div>
@@ -219,24 +202,16 @@
 
 <main>
 
-  <!-- META-BACKEND / API HOME -->
+  <!-- API HOME -->
   <section id="api-home">
     <div class="tag">META‑BACKEND · API‑SYSTEM</div>
     <h1>API HOME – META‑UI‑SYSTEM</h1>
     <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier logisch gerendert.</p>
-    <ul>
-      <li>META‑BACKEND (API‑System) als Quelle aller Module</li>
-      <li>API HOME (META‑UI‑SYSTEM) als zentrale Oberfläche</li>
-      <li>Globale Module: Wallet, Profil, Settings, Staking</li>
-      <li>Meta‑Systeme: GPCB, ECCU, RFOF‑GOLDEN‑Chain</li>
-      <li>Meta‑Ebenen: UserGuide, SystemOverview</li>
-      <li>Kommerzielle Ebene: API Marketplace</li>
-      <li>Wissensebene: API Documentation (Benutzer, Entwickler, Meta)</li>
-    </ul>
+
     <div class="link-row">
-      <a class="link-chip" href="browser.html" target="_blank">API Explorer (browser.html)</a>
-      <a class="link-chip" href="#docs-user">API‑Home.md (Benutzer)</a>
-      <a class="link-chip" href="#docs-dev">API‑Index.md (Entwickler)</a>
+      <a class="link-chip" href="browser.html" target="_blank">API Explorer</a>
+      <a class="link-chip" href="#docs-user">API‑Home.md</a>
+      <a class="link-chip" href="#docs-dev">API‑Index.md</a>
     </div>
   </section>
 
@@ -244,7 +219,7 @@
   <section id="meta-backend">
     <div class="tag">Globale Meta‑Module</div>
     <h2>Wallet · Profil · Settings · Staking</h2>
-    <p>Diese Module sind global verfügbar und werden in API HOME sowie in allen Meta‑Systemen (GPCB, ECCU, RFOF‑GOLDEN‑Chain) rekursiv genutzt.</p>
+    <p>Diese Module sind global verfügbar und werden in API HOME sowie in allen Meta‑Systemen rekursiv genutzt.</p>
     <div class="pill-row">
       <span class="pill" id="wallet">Wallet</span>
       <span class="pill" id="profil">Profil</span>
@@ -258,79 +233,31 @@
     <div class="tag">Meta‑System</div>
     <h2>GPCB</h2>
     <p>GPCB erbt die globalen Module und ergänzt sie um system‑spezifische UserGuide‑ und SystemOverview‑Dokumentation.</p>
-    <ul>
-      <li>Wallet</li>
-      <li>Profil</li>
-      <li>Settings</li>
-      <li>Staking</li>
-      <li>UserGuide</li>
-      <li>SystemOverview</li>
-    </ul>
-    <div class="subhead">Benutzer‑Dokumentation</div>
-    <ul>
-      <li>GPCB.md</li>
-      <li>UserGuide.md (GPCB‑Kontext)</li>
-      <li>SystemOverview.md (GPCB‑Kontext)</li>
-    </ul>
   </section>
 
   <section id="eccu">
     <div class="tag">Meta‑System</div>
     <h2>ECCU</h2>
-    <p>ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext und eigener Dokumentation.</p>
-    <ul>
-      <li>Wallet</li>
-      <li>Profil</li>
-      <li>Settings</li>
-      <li>Staking</li>
-      <li>UserGuide</li>
-      <li>SystemOverview</li>
-    </ul>
-    <div class="subhead">Benutzer‑Dokumentation</div>
-    <ul>
-      <li>ECCU.md</li>
-      <li>UserGuide.md (ECCU‑Kontext)</li>
-      <li>SystemOverview.md (ECCU‑Kontext)</li>
-    </ul>
+    <p>ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext.</p>
   </section>
 
   <section id="rfof-chain">
     <div class="tag">Meta‑System</div>
     <h2>RFOF‑GOLDEN‑Chain</h2>
     <p>Die RFOF‑GOLDEN‑Chain bildet die Ketten‑/Clearing‑Logik ab und nutzt dieselben globalen Module.</p>
-    <ul>
-      <li>Wallet</li>
-      <li>Profil</li>
-      <li>Settings</li>
-      <li>Staking</li>
-      <li>UserGuide</li>
-      <li>SystemOverview</li>
-    </ul>
-    <div class="subhead">Benutzer‑Dokumentation</div>
-    <ul>
-      <li>RFOF‑GOLDEN‑Chain.md</li>
-      <li>UserGuide.md (Chain‑Kontext)</li>
-      <li>SystemOverview.md (Chain‑Kontext)</li>
-    </ul>
   </section>
 
-  <!-- API Marketplace -->
+  <!-- Marketplace -->
   <section id="marketplace">
     <div class="tag">Kommerzielle Ebene</div>
     <h2>API Marketplace</h2>
     <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, mit Tarifen, Plänen und Abrechnung.</p>
-    <ul>
-      <li>Module als Produkte (Wallet, Profil, Settings, Staking, GPCB, ECCU, RFOF‑GOLDEN‑Chain)</li>
-      <li>Tarife & Pläne (monatlich, nutzungsbasiert)</li>
-      <li>Billing & Subscription‑Logik</li>
-    </ul>
   </section>
 
-  <!-- API Documentation: Benutzer / Entwickler / Meta -->
+  <!-- Documentation -->
   <section id="docs-user">
     <div class="tag">API Documentation · Benutzer</div>
     <h2>Benutzer‑Dokumentation</h2>
-    <p>Alle `.md`‑Dateien, die die Oberfläche und Nutzung aus Sicht der Anwender beschreiben.</p>
     <ul>
       <li>API‑Home.md</li>
       <li>GPCB.md</li>
@@ -344,52 +271,28 @@
   <section id="docs-dev">
     <div class="tag">API Documentation · Entwickler</div>
     <h2>Entwickler‑Dokumentation</h2>
-    <p>Technische `.md`‑Dateien, die direkt die API‑Struktur, Module und Events beschreiben.</p>
-    <div class="grid-2">
-      <div>
-        <h3>Struktur</h3>
-        <ul>
-          <li>API‑Index.md</li>
-          <li>Modules.md</li>
-          <li>Endpoints.md</li>
-          <li>Schemas.md</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Verhalten</h3>
-        <ul>
-          <li>Actions.md</li>
-          <li>Events.md</li>
-          <li>IntegrationGuide.md</li>
-        </ul>
-      </div>
-    </div>
+    <ul>
+      <li>API‑Index.md</li>
+      <li>Modules.md</li>
+      <li>Endpoints.md</li>
+      <li>Actions.md</li>
+      <li>Events.md</li>
+      <li>Schemas.md</li>
+      <li>IntegrationGuide.md</li>
+    </ul>
   </section>
 
   <section id="docs-meta">
     <div class="tag">API Documentation · Meta</div>
     <h2>Meta‑Dokumentation</h2>
-    <p>Alle übrigen `.md`‑Dateien, die nicht direkt einem UI‑Titel oder einer Entwickler‑Dokumentation entsprechen.</p>
-    <ul>
-      <li>Alle `.md`, deren Name nicht identisch ist mit:
-        <ul>
-          <li>API‑Home.md, GPCB.md, ECCU.md, RFOF‑GOLDEN‑Chain.md</li>
-          <li>UserGuide.md, SystemOverview.md</li>
-          <li>API‑Index.md, Modules.md, Endpoints.md, Actions.md, Events.md, Schemas.md, IntegrationGuide.md</li>
-        </ul>
-      </li>
-      <li>Allgemeine Meta‑Konzepte, Policies, Architektur‑Notizen</li>
-      <li>Zu allgemeine oder zu viele `.md`‑Dateien, die nicht einzeln in UI/Dev‑Dokumentation abgebildet werden</li>
-    </ul>
+    <p>Alle übrigen `.md`, die nicht UI‑ oder Entwickler‑Dokumentation sind.</p>
   </section>
 
 </main>
 
 <script>
-  // Einfaches Dropdown‑Handling, ohne Framework
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-menu');
       const group = btn.parentElement;
       const isOpen = group.classList.contains('open');
       document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));

@@ -5,84 +5,259 @@
   <title>API HOME – META‑UI‑SYSTEM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { margin:0; font-family:system-ui, sans-serif; background:#0a0c10; color:#f5f5f5; }
-    header { padding:14px 22px; background:#0f1117; display:flex; justify-content:space-between; align-items:center; }
-    nav { display:flex; gap:14px; flex-wrap:wrap; }
-    nav button {
-      background:#1a1d27; color:#fff; border:none; padding:7px 14px;
-      border-radius:6px; cursor:pointer; font-size:14px;
+    :root {
+      color-scheme: dark;
+      --bg:#05060a;
+      --bg-alt:#0f1117;
+      --border:#1f2933;
+      --text:#f9fafb;
+      --muted:#9ca3af;
+      --accent:#38bdf8;
     }
-    nav button.dropdown { position:relative; padding-right:22px; }
-    nav button.dropdown::after {
-      content:"▾"; position:absolute; right:8px; top:50%; transform:translateY(-50%);
-      font-size:11px; opacity:0.7;
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
-    main { padding:24px; display:flex; flex-wrap:wrap; gap:24px; }
+    header {
+      padding:14px 20px;
+      border-bottom:1px solid var(--border);
+      background:#020308;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .brand { font-weight:600; font-size:15px; }
+    .brand span { color:var(--accent); }
+    nav { display:flex; flex-wrap:wrap; gap:8px; }
+    .nav-group {
+      position:relative;
+    }
+    .nav-btn {
+      background:#0f172a;
+      color:var(--text);
+      border:1px solid #111827;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-btn span.icon { font-size:11px; opacity:.7; }
+    .nav-menu {
+      position:absolute;
+      top:110%;
+      left:0;
+      min-width:180px;
+      background:var(--bg-alt);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.55);
+      display:none;
+      z-index:20;
+    }
+    .nav-menu a {
+      display:block;
+      padding:6px 8px;
+      border-radius:6px;
+      font-size:13px;
+      color:var(--text);
+      text-decoration:none;
+    }
+    .nav-menu a:hover {
+      background:rgba(148,163,184,.15);
+    }
+    .nav-group.open .nav-menu { display:block; }
+
+    main {
+      padding:20px;
+      display:grid;
+      grid-template-columns:minmax(0,2fr) minmax(0,1.4fr);
+      gap:20px;
+    }
+    @media (max-width:900px) {
+      main { grid-template-columns:1fr; }
+    }
+
     section {
-      background:#0f1117; padding:20px; border-radius:10px;
-      flex:1; min-width:300px;
+      background:var(--bg-alt);
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:18px 18px 16px;
     }
-    h1, h2, h3 { margin-top:0; }
-    ul { margin:0; padding-left:20px; }
-    .tag { font-size:11px; opacity:0.7; text-transform:uppercase; margin-bottom:6px; }
-    .two-col { display:flex; gap:20px; flex-wrap:wrap; }
-    .two-col > div { flex:1; min-width:240px; }
-    code { background:#1a1d27; padding:2px 4px; border-radius:4px; }
+    .tag {
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    h1,h2,h3 { margin:0 0 8px; font-weight:600; }
+    h1 { font-size:20px; }
+    h2 { font-size:16px; }
+    h3 { font-size:14px; }
+    p { margin:0 0 8px; font-size:13px; color:var(--muted); }
+    ul { margin:6px 0 0; padding-left:18px; font-size:13px; }
+    li { margin-bottom:3px; }
+
+    .grid-2 {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+    @media (max-width:700px) {
+      .grid-2 { grid-template-columns:1fr; }
+    }
+
+    .pill-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .pill {
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#020617;
+      color:var(--muted);
+    }
+
+    .link-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .link-chip {
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#020617;
+      color:var(--accent);
+      text-decoration:none;
+    }
+    .link-chip:hover {
+      background:#0b1120;
+    }
+
+    .subhead { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-top:4px; }
   </style>
 </head>
-
 <body>
 
 <header>
-  <div><strong>RFOF NETWORK</strong> – API HOME</div>
+  <div class="brand">
+    <span>RFOF‑NETWORK</span> · API HOME
+  </div>
+
   <nav>
-    <button class="dropdown">Home</button>
-    <button>Wallet</button>
-    <button>Profil</button>
-    <button>Settings</button>
-    <button>Staking</button>
-    <button class="dropdown">GPCB</button>
-    <button class="dropdown">ECCU</button>
-    <button class="dropdown">RFOF‑GOLDEN‑Chain</button>
-    <button>UserGuide</button>
-    <button>SystemOverview</button>
-    <button>API Marketplace</button>
-    <button class="dropdown">API Documentation</button>
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="home">
+        Home <span class="icon">▾</span>
+      </button>
+      <div class="nav-menu" id="menu-home">
+        <a href="#api-home">API HOME</a>
+        <a href="#meta-backend">META‑BACKEND</a>
+        <a href="browser.html" target="_blank">API Explorer (browser.html)</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="global">
+        Global Modules <span class="icon">▾</span>
+      </button>
+      <div class="nav-menu" id="menu-global">
+        <a href="#wallet">Wallet</a>
+        <a href="#profil">Profil</a>
+        <a href="#settings">Settings</a>
+        <a href="#staking">Staking</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="systems">
+        Meta‑Systeme <span class="icon">▾</span>
+      </button>
+      <div class="nav-menu" id="menu-systems">
+        <a href="#gpcb">GPCB</a>
+        <a href="#eccu">ECCU</a>
+        <a href="#rfof-chain">RFOF‑GOLDEN‑Chain</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="docs">
+        Documentation <span class="icon">▾</span>
+      </button>
+      <div class="nav-menu" id="menu-docs">
+        <a href="#docs-user">Benutzer‑Dokumentation</a>
+        <a href="#docs-dev">Entwickler‑Dokumentation</a>
+        <a href="#docs-meta">Meta‑Dokumentation</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="market">
+        API Marketplace <span class="icon">▾</span>
+      </button>
+      <div class="nav-menu" id="menu-market">
+        <a href="#marketplace">Übersicht</a>
+      </div>
+    </div>
   </nav>
 </header>
 
 <main>
 
-  <!-- API HOME -->
-  <section>
-    <div class="tag">API HOME</div>
-    <h1>META‑UI‑SYSTEM</h1>
-    <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier gerendert.</p>
+  <!-- META-BACKEND / API HOME -->
+  <section id="api-home">
+    <div class="tag">META‑BACKEND · API‑SYSTEM</div>
+    <h1>API HOME – META‑UI‑SYSTEM</h1>
+    <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier logisch gerendert.</p>
     <ul>
+      <li>META‑BACKEND (API‑System) als Quelle aller Module</li>
+      <li>API HOME (META‑UI‑SYSTEM) als zentrale Oberfläche</li>
       <li>Globale Module: Wallet, Profil, Settings, Staking</li>
       <li>Meta‑Systeme: GPCB, ECCU, RFOF‑GOLDEN‑Chain</li>
       <li>Meta‑Ebenen: UserGuide, SystemOverview</li>
       <li>Kommerzielle Ebene: API Marketplace</li>
-      <li>Wissensebene: API Documentation</li>
+      <li>Wissensebene: API Documentation (Benutzer, Entwickler, Meta)</li>
     </ul>
+    <div class="link-row">
+      <a class="link-chip" href="browser.html" target="_blank">API Explorer (browser.html)</a>
+      <a class="link-chip" href="#docs-user">API‑Home.md (Benutzer)</a>
+      <a class="link-chip" href="#docs-dev">API‑Index.md (Entwickler)</a>
+    </div>
   </section>
 
-  <!-- Globale Meta-Module -->
-  <section>
+  <!-- Globale Module -->
+  <section id="meta-backend">
     <div class="tag">Globale Meta‑Module</div>
-    <h2>Wallet / Profil / Settings / Staking</h2>
-    <ul>
-      <li><strong>Wallet:</strong> globales Asset‑ & Konto‑Modul</li>
-      <li><strong>Profil:</strong> Identität, Rollen, Berechtigungen</li>
-      <li><strong>Settings:</strong> System‑ & UI‑Konfiguration</li>
-      <li><strong>Staking:</strong> Lock‑, Reward‑ & Yield‑Mechanismen</li>
-    </ul>
+    <h2>Wallet · Profil · Settings · Staking</h2>
+    <p>Diese Module sind global verfügbar und werden in API HOME sowie in allen Meta‑Systemen (GPCB, ECCU, RFOF‑GOLDEN‑Chain) rekursiv genutzt.</p>
+    <div class="pill-row">
+      <span class="pill" id="wallet">Wallet</span>
+      <span class="pill" id="profil">Profil</span>
+      <span class="pill" id="settings">Settings</span>
+      <span class="pill" id="staking">Staking</span>
+    </div>
   </section>
 
-  <!-- GPCB -->
-  <section>
+  <!-- Meta-Systeme -->
+  <section id="gpcb">
     <div class="tag">Meta‑System</div>
     <h2>GPCB</h2>
+    <p>GPCB erbt die globalen Module und ergänzt sie um system‑spezifische UserGuide‑ und SystemOverview‑Dokumentation.</p>
     <ul>
       <li>Wallet</li>
       <li>Profil</li>
@@ -91,12 +266,18 @@
       <li>UserGuide</li>
       <li>SystemOverview</li>
     </ul>
+    <div class="subhead">Benutzer‑Dokumentation</div>
+    <ul>
+      <li>GPCB.md</li>
+      <li>UserGuide.md (GPCB‑Kontext)</li>
+      <li>SystemOverview.md (GPCB‑Kontext)</li>
+    </ul>
   </section>
 
-  <!-- ECCU -->
-  <section>
+  <section id="eccu">
     <div class="tag">Meta‑System</div>
     <h2>ECCU</h2>
+    <p>ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext und eigener Dokumentation.</p>
     <ul>
       <li>Wallet</li>
       <li>Profil</li>
@@ -105,12 +286,18 @@
       <li>UserGuide</li>
       <li>SystemOverview</li>
     </ul>
+    <div class="subhead">Benutzer‑Dokumentation</div>
+    <ul>
+      <li>ECCU.md</li>
+      <li>UserGuide.md (ECCU‑Kontext)</li>
+      <li>SystemOverview.md (ECCU‑Kontext)</li>
+    </ul>
   </section>
 
-  <!-- RFOF-GOLDEN-Chain -->
-  <section>
+  <section id="rfof-chain">
     <div class="tag">Meta‑System</div>
     <h2>RFOF‑GOLDEN‑Chain</h2>
+    <p>Die RFOF‑GOLDEN‑Chain bildet die Ketten‑/Clearing‑Logik ab und nutzt dieselben globalen Module.</p>
     <ul>
       <li>Wallet</li>
       <li>Profil</li>
@@ -118,57 +305,104 @@
       <li>Staking</li>
       <li>UserGuide</li>
       <li>SystemOverview</li>
+    </ul>
+    <div class="subhead">Benutzer‑Dokumentation</div>
+    <ul>
+      <li>RFOF‑GOLDEN‑Chain.md</li>
+      <li>UserGuide.md (Chain‑Kontext)</li>
+      <li>SystemOverview.md (Chain‑Kontext)</li>
     </ul>
   </section>
 
   <!-- API Marketplace -->
-  <section>
+  <section id="marketplace">
     <div class="tag">Kommerzielle Ebene</div>
     <h2>API Marketplace</h2>
-    <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, monatliche Kosten.</p>
+    <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, mit Tarifen, Plänen und Abrechnung.</p>
     <ul>
-      <li>Module als Produkte</li>
-      <li>Tarife & Pläne</li>
-      <li>Billing & Subscription</li>
+      <li>Module als Produkte (Wallet, Profil, Settings, Staking, GPCB, ECCU, RFOF‑GOLDEN‑Chain)</li>
+      <li>Tarife & Pläne (monatlich, nutzungsbasiert)</li>
+      <li>Billing & Subscription‑Logik</li>
     </ul>
   </section>
 
-  <!-- API Documentation -->
-  <section>
-    <div class="tag">Wissensebene</div>
-    <h2>API Documentation</h2>
+  <!-- API Documentation: Benutzer / Entwickler / Meta -->
+  <section id="docs-user">
+    <div class="tag">API Documentation · Benutzer</div>
+    <h2>Benutzer‑Dokumentation</h2>
+    <p>Alle `.md`‑Dateien, die die Oberfläche und Nutzung aus Sicht der Anwender beschreiben.</p>
+    <ul>
+      <li>API‑Home.md</li>
+      <li>GPCB.md</li>
+      <li>ECCU.md</li>
+      <li>RFOF‑GOLDEN‑Chain.md</li>
+      <li>UserGuide.md</li>
+      <li>SystemOverview.md</li>
+    </ul>
+  </section>
 
-    <div class="two-col">
-
+  <section id="docs-dev">
+    <div class="tag">API Documentation · Entwickler</div>
+    <h2>Entwickler‑Dokumentation</h2>
+    <p>Technische `.md`‑Dateien, die direkt die API‑Struktur, Module und Events beschreiben.</p>
+    <div class="grid-2">
       <div>
-        <h3>Benutzer‑Dokumentation</h3>
-        <ul>
-          <li>API‑Home.md</li>
-          <li>GPCB.md</li>
-          <li>ECCU.md</li>
-          <li>RFOF‑GOLDEN‑Chain.md</li>
-          <li>UserGuide.md</li>
-          <li>SystemOverview.md</li>
-        </ul>
-      </div>
-
-      <div>
-        <h3>Entwickler‑Dokumentation</h3>
+        <h3>Struktur</h3>
         <ul>
           <li>API‑Index.md</li>
           <li>Modules.md</li>
           <li>Endpoints.md</li>
+          <li>Schemas.md</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Verhalten</h3>
+        <ul>
           <li>Actions.md</li>
           <li>Events.md</li>
-          <li>Schemas.md</li>
           <li>IntegrationGuide.md</li>
         </ul>
       </div>
-
     </div>
   </section>
 
+  <section id="docs-meta">
+    <div class="tag">API Documentation · Meta</div>
+    <h2>Meta‑Dokumentation</h2>
+    <p>Alle übrigen `.md`‑Dateien, die nicht direkt einem UI‑Titel oder einer Entwickler‑Dokumentation entsprechen.</p>
+    <ul>
+      <li>Alle `.md`, deren Name nicht identisch ist mit:
+        <ul>
+          <li>API‑Home.md, GPCB.md, ECCU.md, RFOF‑GOLDEN‑Chain.md</li>
+          <li>UserGuide.md, SystemOverview.md</li>
+          <li>API‑Index.md, Modules.md, Endpoints.md, Actions.md, Events.md, Schemas.md, IntegrationGuide.md</li>
+        </ul>
+      </li>
+      <li>Allgemeine Meta‑Konzepte, Policies, Architektur‑Notizen</li>
+      <li>Zu allgemeine oder zu viele `.md`‑Dateien, die nicht einzeln in UI/Dev‑Dokumentation abgebildet werden</li>
+    </ul>
+  </section>
+
 </main>
+
+<script>
+  // Einfaches Dropdown‑Handling, ohne Framework
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-menu');
+      const group = btn.parentElement;
+      const isOpen = group.classList.contains('open');
+      document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
+      if (!isOpen) group.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-group')) {
+      document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
+    }
+  });
+</script>
 
 </body>
 </html>

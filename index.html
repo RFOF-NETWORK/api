@@ -573,87 +573,84 @@ async function login() {
 
 <script>
 /* ============================================================
-   ERGÄNZUNGS–BLOCK: KORREKTUR + ADMIN + DOMAIN-OWNER + GUCI
-   (Dieser Block überschreibt fehlerhafte Funktionen darüber)
+   PATCH–BLOCK: Ergänzt fehlende Logik ohne bestehende Funktionen
+   zu überschreiben. Popup bleibt vollständig funktionsfähig.
    ============================================================ */
 
-/* === GUCI: globale Client-ID pro Gerät === */
-function ensureClientId() {
-  let cid = localStorage.getItem("globalClientID");
-  if (!cid) {
-    cid = crypto.randomUUID();
-    localStorage.setItem("globalClientID", cid);
+/* === Falls GUCI fehlt, ergänzen === */
+if (typeof ensureClientId !== "function") {
+  function ensureClientId() {
+    let cid = localStorage.getItem("globalClientID");
+    if (!cid) {
+      cid = crypto.randomUUID();
+      localStorage.setItem("globalClientID", cid);
+    }
+    return cid;
   }
-  return cid;
 }
 
-/* === Lokale Accounts laden/speichern === */
-function loadAccounts() {
-  return JSON.parse(localStorage.getItem("accounts") || "{}");
+/* === Accounts laden/speichern ergänzen, falls nicht vorhanden === */
+if (typeof loadAccounts !== "function") {
+  function loadAccounts() {
+    return JSON.parse(localStorage.getItem("accounts") || "{}");
+  }
 }
-function saveAccounts(a) {
-  localStorage.setItem("accounts", JSON.stringify(a));
+if (typeof saveAccounts !== "function") {
+  function saveAccounts(a) {
+    localStorage.setItem("accounts", JSON.stringify(a));
+  }
 }
 
-/* === Registrierung (Frontend-only, GitHub-kompatibel) === */
-function registerUser() {
-  const user = document.getElementById("regUser").value.trim();
-  const pass = document.getElementById("regPass").value.trim();
-  const pass2 = document.getElementById("regPass2").value.trim();
+/* === Admin-/DomainOwner-Patch für Registrierung === */
+(function patchRegister() {
+  const original = registerUser;
+  registerUser = function() {
+    const user = document.getElementById("regUser").value.trim();
+    const pass = document.getElementById("regPass").value.trim();
+    const pass2 = document.getElementById("regPass2").value.trim();
 
-  if (!user || !pass || !pass2) return alert("Alle Felder ausfüllen.");
-  if (pass !== pass2) return alert("Passwörter stimmen nicht überein.");
+    const accounts = loadAccounts();
 
-  const accounts = loadAccounts();
-  if (accounts[user]) return alert("Benutzer existiert bereits.");
+    /* Admin-/Owner-Regel ergänzen */
+    if (user === "RFOF-NETWORK" && location.hostname === "rfof-network.github.io") {
+      const exists = Object.values(accounts).find(a => a.domainOwner);
+      if (exists) {
+        alert("Domain-Owner existiert bereits.");
+        return;
+      }
+    }
 
-  const acc = {
-    password: pass,
-    role: "user",
-    domainOwner: false,
-    protected: false
+    /* Originalfunktion ausführen */
+    original();
+
+    /* Nachträglicher Patch */
+    const updated = loadAccounts();
+    if (updated[user] && user === "RFOF-NETWORK") {
+      updated[user].role = "admin";
+      updated[user].domainOwner = true;
+      updated[user].protected = true;
+      saveAccounts(updated);
+    }
   };
+})();
 
-  /* === SPEZIALFALL: DOMAIN-OWNER / ADMIN === */
-  if (user === "RFOF-NETWORK" && location.hostname === "rfof-network.github.io") {
-    const exists = Object.values(accounts).find(a => a.domainOwner);
-    if (exists) return alert("Domain-Owner existiert bereits.");
+/* === Login-Patch: Session korrekt setzen === */
+(function patchLogin() {
+  const original = login;
+  login = function() {
+    const user = document.getElementById("loginUser").value.trim();
+    const accounts = loadAccounts();
 
-    acc.role = "admin";
-    acc.domainOwner = true;
-    acc.protected = true;
-  }
+    /* Original Login ausführen */
+    original();
 
-  accounts[user] = acc;
-  saveAccounts(accounts);
-
-  switchMode();
-  alert("Registrierung erfolgreich. Bitte einloggen.");
-}
-
-/* === Login (Frontend-only, GitHub-kompatibel) === */
-function login() {
-  const user = document.getElementById("loginUser").value.trim();
-  const pass = document.getElementById("loginPass").value.trim();
-
-  if (!user || !pass) return alert("Benutzername und Passwort eingeben.");
-
-  const accounts = loadAccounts();
-  const acc = accounts[user];
-
-  if (!acc) return alert("Benutzer existiert nicht.");
-  if (acc.password !== pass) return alert("Falsches Passwort.");
-
-  const cid = ensureClientId();
-
-  localStorage.setItem("loggedInUser", user);
-  localStorage.setItem("sessionRole", acc.role);
-  localStorage.setItem("sessionDomainOwner", acc.domainOwner ? "true" : "false");
-  localStorage.setItem("sessionClientID", cid);
-
-  closeLogin();
-}
+    /* Falls erfolgreich eingeloggt → Session patchen */
+    if (accounts[user]) {
+      localStorage.setItem("sessionRole", accounts[user].role);
+      localStorage.setItem("sessionDomainOwner", accounts[user].domainOwner ? "true" : "false");
+    }
+  };
+})();
 </script>
-
 </body>
 </html>

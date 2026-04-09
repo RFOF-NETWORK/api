@@ -380,17 +380,73 @@
   
 </script>
   <!-- Login Modal -->
+  </script>
+
+<!-- Login / Register Modal -->
 <div id="loginModal" class="modal">
   <div class="modal-content">
-    <h2>Login</h2>
-    <input type="text" placeholder="Benutzername" />
-    <input type="password" placeholder="Passwort" />
-    <button class="modal-btn">Login</button>
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 id="modalTitle">Login</h2>
+      <button id="switchModeBtn" class="modal-close" onclick="switchMode()">Register</button>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <div id="loginView">
+      <input id="loginUser" type="text" placeholder="Benutzername" />
+      <input id="loginPass" type="password" placeholder="Passwort" />
+      <button class="modal-btn" onclick="login()">Login</button>
+    </div>
+
+    <!-- REGISTER VIEW -->
+    <div id="registerView" style="display:none;">
+      <input id="regUser" type="text" placeholder="Benutzername" />
+      <input id="regPass" type="password" placeholder="Passwort" />
+      <input id="regPass2" type="password" placeholder="Passwort wiederholen" />
+      <button class="modal-btn" onclick="registerUser()">Register</button>
+    </div>
+
     <button class="modal-close" onclick="closeLogin()">Schließen</button>
   </div>
 </div>
 
 <script>
+/* === BASIS: Konfiguration für dein echtes Backend / OpenAPI === */
+const BACKEND_BASE = "https://DEIN-BACKEND-ENDPOINT"; // <- hier deine API-Basis-URL eintragen
+const REGISTER_ENDPOINT = BACKEND_BASE + "/auth/register";
+const LOGIN_ENDPOINT    = BACKEND_BASE + "/auth/login";
+const EVENT_ENDPOINT    = BACKEND_BASE + "/events/register-client";
+
+/* === GUCI: globale Client-ID sicherstellen === */
+function ensureClientId() {
+  let clientId = localStorage.getItem("globalClientID");
+  if (!clientId) {
+    if (crypto && crypto.randomUUID) {
+      clientId = crypto.randomUUID();
+    } else {
+      clientId = "cid-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+    }
+    localStorage.setItem("globalClientID", clientId);
+  }
+  // Client beim Backend registrieren (idempotent)
+  try {
+    fetch(EVENT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId,
+        userAgent: navigator.userAgent,
+        ts: new Date().toISOString()
+      })
+    }).catch(() => {});
+  } catch (e) {}
+  return clientId;
+}
+
+/* Beim Laden der Seite GUCI initialisieren */
+window.addEventListener("load", ensureClientId);
+
+/* Modal öffnen / schließen */
 function openLogin() {
   document.getElementById("loginModal").style.display = "flex";
 }
@@ -399,9 +455,119 @@ function closeLogin() {
   document.getElementById("loginModal").style.display = "none";
 }
 
-function login() {
-  closeLogin();
-  window.location.href = "browser.html";
+/* Login / Register Umschalten */
+let mode = "login";
+
+function switchMode() {
+  if (mode === "login") {
+    mode = "register";
+    document.getElementById("modalTitle").textContent = "Register";
+    document.getElementById("switchModeBtn").textContent = "Login";
+    document.getElementById("loginView").style.display = "none";
+    document.getElementById("registerView").style.display = "block";
+  } else {
+    mode = "login";
+    document.getElementById("modalTitle").textContent = "Login";
+    document.getElementById("switchModeBtn").textContent = "Register";
+    document.getElementById("loginView").style.display = "block";
+    document.getElementById("registerView").style.display = "none";
+  }
+}
+
+/* Registrierung — GUCI + echtes Backend */
+async function registerUser() {
+  const user = document.getElementById("regUser").value.trim();
+  const pass = document.getElementById("regPass").value.trim();
+  const pass2 = document.getElementById("regPass2").value.trim();
+
+  if (!user || !pass || !pass2) {
+    alert("Alle Felder ausfüllen.");
+    return;
+  }
+  if (pass !== pass2) {
+    alert("Passwörter stimmen nicht überein.");
+    return;
+  }
+
+  const clientId = ensureClientId();
+
+  try {
+    const res = await fetch(REGISTER_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId,
+        username: user,
+        password: pass
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text().catch(() => "");
+      alert("Registrierung fehlgeschlagen: " + (err || res.status));
+      return;
+    }
+
+    // Optional: Antwort auswerten (z.B. userId, token)
+    const data = await res.json().catch(() => ({}));
+
+    // Lokale Verknüpfung (GUCI + User)
+    localStorage.setItem("registeredUser", user);
+    if (data.token) {
+      localStorage.setItem("authToken", data.token);
+    }
+
+    // Zurück zu Login-Ansicht
+    switchMode();
+    alert("Registrierung erfolgreich. Bitte einloggen.");
+  } catch (e) {
+    alert("Netzwerkfehler bei Registrierung.");
+  }
+}
+
+/* Login — GUCI + echtes Backend + globale Session */
+async function login() {
+  const user = document.getElementById("loginUser").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+
+  if (!user || !pass) {
+    alert("Benutzername und Passwort eingeben.");
+    return;
+  }
+
+  const clientId = ensureClientId();
+
+  try {
+    const res = await fetch(LOGIN_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId,
+        username: user,
+        password: pass
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text().catch(() => "");
+      alert("Login fehlgeschlagen: " + (err || res.status));
+      return;
+    }
+
+    const data = await res.json().catch(() => ({}));
+
+    // Globale User-Session lokal verankern
+    localStorage.setItem("loggedInUser", user);
+    localStorage.setItem("globalClientID", clientId);
+    if (data.token) {
+      localStorage.setItem("authToken", data.token);
+    }
+
+    closeLogin();
+    window.location.href = "browser.html";
+  } catch (e) {
+    alert("Netzwerkfehler beim Login.");
+  }
 }
 </script>
 

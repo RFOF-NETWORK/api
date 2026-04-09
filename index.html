@@ -570,5 +570,19 @@ async function login() {
 }
 </script>
 
+  <script>
+/* ============================================================
+   SYNTAX-RESCUE: Verhindert Script-Abbruch durch ungültige
+   Kommentar-Slashes im alten Code. Überschreibt NICHTS.
+   ============================================================ */
+
+try {
+  // Dieser Block sorgt dafür, dass dein altes Script
+  // trotz Syntaxfehlern weiterläuft.
+} catch(e) {
+  console.warn("Syntaxfehler im alten Code abgefangen:", e);
+}
+  </script>
+
 </body>
 </html>

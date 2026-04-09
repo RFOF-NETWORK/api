@@ -378,11 +378,7 @@
     }
   });
   
-</script>
-  <!-- Login Modal -->
-  </script>
-
-<!-- Login / Register Modal -->
+  <!-- Login / Register Modal -->
 <div id="loginModal" class="modal">
   <div class="modal-content">
 
@@ -411,53 +407,27 @@
 </div>
 
 <script>
-/* === BASIS: Konfiguration für dein echtes Backend / OpenAPI === */
-const BACKEND_BASE = "https://rfof-network.github.io/"; // <- hier deine API-Basis-URL eintragen
-const REGISTER_ENDPOINT = BACKEND_BASE + "/auth/register";
-const LOGIN_ENDPOINT    = BACKEND_BASE + "/auth/login";
-const EVENT_ENDPOINT    = BACKEND_BASE + "/events/register-client";
-
-/* === GUCI: globale Client-ID sicherstellen === */
+/* === GUCI: globale Client-ID pro GERÄT === */
 function ensureClientId() {
   let clientId = localStorage.getItem("globalClientID");
   if (!clientId) {
-    if (crypto && crypto.randomUUID) {
-      clientId = crypto.randomUUID();
-    } else {
-      clientId = "cid-" + Date.now() + "-" + Math.random().toString(16).slice(2);
-    }
+    clientId = crypto.randomUUID();
     localStorage.setItem("globalClientID", clientId);
   }
-  // Client beim Backend registrieren (idempotent)
-  try {
-    fetch(EVENT_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        clientId,
-        userAgent: navigator.userAgent,
-        ts: new Date().toISOString()
-      })
-    }).catch(() => {});
-  } catch (e) {}
   return clientId;
 }
-
-/* Beim Laden der Seite GUCI initialisieren */
 window.addEventListener("load", ensureClientId);
 
 /* Modal öffnen / schließen */
 function openLogin() {
   document.getElementById("loginModal").style.display = "flex";
 }
-
 function closeLogin() {
   document.getElementById("loginModal").style.display = "none";
 }
 
 /* Login / Register Umschalten */
 let mode = "login";
-
 function switchMode() {
   if (mode === "login") {
     mode = "register";
@@ -474,100 +444,72 @@ function switchMode() {
   }
 }
 
-/* Registrierung — GUCI + echtes Backend */
-async function registerUser() {
+/* Accounts laden/speichern */
+function loadAccounts() {
+  return JSON.parse(localStorage.getItem("accounts") || "{}");
+}
+function saveAccounts(accounts) {
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}
+
+/* Registrierung — Admin einmalig RFOF-NETWORK */
+function registerUser() {
   const user = document.getElementById("regUser").value.trim();
   const pass = document.getElementById("regPass").value.trim();
   const pass2 = document.getElementById("regPass2").value.trim();
 
-  if (!user || !pass || !pass2) {
-    alert("Alle Felder ausfüllen.");
-    return;
+  if (!user || !pass || !pass2) return alert("Alle Felder ausfüllen.");
+  if (pass !== pass2) return alert("Passwörter stimmen nicht überein.");
+
+  const accounts = loadAccounts();
+  if (accounts[user]) return alert("Benutzer existiert bereits.");
+
+  const account = {
+    password: pass,
+    role: "user",
+    domainOwner: false,
+    protected: false
+  };
+
+  /* === SPEZIALFALL: DOMAIN-OWNER === */
+  if (user === "RFOF-NETWORK" && location.hostname === "rfof-network.github.io") {
+
+    const existingOwner = Object.values(accounts).find(a => a.domainOwner === true);
+    if (existingOwner) return alert("Domain-Owner existiert bereits.");
+
+    account.role = "admin";
+    account.domainOwner = true;
+    account.protected = true;
   }
-  if (pass !== pass2) {
-    alert("Passwörter stimmen nicht überein.");
-    return;
-  }
 
-  const clientId = ensureClientId();
+  accounts[user] = account;
+  saveAccounts(accounts);
 
-  try {
-    const res = await fetch(REGISTER_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        clientId,
-        username: user,
-        password: pass
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.text().catch(() => "");
-      alert("Registrierung fehlgeschlagen: " + (err || res.status));
-      return;
-    }
-
-    // Optional: Antwort auswerten (z.B. userId, token)
-    const data = await res.json().catch(() => ({}));
-
-    // Lokale Verknüpfung (GUCI + User)
-    localStorage.setItem("registeredUser", user);
-    if (data.token) {
-      localStorage.setItem("authToken", data.token);
-    }
-
-    // Zurück zu Login-Ansicht
-    switchMode();
-    alert("Registrierung erfolgreich. Bitte einloggen.");
-  } catch (e) {
-    alert("Netzwerkfehler bei Registrierung.");
-  }
+  switchMode();
+  alert("Registrierung erfolgreich. Bitte einloggen.");
 }
 
-/* Login — GUCI + echtes Backend + globale Session */
-async function login() {
+/* Login — trennt Gerät (GUCI) von Account */
+function login() {
   const user = document.getElementById("loginUser").value.trim();
   const pass = document.getElementById("loginPass").value.trim();
 
-  if (!user || !pass) {
-    alert("Benutzername und Passwort eingeben.");
-    return;
-  }
+  if (!user || !pass) return alert("Benutzername und Passwort eingeben.");
+
+  const accounts = loadAccounts();
+  const account = accounts[user];
+
+  if (!account) return alert("Benutzer existiert nicht.");
+  if (account.password !== pass) return alert("Falsches Passwort.");
 
   const clientId = ensureClientId();
 
-  try {
-    const res = await fetch(LOGIN_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        clientId,
-        username: user,
-        password: pass
-      })
-    });
+  localStorage.setItem("loggedInUser", user);
+  localStorage.setItem("sessionRole", account.role);
+  localStorage.setItem("sessionDomainOwner", account.domainOwner ? "true" : "false");
+  localStorage.setItem("sessionClientID", clientId);
 
-    if (!res.ok) {
-      const err = await res.text().catch(() => "");
-      alert("Login fehlgeschlagen: " + (err || res.status));
-      return;
-    }
-
-    const data = await res.json().catch(() => ({}));
-
-    // Globale User-Session lokal verankern
-    localStorage.setItem("loggedInUser", user);
-    localStorage.setItem("globalClientID", clientId);
-    if (data.token) {
-      localStorage.setItem("authToken", data.token);
-    }
-
-    closeLogin();
-    window.location.href = "browser.html";
-  } catch (e) {
-    alert("Netzwerkfehler beim Login.");
-  }
+  closeLogin();
 }
 </script>
 

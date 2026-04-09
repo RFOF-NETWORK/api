@@ -378,9 +378,11 @@
     }
   });
 
-
 </script>
 
+
+<script>
+  
 <!-- Login / Register Modal -->
 <div id="loginModal" class="modal">
   <div class="modal-content">
@@ -411,7 +413,7 @@
 
 <script>
 / === BASIS: Konfiguration für dein echtes Backend / OpenAPI === /
-const BACKEND_BASE = "https://rfof-network.github.io/api/#"; // <- hier deine API-Basis-URL eintragen
+const BACKEND_BASE = "https://rfof-network.github.io/api/"; // <- hier deine API-Basis-URL eintragen
 const REGISTERENDPOINT = BACKENDBASE + "/auth/register";
 const LOGINENDPOINT    = BACKENDBASE + "/auth/login";
 const EVENTENDPOINT    = BACKENDBASE + "/events/register-client";
@@ -569,20 +571,6 @@ async function login() {
   }
 }
 </script>
-
-  <script>
-/* ============================================================
-   SYNTAX-RESCUE: Verhindert Script-Abbruch durch ungültige
-   Kommentar-Slashes im alten Code. Überschreibt NICHTS.
-   ============================================================ */
-
-try {
-  // Dieser Block sorgt dafür, dass dein altes Script
-  // trotz Syntaxfehlern weiterläuft.
-} catch(e) {
-  console.warn("Syntaxfehler im alten Code abgefangen:", e);
-}
-  </script>
 
 </body>
 </html>

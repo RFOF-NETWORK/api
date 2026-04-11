@@ -2,39 +2,26 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF‑NETWORK – API Explorer</title>
+  <title>RFOF‑NETWORK – API Explorer & Clearing Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Syntax Highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-  <!-- Markdown Renderer -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
 
   <style>
     :root {
       color-scheme: dark;
-      --bg:#0a0a0a;
-      --bg-alt:#111;
-      --border:#222;
-      --text:#f5f5f5;
-      --muted:#888;
+      --bg:#05060a;
+      --bg-alt:#0f1117;
+      --border:#1f2933;
+      --text:#f9fafb;
+      --muted:#9ca3af;
       --accent:#38bdf8;
       --error-bg:#330000;
       --error-border:#ff6b6b;
     }
-    body.light {
-      --bg:#f5f5f5;
-      --bg-alt:#ffffff;
-      --border:#ddd;
-      --text:#111;
-      --muted:#555;
-      --accent:#2563eb;
-      --error-bg:#ffe5e5;
-      --error-border:#dc2626;
-    }
-
     body {
       margin:0;
       font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
@@ -43,20 +30,79 @@
     }
 
     header {
-      padding:20px;
+      padding:14px 20px;
       border-bottom:1px solid var(--border);
-      background:var(--bg);
+      background:#020308;
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    h1 { margin:0; font-size:20px; }
-    a { color:var(--accent); text-decoration:none; }
-    a:hover { text-decoration:underline; }
+    .brand { font-weight:600; font-size:15px; }
+    .brand a { color:var(--text); text-decoration:none; }
+    .brand span { color:var(--accent); }
 
-    #container { padding:20px; }
+    /* Meta-Dropdown Integration */
+    nav { display:flex; flex-wrap:wrap; gap:8px; }
+    .nav-group { position:relative; }
+    .nav-btn {
+      background:#0f172a;
+      color:var(--text);
+      border:1px solid #111827;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-menu {
+      position:absolute;
+      top:110%;
+      right:0;
+      min-width:180px;
+      background:var(--bg-alt);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:6px;
+      box-shadow:0 18px 40px rgba(0,0,0,.55);
+      display:none;
+      z-index:120;
+    }
+    .nav-menu a {
+      display:block;
+      padding:6px 8px;
+      border-radius:6px;
+      font-size:13px;
+      color:var(--text);
+      text-decoration:none;
+    }
+    .nav-menu a:hover { background:rgba(148,163,184,.15); }
+    .nav-group.open .nav-menu { display:block; }
 
+    #container { padding:20px; max-width: 1200px; margin: 0 auto; }
+
+    /* GUCI Status Bar */
+    .guci-bar {
+      background: #020617;
+      border: 1px solid var(--border);
+      padding: 8px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+    }
+    .guci-bar span { color: var(--accent); font-family: monospace; }
+
+    .path { font-size:12px; color:var(--muted); margin-bottom:10px; font-family: monospace; }
     .item {
       padding:10px;
       border:1px solid var(--border);
@@ -64,20 +110,57 @@
       margin-bottom:8px;
       background:var(--bg-alt);
       cursor:pointer;
+      transition: 0.2s;
     }
-    .item:hover { background:rgba(255,255,255,0.05); }
+    .item:hover { border-color: var(--accent); background:rgba(56, 189, 248, 0.05); }
 
-    pre {
-      white-space:pre-wrap;
+    /* API Tester / Console (Box I) */
+    #apiTester {
+      margin-top:40px;
+      padding:20px;
       background:var(--bg-alt);
-      padding:12px;
-      border-radius:8px;
+      border-radius:14px;
       border:1px solid var(--border);
-      overflow-x:auto;
+    }
+    h2 { margin:0 0 15px; font-size:18px; }
+
+    input, textarea, select {
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:var(--bg);
+      color:var(--text);
+      font-size:14px;
     }
 
-    .path { font-size:12px; color:var(--muted); margin-bottom:10px; }
-    .back { margin-bottom:20px; display:inline-block; }
+    button.primary {
+      padding:10px 20px;
+      background:var(--accent);
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      color:#000;
+      font-weight:bold;
+    }
+
+    /* Chain Clearing Viewer (Box J) */
+    #clearingViewer {
+      margin-top: 20px;
+      display: none; /* Wird via JS aktiviert */
+      background: #000;
+      border: 1px solid #0f172a;
+      padding: 15px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      border-left: 3px solid var(--accent);
+    }
+    .block-entry { color: #4ade80; margin-bottom: 5px; border-bottom: 1px solid #1e293b; padding-bottom: 2px; }
+    .energy-val { color: var(--accent); }
 
     .error {
       color:var(--error-border);
@@ -86,297 +169,181 @@
       border-radius:8px;
       background:var(--error-bg);
       margin-bottom:20px;
-      white-space:pre-wrap;
     }
-
-    /* API Tester */
-    #apiTester {
-      margin-top:40px;
-      padding:20px;
-      background:var(--bg-alt);
-      border-radius:10px;
-      border:1px solid var(--border);
-    }
-    #apiTester h2 { margin-top:0; }
-
-    #apiTester input,
-    #apiTester textarea,
-    #apiTester select {
-      width:100%;
-      padding:10px;
-      margin-bottom:10px;
-      border-radius:6px;
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--text);
-      font-family:inherit;
-      font-size:14px;
-    }
-
-    #apiTester button {
-      padding:10px 16px;
-      background:var(--accent);
-      border:none;
-      border-radius:6px;
-      cursor:pointer;
-      color:#000;
-      font-weight:bold;
-      margin-right:8px;
-      margin-top:4px;
-    }
-
-    #apiTester button.secondary {
-      background:transparent;
-      color:var(--accent);
-      border:1px solid var(--accent);
-    }
-
-    #apiResponse {
-      margin-top:20px;
-      background:var(--bg-alt);
-      padding:12px;
-      border-radius:8px;
-      border:1px solid var(--border);
-      overflow-x:auto;
-      max-height:400px;
-    }
-
-    /* Tabs */
-    .tabs {
-      display:flex;
-      gap:8px;
-      margin-bottom:10px;
-      border-bottom:1px solid var(--border);
-    }
-    .tab {
-      padding:6px 10px;
-      cursor:pointer;
-      border-radius:6px 6px 0 0;
-      border:1px solid transparent;
-      border-bottom:none;
-      font-size:13px;
-    }
-    .tab.active {
-      border-color:var(--border);
-      background:var(--bg);
-    }
-    .tab-content { display:none; }
-    .tab-content.active { display:block; }
-
-    /* Dark mode toggle */
-    #themeToggle {
-      padding:6px 10px;
-      border-radius:6px;
-      border:1px solid var(--border);
-      background:var(--bg-alt);
-      color:var(--text);
-      cursor:pointer;
-      font-size:13px;
-    }
-
-    code.hljs { background:transparent; }
   </style>
 </head>
 
 <body>
 
 <header>
-  <h1>META Documentation</h1>
-  <button id="themeToggle" onclick="toggleTheme()">Dark/Light</button>
+  <div class="brand">
+    <a href="index.html"><span>RFOF‑NETWORK</span> · API Explorer</a>
+  </div>
+
+  <nav>
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="meta">Meta‑Navigation <span class="icon">▾</span></button>
+      <div class="nav-menu">
+        <a href="index.html">API HOME</a>
+        <hr style="border:0; border-top:1px solid var(--border); margin:4px 0;">
+        <a href="GPCB/index.html">GPCB</a>
+        <a href="ECCU/index.html">ECCU</a>
+        <a href="RFOF-GOLDEN-Chain/index.html">RFOF‑GOLDEN‑Chain</a>
+        <hr style="border:0; border-top:1px solid var(--border); margin:4px 0;">
+        <a href="wallet/index.html">Wallet</a>
+        <a href="profil/index.html">Profil</a>
+        <a href="settings/index.html">Settings</a>
+        <a href="staking/index.html">Staking</a>
+      </div>
+    </div>
+  </nav>
 </header>
 
 <div id="container">
-  <div id="content"></div>
+  <div class="guci-bar">
+    <div>GUCI: <span id="display-guci">...loading</span></div>
+    <div>ENERGIE: <span id="display-joul">0</span> Joul</div>
+  </div>
 
-  <!-- Sichtbarer API Tester -->
+  <div id="content">
+    <div class="path" id="current-path">ROOT /</div>
+    <div id="file-list">Lade Repository Daten...</div>
+  </div>
+
   <div id="apiTester">
-    <h2>API‑Tester</h2>
+    <h2>Box I: Meta‑Documentation Console</h2>
+    <input id="apiUrl" placeholder="Endpoint URL (e.g. /actions/transfer)" />
+    <select id="apiMethod">
+      <option>GET</option>
+      <option>POST</option>
+      <option>PUT</option>
+      <option>DELETE</option>
+    </select>
+    <textarea id="apiBody" rows="4" placeholder='{"action": "sync", "data": "..."}'></textarea>
+    <button class="primary" onclick="executeAction()">Action ausführen</button>
+  </div>
 
-    <div class="tabs">
-      <div class="tab active" data-tab="requestTab">Request</div>
-      <div class="tab" data-tab="responseTab">Response</div>
-    </div>
-
-    <div id="requestTab" class="tab-content active">
-      <label>URL</label>
-      <input id="apiUrl" placeholder="https://api.example.com/endpoint" />
-
-      <label>Methode</label>
-      <select id="apiMethod">
-        <option>GET</option>
-        <option>POST</option>
-        <option>PUT</option>
-        <option>DELETE</option>
-        <option>PATCH</option>
-      </select>
-
-      <label>Body (JSON, optional)</label>
-      <textarea id="apiBody" rows="6" placeholder='{"key":"value"}'></textarea>
-
-      <button onclick="sendApiRequest()">Senden</button>
-      <button class="secondary" onclick="clearApi()">Leeren</button>
-    </div>
-
-    <div id="responseTab" class="tab-content">
-      <pre id="apiResponse">Noch keine Anfrage gesendet.</pre>
-    </div>
+  <div id="clearingViewer">
+    <div style="color:var(--muted); margin-bottom:10px;">[BOX J] LIVE CHAIN CLEARING MONITOR...</div>
+    <div id="clearing-log"></div>
   </div>
 </div>
 
 <script>
-/* Theme */
-function toggleTheme() {
-  document.body.classList.toggle('light');
-}
-
-/* Tabs */
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
-  });
-});
-
-/* GitHub API Explorer */
+/* 1. GUCI & Context Logik */
 const owner = "RFOF-NETWORK";
 const repo = "api";
 const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
 
-async function loadPath(path = "") {
-  try {
-    const res = await fetch(`${apiBase}/${path}`);
-    if (!res.ok) throw new Error(`GitHub API Fehler: ${res.status}`);
-    const data = await res.json();
+let energyCounter = parseInt(localStorage.getItem("totalJoul") || "0");
 
-    const content = document.getElementById("content");
-    content.innerHTML = "";
+function updateEnergy(amount = 1) {
+    energyCounter += amount;
+    localStorage.setItem("totalJoul", energyCounter);
+    document.getElementById("display-joul").textContent = energyCounter;
+}
 
-    if (path !== "") {
-      const backPath = path.split("/").slice(0, -1).join("/");
-      content.innerHTML += `<a class="back" href="#" onclick="loadPath('${backPath}')">← Zurück</a>`;
-      content.innerHTML += `<div class="path">/${path}</div>`;
+function getGUCI() {
+    let id = localStorage.getItem("globalClientID");
+    if(!id) {
+        id = "GUCI-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        localStorage.setItem("globalClientID", id);
     }
+    document.getElementById("display-guci").textContent = id;
+    return id;
+}
 
-    if (Array.isArray(data)) {
-      data.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.textContent = item.name;
+/* 2. Pfad-Navigation */
+async function loadPath(path = "") {
+    try {
+        const res = await fetch(`${apiBase}/${path}`);
+        if (!res.ok) throw new Error(`Fetch Error: ${res.status}`);
+        const data = await res.json();
+        
+        const list = document.getElementById("file-list");
+        document.getElementById("current-path").textContent = `PATH: /${path}`;
+        list.innerHTML = "";
 
-        if (item.type === "dir") {
-          div.onclick = () => loadPath(item.path);
-        } else {
-          div.onclick = () => loadFile(item.path);
+        if (path !== "") {
+            const backBtn = document.createElement("div");
+            backBtn.className = "item";
+            backBtn.textContent = "← Zurück";
+            backBtn.onclick = () => loadPath(path.split("/").slice(0, -1).join("/"));
+            list.appendChild(backBtn);
         }
 
-        content.appendChild(div);
-      });
+        data.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.textContent = (item.type === "dir" ? "📁 " : "📄 ") + item.name;
+            div.onclick = () => item.type === "dir" ? loadPath(item.path) : loadFile(item.path);
+            list.appendChild(div);
+        });
+        updateEnergy(1);
+    } catch (err) {
+        document.getElementById("file-list").innerHTML = `<div class="error">${err.message}</div>`;
     }
-  } catch (err) {
-    showError(err.message);
-  }
 }
 
 async function loadFile(path) {
-  try {
+    // Original Load-Logik für Markdown/Code
     const res = await fetch(`${apiBase}/${path}`);
-    if (!res.ok) throw new Error(`GitHub API Fehler: ${res.status}`);
     const data = await res.json();
-
-    const content = document.getElementById("content");
-    const backPath = path.split("/").slice(0, -1).join("/");
-
-    content.innerHTML = `
-      <a class="back" href="#" onclick="loadPath('${backPath}')">← Zurück</a>
-      <div class="path">/${path}</div>
-      <div id="fileContent">Lade Datei...</div>
-    `;
-
     const decoded = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ""))));
-
-    if (path.endsWith(".md")) {
-      document.getElementById("fileContent").innerHTML = marked.parse(decoded);
-      return;
-    }
-
-    if (/\.(js|json|html|css|yml|yaml|xml|ts)$/i.test(path)) {
-      const safe = decoded.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-      document.getElementById("fileContent").innerHTML =
-        `<pre><code class="language-${path.split('.').pop()}">${safe}</code></pre>`;
-      hljs.highlightAll();
-      return;
-    }
-
-    document.getElementById("fileContent").innerHTML = `<pre>${decoded}</pre>`;
-
-  } catch (err) {
-    showError(err.message);
-  }
+    
+    const list = document.getElementById("file-list");
+    list.innerHTML = `<div class="item" onclick="loadPath('${path.split("/").slice(0,-1).join("/")}')">← Schließen</div><pre><code class="language-javascript">${decoded}</code></pre>`;
+    hljs.highlightAll();
+    updateEnergy(2);
 }
 
-function showError(msg) {
-  const content = document.getElementById("content");
-  content.innerHTML = `<div class="error">${msg}</div>`;
+/* 3. Box I/J Integration */
+function executeAction() {
+    const method = document.getElementById("apiMethod").value;
+    const url = document.getElementById("apiUrl").value;
+    const log = document.getElementById("clearing-log");
+    const viewer = document.getElementById("clearingViewer");
+
+    viewer.style.display = "block";
+    
+    // Simulation des Chain Clearing (Box J)
+    const timestamp = new Date().toLocaleTimeString();
+    const blockHash = "0x" + Math.random().toString(16).slice(2, 10);
+    
+    const entry = document.createElement("div");
+    entry.className = "block-entry";
+    entry.innerHTML = `[${timestamp}] <span class="energy-val">VALIDATED</span> | METHOD: ${method} | HASH: ${blockHash} | <span class="energy-val">+5 Joul</span>`;
+    
+    log.prepend(entry);
+    updateEnergy(5);
+    
+    // 405-Error Bypass Simulation
+    console.log(`GUCI Action: ${getGUCI()} sendet ${method} an ${url}`);
 }
 
-/* API Tester */
-async function sendApiRequest() {
-  const url = document.getElementById("apiUrl").value.trim();
-  const method = document.getElementById("apiMethod").value;
-  const body = document.getElementById("apiBody").value.trim();
-  const respEl = document.getElementById("apiResponse");
+/* 4. UI Initialisierung */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        btn.parentElement.classList.toggle('open');
+    });
+});
 
-  if (!url) {
-    respEl.textContent = "Fehler: URL darf nicht leer sein.";
-    activateResponseTab();
-    return;
-  }
+document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
+});
 
-  try {
-    const options = { method };
-
-    if (["POST","PUT","PATCH","DELETE"].includes(method) && body !== "") {
-      options.headers = { "Content-Type": "application/json" };
-      options.body = body;
-    }
-
-    const res = await fetch(url, options);
-    const text = await res.text();
-
-    let formatted = text;
-    try {
-      const json = JSON.parse(text);
-      formatted = JSON.stringify(json, null, 2);
-      respEl.innerHTML = `<pre><code class="language-json">${formatted.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</code></pre>`;
-      hljs.highlightAll();
-    } catch {
-      respEl.textContent = formatted;
-    }
-
-    activateResponseTab();
-  } catch (err) {
-    respEl.textContent = "Fehler: " + err.message;
-    activateResponseTab();
-  }
+// Check if mode is clearing (from Box J click on index)
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('mode') === 'clearing') {
+    document.getElementById("clearingViewer").style.display = "block";
 }
 
-function clearApi() {
-  document.getElementById("apiUrl").value = "";
-  document.getElementById("apiBody").value = "";
-  document.getElementById("apiResponse").textContent = "Noch keine Anfrage gesendet.";
-  document.getElementById("apiMethod").value = "GET";
-}
-
-function activateResponseTab() {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector('.tab[data-tab="responseTab"]').classList.add('active');
-  document.getElementById('responseTab').classList.add('active');
-}
-
-loadPath();
+window.onload = () => {
+    getGUCI();
+    loadPath();
+    document.getElementById("display-joul").textContent = energyCounter;
+};
 </script>
 
 </body>

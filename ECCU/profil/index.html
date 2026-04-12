@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Energie-Zertifikate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#030406; --bg-alt:#090b10; --border:#1e293b; --text:#f1f5f9; --accent:#38bdf8; --eccu:#22c55e; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010204; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .cert-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:30px; border-top: 4px solid var(--eccu); position:relative; }
+    .cert-id { font-family:monospace; color:var(--eccu); background:rgba(34,197,94,0.1); padding:5px 10px; border-radius:4px; font-size:12px; }
+    
+    .validation-matrix { margin-top:25px; display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
+    .matrix-item { background:#000; border:1px solid var(--border); padding:15px; border-radius:10px; }
+    .matrix-item small { color:#94a3b8; font-size:10px; display:block; margin-bottom:5px; }
+    .matrix-item b { font-size:14px; color:var(--text); }
+
+    .qr-placeholder { width:100px; height:100px; border:2px solid var(--eccu); margin: 20px auto; display:flex; align-items:center; justify-content:center; opacity:0.6; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--eccu); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">ECCU</a> · <span style="color:var(--eccu);">CERT-VALIDATION</span></div>
+  <div style="font-size:12px; font-family:monospace;">VERIFIED: <span style="color:var(--eccu);">YES</span></div>
+</header>
+
+<main>
+  <div class="cert-card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <h1 style="margin:0; font-size:20px;">Energie-Zertifikat</h1>
+      <span class="cert-id" id="cert-display">ECCU-DNA-HASH</span>
+    </div>
+    <p style="font-size:13px; color:#94a3b8; margin-top:10px;">Validierung der Identitäts-Energie-Kopplung (PZQQET-Standard).</p>
+    
+    <div class="qr-placeholder">CERT-QR</div>
+
+    <div class="validation-matrix">
+      <div class="matrix-item"><small>ENERGIE-TYP</small><b>JOUL (XP)</b></div>
+      <div class="matrix-item"><small>WAHRHEITS-LEVEL</small><b>100M% PROB.</b></div>
+      <div class="matrix-item"><small>GUCI-VERKNÜPFUNG</small><b id="guci-ref">...</b></div>
+      <div class="matrix-item"><small>ANKE-STATUS</small><b>2,50€ / 2TB</b></div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  ECCU-PROFIL-SYNC: ACTIVE || CERTIFICATE-HASH: VALID || RFOF-NETWORK MASTER-VIEW || JOUL-ANCHOR: FIXED
+</div>
+
+<script>
+  const guci = localStorage.getItem("globalClientID") || "GUCI-00";
+  document.getElementById("guci-ref").textContent = guci.substring(0,12) + "...";
+  document.getElementById("cert-display").textContent = "ECCU-" + btoa(guci).substring(0,8);
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF‑NETWORK | Settings Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; }
+    body { margin:0; font-family:monospace; background:var(--bg); color:var(--text); padding:20px; }
+    header { border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:20px; }
+    .console { background:#000; border:1px solid var(--border); border-radius:8px; padding:15px; height:450px; overflow-y:auto; }
+    .cmd-line { margin-bottom:8px; font-size:12px; }
+    .sys-msg { color:var(--accent); }
+    .warn-msg { color: #f87171; }
+    .input-box { margin-top:15px; display:flex; gap:10px; }
+    input { flex:1; background:var(--bg-alt); border:1px solid var(--border); color:var(--text); padding:8px; border-radius:4px; font-family:monospace; }
+    .btn-exec { background:var(--accent); color:#000; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-weight:bold; }
+  </style>
+</head>
+<body>
+
+<header>
+  <b>SYS-SETTINGS / BROWSER-TERMINAL</b>
+</header>
+
+<div class="console" id="console">
+  <div class="cmd-line sys-msg"># SATORIA-OPERATING-SYSTEM INITIALIZED</div>
+  <div class="cmd-line"># AUTHENTICATING AS: RFOF-NETWORK...</div>
+  <div class="cmd-line sys-msg">> ACCESS GRANTED. 45% SAFE & 42% OWNER LOGS READY.</div>
+  <div class="cmd-line">--------------------------------------------------</div>
+</div>
+
+<div class="input-box">
+  <input type="text" id="command" placeholder="Befehl: /burn, /mint, /freeze [GUCI], /lock-fee">
+  <button class="btn-exec" onclick="handleCmd()">EXEC</button>
+</div>
+
+<script>
+  const con = document.getElementById("console");
+
+  function log(msg, type = "") {
+    const line = document.createElement("div");
+    line.className = "cmd-line " + type;
+    line.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    con.appendChild(line);
+    con.scrollTop = con.scrollHeight;
+  }
+
+  function handleCmd() {
+    const val = document.getElementById("command").value;
+    log(`> EXECUTE: ${val}`, "sys-msg");
+
+    if(val.startsWith("/burn")) {
+      log("INITIATING MANUAL SUPPLY BURN...", "warn-msg");
+      log("SUCCESS: RFOF/GOLD SUPPLY REDUCED. 0.2% PRICE CORRECTION LOGGED.");
+    } else if(val.startsWith("/lock-fee")) {
+      log("GLOBAL FEE LOCK ENABLED. All interactions now strictly require 0.2% ECCU energy.");
+    } else if(val.startsWith("/freeze")) {
+      log("TARGET GUCI DETECTED. Freezing assets for compliance audit...", "warn-msg");
+    } else {
+      log("ERROR: COMMAND NOT RECOGNIZED OR INSUFFICIENT PERMISSIONS.", "warn-msg");
+    }
+    
+    document.getElementById("command").value = "";
+    
+    // Energie-Aufbau aus DNA
+    let e = parseInt(localStorage.getItem("totalJoul") || "0");
+    localStorage.setItem("totalJoul", e + 3);
+  }
+</script>
+</body>
+</html>

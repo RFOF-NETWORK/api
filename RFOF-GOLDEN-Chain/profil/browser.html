@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Mapping Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010409; --border:#30363d; --text:#58a6ff; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#7d8590; }
+    .match { color:#39d353; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[CHAIN-OS] Initializing Identity-Mapping-Service...</div>
+  <div class="line">[INFO] Scanning Block-Headers for Address-Registrations.</div>
+  <div class="line">[INFO] Applying Base64-Masking according to PZQQET-Axiom.</div>
+  <div class="line">--------------------------------------------------</div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  setInterval(() => {
+    if(Math.random() > 0.8) {
+      addLog("<span class='match'>MATCH:</span> Raw Address linked to encrypted Profile-Hash.");
+    }
+  }, 5000);
+</script>
+</body>
+</html>

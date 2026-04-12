@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF‑NETWORK | Wallet Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#05060a;
+      --bg-alt:#0f1117;
+      --border:#1f2933;
+      --text:#f9fafb;
+      --muted:#9ca3af;
+      --accent:#38bdf8;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#020308; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; position: sticky; top:0; z-index:100; }
+    .brand { font-weight:600; font-size:15px; }
+    .brand span { color:var(--accent); }
+    
+    /* Erweiterte Status-Bar für Wallet-Logik */
+    .status-bar { background:#020617; border:1px solid var(--border); padding:8px 15px; border-radius:8px; margin:20px; display:flex; justify-content:space-between; font-size:12px; color:var(--muted); }
+    .status-bar b { color:var(--accent); font-family:monospace; }
+
+    main { padding:0 20px 20px; }
+    
+    /* Balance-Kacheln (Tipp-Logik) */
+    .balance-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px; }
+    .coin-tile { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; cursor:pointer; transition:0.2s; }
+    .coin-tile:hover { border-color:var(--accent); background:rgba(56,189,248,0.05); }
+    .coin-tile h3 { margin:0; font-size:14px; color:var(--muted); }
+    .coin-tile .amount { font-size:22px; font-weight:700; margin:10px 0 5px; color:var(--text); }
+    .coin-tile .val-fiat { font-size:12px; color:var(--accent); }
+
+    /* Dynamischer Inhaltsbereich (Charts/Details) */
+    #detail-view { display:none; background:var(--bg-alt); border:1px solid var(--border); border-radius:14px; padding:20px; margin-top:20px; border-left: 4px solid var(--accent); }
+    .chart-placeholder { width:100%; height:200px; background:#000; border:1px solid #1e293b; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; position:relative; overflow:hidden; }
+    
+    /* Master-Admin Bereich */
+    #master-controls { display:none; border:1px solid #38bdf8; background:rgba(56,189,248,0.05); padding:15px; border-radius:10px; margin-top:20px; }
+    
+    .btn-action { background:var(--accent); color:#000; border:none; padding:10px 15px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><a href="../index.html" style="color:inherit; text-decoration:none;"><span>RFOF‑NETWORK</span> · WALLET</a></div>
+  <div class="guci-display" style="font-size:12px; font-family:monospace;">GUCI: <span id="guci-val" style="color:var(--accent);">...</span></div>
+</header>
+
+<div class="status-bar">
+  <div>XP/JOUL: <b id="joul-count">0</b></div>
+  <div>ECCU-ANKER: <b>2,50€</b></div>
+  <div>STATUS: <b style="color:#4ade80;">SYNCHRONIZED</b></div>
+</div>
+
+<main>
+  <div class="balance-grid">
+    <div class="coin-tile" onclick="openDetail('RFOF', '0.0000', '1.002')">
+      <h3>RFOF</h3>
+      <div class="amount" id="bal-rfof">0.0000</div>
+      <div class="val-fiat">Exponentieller Floor: 0.00€</div>
+    </div>
+    <div class="coin-tile" onclick="openDetail('GOLD', '0.0000', '1.002')">
+      <h3>GOLD</h3>
+      <div class="amount" id="bal-gold">0.0000</div>
+      <div class="val-fiat">Safe-Anker: 0.00€</div>
+    </div>
+    <div class="coin-tile" onclick="openDetail('ECCU', '0.00', 'FIXED')">
+      <h3>ECCU</h3>
+      <div class="amount" id="bal-eccu">0.00</div>
+      <div class="val-fiat">Utility-Basis (Gesperrt)</div>
+    </div>
+  </div>
+
+  <section id="detail-view">
+    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:15px;">
+      <div>
+        <h2 id="detail-title" style="margin:0;">TOKEN DETAILS</h2>
+        <p id="detail-meta" style="font-size:12px; color:var(--muted);">Druck-Logik: +0,2% pro Interaktion</p>
+      </div>
+      <button onclick="closeDetail()" style="background:transparent; border:1px solid var(--border); color:var(--muted); cursor:pointer; border-radius:4px;">✕ Schließen</button>
+    </div>
+    
+    <div class="chart-placeholder" id="chart-area">
+      [ TRADING CHART RENDERING... ]
+    </div>
+
+    <div id="master-controls">
+      <h4 style="margin:0; color:var(--accent);">MASTER-ADMIN: RFOF-NETWORK ACCESS</h4>
+      <p style="font-size:11px;">ECCU Auszahlungs-Zyklen & 45% SAFE Management aktiviert.</p>
+      <button class="btn-action" onclick="masterWithdraw()">ECCU PHYSISCH AUSZAHLEN</button>
+    </div>
+
+    <div style="margin-top:20px;">
+      <h3 style="font-size:14px;">TOKEN HISTORIE (SHA256 UTX)</h3>
+      <div id="token-history" style="font-family:monospace; font-size:11px; color:#4ade80;"></div>
+    </div>
+  </section>
+
+  <section style="margin-top:30px; background:var(--bg-alt); border:1px solid var(--border); border-radius:14px; padding:20px;">
+    <div class="tag" style="color:var(--accent);">KACHEL 9</div>
+    <h2>Meme-Token Launchpad</h2>
+    <p>Erstelle Token mit Koppelung an den RFOF-Preis-Floor.</p>
+    <button class="btn-action" style="background:transparent; border:1px solid var(--accent); color:var(--accent);">NEUEN TOKEN MINTEN</button>
+  </section>
+</main>
+
+<script>
+  // DNA-Check: Wer ist der User?
+  const currentUser = localStorage.getItem("rfof_user") || "Guest";
+  const isMaster = (currentUser === "RFOF-NETWORK");
+
+  // Initialisierung aus DNA
+  document.getElementById("guci-val").textContent = localStorage.getItem("globalClientID") || "GUCI-INIT";
+  document.getElementById("joul-count").textContent = localStorage.getItem("totalJoul") || "0";
+
+  function openDetail(token, amount, multiplier) {
+    document.getElementById("detail-view").style.display = "block";
+    document.getElementById("detail-title").textContent = token + " PERFORMANCE";
+    document.getElementById("detail-meta").textContent = `Balance: ${amount} | Steigerung: ${multiplier}x pro Transaktion`;
+    
+    // Master-Sperre aufheben
+    if(isMaster && token === 'ECCU') {
+      document.getElementById("master-controls").style.display = "block";
+    } else {
+      document.getElementById("master-controls").style.display = "none";
+    }
+
+    // Historie füllen (Simuliert Kachel J)
+    const hist = document.getElementById("token-history");
+    hist.innerHTML = `[${new Date().toLocaleTimeString()}] UTX_VALIDATED: 0x${Math.random().toString(16).slice(2,12)}... +0.2% UP`;
+  }
+
+  function closeDetail() {
+    document.getElementById("detail-view").style.display = "none";
+  }
+
+  function masterWithdraw() {
+    alert("Master-Auszahlung initiiert: ECCU wird in die RFOF-Liquidität überführt.");
+  }
+</script>
+</body>
+</html>

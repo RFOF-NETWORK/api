@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chain-Clearing | Kachel J Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#050505; --bg-alt:#0a0a0a; --border:#1f2937; --text:#f3f4f6; --j-color:#4ade80; --gold:#fbbf24; --eccu:#22c55e; --rfof:#38bdf8; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:15px 20px; border-bottom:1px solid var(--border); background:#000; display:flex; justify-content:space-between; align-items:center; border-top: 3px solid var(--j-color); }
+    main { padding:20px; max-width: 1200px; margin: 0 auto; }
+    
+    .search-bar { width:100%; background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; display:flex; gap:10px; margin-bottom:25px; }
+    .search-bar input { flex-grow:1; background:transparent; border:none; outline:none; color:var(--text); font-family:monospace; }
+    
+    .clearing-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; }
+    .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; opacity:0.5; }
+    
+    .node-gpcb::before { background:var(--gold); }
+    .node-eccu::before { background:var(--eccu); }
+    .node-rfof::before { background:var(--rfof); }
+    
+    .node-header { display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px; font-weight:bold; }
+    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:100px; overflow:hidden; }
+    
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:bold; letter-spacing:1px;">KAHEL J | UNIVERSAL EXPLORER</div>
+  <div style="font-size:11px; font-family:monospace;">API-GATEWAY: <span style="color:var(--j-color);">CONNECTED</span></div>
+</header>
+
+<main>
+  <div class="search-bar">
+    <span style="color:var(--j-color);">🔍</span>
+    <input type="text" placeholder="Hash, Block, Profil-ID oder GUCI eingeben..." id="search-input">
+  </div>
+
+  <div class="clearing-grid">
+    <div class="sector-node node-gpcb">
+      <div class="node-header"><span style="color:var(--gold);">API: GPCB</span> <span id="gpcb-status">SYNC</span></div>
+      <div class="data-stream" id="stream-gpcb">
+        > Fetching Safe-Status (45%)...<br>
+        > 10% Fond Liquidity Verified.<br>
+        > Global Fee 0.2% active.
+      </div>
+    </div>
+
+    <div class="sector-node node-eccu">
+      <div class="node-header"><span style="color:var(--eccu);">API: ECCU</span> <span id="eccu-status">SYNC</span></div>
+      <div class="data-stream" id="stream-eccu">
+        > Anchor: 2.50€ / 2TB Joul.<br>
+        > Stability-Buffer: 99.99%.<br>
+        > DNA-Certificates Valid.
+      </div>
+    </div>
+
+    <div class="sector-node node-rfof">
+      <div class="node-header"><span style="color:var(--rfof);">API: RFOF-GOLDEN</span> <span id="rfof-status">SYNC</span></div>
+      <div class="data-stream" id="stream-rfof">
+        > Block Height: 842.102<br>
+        > UTXO Hash Integrity: OK.<br>
+        > PZQQET Protocol Pulse.
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  <div>KAHEL-J-EXPLORER || CROSS-CHAIN-CLEARING ACTIVE</div>
+  <div id="clock">00:00:00</div>
+</div>
+
+<script>
+  function updateClock() {
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  
+  // Simulation des Live-Data Merging
+  setInterval(() => {
+    const streams = ['stream-gpcb', 'stream-eccu', 'stream-rfof'];
+    const target = streams[Math.floor(Math.random()*streams.length)];
+    const el = document.getElementById(target);
+    const newEntry = "> Update: " + Math.random().toString(16).substring(2,10) + " verified.<br>";
+    el.innerHTML = newEntry + el.innerHTML;
+  }, 3000);
+</script>
+</body>
+</html>

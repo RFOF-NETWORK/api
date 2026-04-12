@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Identity Mapping</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#02040a; --bg-alt:#0d1117; --border:#30363d; --text:#c9d1d9; --gold:#d29922; --chain:#58a6ff; }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010409; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .mapping-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:25px; border-top: 4px solid var(--chain); }
+    .map-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:12px; }
+    .map-table th { text-align:left; color:#8b949e; padding:10px; border-bottom:1px solid var(--border); }
+    .map-table td { padding:12px 10px; border-bottom:1px solid rgba(48,54,61,0.5); font-family:monospace; }
+    
+    .hash-link { color:var(--chain); }
+    .address-link { color:var(--gold); }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#010409; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--chain); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">RFOF-GOLDEN-Chain</a> · <span style="color:var(--chain);">ID-MAPPING</span></div>
+  <div style="font-size:11px;">SYNC-STATE: <span style="color:#39d353;">VERIFIED</span></div>
+</header>
+
+<main>
+  <div class="mapping-card">
+    <h2 style="margin:0; font-size:18px;">Adress-Mapping & Base64-Hashes</h2>
+    <p style="font-size:12px; color:#8b949e;">Abbildung von On-Chain Wallet-Adressen auf maskierte Profil-Identitäten.</p>
+    
+    <table class="map-table">
+      <thead>
+        <tr>
+          <th>CHAIN-ADRESSE (RAW)</th>
+          <th>BASE64-HASH (PROFILE)</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody id="mapping-body">
+        <tr>
+          <td class="address-link">0x42...F0F</td>
+          <td class="hash-link">UkZPRi1NRVRX...</td>
+          <td style="color:#39d353;">MAPPED</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<div class="bip-footer">
+  IDENTITY-SHIELD: ACTIVE || PZQQET-MASKING: 100% || RFOF-NETWORK MASTER-VIEW || MAPPING-TABLE: v1.0
+</div>
+
+<script>
+  // Simulation des Mappings für den aktuellen User
+  const guci = localStorage.getItem("globalClientID") || "MASTER";
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="address-link">0x${Math.random().toString(16).substring(2,6).toUpperCase()}...${guci.substring(0,3)}</td>
+    <td class="hash-link">${btoa(guci).substring(0,12)}...</td>
+    <td style="color:#39d353;">MAPPED</td>
+  `;
+  document.getElementById("mapping-body").appendChild(row);
+</script>
+</body>
+</html>

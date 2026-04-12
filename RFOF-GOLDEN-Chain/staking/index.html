@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Block Validation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#02040a; --bg-alt:#0d1117; --border:#30363d; --text:#c9d1d9; --gold:#d29922; --chain:#58a6ff; }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010409; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .validation-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:25px; border-bottom: 4px solid var(--chain); }
+    .block-stream { margin-top:20px; }
+    .block-node { background:#000; border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:10px; display:flex; align-items:center; gap:15px; }
+    .block-index { color:var(--gold); font-family:monospace; font-weight:bold; }
+    .block-hash { font-family:monospace; font-size:11px; color:#8b949e; flex-grow:1; }
+    .block-status { font-size:10px; padding:2px 8px; border-radius:10px; background:rgba(57,211,83,0.1); color:#39d353; border:1px solid #39d353; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#010409; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--chain); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">RFOF-GOLDEN-Chain</a> · <span style="color:var(--chain);">VALIDATOR-CORE</span></div>
+  <div style="font-size:11px;">NODES: <span style="color:var(--gold);">ACTIVE</span></div>
+</header>
+
+<main>
+  <div class="validation-card">
+    <h2 style="margin:0; font-size:18px;">Staking-Block Validierung</h2>
+    <p style="font-size:12px; color:#8b949e;">Überprüfung der Konsens-Integrität und Finalisierung der RFOF-Blöcke.</p>
+    
+    <div class="block-stream" id="stream">
+      <div class="block-node">
+        <span class="block-index">#842093</span>
+        <span class="block-hash">0000xPZQQET_f7d8...a21e</span>
+        <span class="block-status">FINALIZED</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  CHAIN-VALIDATION: 100% || STAKE-INTEGRITY: SECURED || RFOF-NETWORK MASTER-VIEW || AXIOM-PULSE
+</div>
+
+<script>
+  // Simulation neuer eintreffender Blöcke
+  const stream = document.getElementById("stream");
+  let lastBlock = 842093;
+
+  setInterval(() => {
+    lastBlock++;
+    const node = document.createElement("div");
+    node.className = "block-node";
+    node.innerHTML = `
+      <span class="block-index">#${lastBlock}</span>
+      <span class="block-hash">0000xPZQQET_${Math.random().toString(16).substring(2,10)}...</span>
+      <span class="block-status">VALIDATING</span>
+    `;
+    stream.insertBefore(node, stream.firstChild);
+    if(stream.children.length > 5) stream.lastChild.remove();
+    
+    setTimeout(() => {
+      node.querySelector(".block-status").textContent = "FINALIZED";
+    }, 2000);
+  }, 8000);
+</script>
+</body>
+</html>

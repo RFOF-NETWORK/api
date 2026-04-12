@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Staking Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010204; --border:#1e293b; --text:#a855f7; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-top: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#38bdf8; }
+    .eccu { color:#22c55e; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[ECCU-STAKING-OS] Initializing Stability-Forge...</div>
+  <div class="line">[INFO] Monitoring XP-Pools for system-wide backfill.</div>
+  <div class="line">[INFO] Integrity-Check: 2TB Joul anchor confirmed.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">ECCU:\STAKING\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Überwachung der Energie-Umwandlung
+  setInterval(() => {
+    if(Math.random() > 0.85) {
+      addLog("<span class='eccu'>STABILITY-SYNC:</span> 2TB Joul processed into ECCU-Fixed-Value.");
+    }
+  }, 6000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

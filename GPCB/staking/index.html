@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPCB | Fond-Staking & Rendite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; --gold:#fbbf24; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#020308; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .staking-dashboard { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:25px; border-bottom: 4px solid var(--gold); }
+    .yield-grid { display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px; }
+    .yield-card { background:rgba(251,191,36,0.05); border:1px solid var(--border); padding:15px; border-radius:10px; }
+    .yield-card small { display:block; color:#9ca3af; font-size:10px; margin-bottom:5px; }
+    .yield-card b { font-size:16px; color:var(--gold); }
+
+    .chart-placeholder { height:150px; background:#000; border:1px solid var(--border); border-radius:8px; margin-top:20px; display:flex; align-items:center; justify-content:center; font-family:monospace; font-size:12px; color:var(--gold); position:relative; overflow:hidden; }
+    .chart-line { position:absolute; bottom:20px; left:0; width:100%; height:2px; background:var(--gold); box-shadow: 0 0 15px var(--gold); }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--gold); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">GPCB</a> · <span style="color:var(--gold);">STAKING-SPIEGEL</span></div>
+  <div style="font-size:12px; font-family:monospace;">FOND-STATE: <span style="color:#4ade80;">GROWING</span></div>
+</header>
+
+<main>
+  <div class="staking-dashboard">
+    <h2 style="margin:0; font-size:18px;">Institutionelle Rendite-Überwachung</h2>
+    <p style="font-size:12px; color:#9ca3af;">Verwaltung der 10% FOND-Bestände und Re-Injektion von JOUL-Energie.</p>
+    
+    <div class="yield-grid">
+      <div class="yield-card"><small>RESERVE-STAKING (45%)</small><b id="res-val">VALIDATING...</b></div>
+      <div class="yield-card"><small>ENERGY-YIELD (JOUL)</small><b id="joul-val">0.000000</b></div>
+    </div>
+
+    <div class="chart-placeholder">
+      [ EXPONENTIAL GROWTH CURVE: +0.2% ]
+      <div class="chart-line"></div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  GPCB-STAKING-MONITOR || FOND-LIQUIDITY: 10% LOCKED || PHOENIX-CENTRAL-BANK || PZQQET-CONFORMITY
+</div>
+
+<script>
+  // Simulation der Rendite-Daten
+  document.getElementById("res-val").textContent = "STABLE";
+  setInterval(() => {
+    let joul = parseFloat(localStorage.getItem("totalJoul") || "0");
+    document.getElementById("joul-val").textContent = (joul * 1.002).toFixed(6);
+  }, 3000);
+</script>
+</body>
+</html>

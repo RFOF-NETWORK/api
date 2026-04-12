@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF‑NETWORK | Staking & Forge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; --muted:#9ca3af; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#020308; display:flex; align-items:center; justify-content:space-between; }
+    
+    main { padding:20px; max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; }
+    @media (max-width: 768px) { main { grid-template-columns: 1fr; } }
+    
+    section { background:var(--bg-alt); border:1px solid var(--border); border-radius:14px; padding:20px; height: fit-content; }
+    .pool-card { border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:15px; background:rgba(255,255,255,0.02); }
+    .pool-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    
+    /* NFT Forge Visuals */
+    .forge-area { background:#000; border:2px dashed var(--border); border-radius:12px; height:250px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+    .svg-preview { width:150px; height:150px; filter: drop-shadow(0 0 10px var(--accent)); }
+    
+    .btn-forge { width:100%; background:var(--accent); color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:15px; }
+    .stats-row { display:flex; justify-content:space-between; font-size:12px; margin-top:5px; color:var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="font-weight:600;"><a href="../index.html" style="color:inherit; text-decoration:none;"><span>RFOF‑NETWORK</span> · STAKING</a></div>
+  <div style="font-size:12px; font-family:monospace;">STAKING-ENERGY: <span id="joul-display" style="color:var(--accent);">0</span> JOUL</div>
+</header>
+
+<main>
+  <section>
+    <div class="tag" style="font-size:10px; color:var(--accent); margin-bottom:10px;">AKTIVE POOLS</div>
+    <div class="pool-card">
+      <div class="pool-header">
+        <b style="font-size:14px;">RFOF/GOLD LP</b>
+        <span class="tag" style="color:#4ade80;">+4.2% APY</span>
+      </div>
+      <div class="stats-row"><span>Staked:</span><span id="staked-rfof">0.00</span></div>
+      <button class="btn-forge" style="padding:6px; font-size:12px; margin-top:10px; background:transparent; border:1px solid var(--accent); color:var(--accent);">Manage Stake</button>
+    </div>
+    
+    <div class="pool-card">
+      <div class="pool-header">
+        <b style="font-size:14px;">ECCU ENERGY VAULT</b>
+        <span class="tag" style="color:var(--accent);">FIXED</span>
+      </div>
+      <div class="stats-row"><span>Multiplier:</span><span>1.5x XP</span></div>
+      <button class="btn-forge" style="padding:6px; font-size:12px; margin-top:10px; background:transparent; border:1px solid var(--border); color:var(--muted);">Gesperrt bis 2TB</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="tag" style="font-size:10px; color:var(--muted); margin-bottom:10px;">NFT FORGE (SVG-EDITOR)</div>
+    <h2>Energie-Visualisierung</h2>
+    <p style="font-size:12px; color:var(--muted);">Wandle deine JOUL-Energie in handelbare SVG-Zertifikate um.</p>
+    
+    <div class="forge-area" id="forge-preview">
+      <svg class="svg-preview" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" stroke="#38bdf8" stroke-width="2" fill="none" opacity="0.3" />
+        <path d="M50 20 L50 80 M20 50 L80 50" stroke="#38bdf8" stroke-width="1" />
+        <text x="50" y="55" font-family="monospace" font-size="8" fill="#38bdf8" text-anchor="middle">PZQQET</text>
+      </svg>
+    </div>
+
+    <div class="stats-row" style="margin-top:15px;">
+      <span>FORGE-KOSTEN:</span>
+      <span style="color:var(--accent);">100 JOUL</span>
+    </div>
+    <button class="btn-forge" onclick="startForge()">JETZT SCHMIEDEN (+NFT)</button>
+    <a href="browser.html" style="display:block; text-align:center; font-size:11px; margin-top:10px; color:var(--muted); text-decoration:none;">Energie-Galerie & Logs öffnen</a>
+  </section>
+</main>
+
+<script>
+  document.getElementById("joul-display").textContent = localStorage.getItem("totalJoul") || "0";
+
+  function startForge() {
+    let joul = parseInt(localStorage.getItem("totalJoul") || "0");
+    if(joul >= 100) {
+      localStorage.setItem("totalJoul", joul - 100);
+      document.getElementById("joul-display").textContent = joul - 100;
+      alert("SVG-NFT erfolgreich geschmiedet! Energie-Zertifikat wurde in der Chain-Clearing Kachel J registriert.");
+    } else {
+      alert("Nicht genügend JOUL-Energie vorhanden. Besuche das Mining-Terminal im Wallet.");
+    }
+  }
+</script>
+</body>
+</html>

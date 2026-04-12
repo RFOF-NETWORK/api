@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF‑NETWORK | Wallet Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; }
+    body { margin:0; font-family:monospace; background:var(--bg); color:var(--text); padding:20px; }
+    header { border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:20px; display:flex; justify-content:space-between; }
+    .console { background:#000; border:1px solid var(--border); border-radius:8px; padding:15px; height:400px; overflow-y:auto; border-left:3px solid var(--accent); }
+    .input-area { margin-top:20px; display:flex; gap:10px; }
+    input { flex:1; background:var(--bg-alt); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:4px; }
+    .log-entry { margin-bottom:5px; font-size:12px; }
+    .tag-green { color:#4ade80; }
+    .tag-blue { color:var(--accent); }
+    .mining-stats { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px; }
+    .stat-box { background:var(--bg-alt); border:1px solid var(--border); padding:10px; border-radius:8px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><b>RFOF-CON / WALLET / EXPLORER</b></div>
+  <div class="tag-blue" id="guci-display">GUCI-LOADING</div>
+</header>
+
+<div class="mining-stats">
+  <div class="stat-box">
+    <div style="font-size:10px; color:var(--muted);">MINING STATUS (PIXEL/FPS)</div>
+    <div class="tag-green" id="fps-val">60 FPS >> ACTIVE</div>
+  </div>
+  <div class="stat-box">
+    <div style="font-size:10px; color:var(--muted);">CONVERSION RATE</div>
+    <div class="tag-blue">1 ECCU = 2.50€</div>
+  </div>
+</div>
+
+<div class="console" id="console-output">
+  <div class="log-entry tag-blue">[SYSTEM] Wallet Browser Initialized...</div>
+  <div class="log-entry">[INFO] Monitoring Global Ecosystem BIP-Ticker...</div>
+</div>
+
+<div class="input-area">
+  <input type="text" id="cmd-input" placeholder="Kommando eingeben (z.B. /sync oder /mine)..." />
+  <button onclick="processCmd()" style="background:var(--accent); border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-weight:bold;">EXEC</button>
+</div>
+
+<script>
+  const output = document.getElementById("console-output");
+  document.getElementById("guci-display").textContent = localStorage.getItem("globalClientID");
+
+  function log(msg, type = "") {
+    const div = document.createElement("div");
+    div.className = "log-entry " + type;
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    output.appendChild(div);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function processCmd() {
+    const input = document.getElementById("cmd-input");
+    const cmd = input.value;
+    log(`> EXECUTING: ${cmd}`, "tag-blue");
+
+    if(cmd === "/mine") {
+      log("MINING TRIGERED... Energy +5 Joul", "tag-green");
+      let j = parseInt(localStorage.getItem("totalJoul") || "0");
+      localStorage.setItem("totalJoul", j + 5);
+    } else if(cmd === "/sync") {
+      log("SYNCING WITH RFOF-GOLDEN-CHAIN...", "tag-blue");
+      log("0.2% FEE LOCK VALIDATED.", "tag-green");
+    } else {
+      log("UNKNOWN COMMAND. Use /mine or /sync.", "tag-error");
+    }
+    input.value = "";
+  }
+
+  // Automatischer BIP-Ticker Simulator (Ethisches Monitoring)
+  setInterval(() => {
+    if(Math.random() > 0.7) {
+      log(`GLOBAL TX DETECTED: 0x${Math.random().toString(16).slice(2,8)}... PRICE UP +0.002%`, "tag-green");
+    }
+  }, 4000);
+</script>
+</body>
+</html>

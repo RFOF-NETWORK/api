@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF Marketplace | API & Assets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#05070a; --bg-alt:#0f172a; --border:#1e293b; --text:#f1f5f9; --gold:#fbbf24; --accent:#8b5cf6; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:15px 20px; border-bottom:1px solid var(--border); background:#020617; display:flex; justify-content:space-between; align-items:center; }
+    main { padding:20px; max-width: 1100px; margin: 0 auto; }
+    
+    .market-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px; margin-top:20px; }
+    .asset-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; transition: transform 0.2s; }
+    .asset-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    
+    .asset-preview { height:120px; background:#000; border-radius:8px; margin-bottom:12px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(139,92,246,0.2); }
+    .asset-info h3 { margin:0; font-size:16px; color:var(--text); }
+    .asset-info p { font-size:12px; color:#94a3b8; margin:5px 0 15px 0; }
+    
+    .price-tag { display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); pt:10px; margin-top:10px; padding-top:10px; }
+    .price { font-family:monospace; font-weight:bold; color:var(--gold); }
+    .buy-btn { background:var(--accent); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--accent); font-family:monospace; display:flex; justify-content:space-between; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:bold; letter-spacing:1px;">RFOF MARKETPLACE</div>
+  <div style="font-size:12px;">CURRENCY: <span style="color:var(--gold);">ECCU / JOUL</span></div>
+</header>
+
+<main>
+  <h2 style="font-size:18px;">Verfügbare Module & Assets</h2>
+  <div class="market-grid">
+    <div class="asset-card">
+      <div class="asset-preview">SVG:API_ICON</div>
+      <div class="asset-info">
+        <h3>GPCB Read-Access Key</h3>
+        <p>Lizenz zur Abfrage der Fond-Liquidität via Kahel J.</p>
+        <div class="price-tag">
+          <span class="price">42.00 ECCU</span>
+          <button class="buy-btn">ERWERBEN</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-preview">SVG:PHOENIX_COIN</div>
+      <div class="asset-info">
+        <h3>Golden Phoenix Token</h3>
+        <p>Limitiertes Sammler-Asset innerhalb der RFOF-Chain.</p>
+        <div class="price-tag">
+          <span class="price">250.00 JOUL</span>
+          <button class="buy-btn">ERWERBEN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  MARKET-STATE: OPEN || FEE-REINJECTION: 0.2% || RFOF-NETWORK CLEARING || PZQQET-CERTIFIED
+</div>
+</body>
+</html>

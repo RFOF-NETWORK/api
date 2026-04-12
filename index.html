@@ -69,7 +69,6 @@
       font-size:13px;
       color:var(--text);
       text-decoration:none;
-      cursor: pointer;
     }
     .nav-menu a:hover { background:rgba(148,163,184,.15); }
     .nav-group.open .nav-menu { display:block; }
@@ -87,19 +86,6 @@
       white-space:nowrap;
     }
     .login-btn:hover { background:#0ea5e9; }
-
-    /* Logout Style */
-    .logout-btn {
-      background: transparent;
-      border: 1px solid #ff4b2b;
-      color: #ff4b2b;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-left: 8px;
-    }
 
     /* Login Modal */
     .modal {
@@ -196,7 +182,6 @@
       color:var(--accent);
       text-decoration:none;
       transition: background 0.2s;
-      cursor: pointer;
     }
     .link-chip:hover { background:#0b1120; border-color: var(--accent); }
   </style>
@@ -215,26 +200,26 @@
       <div class="nav-menu" id="menu-home">
         <a href="#api-home">API HOME</a>
         <a href="#meta-backend">META‑BACKEND</a>
-        <a onclick="smartNav('browser.html')">META Documentation</a>
+        <a href="browser.html">META Documentation</a>
       </div>
     </div>
 
     <div class="nav-group">
       <button class="nav-btn" data-menu="global">Global Modules <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-global">
-        <a onclick="smartNav('wallet')">Wallet</a>
-        <a onclick="smartNav('profil')">Profil</a>
-        <a onclick="smartNav('settings')">Settings</a>
-        <a onclick="smartNav('staking')">Staking</a>
+        <a href="wallet/index.html">Wallet</a>
+        <a href="profil/index.html">Profil</a>
+        <a href="settings/index.html">Settings</a>
+        <a href="staking/index.html">Staking</a>
       </div>
     </div>
 
     <div class="nav-group">
       <button class="nav-btn" data-menu="systems">Meta‑Systeme <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-systems">
-        <a onclick="smartNav('GPCB')">GPCB</a>
-        <a onclick="smartNav('ECCU')">ECCU</a>
-        <a onclick="smartNav('RFOF-GOLDEN-Chain')">RFOF‑GOLDEN‑Chain</a>
+        <a href="GPCB/index.html">GPCB</a>
+        <a href="ECCU/index.html">ECCU</a>
+        <a href="RFOF-GOLDEN-Chain/index.html">RFOF‑GOLDEN‑Chain</a>
       </div>
     </div>
 
@@ -257,15 +242,12 @@
     <div class="nav-group">
       <button class="nav-btn" data-menu="clearing">Chain Clearing <span class="icon">▾</span></button>
       <div class="nav-menu" id="menu-clearing">
-        <a onclick="smartNav('browser.html?mode=clearing')">Chain Clearing</a>
+        <a href="browser.html?mode=clearing">Chain Clearing</a>
       </div>
     </div>
   </nav>
 
-  <div style="display:flex; align-items:center;">
-    <a href="#" id="authBtn" class="login-btn" onclick="openLogin()">Register / Login</a>
-    <button id="logoutBtn" class="logout-btn" style="display:none;" onclick="logout()">LOGOUT</button>
-  </div>
+  <a href="#" id="authBtn" class="login-btn" onclick="openLogin()">Register / Login</a>
 </header>
 
 <main>
@@ -274,7 +256,7 @@
     <h1>API HOME – META‑UI‑SYSTEM</h1>
     <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier logisch gerendert.</p>
     <div class="link-row">
-      <a class="link-chip" onclick="smartNav('browser.html')">Meta-Documentation</a>
+      <a class="link-chip" href="browser.html">Meta-Documentation</a>
       <a class="link-chip" href="#docs-user">Benutzer-Dokumentation</a>
       <a class="link-chip" href="#docs-dev">Entwickler-Dokumentation</a>
     </div>
@@ -285,10 +267,10 @@
     <h2>Wallet · Profil · Settings · Staking</h2>
     <p>Diese Module sind global verfügbar und werden in API HOME sowie in allen Meta‑Systemen rekursiv genutzt.</p>
     <div class="link-row">
-      <a class="link-chip" onclick="smartNav('wallet')">Wallet</a>
-      <a class="link-chip" onclick="smartNav('profil')">Profil</a>
-      <a class="link-chip" onclick="smartNav('settings')">Settings</a>
-      <a class="link-chip" onclick="smartNav('staking')">Staking</a>
+      <a class="link-chip" href="wallet/index.html">Wallet</a>
+      <a class="link-chip" href="profil/index.html">Profil</a>
+      <a class="link-chip" href="settings/index.html">Settings</a>
+      <a class="link-chip" href="staking/index.html">Staking</a>
     </div>
   </section>
 
@@ -296,21 +278,21 @@
     <div class="tag">Meta‑System</div>
     <h2>GPCB</h2>
     <p>Zentralbank-Ebene. GPCB erbt die globalen Module und ergänzt sie um system‑spezifische Dokumentation.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('GPCB')">GPCB</a></div>
+    <div class="link-row"><a class="link-chip" href="GPCB/index.html">GPCB</a></div>
   </section>
 
   <section id="eccu">
     <div class="tag">Meta‑System</div>
     <h2>ECCU</h2>
     <p>Währungs-Ebene. ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('ECCU')">ECCU</a></div>
+    <div class="link-row"><a class="link-chip" href="ECCU/index.html">ECCU</a></div>
   </section>
 
   <section id="rfof-chain">
     <div class="tag">Meta‑System</div>
     <h2>RFOF‑GOLDEN‑Chain</h2>
     <p>Blockchain-Ebene. Bildet die Ketten‑/Clearing‑Logik ab und nutzt dieselben globalen Module.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('RFOF-GOLDEN-Chain')">RFOF‑GOLDEN‑Chain</a></div>
+    <div class="link-row"><a class="link-chip" href="RFOF-GOLDEN-Chain/index.html">RFOF‑GOLDEN‑Chain</a></div>
   </section>
 
   <section id="marketplace">
@@ -338,14 +320,14 @@
     <div class="tag">API Documentation · Meta</div>
     <h2>Meta‑Dokumentation</h2>
     <p>Terminal & Clearing Console (Zustand K). Alle operativen Repository-Daten.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('browser.html')">Meta-Documentation</a></div>
+    <div class="link-row"><a class="link-chip" href="browser.html">Meta-Documentation</a></div>
   </section>
 
   <section id="clearing">
     <div class="tag">Blockchain · Viewer</div>
     <h2>Chain Clearing</h2>
     <p>Visualisierung der Blöcke und Explorer (Zustand L). Echtzeit-Datenfluss-Monitor.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('browser.html?mode=clearing')">Chain Clearing</a></div>
+    <div class="link-row"><a class="link-chip" href="browser.html?mode=clearing">Chain Clearing</a></div>
   </section>
 </main>
 
@@ -371,23 +353,6 @@
 </div>
 
 <script>
-  // Navigation Logik für Unterordner
-  function smartNav(target) {
-    const isSubfolder = window.location.pathname.includes('/GPCB/') || 
-                        window.location.pathname.includes('/ECCU/') || 
-                        window.location.pathname.includes('/wallet/') || 
-                        window.location.pathname.includes('/profil/') || 
-                        window.location.pathname.includes('/settings/') || 
-                        window.location.pathname.includes('/staking/');
-    const prefix = isSubfolder ? "../" : "";
-    
-    if (target.includes('.html')) {
-      window.location.href = prefix + target;
-    } else {
-      window.location.href = prefix + target + "/index.html";
-    }
-  }
-
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -414,19 +379,11 @@
   function checkSession() {
     const user = localStorage.getItem("rfof_user");
     const authBtn = document.getElementById("authBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
     if(user && authBtn) {
       authBtn.textContent = "Profil (" + user + ")";
-      authBtn.onclick = () => smartNav('profil');
-      if(logoutBtn) logoutBtn.style.display = "inline-block";
-    } else {
-      if(logoutBtn) logoutBtn.style.display = "none";
+      authBtn.href = "profil/index.html";
+      authBtn.onclick = null;
     }
-  }
-
-  function logout() {
-    localStorage.removeItem("rfof_user");
-    location.reload();
   }
 
   window.addEventListener("load", () => {

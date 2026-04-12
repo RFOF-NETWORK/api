@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Settings Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010204; --border:#1e293b; --text:#22c55e; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#38bdf8; }
+    .deny { color:#ef4444; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[ECCU-SETTINGS-OS] Scanning System-Integrity...</div>
+  <div class="line">[INFO] Lockdown-Mode: ACTIVE.</div>
+  <div class="line">[INFO] Verifying Anchor-Points for 2.50€/2TB.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">ECCU:\SETTINGS\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Überwachung von unbefugten Zugriffsversuchen
+  setInterval(() => {
+    if(Math.random() > 0.92) {
+      addLog("<span class='deny'>REJECTED:</span> External attempt to modify Fixed-Parity detected and neutralized.");
+    }
+  }, 7500);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

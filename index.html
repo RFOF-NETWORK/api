@@ -14,7 +14,6 @@
       --text:#f9fafb;
       --muted:#9ca3af;
       --accent:#38bdf8;
-      --danger:#ff4b2b;
     }
     * { box-sizing:border-box; }
     body {
@@ -32,13 +31,9 @@
       justify-content:space-between;
       gap:16px;
       flex-wrap:wrap;
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
     .brand { font-weight:600; font-size:15px; }
     .brand span { color:var(--accent); }
-    
     nav { display:flex; flex-wrap:wrap; gap:8px; }
     .nav-group { position:relative; }
     .nav-btn {
@@ -54,7 +49,6 @@
       gap:6px;
     }
     .nav-btn span.icon { font-size:11px; opacity:.7; }
-    
     .nav-menu {
       position:absolute;
       top:110%;
@@ -66,22 +60,20 @@
       padding:6px;
       box-shadow:0 18px 40px rgba(0,0,0,.55);
       display:none;
-      z-index:1000; /* Erzwungen über allen Inhalten */
+      z-index:20;
     }
     .nav-menu a {
       display:block;
-      padding:8px 10px;
+      padding:6px 8px;
       border-radius:6px;
       font-size:13px;
       color:var(--text);
       text-decoration:none;
       cursor: pointer;
     }
-    .nav-menu a:hover { background:rgba(56,189,248,.15); color:var(--accent); }
+    .nav-menu a:hover { background:rgba(148,163,184,.15); }
     .nav-group.open .nav-menu { display:block; }
 
-    .auth-area { display: flex; align-items: center; gap: 10px; }
-    
     .login-btn {
       padding:6px 14px;
       border-radius:999px;
@@ -91,24 +83,25 @@
       font-size:13px;
       text-decoration:none;
       border:1px solid var(--accent);
+      margin-left:12px;
       white-space:nowrap;
-      cursor: pointer;
     }
     .login-btn:hover { background:#0ea5e9; }
 
+    /* Logout Style */
     .logout-btn {
-      padding:6px 14px;
-      border-radius:999px;
-      background:transparent;
-      color:var(--danger);
-      border:1px solid var(--danger);
-      font-weight:600;
-      font-size:11px;
-      cursor:pointer;
+      background: transparent;
+      border: 1px solid #ff4b2b;
+      color: #ff4b2b;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-left: 8px;
     }
-    .logout-btn:hover { background:var(--danger); color:#000; }
 
-    /* Modal */
+    /* Login Modal */
     .modal {
       display:none;
       position:fixed;
@@ -116,38 +109,44 @@
       left:0;
       width:100%;
       height:100%;
-      background:rgba(0,0,0,0.85);
+      background:rgba(0,0,0,0.7);
       justify-content:center;
       align-items:center;
       z-index:9999;
     }
     .modal-content {
       background:var(--bg-alt);
-      padding:25px;
-      border-radius:16px;
+      padding:20px;
+      border-radius:12px;
       border:1px solid var(--border);
       width:90%;
       max-width:350px;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:10px;
     }
     .modal-content input {
-      padding:12px;
-      border-radius:8px;
+      padding:10px;
+      border-radius:6px;
       border:1px solid var(--border);
       background:var(--bg);
       color:var(--text);
-      outline: none;
     }
     .modal-btn {
-      padding:12px;
+      padding:10px;
       background:var(--accent);
       border:none;
-      border-radius:8px;
+      border-radius:6px;
       font-weight:bold;
       cursor:pointer;
-      color:#000;
+    }
+    .modal-close {
+      padding:8px;
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent);
+      border-radius:6px;
+      cursor:pointer;
     }
 
     main {
@@ -164,8 +163,8 @@
       background:var(--bg-alt);
       border-radius:14px;
       border:1px solid var(--border);
-      padding:18px;
-      position: relative;
+      padding:18px 18px 16px;
+      margin-bottom: 20px;
     }
     .tag {
       font-size:11px;
@@ -175,27 +174,31 @@
       margin-bottom:4px;
     }
     h1,h2,h3 { margin:0 0 8px; font-weight:600; }
-    h1 { font-size:22px; }
-    h2 { font-size:18px; }
-    p { margin:0 0 12px; font-size:14px; color:var(--muted); line-height: 1.5; }
+    h1 { font-size:20px; }
+    h2 { font-size:16px; }
+    h3 { font-size:14px; }
+    p { margin:0 0 8px; font-size:13px; color:var(--muted); }
+    ul { margin:6px 0 0; padding-left:18px; font-size:13px; }
+    li { margin-bottom:3px; }
 
     .link-row {
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
+      gap:8px;
+      margin-top:10px;
     }
     .link-chip {
       font-size:12px;
-      padding:8px 16px;
+      padding:6px 12px;
       border-radius:999px;
       border:1px solid var(--border);
       background:#020617;
       color:var(--accent);
       text-decoration:none;
-      font-weight: 500;
+      transition: background 0.2s;
       cursor: pointer;
     }
-    .link-chip:hover { border-color: var(--accent); background:rgba(56,189,248,0.05); }
+    .link-chip:hover { background:#0b1120; border-color: var(--accent); }
   </style>
 </head>
 
@@ -206,19 +209,19 @@
     <span>RFOF‑NETWORK</span> · API HOME
   </div>
 
-  <nav id="master-nav">
+  <nav>
     <div class="nav-group">
-      <button class="nav-btn">Home <span class="icon">▾</span></button>
-      <div class="nav-menu">
-        <a onclick="smartNav('home')">API HOME</a>
+      <button class="nav-btn" data-menu="home">Home <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-home">
+        <a href="#api-home">API HOME</a>
         <a href="#meta-backend">META‑BACKEND</a>
         <a onclick="smartNav('browser.html')">META Documentation</a>
       </div>
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn">Global Modules <span class="icon">▾</span></button>
-      <div class="nav-menu">
+      <button class="nav-btn" data-menu="global">Global Modules <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-global">
         <a onclick="smartNav('wallet')">Wallet</a>
         <a onclick="smartNav('profil')">Profil</a>
         <a onclick="smartNav('settings')">Settings</a>
@@ -227,8 +230,8 @@
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn">Meta‑Systeme <span class="icon">▾</span></button>
-      <div class="nav-menu">
+      <button class="nav-btn" data-menu="systems">Meta‑Systeme <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-systems">
         <a onclick="smartNav('GPCB')">GPCB</a>
         <a onclick="smartNav('ECCU')">ECCU</a>
         <a onclick="smartNav('RFOF-GOLDEN-Chain')">RFOF‑GOLDEN‑Chain</a>
@@ -236,24 +239,31 @@
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn">Documentation <span class="icon">▾</span></button>
-      <div class="nav-menu">
+      <button class="nav-btn" data-menu="docs">Documentation <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-docs">
         <a href="#docs-user">Benutzer‑Dokumentation</a>
         <a href="#docs-dev">Entwickler‑Dokumentation</a>
-        <a onclick="smartNav('browser.html')">Meta‑Dokumentation</a>
+        <a href="#docs-meta">Meta‑Dokumentation</a>
       </div>
     </div>
 
     <div class="nav-group">
-      <button class="nav-btn">Marketplace <span class="icon">▾</span></button>
-      <div class="nav-menu">
+      <button class="nav-btn" data-menu="market">API Marketplace <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-market">
         <a href="#marketplace">API Marketplace</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <button class="nav-btn" data-menu="clearing">Chain Clearing <span class="icon">▾</span></button>
+      <div class="nav-menu" id="menu-clearing">
+        <a onclick="smartNav('browser.html?mode=clearing')">Chain Clearing</a>
       </div>
     </div>
   </nav>
 
-  <div class="auth-area">
-    <a href="javascript:void(0)" id="authBtn" class="login-btn" onclick="openLogin()">Register / Login</a>
+  <div style="display:flex; align-items:center;">
+    <a href="#" id="authBtn" class="login-btn" onclick="openLogin()">Register / Login</a>
     <button id="logoutBtn" class="logout-btn" style="display:none;" onclick="logout()">LOGOUT</button>
   </div>
 </header>
@@ -262,18 +272,18 @@
   <section id="api-home">
     <div class="tag">META‑BACKEND · API‑SYSTEM</div>
     <h1>API HOME – META‑UI‑SYSTEM</h1>
-    <p>Zentrales Master-Interface. Alle Systeme und Module werden hier konsistent gerendert und gesteuert.</p>
+    <p>Master‑UI über dem zentralen META‑BACKEND. Alle Meta‑Systeme, globalen Module und Dokumentation werden hier logisch gerendert.</p>
     <div class="link-row">
       <a class="link-chip" onclick="smartNav('browser.html')">Meta-Documentation</a>
-      <a class="link-chip" href="#docs-user">User-Docs</a>
-      <a class="link-chip" href="#docs-dev">Dev-Docs</a>
+      <a class="link-chip" href="#docs-user">Benutzer-Dokumentation</a>
+      <a class="link-chip" href="#docs-dev">Entwickler-Dokumentation</a>
     </div>
   </section>
 
   <section id="meta-backend">
     <div class="tag">Globale Meta‑Module</div>
-    <h2>Core Identity & Finance</h2>
-    <p>Diese Module bilden das Rückgrat des Netzwerks und werden systemübergreifend synchronisiert.</p>
+    <h2>Wallet · Profil · Settings · Staking</h2>
+    <p>Diese Module sind global verfügbar und werden in API HOME sowie in allen Meta‑Systemen rekursiv genutzt.</p>
     <div class="link-row">
       <a class="link-chip" onclick="smartNav('wallet')">Wallet</a>
       <a class="link-chip" onclick="smartNav('profil')">Profil</a>
@@ -284,30 +294,58 @@
 
   <section id="gpcb">
     <div class="tag">Meta‑System</div>
-    <h2>GPCB · Central Banking</h2>
-    <p>Regulatorische Ebene und Clearing-Schnittstelle der GPCB.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('GPCB')">GPCB Interface</a></div>
+    <h2>GPCB</h2>
+    <p>Zentralbank-Ebene. GPCB erbt die globalen Module und ergänzt sie um system‑spezifische Dokumentation.</p>
+    <div class="link-row"><a class="link-chip" onclick="smartNav('GPCB')">GPCB</a></div>
   </section>
 
   <section id="eccu">
     <div class="tag">Meta‑System</div>
-    <h2>ECCU · Currency Unit</h2>
-    <p>Währungs-Management und Liquiditäts-Steuerung.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('ECCU')">ECCU Interface</a></div>
+    <h2>ECCU</h2>
+    <p>Währungs-Ebene. ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext.</p>
+    <div class="link-row"><a class="link-chip" onclick="smartNav('ECCU')">ECCU</a></div>
   </section>
 
   <section id="rfof-chain">
     <div class="tag">Meta‑System</div>
     <h2>RFOF‑GOLDEN‑Chain</h2>
-    <p>Echtzeit-Validierung und Blockchain-Monitoring.</p>
-    <div class="link-row"><a class="link-chip" onclick="smartNav('RFOF-GOLDEN-Chain')">Chain Explorer</a></div>
+    <p>Blockchain-Ebene. Bildet die Ketten‑/Clearing‑Logik ab und nutzt dieselben globalen Module.</p>
+    <div class="link-row"><a class="link-chip" onclick="smartNav('RFOF-GOLDEN-Chain')">RFOF‑GOLDEN‑Chain</a></div>
   </section>
 
   <section id="marketplace">
-    <div class="tag">Commercial</div>
+    <div class="tag">Kommerzielle Ebene</div>
     <h2>API Marketplace</h2>
-    <p>Tarifpläne und API-Abrechnungsmodelle für Partner.</p>
-    <div class="link-row"><a class="link-chip" href="#marketplace">Marketplace öffnen</a></div>
+    <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, mit Tarifen, Plänen und Abrechnung.</p>
+    <div class="link-row"><a class="link-chip" href="#marketplace">API Marketplace</a></div>
+  </section>
+
+  <section id="docs-user">
+    <div class="tag">API Documentation · Benutzer</div>
+    <h2>Benutzer‑Dokumentation</h2>
+    <p>User-Ebene Anwendungshilfen.</p>
+    <div class="link-row"><a class="link-chip" href="#docs-user">Benutzer-Dokumentation</a></div>
+  </section>
+
+  <section id="docs-dev">
+    <div class="tag">API Documentation · Entwickler</div>
+    <h2>Entwickler‑Dokumentation</h2>
+    <p>Tech-Ebene API-Spezifikationen.</p>
+    <div class="link-row"><a class="link-chip" href="#docs-dev">Entwickler-Dokumentation</a></div>
+  </section>
+
+  <section id="docs-meta">
+    <div class="tag">API Documentation · Meta</div>
+    <h2>Meta‑Dokumentation</h2>
+    <p>Terminal & Clearing Console (Zustand K). Alle operativen Repository-Daten.</p>
+    <div class="link-row"><a class="link-chip" onclick="smartNav('browser.html')">Meta-Documentation</a></div>
+  </section>
+
+  <section id="clearing">
+    <div class="tag">Blockchain · Viewer</div>
+    <h2>Chain Clearing</h2>
+    <p>Visualisierung der Blöcke und Explorer (Zustand L). Echtzeit-Datenfluss-Monitor.</p>
+    <div class="link-row"><a class="link-chip" onclick="smartNav('browser.html?mode=clearing')">Chain Clearing</a></div>
   </section>
 </main>
 
@@ -315,7 +353,7 @@
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <h2 id="modalTitle">Login</h2>
-      <button id="switchModeBtn" style="background:transparent; border:none; color:var(--accent); cursor:pointer;" onclick="switchMode()">Register</button>
+      <button id="switchModeBtn" class="modal-close" onclick="switchMode()">Register</button>
     </div>
     <div id="loginView">
       <input id="loginUser" type="text" placeholder="Benutzername" />
@@ -325,28 +363,31 @@
     <div id="registerView" style="display:none;">
       <input id="regUser" type="text" placeholder="Benutzername" />
       <input id="regPass" type="password" placeholder="Passwort" />
-      <button class="modal-btn" onclick="registerUser()">Account erstellen</button>
+      <input id="regPass2" type="password" placeholder="Passwort wiederholen" />
+      <button class="modal-btn" onclick="registerUser()">Register</button>
     </div>
-    <button style="background:transparent; border:none; color:var(--muted); margin-top:10px; cursor:pointer;" onclick="closeLogin()">Abbrechen</button>
+    <button class="modal-close" onclick="closeLogin()">Schließen</button>
   </div>
 </div>
 
 <script>
-  // --- NAVIGATION LOGIK (RHETORISCH GLEICH) ---
+  // Navigation Logik für Unterordner
   function smartNav(target) {
-    const path = window.location.pathname;
-    const isSub = path.includes('/GPCB/') || path.includes('/ECCU/') || path.includes('/wallet/') || 
-                  path.includes('/profil/') || path.includes('/settings/') || path.includes('/staking/') || 
-                  path.includes('/RFOF-GOLDEN-Chain/');
+    const isSubfolder = window.location.pathname.includes('/GPCB/') || 
+                        window.location.pathname.includes('/ECCU/') || 
+                        window.location.pathname.includes('/wallet/') || 
+                        window.location.pathname.includes('/profil/') || 
+                        window.location.pathname.includes('/settings/') || 
+                        window.location.pathname.includes('/staking/');
+    const prefix = isSubfolder ? "../" : "";
     
-    const prefix = isSub ? "../" : "";
-    
-    if(target === 'home') window.location.href = prefix + "index.html";
-    else if(target === 'browser.html') window.location.href = prefix + "browser.html";
-    else window.location.href = prefix + target + "/index.html";
+    if (target.includes('.html')) {
+      window.location.href = prefix + target;
+    } else {
+      window.location.href = prefix + target + "/index.html";
+    }
   }
 
-  // --- DROPDOWN STEUERUNG ---
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -361,50 +402,66 @@
     document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
   });
 
-  // --- AUTH LOGIK ---
+  function ensureClientId() {
+    let clientId = localStorage.getItem("globalClientID");
+    if (!clientId) {
+      clientId = "cid-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+      localStorage.setItem("globalClientID", clientId);
+    }
+    return clientId;
+  }
+
   function checkSession() {
     const user = localStorage.getItem("rfof_user");
     const authBtn = document.getElementById("authBtn");
     const logoutBtn = document.getElementById("logoutBtn");
-
-    if(user) {
-      authBtn.textContent = user;
+    if(user && authBtn) {
+      authBtn.textContent = "Profil (" + user + ")";
       authBtn.onclick = () => smartNav('profil');
-      logoutBtn.style.display = "block";
+      if(logoutBtn) logoutBtn.style.display = "inline-block";
     } else {
-      authBtn.textContent = "Register / Login";
-      authBtn.onclick = openLogin;
-      logoutBtn.style.display = "none";
+      if(logoutBtn) logoutBtn.style.display = "none";
     }
   }
+
+  function logout() {
+    localStorage.removeItem("rfof_user");
+    location.reload();
+  }
+
+  window.addEventListener("load", () => {
+    ensureClientId();
+    checkSession();
+  });
 
   function openLogin() { document.getElementById("loginModal").style.display = "flex"; }
   function closeLogin() { document.getElementById("loginModal").style.display = "none"; }
 
   let mode = "login";
   function switchMode() {
-    mode = (mode === "login") ? "register" : "login";
-    document.getElementById("modalTitle").textContent = mode === "login" ? "Login" : "Register";
-    document.getElementById("loginView").style.display = mode === "login" ? "flex" : "none";
-    document.getElementById("registerView").style.display = mode === "register" ? "flex" : "none";
+    const isLogin = mode === "login";
+    mode = isLogin ? "register" : "login";
+    document.getElementById("modalTitle").textContent = isLogin ? "Register" : "Login";
+    document.getElementById("switchModeBtn").textContent = isLogin ? "Login" : "Register";
+    document.getElementById("loginView").style.display = isLogin ? "none" : "block";
+    document.getElementById("registerView").style.display = isLogin ? "block" : "none";
   }
 
-  function login() {
-    const user = document.getElementById("loginUser").value;
-    if(user) { localStorage.setItem("rfof_user", user); location.reload(); }
-  }
-
-  function registerUser() {
+  async function registerUser() {
     const user = document.getElementById("regUser").value;
-    if(user) { localStorage.setItem("rfof_user", user); location.reload(); }
+    const pass = document.getElementById("regPass").value;
+    if(!user || !pass) return alert("Daten eingeben.");
+    localStorage.setItem("rfof_user", user);
+    location.reload();
   }
 
-  function logout() {
-    localStorage.removeItem("rfof_user");
-    smartNav('home');
+  async function login() {
+    const user = document.getElementById("loginUser").value;
+    const pass = document.getElementById("loginPass").value;
+    if(!user || !pass) return alert("Login fehlt!");
+    localStorage.setItem("rfof_user", user);
+    location.reload();
   }
-
-  window.addEventListener("load", checkSession);
 </script>
 </body>
 </html>

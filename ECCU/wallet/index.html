@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Währungs-Anker Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#030406; --bg-alt:#090b10; --border:#1e293b; --text:#f1f5f9; --accent:#38bdf8; --eccu:#22c55e; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010204; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .anchor-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:25px; border-left: 4px solid var(--eccu); position:relative; }
+    .value-display { font-size:32px; font-weight:bold; color:var(--eccu); margin:15px 0; font-family:monospace; }
+    
+    .lock-notice { background:rgba(34,197,94,0.05); border:1px solid var(--eccu); border-radius:8px; padding:15px; margin-top:20px; display:flex; align-items:center; gap:12px; }
+    .lock-icon { font-size:20px; }
+    
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--eccu); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">ECCU</a> · <span style="color:var(--eccu);">ANCHOR-WALLET</span></div>
+  <div style="font-size:12px; font-family:monospace;">STABILITY: <span style="color:var(--eccu);">FIXED</span></div>
+</header>
+
+<main>
+  <div class="anchor-card">
+    <small style="color:var(--eccu); font-weight:bold; letter-spacing:1px;">CURRENCY ANCHOR SECTOR</small>
+    <h1 style="margin:5px 0 0 0;">Physische Deckung</h1>
+    <div class="value-display">2.50 € = 2 TB JOUL</div>
+    <p style="font-size:13px; color:#94a3b8;">Dieser Sektor fixiert den Wert der ECCU-Einheiten. Transaktionsrechte liegen exklusiv beim Master-Netzwerk.</p>
+    
+    <div class="lock-notice">
+      <span class="lock-icon">🔒</span>
+      <div style="font-size:11px;">
+        <b>INTERAKTIONS-SPERRE AKTIV</b><br>
+        ECCU-Einheiten sind an den Genesis-Block gebunden und unveränderlich.
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  ECCU-ANCHOR-SYNC: 100% || 2TB-THRESHOLD: VERIFIED || RFOF-NETWORK MASTER-VIEW || PZQQET-Axiom
+</div>
+</body>
+</html>

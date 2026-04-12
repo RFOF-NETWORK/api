@@ -73,6 +73,9 @@
     .nav-menu a:hover { background:rgba(148,163,184,.15); }
     .nav-group.open .nav-menu { display:block; }
 
+    /* Auth-Container Fixierung */
+    #authContainer { display: flex; align-items: center; gap: 10px; }
+
     .login-btn {
       padding:6px 14px;
       border-radius:999px;
@@ -84,8 +87,19 @@
       border:1px solid var(--accent);
       margin-left:12px;
       white-space:nowrap;
+      cursor: pointer;
     }
     .login-btn:hover { background:#0ea5e9; }
+
+    .logout-btn {
+      background:none; 
+      border:1px solid #ef4444; 
+      color:#ef4444; 
+      border-radius:999px; 
+      padding:4px 10px; 
+      font-size:11px; 
+      cursor:pointer;
+    }
 
     /* Login Modal */
     .modal {
@@ -164,9 +178,7 @@
     h2 { font-size:16px; }
     h3 { font-size:14px; }
     p { margin:0 0 8px; font-size:13px; color:var(--muted); }
-    ul { margin:6px 0 0; padding-left:18px; font-size:13px; }
-    li { margin-bottom:3px; }
-
+    
     .link-row {
       display:flex;
       flex-wrap:wrap;
@@ -222,32 +234,11 @@
         <a href="RFOF-GOLDEN-Chain/index.html">RFOF‑GOLDEN‑Chain</a>
       </div>
     </div>
-
-    <div class="nav-group">
-      <button class="nav-btn" data-menu="docs">Documentation <span class="icon">▾</span></button>
-      <div class="nav-menu" id="menu-docs">
-        <a href="#docs-user">Benutzer‑Dokumentation</a>
-        <a href="#docs-dev">Entwickler‑Dokumentation</a>
-        <a href="#docs-meta">Meta‑Dokumentation</a>
-      </div>
-    </div>
-
-    <div class="nav-group">
-      <button class="nav-btn" data-menu="market">API Marketplace <span class="icon">▾</span></button>
-      <div class="nav-menu" id="menu-market">
-        <a href="#marketplace">API Marketplace</a>
-      </div>
-    </div>
-
-    <div class="nav-group">
-      <button class="nav-btn" data-menu="clearing">Chain Clearing <span class="icon">▾</span></button>
-      <div class="nav-menu" id="menu-clearing">
-        <a href="browser.html?mode=clearing">Chain Clearing</a>
-      </div>
-    </div>
   </nav>
 
-  <a href="#" class="login-btn" onclick="openLogin()">Register / Login</a>
+  <div id="authContainer">
+    <a href="#" id="mainAuthBtn" class="login-btn" onclick="openLogin()">Register / Login</a>
+  </div>
 </header>
 
 <main>
@@ -273,62 +264,6 @@
       <a class="link-chip" href="staking/index.html">Staking</a>
     </div>
   </section>
-
-  <section id="gpcb">
-    <div class="tag">Meta‑System</div>
-    <h2>GPCB</h2>
-    <p>Zentralbank-Ebene. GPCB erbt die globalen Module und ergänzt sie um system‑spezifische Dokumentation.</p>
-    <div class="link-row"><a class="link-chip" href="GPCB/index.html">GPCB</a></div>
-  </section>
-
-  <section id="eccu">
-    <div class="tag">Meta‑System</div>
-    <h2>ECCU</h2>
-    <p>Währungs-Ebene. ECCU nutzt dieselbe Modulstruktur wie GPCB, aber mit eigenem fachlichen Kontext.</p>
-    <div class="link-row"><a class="link-chip" href="ECCU/index.html">ECCU</a></div>
-  </section>
-
-  <section id="rfof-chain">
-    <div class="tag">Meta‑System</div>
-    <h2>RFOF‑GOLDEN‑Chain</h2>
-    <p>Blockchain-Ebene. Bildet die Ketten‑/Clearing‑Logik ab und nutzt dieselben globalen Module.</p>
-    <div class="link-row"><a class="link-chip" href="RFOF-GOLDEN-Chain/index.html">RFOF‑GOLDEN‑Chain</a></div>
-  </section>
-
-  <section id="marketplace">
-    <div class="tag">Kommerzielle Ebene</div>
-    <h2>API Marketplace</h2>
-    <p>Vermarktung der API‑Module. Profil‑/Account‑gebunden, mit Tarifen, Plänen und Abrechnung.</p>
-    <div class="link-row"><a class="link-chip" href="#marketplace">API Marketplace</a></div>
-  </section>
-
-  <section id="docs-user">
-    <div class="tag">API Documentation · Benutzer</div>
-    <h2>Benutzer‑Dokumentation</h2>
-    <p>User-Ebene Anwendungshilfen.</p>
-    <div class="link-row"><a class="link-chip" href="#docs-user">Benutzer-Dokumentation</a></div>
-  </section>
-
-  <section id="docs-dev">
-    <div class="tag">API Documentation · Entwickler</div>
-    <h2>Entwickler‑Dokumentation</h2>
-    <p>Tech-Ebene API-Spezifikationen.</p>
-    <div class="link-row"><a class="link-chip" href="#docs-dev">Entwickler-Dokumentation</a></div>
-  </section>
-
-  <section id="docs-meta">
-    <div class="tag">API Documentation · Meta</div>
-    <h2>Meta‑Dokumentation</h2>
-    <p>Terminal & Clearing Console (Zustand K). Alle operativen Repository-Daten.</p>
-    <div class="link-row"><a class="link-chip" href="browser.html">Meta-Documentation</a></div>
-  </section>
-
-  <section id="clearing">
-    <div class="tag">Blockchain · Viewer</div>
-    <h2>Chain Clearing</h2>
-    <p>Visualisierung der Blöcke und Explorer (Zustand L). Echtzeit-Datenfluss-Monitor.</p>
-    <div class="link-row"><a class="link-chip" href="browser.html?mode=clearing">Chain Clearing</a></div>
-  </section>
 </main>
 
 <div id="loginModal" class="modal">
@@ -353,7 +288,7 @@
 </div>
 
 <script>
-  // Navigation Script (Synchron mit Dropdowns)
+  // Navigation Script
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -368,11 +303,6 @@
     document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
   });
 
-  const BACKEND_BASE = "https://rfof-network.github.io/api"; 
-  const REGISTER_ENDPOINT = BACKEND_BASE + "/auth/register";
-  const LOGIN_ENDPOINT    = BACKEND_BASE + "/auth/login";
-  const EVENT_ENDPOINT    = BACKEND_BASE + "/events/register-client";
-
   function ensureClientId() {
     let clientId = localStorage.getItem("globalClientID");
     if (!clientId) {
@@ -381,8 +311,6 @@
     }
     return clientId;
   }
-
-  window.addEventListener("load", ensureClientId);
 
   function openLogin() { document.getElementById("loginModal").style.display = "flex"; }
   function closeLogin() { document.getElementById("loginModal").style.display = "none"; }
@@ -397,9 +325,55 @@
     document.getElementById("registerView").style.display = isLogin ? "block" : "none";
   }
 
-  // Auth-Funktionen bleiben wie im Original
-  async function registerUser() { /* ... wie Original ... */ }
-  async function login() { /* ... wie Original ... */ }
+  // Korrigierte Login/Logout Logik
+  function updateAuthUI() {
+    const user = localStorage.getItem("rfof_user");
+    const container = document.getElementById("authContainer");
+    
+    if (user) {
+      container.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; margin-left:12px;">
+          <a href="profil/index.html" class="link-chip" style="color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; border-color:var(--accent);">
+            Profil (${user})
+          </a>
+          <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `<a href="#" class="login-btn" onclick="openLogin()">Register / Login</a>`;
+    }
+  }
+
+  async function registerUser() {
+    const user = document.getElementById("regUser").value;
+    const pass = document.getElementById("regPass").value;
+    const pass2 = document.getElementById("regPass2").value;
+    if(!user || !pass) return alert("Felder ausfüllen!");
+    if(pass !== pass2) return alert("Passwörter ungleich!");
+    
+    localStorage.setItem("rfof_user", user);
+    location.reload();
+  }
+
+  async function login() {
+    const user = document.getElementById("loginUser").value;
+    const pass = document.getElementById("loginPass").value;
+    if(!user || !pass) return alert("Login-Daten fehlen!");
+    
+    localStorage.setItem("rfof_user", user);
+    closeLogin();
+    location.reload();
+  }
+
+  function logout() {
+    localStorage.removeItem("rfof_user");
+    location.reload();
+  }
+
+  window.addEventListener("load", () => {
+    ensureClientId();
+    updateAuthUI();
+  });
 </script>
 </body>
 </html>

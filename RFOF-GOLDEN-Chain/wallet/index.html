@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Raw Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#02040a; --bg-alt:#0d1117; --border:#30363d; --text:#c9d1d9; --gold:#d29922; --chain:#58a6ff; }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010409; display:flex; justify-content:space-between; align-items:center; }
+    main { padding:20px; max-width: 1000px; margin: 0 auto; }
+    
+    .chain-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; }
+    .hash-list { margin-top:20px; font-family: 'Courier New', monospace; font-size:12px; }
+    .hash-row { display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid var(--border); background:rgba(88,166,255,0.03); margin-bottom:5px; border-radius:4px; }
+    .utxo-tag { color:var(--chain); font-weight:bold; margin-right:10px; }
+    .amount-tag { color:var(--gold); }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#010409; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--chain); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">RFOF-GOLDEN-Chain</a> · <span style="color:var(--chain);">RAW-WALLET</span></div>
+  <div style="font-size:11px;">BLOCK-HEIGHT: <span style="color:var(--gold);" id="block-height">842.093</span></div>
+</header>
+
+<main>
+  <div class="chain-card">
+    <h2 style="margin:0; font-size:18px;">UTXO & Ketten-Transaktionen</h2>
+    <p style="font-size:12px; color:#8b949e;">Visualisierung der rohen UTX-Hashes innerhalb des RFOF-GOLDEN-Chain Protokolls.</p>
+    
+    <div class="hash-list" id="hash-container">
+      <div class="hash-row">
+        <span><span class="utxo-tag">UTX:</span> f7d8...a21e</span>
+        <span class="amount-tag">420.00 RFOF-G</span>
+      </div>
+      <div class="hash-row">
+        <span><span class="utxo-tag">UTX:</span> e91a...3bc4</span>
+        <span class="amount-tag">1.002.50 RFOF-G</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  CHAIN-SYNC: ACTIVE || HASH-ALGO: PZQQET-256 || RFOF-NETWORK MASTER-ACCESS || 100M% VALIDATION
+</div>
+
+<script>
+  // Dynamische Simulation der Block-Höhe
+  setInterval(() => {
+    const el = document.getElementById("block-height");
+    el.textContent = (parseInt(el.textContent.replace('.','')) + 1).toLocaleString();
+  }, 10000);
+</script>
+</body>
+</html>

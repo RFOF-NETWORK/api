@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
 
   <style>
@@ -47,7 +46,6 @@
     .brand a { color:var(--text); text-decoration:none; }
     .brand span { color:var(--accent); }
 
-    /* Meta-Dropdown Integration */
     nav { display:flex; flex-wrap:wrap; gap:8px; }
     .nav-group { position:relative; }
     .nav-btn {
@@ -88,7 +86,6 @@
 
     #container { padding:20px; max-width: 1200px; margin: 0 auto; }
 
-    /* GUCI Status Bar */
     .guci-bar {
       background: #020617;
       border: 1px solid var(--border);
@@ -114,7 +111,6 @@
     }
     .item:hover { border-color: var(--accent); background:rgba(56, 189, 248, 0.05); }
 
-    /* API Tester / Console (Box I) */
     #apiTester {
       margin-top:40px;
       padding:20px;
@@ -145,10 +141,9 @@
       font-weight:bold;
     }
 
-    /* Chain Clearing Viewer (Box J) */
     #clearingViewer {
       margin-top: 20px;
-      display: none; /* Wird via JS aktiviert */
+      display: none; 
       background: #000;
       border: 1px solid #0f172a;
       padding: 15px;
@@ -178,6 +173,7 @@
 <header>
   <div class="brand">
     <a href="index.html"><span>RFOF‑NETWORK</span> · API Explorer</a>
+    <span id="session-tag" style="font-size:10px; margin-left:10px; color:var(--muted);"></span>
   </div>
 
   <nav>
@@ -230,7 +226,6 @@
 </div>
 
 <script>
-/* 1. GUCI & Context Logik */
 const owner = "RFOF-NETWORK";
 const repo = "api";
 const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents`;
@@ -253,7 +248,14 @@ function getGUCI() {
     return id;
 }
 
-/* 2. Pfad-Navigation */
+// Session Check für Browser
+function checkSession() {
+    const user = localStorage.getItem("rfof_user");
+    if (user) {
+        document.getElementById("session-tag").textContent = `[OPERATOR: ${user}]`;
+    }
+}
+
 async function loadPath(path = "") {
     try {
         const res = await fetch(`${apiBase}/${path}`);
@@ -286,7 +288,6 @@ async function loadPath(path = "") {
 }
 
 async function loadFile(path) {
-    // Original Load-Logik für Markdown/Code
     const res = await fetch(`${apiBase}/${path}`);
     const data = await res.json();
     const decoded = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ""))));
@@ -297,7 +298,6 @@ async function loadFile(path) {
     updateEnergy(2);
 }
 
-/* 3. Box I/J Integration */
 function executeAction() {
     const method = document.getElementById("apiMethod").value;
     const url = document.getElementById("apiUrl").value;
@@ -305,8 +305,6 @@ function executeAction() {
     const viewer = document.getElementById("clearingViewer");
 
     viewer.style.display = "block";
-    
-    // Simulation des Chain Clearing (Box J)
     const timestamp = new Date().toLocaleTimeString();
     const blockHash = "0x" + Math.random().toString(16).slice(2, 10);
     
@@ -316,12 +314,8 @@ function executeAction() {
     
     log.prepend(entry);
     updateEnergy(5);
-    
-    // 405-Error Bypass Simulation
-    console.log(`GUCI Action: ${getGUCI()} sendet ${method} an ${url}`);
 }
 
-/* 4. UI Initialisierung */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -333,7 +327,6 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
 });
 
-// Check if mode is clearing (from Box J click on index)
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('mode') === 'clearing') {
     document.getElementById("clearingViewer").style.display = "block";
@@ -341,10 +334,10 @@ if (urlParams.get('mode') === 'clearing') {
 
 window.onload = () => {
     getGUCI();
+    checkSession();
     loadPath();
     document.getElementById("display-joul").textContent = energyCounter;
 };
 </script>
-
 </body>
 </html>

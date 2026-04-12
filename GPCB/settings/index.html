@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPCB | Global Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; --gold:#fbbf24; --danger:#f87171; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#020308; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .settings-card { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:25px; border-left: 4px solid var(--gold); }
+    .param-list { margin-top:20px; }
+    .param-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .param-label { font-size:13px; color:#9ca3af; }
+    .param-value { font-family:monospace; font-weight:bold; color:var(--gold); }
+    
+    .master-lock { margin-top:30px; background:rgba(248,113,113,0.05); border:1px solid var(--danger); border-radius:8px; padding:15px; text-align:center; }
+    .status-led { width:8px; height:8px; background:#4ade80; border-radius:50%; display:inline-block; margin-right:8px; box-shadow: 0 0 8px #4ade80; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--accent); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">GPCB</a> · <span style="color:var(--gold);">GLOBAL-PARAMETERS</span></div>
+  <div style="font-size:12px; font-family:monospace;"><span class="status-led"></span>SYSTEM-LOCK: ON</div>
+</header>
+
+<main>
+  <div class="settings-card">
+    <h2 style="margin:0; font-size:18px;">Regulierungsebene: Golden Phoenix</h2>
+    <p style="font-size:12px; color:#9ca3af;">Fixierung der PZQQET-Axiome zur Sicherung der totalen System-Stabilität.</p>
+    
+    <div class="param-list">
+      <div class="param-item">
+        <span class="param-label">Interaktions-Steigerung (RFOF)</span>
+        <span class="param-value">+0.20%</span>
+      </div>
+      <div class="param-item">
+        <span class="param-label">Gold-Deckungs-Anker (SAFE)</span>
+        <span class="param-value">45.00%</span>
+      </div>
+      <div class="param-item">
+        <span class="param-label">Zentral-Beteiligung (OWNER)</span>
+        <span class="param-value">42.00%</span>
+      </div>
+      <div class="param-item">
+        <span class="param-label">Wachstums-Fonds (FOND)</span>
+        <span class="param-value">10.00%</span>
+      </div>
+    </div>
+
+    <div class="master-lock">
+      <span style="font-size:11px; color:var(--danger); font-weight:bold;">MASTER-SWITCH: SCHREIBZUGRIFF GESPERRT</span>
+      <p style="font-size:10px; color:#94a3b8; margin:5px 0 0 0;">Parameter sind im Genesis-Block verankert.</p>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  GPCB-SETTINGS-MONITOR || AXIOM-DRIFT: 0.000% || TARGET-2029: 100M% PROBABILITY || RFOF-NETWORK MASTER-VIEW
+</div>
+</body>
+</html>

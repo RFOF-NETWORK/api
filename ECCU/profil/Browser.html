@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Cert Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010204; --border:#1e293b; --text:#22c55e; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-left: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#38bdf8; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[ECCU-PROFIL-OS] Syncing Energy-Certificates...</div>
+  <div class="line">[INFO] Accessing Registry for Joul-Handshake.</div>
+  <div class="line">[INFO] Verifying DNA-PZQQET alignment.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">ECCU:\PROFIL\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  setInterval(() => {
+    if(Math.random() > 0.8) {
+      addLog("VALIDATION: Certificate " + Math.random().toString(36).substring(7).toUpperCase() + " verified.");
+    }
+  }, 5000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

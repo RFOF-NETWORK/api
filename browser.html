@@ -171,9 +171,8 @@
 <body>
 
 <header>
-  <div class="brand">
+  <div class="brand" id="browserBrand">
     <a href="index.html"><span>RFOF‑NETWORK</span> · API Explorer</a>
-    <span id="session-tag" style="font-size:10px; margin-left:10px; color:var(--muted);"></span>
   </div>
 
   <nav>
@@ -248,32 +247,14 @@ function getGUCI() {
     return id;
 }
 
-// Session Check für Browser
-function checkSession() {
-    const user = localStorage.getItem("rfof_user");
-    if (user) {
-        document.getElementById("session-tag").textContent = `[OPERATOR: ${user}]`;
-    }
-}
-
 async function loadPath(path = "") {
     try {
         const res = await fetch(`${apiBase}/${path}`);
         if (!res.ok) throw new Error(`Fetch Error: ${res.status}`);
         const data = await res.json();
-        
         const list = document.getElementById("file-list");
         document.getElementById("current-path").textContent = `PATH: /${path}`;
         list.innerHTML = "";
-
-        if (path !== "") {
-            const backBtn = document.createElement("div");
-            backBtn.className = "item";
-            backBtn.textContent = "← Zurück";
-            backBtn.onclick = () => loadPath(path.split("/").slice(0, -1).join("/"));
-            list.appendChild(backBtn);
-        }
-
         data.forEach(item => {
             const div = document.createElement("div");
             div.className = "item";
@@ -291,7 +272,6 @@ async function loadFile(path) {
     const res = await fetch(`${apiBase}/${path}`);
     const data = await res.json();
     const decoded = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ""))));
-    
     const list = document.getElementById("file-list");
     list.innerHTML = `<div class="item" onclick="loadPath('${path.split("/").slice(0,-1).join("/")}')">← Schließen</div><pre><code class="language-javascript">${decoded}</code></pre>`;
     hljs.highlightAll();
@@ -300,18 +280,14 @@ async function loadFile(path) {
 
 function executeAction() {
     const method = document.getElementById("apiMethod").value;
-    const url = document.getElementById("apiUrl").value;
     const log = document.getElementById("clearing-log");
     const viewer = document.getElementById("clearingViewer");
-
     viewer.style.display = "block";
     const timestamp = new Date().toLocaleTimeString();
     const blockHash = "0x" + Math.random().toString(16).slice(2, 10);
-    
     const entry = document.createElement("div");
     entry.className = "block-entry";
     entry.innerHTML = `[${timestamp}] <span class="energy-val">VALIDATED</span> | METHOD: ${method} | HASH: ${blockHash} | <span class="energy-val">+5 Joul</span>`;
-    
     log.prepend(entry);
     updateEnergy(5);
 }
@@ -327,16 +303,15 @@ document.addEventListener('click', () => {
     document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('open'));
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('mode') === 'clearing') {
-    document.getElementById("clearingViewer").style.display = "block";
-}
-
 window.onload = () => {
     getGUCI();
-    checkSession();
     loadPath();
     document.getElementById("display-joul").textContent = energyCounter;
+    const user = localStorage.getItem("rfof_user");
+    if(user) {
+      const brand = document.getElementById("browserBrand");
+      brand.innerHTML += ` <span style="font-size:10px; color:var(--muted); font-weight:normal;">[OP: ${user}]</span>`;
+    }
 };
 </script>
 </body>

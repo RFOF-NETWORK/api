@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Validator Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010409; --border:#30363d; --text:#58a6ff; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-top: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .gold { color:#d29922; }
+    .sys { color:#7d8590; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[CHAIN-VALIDATOR] Initializing Staking-Audit...</div>
+  <div class="line">[INFO] Peer-to-Peer Handshake established.</div>
+  <div class="line">[INFO] Verifying Block-Rewards against 0.2% Fee-Logic.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">CHAIN:\STAKING\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  setInterval(() => {
+    if(Math.random() > 0.85) {
+      addLog("<span class='gold'>CONSENSUS:</span> New Staking-Block verified by PZQQET-Axiom.");
+    }
+  }, 6000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

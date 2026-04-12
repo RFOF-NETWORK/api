@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Raw Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010409; --border:#30363d; --text:#58a6ff; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-left: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .gold { color:#d29922; }
+    .sys { color:#7d8590; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[CHAIN-OS] Connecting to Raw-Data Layer...</div>
+  <div class="line">[INFO] Accessing UTXO-Set via PZQQET-Protocol.</div>
+  <div class="line">[INFO] Tracking 0.2% price-pulse in raw hashes.</div>
+  <div class="line">--------------------------------------------------</div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Simulation der UTXO-Validierung im Hintergrund
+  setInterval(() => {
+    const hash = Math.random().toString(16).substring(2, 12);
+    addLog(`VALIDATE-UTX: <span class="gold">${hash}...OK</span>`);
+  }, 4500);
+</script>
+</body>
+</html>

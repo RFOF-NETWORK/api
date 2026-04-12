@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Energy Staking & Stability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#030406; --bg-alt:#090b10; --border:#1e293b; --text:#f1f5f9; --eccu:#22c55e; --energy:#a855f7; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010204; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .staking-core { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:25px; border-bottom: 4px solid var(--energy); }
+    .conversion-box { background:#000; border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:20px; text-align:center; }
+    
+    .energy-bar-container { height:12px; background:#1e293b; border-radius:6px; margin:15px 0; overflow:hidden; }
+    .energy-fill { height:100%; background:linear-gradient(90deg, var(--energy), var(--eccu)); width:75%; box-shadow: 0 0 15px var(--energy); }
+
+    .stat-row { display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px; }
+    .stat-item { background:rgba(168,85,247,0.05); border:1px solid var(--border); padding:12px; border-radius:8px; text-align:center; }
+    .stat-item small { color:#94a3b8; font-size:10px; display:block; }
+    .stat-item b { color:var(--energy); font-family:monospace; font-size:14px; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--energy); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">ECCU</a> · <span style="color:var(--energy);">XP-CONVERSION</span></div>
+  <div style="font-size:11px;">STABILITY-BUFFER: <span style="color:var(--eccu);">OPTIMAL</span></div>
+</header>
+
+<main>
+  <div class="staking-core">
+    <h2 style="margin:0; font-size:18px;">Energie-Stabilitätsspeicher</h2>
+    <p style="font-size:12px; color:#94a3b8;">Umwandlung von XP-Energie in systemweite Sicherungswerte nach PZQQET.</p>
+    
+    <div class="conversion-box">
+      <small style="color:var(--energy);">AKTUELLER KONVERSIONS-FLOW</small>
+      <div style="font-size:24px; font-weight:bold; margin:10px 0;">JOUL <span style="color:var(--eccu);">→</span> ECCU-FIX</div>
+      <div class="energy-bar-container">
+        <div class="energy-fill"></div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-item"><small>XP-INJEKTION</small><b>42.093 J/s</b></div>
+      <div class="stat-item"><small>SYSTEM-BACKING</small><b>99.998%</b></div>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  ECCU-STAKING-OS || ENERGY-TO-STABILITY: ACTIVE || RFOF-NETWORK MASTER-VIEW || AXIOM-SYNC: 100%
+</div>
+</body>
+</html>

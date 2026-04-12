@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marketplace | License Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#020617; --border:#1e293b; --text:#8b5cf6; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-right: 3px solid var(--text); }
+    .line { margin-bottom:8px; font-size:12px; }
+    .sys { color:#f1f5f9; }
+    .gold { color:#fbbf24; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line">[MARKET-OS] Initializing Asset-Registry...</div>
+  <div class="line">[INFO] Loading SVG-Asset-Library.</div>
+  <div class="line">[INFO] Verifying License-Clearing with GPCB/ECCU.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">MARKET:\ASSETS\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Transaktions-Monitoring
+  setInterval(() => {
+    if(Math.random() > 0.9) {
+      addLog("<span class='gold'>LICENSE-TRANSFER:</span> Module 'GPCB-READ' moved to GUCI-" + Math.random().toString(16).substring(2,6).toUpperCase());
+    }
+  }, 8000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

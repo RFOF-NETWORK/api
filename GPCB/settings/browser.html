@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPCB | Settings Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#020306; --border:#1f2933; --text:#fbbf24; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-right: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#38bdf8; }
+    .crit { color:#f87171; font-weight:bold; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line sys">[GPCB-SETTINGS-OS] Accessing Global Parameter-Vault...</div>
+  <div class="line">[INFO] Checking Axiom-Integrity... OK.</div>
+  <div class="line">[INFO] 0.2% Fee-Logic: Hardcoded in Clearing-Service.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">GPCB:\SETTINGS\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Überwachung der Sperreinheiten
+  setInterval(() => {
+    if(Math.random() > 0.9) {
+      addLog("<span class='crit'>ATTEMPT:</span> External Parameter Change blocked by GPCB-Root.");
+    }
+  }, 7000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

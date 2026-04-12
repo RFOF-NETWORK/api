@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPCB | Profil Terminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { color-scheme: dark; --bg:#020306; --border:#1f2933; --text:#38bdf8; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { background:#000; border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid #fbbf24; }
+    .line { margin-bottom:6px; font-size:12px; }
+    .sys { color:#f1f5f9; }
+    .gold { color:#fbbf24; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line">[GPCB-PROFIL-OS] Booting Identity-Control...</div>
+  <div class="line">[INFO] Accessing Base64-Hash-Generator.</div>
+  <div class="line">[INFO] Mapping GUCI to Institution-Level: MASTER.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line sys">GPCB:\PROFIL\> <span style="animation: blink 1s infinite;">_</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.insertBefore(div, term.lastElementChild);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Messenger/Handshake Logik-Simulation für GPCB
+  setInterval(() => {
+    if(Math.random() > 0.85) addLog("<span class='gold'>IDENTITY-VALIDATION:</span> Institutional Hash synchronized with Root.");
+  }, 6000);
+</script>
+<style> @keyframes blink { 50% { opacity:0; } } </style>
+</body>
+</html>

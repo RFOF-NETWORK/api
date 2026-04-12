@@ -470,3 +470,53 @@ InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
 ├── README.md
 └── server.sql (.sql erg.)
 ```
+
+```
+# 📂 Repository-Struktur: /api/
+
+## 1. Root-Ebene (Zentrale Steuerung)
+├── index.html                  # Master-Dashboard (Box A-J)
+├── browser.html                # Globales Clearing-Terminal (Zustand K/L)
+│
+├── 📂 wallet/                  # Globales Modul: Finanzen
+│   ├── index.html              # Lokales Wallet-Dashboard
+│   └── browser.html            # Wallet-spezifische Konsole
+│
+├── 📂 profil/                  # Globales Modul: Identität
+│   ├── index.html              
+│   └── browser.html            
+│
+├── 📂 settings/                # Globales Modul: System-Präferenzen
+│   ├── index.html              
+│   └── browser.html            
+│
+├── 📂 staking/                 # Globales Modul: Energetische Beteiligung
+│   ├── index.html              
+│   └── browser.html            
+│
+## 2. System-Instanzen (Fraktale Spiegelung)
+│
+├── 📂 GPCB/                    # Instanz: Zentralbank-Ebene
+│   ├── index.html              # GPCB Master-Dashboard
+│   ├── browser.html            # GPCB Clearing-Terminal
+│   ├── 📂 wallet/              # Spiegel-Modul (Kontext: GPCB-Finance)
+│   │   ├── index.html          
+│   │   └── browser.html        
+│   ├── 📂 profil/              
+│   ├── 📂 settings/            
+│   └── 📂 staking/             
+│
+├── 📂 ECCU/                    # Instanz: Währungs-Ebene
+│   ├── index.html              # ECCU Master-Dashboard
+│   ├── browser.html            
+│   ├── 📂 wallet/              # Spiegel-Modul (Kontext: ECCU-Finance)
+│   │   ├── index.html          
+│   │   └── browser.html        
+│   └── ... (weitere Module)
+│
+└── 📂 RFOF-GOLDEN-Chain/       # Instanz: Blockchain-Ebene
+    ├── index.html              # Chain Master-Dashboard
+    ├── browser.html            
+    ├── 📂 wallet/              # Spiegel-Modul (Kontext: Chain-Finance)
+    └── ... (weitere Module)
+```

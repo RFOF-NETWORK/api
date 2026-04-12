@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Fixed Parameters</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#030406; --bg-alt:#090b10; --border:#1e293b; --text:#f1f5f9; --eccu:#22c55e; --lock:#ef4444; }
+    body { margin:0; font-family:system-ui, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:14px 20px; border-bottom:1px solid var(--border); background:#010204; display:flex; justify-content:space-between; }
+    main { padding:20px; max-width: 900px; margin: 0 auto; }
+    
+    .settings-vault { background:var(--bg-alt); border:1px solid var(--border); border-radius:16px; padding:25px; border-right: 4px solid var(--eccu); }
+    .config-row { display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .config-label { font-size:12px; color:#94a3b8; }
+    .config-status { font-family:monospace; font-size:12px; color:var(--eccu); font-weight:bold; }
+    
+    .lock-overlay { margin-top:30px; border:1px dashed var(--lock); padding:20px; border-radius:12px; text-align:center; background:rgba(239,68,68,0.02); }
+    .lock-text { color:var(--lock); font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; }
+
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:8px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--eccu); font-family:monospace; white-space:nowrap; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:600;"><a href="../../index.html" style="color:inherit; text-decoration:none;">ECCU</a> · <span style="color:var(--eccu);">HARD-CODED SETTINGS</span></div>
+  <div style="font-size:11px;">IMMUTABLE: <span style="color:var(--eccu);">ENABLED</span></div>
+</header>
+
+<main>
+  <div class="settings-vault">
+    <h2 style="margin:0; font-size:18px;">System-Konfiguration</h2>
+    <p style="font-size:12px; color:#94a3b8;">Fixierte Parameter für den physischen Joul-Anker (PZQQET-Axiom 01).</p>
+    
+    <div class="config-row">
+      <span class="config-label">Währungs-Parität (ECCU/EURO)</span>
+      <span class="config-status">1.00 = 2.50€</span>
+    </div>
+    <div class="config-row">
+      <span class="config-label">Energie-Schwellenwert (JOUL)</span>
+      <span class="config-status">2 TB / UNIT</span>
+    </div>
+    <div class="config-row">
+      <span class="config-label">User-Modifikations-Rechte</span>
+      <span class="config-status" style="color:var(--lock);">DISABLED</span>
+    </div>
+
+    <div class="lock-overlay">
+      <div class="lock-text">🔒 Master-Verschlüsselung aktiv</div>
+      <p style="font-size:10px; color:#94a3b8; margin-top:8px;">Änderungen an diesen Parametern führen zum automatischen Sektor-Shutdown und Neu-Validierung durch RFOF-NETWORK.</p>
+    </div>
+  </div>
+</main>
+
+<div class="bip-footer">
+  ECCU-SETTINGS-MONITOR || DRIFT-PROTECTION: ACTIVE || 100M% PROBABILITY SYNC || MASTER-PROTOCOL-ONLY
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>User-Docs | Terminal View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#000; --text:#38bdf8; --border:#1e293b; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; }
+    .line { margin-bottom:8px; font-size:12px; }
+    .cmd { color:#f1f5f9; }
+    .highlight { color:#fbbf24; }
+  </style>
+</head>
+<body>
+<div class="terminal" id="term">
+  <div class="line">[DOC-OS] Loading User-Interface Documentation...</div>
+  <div class="line">[INFO] Verifying Help-Nodes for GPCB/ECCU modules.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line cmd">USER@RFOF:~/docs$ help --overview</div>
+  <div class="line">Verfügbare Befehle: <span class="highlight">wallet-sync, joul-convert, staking-view</span></div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Automatisierte "Wusstest du schon?" Tips
+  setInterval(() => {
+    const tips = [
+      "Die 0,2% Gebühr dient direkt dem Rückkauf von Joul-Reserven.",
+      "Deine Wallet-Adresse ist niemals direkt öffentlich sichtbar.",
+      "Das System ist auf eine 100M% Gewinnrate mathematisch kalibriert."
+    ];
+    addLog("<span class='highlight'>USER-TIP:</span> " + tips[Math.floor(Math.random()*tips.length)]);
+  }, 9000);
+</script>
+</body>
+</html>

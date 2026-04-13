@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dev-Docs | Compiler View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#000; --text:#4ade80; --border:#1e293b; }
+    body { margin:0; font-family: 'Fira Code', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .compiler { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-left: 3px solid var(--text); }
+    .line { margin-bottom:6px; font-size:12px; }
+    .warn { color:#fbbf24; }
+    .success { color:#22c55e; font-weight:bold; }
+  </style>
+</head>
+<body>
+<div class="compiler" id="term">
+  <div class="line">[COMPILER] Initializing Dev-Documentation Build...</div>
+  <div class="line">[INFO] Indexing API Endpoints for GPCB and ECCU.</div>
+  <div class="line">[INFO] Generating PZQQET-256 Signature Examples.</div>
+  <div class="line">--------------------------------------------------</div>
+</div>
+
+<script>
+  const term = document.getElementById("term");
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Compiler-Log Simulation
+  setInterval(() => {
+    if(Math.random() > 0.85) {
+      addLog("<span class='success'>OK:</span> Schema-Validation for '/staking/v1' passed.");
+    }
+  }, 6000);
+</script>
+</body>
+</html>

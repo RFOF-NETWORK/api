@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ECCU | Currency Layer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#050505; --text:#e5e5e5; --eccu:#22c55e; --border:#262626; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:40px 20px; text-align:center; border-bottom:1px solid var(--border); background:rgba(34,197,94,0.02); }
+    main { padding:40px 20px; max-width: 900px; margin: 0 auto; }
+    .module-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; }
+    .card { background:#0a0a0a; border:1px solid var(--border); padding:20px; border-radius:12px; text-decoration:none; color:inherit; border-left: 4px solid var(--eccu); }
+    .card:hover { background:#111; }
+    .tag { font-size:10px; color:var(--eccu); font-weight:bold; margin-bottom:8px; display:block; }
+    h2 { margin:0 0 10px 0; font-size:18px; }
+    p { font-size:13px; color:#a3a3a3; }
+  </style>
+</head>
+<body>
+<header>
+  <span class="tag">Meta-System</span>
+  <h1 style="margin:0; font-size:28px;">ECCU</h1>
+  <p style="color:#737373; font-size:14px;">Währungs-Ebene & Energie-Paritäts-Management</p>
+</header>
+<main>
+  <div class="module-grid">
+    <a href="wallet/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Wallet</h2>
+      <p>Nutzer-Wallets und Währungs-Guthaben (ECCU-Fix).</p>
+    </a>
+    <a href="profil/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Profil</h2>
+      <p>Individuelle Energie-Zertifikate und Nutzer-DNA.</p>
+    </a>
+    <a href="settings/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Settings</h2>
+      <p>Konfiguration der Energie-Konversionsraten (JOUL).</p>
+    </a>
+    <a href="staking/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Staking</h2>
+      <p>Umwandlung von XP in System-Stabilität.</p>
+    </a>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF-GOLDEN-Chain | Blockchain Layer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#010409; --text:#c9d1d9; --chain:#58a6ff; --border:#30363d; }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:40px 20px; text-align:center; border-bottom:1px solid var(--border); }
+    main { padding:40px 20px; max-width: 900px; margin: 0 auto; }
+    .module-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; }
+    .card { background:#0d1117; border:1px solid var(--border); padding:20px; border-radius:12px; text-decoration:none; color:inherit; }
+    .card:hover { border-color:var(--chain); }
+    .tag { font-size:10px; color:var(--chain); letter-spacing:1px; margin-bottom:8px; display:block; }
+    h2 { margin:0 0 10px 0; font-size:18px; color:var(--chain); }
+    p { font-size:13px; color:#8b949e; }
+  </style>
+</head>
+<body>
+<header>
+  <span class="tag">Meta-System</span>
+  <h1 style="margin:0; font-size:28px;">RFOF-GOLDEN-Chain</h1>
+  <p style="color:#8b949e; font-size:14px;">Blockchain-Ebene & Clearing-Logik</p>
+</header>
+<main>
+  <div class="module-grid">
+    <a href="wallet/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Wallet</h2>
+      <p>Rohe Ketten-Transaktionen und UTXO-Daten.</p>
+    </a>
+    <a href="profil/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Profil</h2>
+      <p>Maskierte Chain-Identitäten und Base64-Hashes.</p>
+    </a>
+    <a href="settings/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Settings</h2>
+      <p>Protokoll-Parameter und Konsens-Regeln.</p>
+    </a>
+    <a href="staking/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Staking</h2>
+      <p>Validierung der Staking-Blöcke und Chain-Integrität.</p>
+    </a>
+  </div>
+</main>
+</body>
+</html>

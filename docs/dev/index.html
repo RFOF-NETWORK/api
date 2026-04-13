@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF Dev-Hub | API & Protokoll</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#020617; --text:#e2e8f0; --code-bg:#0f172a; --accent:#4ade80; --border:#1e293b; --gold:#fbbf24; }
+    body { margin:0; font-family: 'Fira Code', monospace; background:var(--bg); color:var(--text); line-height:1.5; }
+    header { padding:20px; border-bottom:1px solid var(--border); background:#000; display:flex; justify-content:space-between; align-items:center; }
+    main { padding:30px; max-width: 1000px; margin: 0 auto; }
+    
+    .endpoint-card { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:25px; }
+    .method { background:var(--accent); color:#000; padding:2px 8px; border-radius:4px; font-weight:bold; font-size:12px; margin-right:10px; }
+    .path { color:var(--gold); font-size:14px; }
+    
+    pre { background:#000; padding:15px; border-radius:6px; border:1px solid var(--border); overflow-x:auto; font-size:13px; }
+    .const { color:#38bdf8; }
+    .string { color:#fb7185; }
+
+    .bip-footer { position:fixed; bottom:0; width:100%; background:#000; padding:8px; font-size:10px; color:var(--accent); text-align:center; border-top:1px solid var(--border); }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:bold; color:var(--accent);">RFOF_DEV_RESOURCES</div>
+  <div style="font-size:12px;">SDK: v2.0.1 (PZQQET-STABLE)</div>
+</header>
+
+<main>
+  <h1>Entwickler-Spezifikation</h1>
+  
+  <div class="endpoint-card">
+    <h3><span class="method">GET</span><span class="path">/api/v1/clearing/kachel-j</span></h3>
+    <p style="font-size:13px; color:#94a3b8;">Fragt den aktuellen Status der systemweiten 10% Fond-Liquidität ab.</p>
+    <pre>
+{
+  <span class="const">"status"</span>: <span class="string">"verified"</span>,
+  <span class="const">"fond_ratio"</span>: <span class="string">"0.10"</span>,
+  <span class="const">"global_fee"</span>: <span class="string">"0.002"</span>,
+  <span class="const">"probability"</span>: <span class="string">"100000000%"</span>
+}</pre>
+  </div>
+
+  <div class="endpoint-card">
+    <h3>Protokoll-Axiom: PZQQET-256</h3>
+    <p style="font-size:13px; color:#94a3b8;">Alle Daten-Pakete müssen mit dem verschachtelten DNA-Handshake signiert sein.</p>
+    <pre>
+<span class="const">function</span> signPacket(data) {
+  <span class="const">return</span> crypto.createHmac(<span class="string">'pzqqet256'</span>, MASTER_KEY)
+    .update(data + GUCI_ID)
+    .digest(<span class="string">'base64'</span>);
+}</pre>
+  </div>
+</main>
+
+<div class="bip-footer">
+  DEV-ENVIRONMENT: PROD-SYNC || API-KEYS: RESTRICTED || PZQQET-AXIOMS: ENFORCED
+</div>
+</body>
+</html>

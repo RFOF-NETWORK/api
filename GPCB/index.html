@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>GPCB | Central Bank Layer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#020617; --text:#f1f5f9; --gold:#fbbf24; --border:#1e293b; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:40px 20px; text-align:center; background:linear-gradient(to bottom, #000, var(--bg)); border-bottom:1px solid var(--border); }
+    main { padding:40px 20px; max-width: 900px; margin: 0 auto; display:grid; gap:20px; }
+    .module-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; }
+    .card { background:#0f172a; border:1px solid var(--border); padding:20px; border-radius:12px; text-decoration:none; color:inherit; transition:0.2s; }
+    .card:hover { border-color:var(--gold); transform:translateY(-3px); }
+    .tag { font-size:10px; text-transform:uppercase; color:var(--gold); letter-spacing:1px; margin-bottom:10px; display:block; }
+    h2 { margin:0 0 10px 0; font-size:18px; }
+    p { font-size:13px; color:#94a3b8; line-height:1.5; }
+  </style>
+</head>
+<body>
+<header>
+  <span class="tag">Meta-System</span>
+  <h1 style="margin:0; font-size:28px; color:var(--gold);">GPCB</h1>
+  <p style="color:#94a3b8; font-size:14px;">Zentralbank-Ebene & Globale Modul-Vererbung</p>
+</header>
+<main>
+  <div class="module-grid">
+    <a href="wallet/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Wallet</h2>
+      <p>Verwaltung der Zentralbank-Reserven und Fond-Liquidität.</p>
+    </a>
+    <a href="profil/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Profil</h2>
+      <p>Identitäts-Mapping der autorisierten Clearing-Stellen.</p>
+    </a>
+    <a href="settings/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Settings</h2>
+      <p>Globale Parameter für die 0,2% Gebühren-Injektion.</p>
+    </a>
+    <a href="staking/index.html" class="card">
+      <span class="tag">Modul</span>
+      <h2>Staking</h2>
+      <p>Absicherung der System-Stabilität durch Fond-Rücklagen.</p>
+    </a>
+  </div>
+</main>
+</body>
+</html>

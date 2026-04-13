@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>RFOF Admin | Master Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#020205; --text:#f1f5f9; --admin:#ef4444; --border:#334155; --gold:#fbbf24; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:20px; border-bottom:2px solid var(--admin); background:#000; display:flex; justify-content:space-between; }
+    main { padding:30px; max-width: 1100px; margin: 0 auto; }
+    
+    .admin-grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px; }
+    .panel { background:#0f172a; border:1px solid var(--border); border-radius:12px; padding:20px; }
+    .panel h2 { margin-top:0; font-size:16px; text-transform:uppercase; letter-spacing:1px; }
+    
+    .mode-toggle { display:flex; gap:10px; margin-bottom:20px; }
+    .btn { padding:10px 20px; border-radius:6px; border:none; cursor:pointer; font-weight:bold; font-size:12px; }
+    .btn-use { background:#38bdf8; color:#000; }
+    .btn-dev { background:#4ade80; color:#000; }
+    
+    .status-active { color:var(--admin); font-weight:bold; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity:1; } 50% { opacity:0.5; } 100% { opacity:1; } }
+    
+    .bip-footer { position:fixed; bottom:0; width:100%; background:#000; padding:10px; font-size:10px; color:var(--admin); font-family:monospace; text-align:center; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="font-weight:bold; color:var(--admin);">RFOF_ADMIN_CORE</div>
+  <div style="font-size:12px; color:var(--gold);">WIN-RATE: 100,000,000% TARGET</div>
+</header>
+
+<main>
+  <h1>Master-Steuerung & Protokoll-Override</h1>
+  
+  <div class="mode-toggle">
+    <button class="btn btn-use">VIEW AS USER</button>
+    <button class="btn btn-dev">VIEW AS DEVELOPER</button>
+  </div>
+
+  <div class="admin-grid">
+    <div class="panel">
+      <h2 style="color:#38bdf8;">User Monitoring (Use)</h2>
+      <p style="font-size:12px; color:#94a3b8;">Überwachung der Endnutzer-GUCIs und Joul-Konvertierungen.</p>
+      <div style="font-family:monospace; font-size:11px;">
+        > ACTIVE_SESSIONS: 42,093<br>
+        > JOUL_FLOW: 2.4 TB/s
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 style="color:#4ade80;">Dev Monitoring (Dev)</h2>
+      <p style="font-size:12px; color:#94a3b8;">API-Integrität und PZQQET-Axiom Validierung.</p>
+      <div style="font-family:monospace; font-size:11px;">
+        > API_HEALTH: 100%<br>
+        > BLOCK_LATENCY: 4.2s
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:20px; border-color:var(--admin);">
+    <h2 style="color:var(--admin);">Override-Konsole</h2>
+    <p style="font-size:12px;">Erzwinge System-Anpassungen zur Sicherstellung der Gewinnrate.</p>
+    <input type="text" placeholder="Admin Command..." style="width:100%; background:#000; border:1px solid var(--admin); padding:10px; color:white; font-family:monospace;">
+  </div>
+</main>
+
+<div class="bip-footer">
+  ADMIN-ACCESS: LEVEL-MASTER || DUAL-MODE ACTIVE || RFOF-NETWORK || PZQQET-FINALITY
+</div>
+</body>
+</html>

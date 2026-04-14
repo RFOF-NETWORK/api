@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chain-Clearing | Meta Console</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; }
-    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
-    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
-    .line { margin-bottom:8px; font-size:12px; }
-    .meta { color:#94a3b8; }
-    .highlight { color:#fbbf24; font-weight:bold; }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Chain-Clearing | Meta Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
+    .line { margin-bottom:8px; font-size:12px; }
+    .meta { color:#94a3b8; }
+    .highlight { color:#fbbf24; font-weight:bold; }
+  </style>
 </head>
 <body>
 <div class="terminal" id="term">
-  <div class="line">[META-DOCUMENTATION] Initializing Kahel J Global Viewer...</div>
-  <div class="line">[INFO] Merging API Streams: GPCB, ECCU, RFOF-GOLDEN-CHAIN.</div>
-  <div class="line">[INFO] Synchronizing Documentation-Nodes with Live-State.</div>
-  <div class="line">--------------------------------------------------</div>
-  <div class="line meta">@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.</div>
+  <div class="line">[META-DOCUMENTATION] Initializing Kahel J Global Viewer...</div>
+  <div class="line">[INFO] Merging API Streams: GPCB, ECCU, RFOF-GOLDEN-CHAIN.</div>
+  <div class="line">[INFO] Synchronizing Documentation-Nodes with Live-State.</div>
+  <div class="line">--------------------------------------------------</div>
+  <div class="line meta">@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.</div>
 </div>
 
 <script>
-  const term = document.getElementById("term");
-  function addLog(msg) {
-    const div = document.createElement("div");
-    div.className = "line";
-    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
-    term.appendChild(div);
-    term.scrollTop = term.scrollHeight;
-  }
+  const term = document.getElementById("term");
 
-  // Verschachtelte Ketten-Analyse Simulation
-  setInterval(() => {
-    const events = [
-      "GPCB 45% SAFE Audit completed.",
-      "ECCU Joul-Anchor at 2.50€ parity.",
-      "RFOF-G Block propagated to all Sektors.",
-      "Kachel J Cross-Validation successful."
-    ];
-    addLog("<span class='highlight'>META-SYNC:</span> " + events[Math.floor(Math.random()*events.length)]);
-  }, 5000);
+  function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = "[" + new Date().toLocaleTimeString() + "] " + msg;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  // Analyse-Simulation
+  setInterval(() => {
+    const events = [
+      "GPCB 45% SAFE Audit completed.",
+      "ECCU Joul-Anchor at 2.50€ parity.",
+      "RFOF-G Block propagated to all Sektors.",
+      "Kachel J Cross-Validation successful."
+    ];
+    addLog("<span class='highlight'>META-SYNC:</span> " + events[Math.floor(Math.random()*events.length)]);
+  }, 5000);
+
+  // Cross-Chain Audit Logik
+  function simulateCrossChainAudit() {
+    const chains = ["../GPCB", "../ECCU", "../RFOF-GOLDEN-Chain"];
+    const selected = chains[Math.floor(Math.random() * chains.length)];
+    addLog("<span class='meta'>[CROSS-AUDIT]</span> Reading path: " + selected + "/wallet/ ... <span class='highlight'>INTEGRITY 100%</span>");
+  }
+  setInterval(simulateCrossChainAudit, 8000);
+
+  // URL-Parameter Auswertung
+  window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const block = urlParams.get('block');
+    const query = urlParams.get('query');
+    if(block) addLog("<span class='highlight'>INSPECTING BLOCK:</span> #" + block + " ... Detail-Analysis initiated.");
+    if(query) addLog("<span class='highlight'>SEARCH GUCI:</span> " + decodeURIComponent(query) + " ... Fetching Profile-Chain-State.");
+  };
+
+  // Zusätzliche Script-Validierung für Pfad-Integrität
+  setInterval(() => {
+    const neighbors = ["../GPCB", "../ECCU", "../RFOF-GOLDEN-Chain"];
+    const target = neighbors[Math.floor(Math.random() * neighbors.length)];
+    const div = document.createElement("div");
+    div.className = "line";
+    div.innerHTML = "[" + new Date().toLocaleTimeString() + "] <span class='meta'>[VALIDATE]</span> Checking Path: " + target + "/wallet/index.html ... <span class='highlight'>LINK VERIFIED</span>";
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }, 7000);
 </script>
 </body>
 </html>

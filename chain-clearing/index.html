@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -21,8 +22,11 @@
     .node-rfof::before { background:var(--rfof); }
     
     .node-header { display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px; font-weight:bold; }
-    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:100px; overflow:hidden; }
+    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:100px; overflow:hidden; line-height: 1.6; }
     
+    .data-entry { cursor: pointer; display: block; }
+    .data-entry:hover { color: var(--j-color); background: rgba(74, 222, 128, 0.05); }
+
     .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; }
   </style>
 </head>
@@ -42,27 +46,27 @@
     <div class="sector-node node-gpcb">
       <div class="node-header"><span style="color:var(--gold);">API: GPCB</span> <span id="gpcb-status">SYNC</span></div>
       <div class="data-stream" id="stream-gpcb">
-        > Fetching Safe-Status (45%)...<br>
-        > 10% Fond Liquidity Verified.<br>
-        > Global Fee 0.2% active.
+        <span class="data-entry" onclick="window.location.href='../GPCB/browser.html'">> Fetching Safe-Status (45%)...</span>
+        <span class="data-entry">> 10% Fond Liquidity Verified.</span>
+        <span class="data-entry">> Global Fee 0.2% active.</span>
       </div>
     </div>
 
     <div class="sector-node node-eccu">
       <div class="node-header"><span style="color:var(--eccu);">API: ECCU</span> <span id="eccu-status">SYNC</span></div>
       <div class="data-stream" id="stream-eccu">
-        > Anchor: 2.50€ / 2TB Joul.<br>
-        > Stability-Buffer: 99.99%.<br>
-        > DNA-Certificates Valid.
+        <span class="data-entry" onclick="window.location.href='../ECCU/browser.html'">> Anchor: 2.50€ / 2TB Joul.</span>
+        <span class="data-entry">> Stability-Buffer: 99.99%.</span>
+        <span class="data-entry">> DNA-Certificates Valid.</span>
       </div>
     </div>
 
     <div class="sector-node node-rfof">
       <div class="node-header"><span style="color:var(--rfof);">API: RFOF-GOLDEN</span> <span id="rfof-status">SYNC</span></div>
       <div class="data-stream" id="stream-rfof">
-        > Block Height: 842.102<br>
-        > UTXO Hash Integrity: OK.<br>
-        > PZQQET Protocol Pulse.
+        <span class="data-entry" onclick="window.location.href='../RFOF-GOLDEN-Chain/browser.html'">> Block Height: 842.102</span>
+        <span class="data-entry">> UTXO Hash Integrity: OK.</span>
+        <span class="data-entry">> PZQQET Protocol Pulse.</span>
       </div>
     </div>
   </div>
@@ -79,14 +83,30 @@
   }
   setInterval(updateClock, 1000);
   
-  // Simulation des Live-Data Merging
   setInterval(() => {
-    const streams = ['stream-gpcb', 'stream-eccu', 'stream-rfof'];
-    const target = streams[Math.floor(Math.random()*streams.length)];
-    const el = document.getElementById(target);
-    const newEntry = "> Update: " + Math.random().toString(16).substring(2,10) + " verified.<br>";
-    el.innerHTML = newEntry + el.innerHTML;
+    const sectors = [
+      { id: 'stream-gpcb', path: '../GPCB' },
+      { id: 'stream-eccu', path: '../ECCU' },
+      { id: 'stream-rfof', path: '../RFOF-GOLDEN-Chain' }
+    ];
+    const target = sectors[Math.floor(Math.random()*sectors.length)];
+    const el = document.getElementById(target.id);
+    const hash = Math.random().toString(16).substring(2,10).toUpperCase();
+    
+    const newEntry = document.createElement('span');
+    newEntry.className = 'data-entry';
+    newEntry.onclick = function() { window.location.href = target.path + '/browser.html?block=' + hash; };
+    newEntry.innerHTML = "> Update: #" + hash + " verified.<br>";
+    
+    el.insertBefore(newEntry, el.firstChild);
+    if(el.childNodes.length > 8) el.removeChild(el.lastChild);
   }, 3000);
+
+  document.getElementById('search-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      window.location.href = './browser.html?query=' + encodeURIComponent(this.value);
+    }
+  });
 </script>
 </body>
 </html>

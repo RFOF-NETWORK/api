@@ -14,7 +14,7 @@
     .search-bar input { flex-grow:1; background:transparent; border:none; outline:none; color:var(--text); font-family:monospace; }
     
     .clearing-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
-    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; border-left: 1px solid var(--border); }
+    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; }
     .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; opacity:0.5; }
     
     .node-gpcb::before { background:var(--gold); }
@@ -22,46 +22,47 @@
     .node-rfof::before { background:var(--rfof); }
     
     .node-header { display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px; font-weight:bold; }
-    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:120px; overflow-y:auto; scrollbar-width: none; }
+    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:110px; overflow-y:auto; scrollbar-width: none; }
     .data-stream::-webkit-scrollbar { display: none; }
 
-    .data-entry { display: block; cursor: pointer; padding: 6px 0; border-bottom: 1px solid rgba(31, 41, 55, 0.3); transition: 0.1s; }
-    .data-entry:hover { color: var(--j-color); background: rgba(74, 222, 128, 0.05); transform: translateX(5px); }
-    .hash-link { font-weight: bold; }
+    .data-entry { display: block; cursor: pointer; padding: 4px 0; border-bottom: 1px solid rgba(31, 41, 55, 0.4); transition: 0.2s; }
+    .data-entry:hover { color: var(--j-color); background: rgba(74, 222, 128, 0.05); }
 
-    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; z-index: 100; }
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; }
   </style>
 </head>
 <body>
 <header>
-  <div style="font-weight:bold; letter-spacing:1px;">KAHEL J | UNIVERSAL MASTER EXPLORER</div>
-  <div style="font-size:11px; font-family:monospace;">BRIDGE: <span style="color:var(--j-color);">OPERATIONAL</span></div>
+  <div style="font-weight:bold; letter-spacing:1px;">KAHEL J | UNIVERSAL EXPLORER</div>
+  <div style="font-size:11px; font-family:monospace;">API-GATEWAY: <span style="color:var(--j-color);">CONNECTED</span></div>
 </header>
 
 <main>
   <div class="search-bar">
     <span style="color:var(--j-color);">🔍</span>
-    <input type="text" placeholder="Fraktale Suche (Hash, GUCI, Block)..." id="search-input">
+    <input type="text" placeholder="Hash, Block, Profil-ID oder GUCI eingeben..." id="search-input">
   </div>
 
   <div class="clearing-grid">
     <div class="sector-node node-gpcb">
-      <div class="node-header"><span style="color:var(--gold);">LEVEL 01: GPCB</span> <span>ROOT: /api/</span></div>
+      <div class="node-header"><span style="color:var(--gold);">API: GPCB</span> <span id="gpcb-status">SYNC</span></div>
       <div class="data-stream" id="stream-gpcb"></div>
     </div>
+
     <div class="sector-node node-eccu">
-      <div class="node-header"><span style="color:var(--eccu);">LEVEL 01: ECCU</span> <span>ROOT: /api/</span></div>
+      <div class="node-header"><span style="color:var(--eccu);">API: ECCU</span> <span id="eccu-status">SYNC</span></div>
       <div class="data-stream" id="stream-eccu"></div>
     </div>
+
     <div class="sector-node node-rfof">
-      <div class="node-header"><span style="color:var(--rfof);">LEVEL 01: RFOF</span> <span>ROOT: /api/</span></div>
+      <div class="node-header"><span style="color:var(--rfof);">API: RFOF-GOLDEN</span> <span id="rfof-status">SYNC</span></div>
       <div class="data-stream" id="stream-rfof"></div>
     </div>
   </div>
 </main>
 
 <div class="bip-footer">
-  <div>KAHEL-J || CROSS-CHAIN MASTER-LOGIK ACTIVE</div>
+  <div>KAHEL-J-EXPLORER || OPERATIONAL-CENTER</div>
   <div id="clock">00:00:00</div>
 </div>
 
@@ -69,34 +70,32 @@
   function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
   setInterval(updateClock, 1000);
   
-  // Zentrale Viewer-Logik: Generiert Inschriften für alle Geschwister-Sektoren
   setInterval(() => {
     const nodes = [
-      { id: 'stream-gpcb', name: 'GPCB', color: '#fbbf24' },
-      { id: 'stream-eccu', name: 'ECCU', color: '#22c55e' },
-      { id: 'stream-rfof', name: 'RFOF-GOLDEN-Chain', color: '#38bdf8' }
+      { id: 'stream-gpcb', path: '../GPCB', color: '#fbbf24' },
+      { id: 'stream-eccu', path: '../ECCU', color: '#22c55e' },
+      { id: 'stream-rfof', path: '../RFOF-GOLDEN-Chain', color: '#38bdf8' }
     ];
     
     const target = nodes[Math.floor(Math.random() * nodes.length)];
     const el = document.getElementById(target.id);
-    const hash = "0x" + Math.random().toString(16).substring(2, 8).toUpperCase();
+    const hash = Math.random().toString(16).substring(2, 10).toUpperCase();
     
     const newEntry = document.createElement('div');
     newEntry.className = 'data-entry';
-    newEntry.innerHTML = `> Accessing <span class="hash-link" style="color:${target.color}">${target.name}</span> Node: ${hash}`;
+    newEntry.innerHTML = `> Block <span style="color:${target.color}">#${hash}</span> confirmed.`;
     
-    // PFAD-LOGIK: Alle Klicks verweisen auf die hiesige browser.html, 
-    // übergeben aber den Sektor als Scope für das "Eintauchen".
+    // Pfad korrigiert: Springt aus chain-clearing raus in den jeweiligen Sektor
     newEntry.onclick = () => {
-      window.location.href = `./browser.html?scope=${target.name}&block=${hash}`;
+      window.location.href = `${target.path}/browser.html?block=${hash}`;
     };
 
     el.prepend(newEntry);
     if(el.children.length > 5) el.lastChild.remove();
-  }, 3500);
+  }, 4000);
 
   document.getElementById('search-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') window.location.href = `./browser.html?query=${this.value}`;
+    if (e.key === 'Enter') window.location.href = `./browser.html?q=${this.value}`;
   });
 </script>
 </body>

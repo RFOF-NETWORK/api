@@ -1,6 +1,66 @@
 # api
 InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
 ---
+
+### 1. Das Rollen-Modell (Deterministische Hierarchie)
+
+
+| Rolle | Definition | Mechatronische Kompetenz |
+| :--- | :--- | :--- |
+| **User** | Jeder Account | Zugriff auf eigene Energie-Logs & Wallet. |
+| **Admin** | Selbst-Verwalter | Kontrolle über eigene Assets (Meme-Tokens/NFTs). |
+| **Manager** | System-Mitarbeiter | Steuerung von 1-4 APIs (GPCB, ECCU, Chain, Clearing). |
+| **Master** | **RFOF-NETWORK** | Absoluter Zugriff. Kann Manager ernennen/entlassen. |
+| **Dev** | Architekt | Admin-Status + X-Hub Schreibrechte (Code-Injektion). |
+
+---
+
+### 2. Die Kommandoleisten (Interface-Logik)
+
+
+#### A. Staking-Term / Energie-Logs (Deine Screenshots)
+* `/sync-pool`: Gleicht die lokale GUCI mit dem globalen RFOF-Liquiditäts-Pool ab.
+* `/boost-energy`: Erhöht die Taktfrequenz der Pulse (kurzzeitige XP-Steigerung).
+* `/verify-sha`: Validiert den Genesis-Asset Hash (SHA256) gegen die Forge Registry.
+* **Aktion im Ordner:** Schreibt direkt in die Datei `staking/browser.html`.
+
+#### B. NFT-Schmiede & Energie-Galerie
+* `/forge-nft [Name]`: Wandelt 100 Joul in ein SVG-Asset um.
+* `/gallery-sync`: Lädt die verschlüsselten Bildpfade aus dem `/marketplace/` Ordner.
+* `/mask-id`: Versteckt die Owner-ID des NFTs hinter einem Base64-Schutzschild.
+
+#### C. META Documentation Explorer (Clearing Console)
+* `/trace-hash [HashID]`: Folgt dem Pfad einer Transaktion durch GPCB und ECCU.
+* `/clear-status`: Prüft, ob die 0,2% Preissteigerung im aktuellen Block-Zyklus korrekt berechnet wurde.
+* `/map-api [Service]`: Schaltet die Detailansicht für einen der 4 Sektoren frei.
+
+#### D. Chain Clearing Viewer (Die vierte Leiste - Indirekt)
+* `/view-all`: Rendert das gesamte Ökosystem in der Kachel J.
+* `/cross-check`: Sucht nach Inkonsistenzen zwischen den 4 Systemen (Mechatronischer Selbsttest).
+* `/global-stats`: Ruft die 100M% Wahrscheinlichkeits-Metriken ab.
+
+---
+
+### 3. Mechatronische Pfadierung (Die "Venen" des Codes)
+
+
+1.  **Der Energie-Fluss:**
+    * Startet in `ECCU/staking` (Erzeugung durch Mining/Staking).
+    * Wird validiert in `RFOF-GOLDEN-Chain/clearing`.
+    * Wird visualisiert in `faucet/index.html` (als Reservoir).
+    * Wird ausgegeben in `marketplace/index.html` (NFT-Kauf).
+
+2.  **Der Identitäts-Fluss:**
+    * Die `GUCI` wird in `profil/index.html` generiert.
+    * Sie dient als Key in `admin/index.html`, um die Rollen (Manager/Master) zu prüfen.
+
+3.  **Die Status-Schicht (Die 3 Statusse):**
+    Jede Datei im System besitzt intern diese drei Zustände:
+    * **Status 1: Idle (Warten):** Bereit für Kommandos.
+    * **Status 2: Syncing (Verarbeitung):** Mechatronischer Abgleich der Pfade.
+    * **Status 3: Verified (Abschluss):** Hash-Gültigkeit bestätigt, 0,2% Injektion erfolgt.
+
+---
 ```
 /
 ├── accounts/

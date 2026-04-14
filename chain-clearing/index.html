@@ -8,9 +8,9 @@
     :root { color-scheme: dark; --bg:#050505; --bg-alt:#0a0a0a; --border:#1f2937; --text:#f3f4f6; --j-color:#4ade80; --gold:#fbbf24; --eccu:#22c55e; --rfof:#38bdf8; --bip-purple:#a855f7; }
     body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); overflow-x: hidden; }
     
-    /* STICKY NAV-ANCHOR */
+    /* STICKY NAVIGATION - Suchleiste bleibt immer sichtbar */
     .sticky-nav { position: sticky; top: 0; z-index: 1000; background: var(--bg); width: 100%; border-bottom: 1px solid var(--border); }
-    header { padding:15px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; border-top: 3px solid var(--j-color); }
+    header { padding:15px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; border-top: 3px solid var(--j-color); background: #000; }
     
     .search-bar { 
       background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; 
@@ -21,8 +21,8 @@
     main { padding:20px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
     .clearing-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom: 25px; }
     
-    /* KACHEL-BASIS */
-    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; min-height: 220px; transition: 0.3s; display: flex; flex-direction: column; }
+    /* KACHEL-BASIS & DESIGNS */
+    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; min-height: 220px; transition: 0.3s; display: flex; flex-direction: column; overflow: hidden; }
     .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; opacity:0.8; }
     
     .node-gpcb::before { background:var(--gold); }
@@ -32,20 +32,20 @@
     .node-terminal { border-left: 4px solid var(--j-color); }
     .node-compact { border-radius: 40px 10px; border: 1px dashed var(--rfof); }
 
-    .node-header { display:flex; justify-content:space-between; margin-bottom:12px; font-size:11px; font-weight:bold; color: var(--text); }
-    .back-node-btn { background: var(--border); border: none; color: var(--text); font-size: 9px; padding: 2px 6px; cursor: pointer; border-radius: 3px; display: none; }
+    .node-header { display:flex; justify-content:space-between; margin-bottom:12px; font-size:12px; font-weight:bold; color: var(--text); align-items: center; }
+    .back-node-btn { background: var(--j-color); border: none; color: #000; font-size: 9px; padding: 2px 8px; cursor: pointer; border-radius: 3px; display: none; font-weight: bold; margin-right: 8px; }
 
-    /* MULTI-LEVEL CONTENT */
+    /* CONTENT-RENDERING */
     .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:150px; overflow-y: auto; scrollbar-width: thin; }
-    .data-entry { cursor: pointer; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); display: block; }
+    .data-entry { cursor: pointer; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); display: block; line-height: 1.4; }
     .data-entry:hover { color: var(--j-color); }
 
-    /* LEVEL-ANATOMIE RENDERING */
-    .l01-head { color: var(--j-color); font-weight: bold; border-bottom: 1px solid var(--j-color); margin-bottom: 5px; padding-bottom: 2px; }
-    .l02-body { color: var(--text); padding: 5px 0; }
-    .l03-footer { color: #6b7280; font-size: 9px; margin-top: 5px; border-top: 1px dashed #374151; padding-top: 3px; }
+    /* EBENEN-ANATOMIE (Head, Body, Footer) */
+    .l01-head { color: var(--j-color); font-weight: bold; border-bottom: 1px solid var(--j-color); margin-bottom: 8px; padding-bottom: 4px; font-size: 12px; }
+    .l02-body { color: var(--text); padding: 5px 0; line-height: 1.5; }
+    .l03-footer { color: #6b7280; font-size: 10px; margin-top: 10px; border-top: 1px dashed #374151; padding-top: 6px; }
 
-    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; }
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; z-index: 1000; }
   </style>
 </head>
 <body>
@@ -53,11 +53,11 @@
 <div class="sticky-nav">
   <header>
     <div style="font-weight:bold; letter-spacing:1px;">KAHEL J | UNIVERSAL EXPLORER</div>
-    <div style="font-size:11px; font-family:monospace;">API-GATEWAY: <span style="color:var(--j-color);">SYNCED</span></div>
+    <div style="font-size:11px; font-family:monospace;">API-GATEWAY: <span style="color:var(--j-color);">CONNECTED</span></div>
   </header>
   <div class="search-bar">
     <span style="color:var(--j-color);">🔍</span>
-    <input type="text" placeholder="Hash, Block oder Profil-ID..." id="search-input">
+    <input type="text" placeholder="Hash, Block, Profil-ID oder GUCI eingeben..." id="search-input">
   </div>
 </div>
 
@@ -65,34 +65,37 @@
   <div class="clearing-grid">
     <div class="sector-node node-gpcb" id="n-gpcb">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-gpcb', 'GPCB')">← BACK</button> API: GPCB</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-gpcb', 'GPCB')">← BACK</button><span style="color:var(--gold);">API: GPCB</span></span>
         <span id="stat-gpcb">SYNC</span>
       </div>
       <div class="data-stream" id="stream-gpcb">
-        <span class="data-entry" onclick="renderBlock('n-gpcb', 'GPCB', '7C96034')">> Fetching Safe-Status (45%)...</span>
-        <span class="data-entry" onclick="renderBlock('n-gpcb', 'GPCB', 'A22X90')">> 10% Fond Liquidity Verified.</span>
+        <span class="data-entry" onclick="renderBlock('n-gpcb', 'GPCB', 'SAFE-45')">> Fetching Safe-Status (45%)...</span>
+        <span class="data-entry" onclick="renderBlock('n-gpcb', 'GPCB', 'LIQ-10')">> 10% Fond Liquidity Verified.</span>
+        <span class="data-entry" onclick="renderBlock('n-gpcb', 'GPCB', 'FEE-02')">> Global Fee 0.2% active.</span>
       </div>
     </div>
 
     <div class="sector-node node-eccu" id="n-eccu">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-eccu', 'ECCU')">← BACK</button> API: ECCU</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-eccu', 'ECCU')">← BACK</button><span style="color:var(--eccu);">API: ECCU</span></span>
         <span id="stat-eccu">SYNC</span>
       </div>
       <div class="data-stream" id="stream-eccu">
-        <span class="data-entry" onclick="renderBlock('n-eccu', 'ECCU', 'E9921')">> Anchor: 2.50€ / 2TB Joul.</span>
-        <span class="data-entry" onclick="renderBlock('n-eccu', 'ECCU', 'DNA-X')">> DNA-Certificates Valid.</span>
+        <span class="data-entry" onclick="renderBlock('n-eccu', 'ECCU', 'JOUL-2TB')">> Anchor: 2.50€ / 2TB Joul.</span>
+        <span class="data-entry" onclick="renderBlock('n-eccu', 'ECCU', 'BUFF-99')">> Stability-Buffer: 99.99%.</span>
+        <span class="data-entry" onclick="renderBlock('n-eccu', 'ECCU', 'DNA-CERT')">> DNA-Certificates Valid.</span>
       </div>
     </div>
 
     <div class="sector-node node-rfof" id="n-rfof">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-rfof', 'RFOF')">← BACK</button> API: RFOF</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-rfof', 'RFOF')">← BACK</button><span style="color:var(--rfof);">API: RFOF-GOLDEN</span></span>
         <span id="stat-rfof">SYNC</span>
       </div>
       <div class="data-stream" id="stream-rfof">
-        <span class="data-entry" onclick="renderBlock('n-rfof', 'RFOF', 'B-842102')">> Block Height: 842.102</span>
-        <span class="data-entry" onclick="renderBlock('n-rfof', 'RFOF', 'PZ-001')">> PZQQET Protocol Pulse.</span>
+        <span class="data-entry" onclick="renderBlock('n-rfof', 'RFOF', 'HGHT-842')">> Block Height: 842.102</span>
+        <span class="data-entry" onclick="renderBlock('n-rfof', 'RFOF', 'UTXO-OK')">> UTXO Hash Integrity: OK.</span>
+        <span class="data-entry" onclick="renderBlock('n-rfof', 'RFOF', 'PZQQET')">> PZQQET Protocol Pulse.</span>
       </div>
     </div>
   </div>
@@ -100,36 +103,36 @@
   <div class="clearing-grid">
     <div class="sector-node node-bip" id="n-bip">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-bip', 'BIP')">← BACK</button> BIP: AGGREGATOR</span>
-        <span>LIVE</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-bip', 'BIP')">← BACK</button><span style="color:var(--bip-purple);">BIP: AGGREGATOR</span></span>
+        <span id="stat-bip">LIVE</span>
       </div>
       <div class="data-stream" id="stream-bip">
-        <span class="data-entry" onclick="renderBlock('n-bip', 'BIP', 'SQL-01')">> SQL_QUERY: NEURAL_LINK...</span>
+        <span class="data-entry" onclick="renderBlock('n-bip', 'BIP', 'SQL-ALPHA')">> SQL_QUERY: NEURAL_LINK...</span>
       </div>
     </div>
     <div class="sector-node node-terminal" id="n-cache">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-cache', 'CACHE')">← BACK</button> DB: CACHE</span>
-        <span>READY</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-cache', 'CACHE')">← BACK</button>DB: NEURAL-CACHE</span>
+        <span id="stat-cache">READY</span>
       </div>
       <div class="data-stream" id="stream-cache">
-        <span class="data-entry" onclick="renderBlock('n-cache', 'CACHE', 'V-SYNC')">> Vector Alignment Active.</span>
+        <span class="data-entry" onclick="renderBlock('n-cache', 'CACHE', 'VEC-SYNC')">> Vector Alignment Active.</span>
       </div>
     </div>
     <div class="sector-node node-compact" id="n-index">
       <div class="node-header">
-        <span><button class="back-node-btn" onclick="resetTile('n-index', 'INDEX')">← BACK</button> GLOBAL-INDEX</span>
-        <span>SCAN</span>
+        <span><button class="back-node-btn" onclick="resetTile('n-index', 'INDEX')">← BACK</button><span style="color:var(--eccu);">GLOBAL-INDEX</span></span>
+        <span id="stat-index">SCAN</span>
       </div>
       <div class="data-stream" id="stream-index">
-        <span class="data-entry" onclick="renderBlock('n-index', 'INDEX', 'IDX-77')">> Audit Integrity 100%.</span>
+        <span class="data-entry" onclick="renderBlock('n-index', 'INDEX', 'IDX-VALID')">> Audit Integrity 100%.</span>
       </div>
     </div>
   </div>
 </main>
 
 <div class="bip-footer">
-  <div>KAHEL-J-EXPLORER || LEVEL-RENDERING: HEAD/BODY/FOOTER</div>
+  <div>KAHEL-J-EXPLORER || CROSS-CHAIN-CLEARING ACTIVE</div>
   <div id="clock">00:00:00</div>
 </div>
 
@@ -137,16 +140,17 @@
   function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
   setInterval(updateClock, 1000);
 
-  // KACHEL-BASIS-DATEN (Logik der bereits codierten Blöcke)
-  const baseData = {
-    'GPCB': ['> Fetching Safe-Status (45%)...', '> 10% Fond Liquidity Verified.'],
-    'ECCU': ['> Anchor: 2.50€ / 2TB Joul.', '> DNA-Certificates Valid.'],
-    'RFOF': ['> Block Height: 842.102', '> PZQQET Protocol Pulse.'],
+  // ORIGINAL INSCHRIFTEN & ABHÄNGIGKEITEN
+  const originalInscriptions = {
+    'GPCB': ['> Fetching Safe-Status (45%)...', '> 10% Fond Liquidity Verified.', '> Global Fee 0.2% active.'],
+    'ECCU': ['> Anchor: 2.50€ / 2TB Joul.', '> Stability-Buffer: 99.99%.', '> DNA-Certificates Valid.'],
+    'RFOF': ['> Block Height: 842.102', '> UTXO Hash Integrity: OK.', '> PZQQET Protocol Pulse.'],
     'BIP': ['> SQL_QUERY: NEURAL_LINK...'],
     'CACHE': ['> Vector Alignment Active.'],
     'INDEX': ['> Audit Integrity 100%.']
   };
 
+  // RENDERING INNERHALB DER KACHEL (Ebenen-Logik)
   function renderBlock(tileId, api, blockId) {
     const tile = document.getElementById(tileId);
     const stream = tile.querySelector('.data-stream');
@@ -154,43 +158,59 @@
     
     backBtn.style.display = "inline-block";
     
-    // EBENEN-RENDERING: 01 Head, 02 Body, 03 Footer
+    // Dynamisches Rendering: 01 Head, 02 Body, 03 Footer
     stream.innerHTML = `
-      <div class="l01-head">BLOCK: ${blockId}</div>
+      <div class="l01-head">BLOCK-ID: ${blockId}</div>
       <div class="l02-body">
-        > API: ${api} Active<br>
-        > Status: VALIDATED<br>
-        > Hash: ${Math.random().toString(16).substring(2,15).toUpperCase()}<br>
-        > Load: ${Math.floor(Math.random()*100)}%
+        > API: ${api} // STATUS: VALIDATED<br>
+        > HASH: 0x${Math.random().toString(16).substring(2,12).toUpperCase()}<br>
+        > DEP: PZQQET-AXIOM-PRAI<br>
+        > LOAD: ${Math.floor(Math.random()*100)}% NODE-TRAFFIC
       </div>
       <div class="l03-footer">
-        TIMESTAMP: ${new Date().toISOString()}<br>
-        CHAIN-CLEARING VERIFIED.
+        SYNC-TIME: ${new Date().toLocaleTimeString()}<br>
+        KAHEL-J || AGGREGATION SUCCESSFUL.
       </div>
     `;
   }
 
+  // RESET FUNKTION (Back to Original Inscriptions)
   function resetTile(tileId, api) {
     const tile = document.getElementById(tileId);
     const stream = tile.querySelector('.data-stream');
     const backBtn = tile.querySelector('.back-node-btn');
     
     backBtn.style.display = "none";
-    stream.innerHTML = baseData[api].map(entry => 
-      `<span class="data-entry" onclick="renderBlock('${tileId}', '${api}', 'AUTO-${Math.floor(Math.random()*999)}')">${entry}</span>`
+    stream.innerHTML = originalInscriptions[api].map(text => 
+      `<span class="data-entry" onclick="renderBlock('${tileId}', '${api}', 'TRX-${Math.floor(Math.random()*9999)}')">${text}</span>`
     ).join('');
   }
 
-  // Live Simulation (Sync)
+  // LIVE-SYNC SIMULATION (Wie im Original)
   setInterval(() => {
     const apis = ['gpcb', 'eccu', 'rfof', 'bip', 'cache', 'index'];
-    const target = apis[Math.floor(Math.random()*apis.length)];
-    const el = document.getElementById('stat-' + target);
+    const targetKey = apis[Math.floor(Math.random()*apis.length)];
+    const el = document.getElementById('stat-' + targetKey);
+    const stream = document.getElementById('stream-' + targetKey);
+    
+    // Sync-Blinken
     if(el) {
-        el.style.color = "#4ade80";
-        setTimeout(() => el.style.color = "", 500);
+      el.style.color = "var(--j-color)";
+      setTimeout(() => el.style.color = "", 600);
     }
-  }, 3000);
+
+    // Nur im L01 Modus Live-Updates einfügen (wenn Back-Button versteckt ist)
+    const tile = document.getElementById('n-' + targetKey);
+    if(tile && tile.querySelector('.back-node-btn').style.display === "none") {
+        const newEntry = document.createElement('span');
+        newEntry.className = 'data-entry';
+        const hash = Math.random().toString(16).substring(2,10);
+        newEntry.innerHTML = `> Update: ${hash} verified.`;
+        newEntry.onclick = () => renderBlock('n-'+targetKey, targetKey.toUpperCase(), hash.toUpperCase());
+        stream.insertBefore(newEntry, stream.firstChild);
+        if(stream.children.length > 25) stream.lastChild.remove();
+    }
+  }, 3500);
 </script>
 </body>
 </html>

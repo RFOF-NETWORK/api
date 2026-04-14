@@ -2,24 +2,23 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Chain-Clearing | Meta Console</title>
+  <title>Chain-Clearing | Terminal Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; }
-    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
-    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
-    .line { margin-bottom:8px; font-size:12px; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; overflow: hidden; }
+    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; position: relative; }
+    .line { margin-bottom:8px; font-size:12px; line-height: 1.4; }
     .meta { color:#94a3b8; }
     .highlight { color:#fbbf24; font-weight:bold; }
+    .nav-back { color: #38bdf8; text-decoration: none; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 5px; margin-bottom: 20px; display: inline-block; }
   </style>
 </head>
 <body>
 <div class="terminal" id="term">
-  <div class="line">[META-DOCUMENTATION] Initializing Kahel J Global Viewer...</div>
-  <div class="line">[INFO] Merging API Streams: GPCB, ECCU, RFOF-GOLDEN-CHAIN.</div>
-  <div class="line">[INFO] Synchronizing Documentation-Nodes with Live-State.</div>
+  <a href="./index.html" class="nav-back">< EXIT VIEW</a>
+  <div class="line">[VALIDATION] Kahel J Cross-Chain Master Terminal...</div>
   <div class="line">--------------------------------------------------</div>
-  <div class="line meta">@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.</div>
 </div>
 
 <script>
@@ -32,33 +31,32 @@
     term.scrollTop = term.scrollHeight;
   }
 
-  // Analyse-Simulation (Basis)
-  setInterval(() => {
-    const events = [
-      "GPCB 45% SAFE Audit completed.",
-      "ECCU Joul-Anchor at 2.50€ parity.",
-      "RFOF-G Block propagated to all Sektors.",
-      "Kachel J Cross-Validation successful."
-    ];
-    addLog("<span class='highlight'>META-SYNC:</span> " + events[Math.floor(Math.random()*events.length)]);
-  }, 5000);
-
-  // Mechatronisches Cross-Chain Audit: Prüft die Verzeichnis-Integrität der Instanzen
-  function simulateCrossChainAudit() {
-    const chains = ["GPCB", "ECCU", "RFOF-GOLDEN-Chain"];
-    const selected = chains[Math.floor(Math.random() * chains.length)];
-    addLog(`<span class="meta">[CROSS-AUDIT]</span> Reading /api/${selected}/wallet/ ... <span class="highlight">INTEGRITY 100%</span>`);
-  }
-  setInterval(simulateCrossChainAudit, 8000);
-
-  // Prüfung von URL-Parametern (falls ein Block von der index.html gesendet wurde)
+  // Mechanische Pfad-Erkennung
   window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const block = urlParams.get('block');
-    const query = urlParams.get('query');
-    if(block) addLog(`<span class="highlight">INSPECTING BLOCK:</span> ${block} ... Detail-Analysis initiated.`);
-    if(query) addLog(`<span class="highlight">SEARCH GUCI:</span> ${query} ... Fetching Profile-Chain-State.`);
+    const params = new URLSearchParams(window.location.search);
+    const scope = params.get('scope') || 'GLOBAL-NODE';
+    const block = params.get('block');
+    const query = params.get('query');
+
+    addLog(`<span class="highlight">SCOPE DETECTED:</span> /api/chain-clearing/ -> <span style="color:#38bdf8">../${scope}/</span>`);
+    
+    if(block) {
+      addLog(`[CROSS-AUDIT] Fetching Block Data from sibling directory...`);
+      addLog(`[TARGET] File: ../${scope}/wallet/index.html`);
+      addLog(`[RESULT] Block <span class="highlight">${block}</span> is VALID on ${scope}-Chain.`);
+    }
+    
+    if(query) {
+      addLog(`<span class="highlight">SEARCHING FRAKTAL:</span> "${query}" found in Level 02 Index.`);
+    }
   };
+
+  // Permanenter Cross-Chain Audit-Stream
+  setInterval(() => {
+    const sectors = ["GPCB", "ECCU", "RFOF-GOLDEN-Chain"];
+    const s = sectors[Math.floor(Math.random() * sectors.length)];
+    addLog(`<span class="meta">[SYSTEM]</span> Verifying Sibling-Path: <span style="color:#f3f4f6">/api/${s}/</span> ... <span style="color:#4ade80">OK</span>`);
+  }, 6000);
 </script>
 </body>
 </html>

@@ -42,6 +42,14 @@
     ];
     addLog("<span class='highlight'>META-SYNC:</span> " + events[Math.floor(Math.random()*events.length)]);
   }, 5000);
+
+  // Simuliert das Auslesen der Unterordner-Zustände
+function simulateCrossChainAudit() {
+  const chains = ["GPCB-Liquidity", "ECCU-Anchor", "RFOF-Protocol"];
+  const selected = chains[Math.floor(Math.random() * chains.length)];
+  addLog(`<span class="meta">[CROSS-AUDIT]</span> Reading /api/${selected.split('-')[0]}/wallet/ ... <span class="highlight">INTEGRITY 100%</span>`);
+}
+setInterval(simulateCrossChainAudit, 8000);
 </script>
 </body>
 </html>

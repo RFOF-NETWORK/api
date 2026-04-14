@@ -88,6 +88,47 @@
     const newEntry = "> Update: " + Math.random().toString(16).substring(2,10) + " verified.<br>";
     el.innerHTML = newEntry + el.innerHTML;
   }, 3000);
+
+  // Mechatronische Navigation: Jede Kachel wird zum Einstiegspunkt
+  document.querySelectorAll('.sector-node').forEach(node => {
+    node.style.cursor = 'pointer';
+    node.addEventListener('click', () => {
+      const sector = node.querySelector('.node-header span').textContent.split(': ')[1];
+      // Navigiert in den entsprechenden Unterordner deiner Struktur
+      // Beispiel: GPCB -> /api/GPCB/index.html
+      window.location.href = `./${sector}/index.html`;
+    });
+  });
+
+  function updateClock() {
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  
+  // Simulation des Live-Data Merging (Erweitert um echte Hash-Stile)
+  setInterval(() => {
+    const streams = ['stream-gpcb', 'stream-eccu', 'stream-rfof'];
+    const target = streams[Math.floor(Math.random()*streams.length)];
+    const el = document.getElementById(target);
+    const hash = "0x" + Math.random().toString(16).substring(2,12).toUpperCase();
+    const newEntry = `> <span style="color:var(--j-color)">[VERIFIED]</span> Block: ${hash}<br>`;
+    el.innerHTML = newEntry + el.innerHTML;
+    // Begrenzung der Zeilen, um das UI sauber zu halten (Mechatronische Stabilität)
+    if(el.children.length > 5) el.lastChild.remove();
+  }, 3000);
+
+  document.getElementById('search-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      const val = this.value;
+      if(val.startsWith('0x')) {
+        // Leitet zur RFOF-Chain-Ansicht für Transaktionen weiter
+        window.location.href = `./RFOF-GOLDEN-Chain/browser.html?query=${val}`;
+      } else if(val.includes('ID-')) {
+        // Leitet zum Profil-Modul weiter
+        window.location.href = `./profil/index.html?user=${val}`;
+      }
+    }
+  });
 </script>
 </body>
 </html>

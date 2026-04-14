@@ -71,6 +71,40 @@
     term.appendChild(div);
     term.scrollTop = term.scrollHeight;
   }, 7000);
+
+  // --- DYNAMISCHE LEVEL-RENDERING LOGIK (TON-VIEWER STYLE) ---
+
+window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    const level = params.get('level') || '02';
+    const node = params.get('node') || 'SYSTEM';
+    const block = params.get('block');
+
+    // Dynamische Anpassung des Terminal-Headers
+    const headerLine = document.createElement("div");
+    headerLine.className = "line highlight";
+    headerLine.innerHTML = `>>> RENDERING LEVEL: ${level} | NODE: ${node}`;
+    term.prepend(headerLine);
+
+    if (level === '03' && block) {
+        addLog(`<span style="color:#fbbf24">[DEEP-DIVE]</span> Navigating to Level 03 Rendering for Block: ${block}`);
+        addLog(`[L03] Initializing individual Head/Body/Footer Schachtelung...`);
+        addLog(`[L03] Validating Sibling Data: ../${node}/wallet/index.html`);
+    } else if (level === '02') {
+        addLog(`<span style="color:#38bdf8">[ARCHIVE]</span> Browsing Level 02 Meta-Structure of ${node}.`);
+    }
+};
+
+// Jede Log-Zeile im Terminal ebenfalls drauftippbar machen
+function addLog(msg) {
+    const div = document.createElement("div");
+    div.className = "line";
+    div.style.cursor = "pointer";
+    div.onclick = () => { console.log("Re-verifying entry..."); div.style.color = "#4ade80"; };
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+}
 </script>
 </body>
 </html>

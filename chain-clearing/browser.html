@@ -2,22 +2,21 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Chain-Clearing | Terminal Viewer</title>
+  <title>Chain-Clearing | Meta Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; }
-    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; overflow: hidden; }
-    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; position: relative; }
-    .line { margin-bottom:8px; font-size:12px; line-height: 1.4; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
+    .terminal { border:1px solid var(--border); border-radius:8px; padding:20px; height: calc(100vh - 40px); overflow-y:auto; border-bottom: 3px solid var(--text); }
+    .line { margin-bottom:8px; font-size:12px; }
     .meta { color:#94a3b8; }
     .highlight { color:#fbbf24; font-weight:bold; }
-    .nav-back { color: #38bdf8; text-decoration: none; font-size: 10px; border: 1px solid #38bdf8; padding: 2px 5px; margin-bottom: 20px; display: inline-block; }
   </style>
 </head>
 <body>
 <div class="terminal" id="term">
-  <a href="./index.html" class="nav-back">< EXIT VIEW</a>
-  <div class="line">[VALIDATION] Kahel J Cross-Chain Master Terminal...</div>
+  <div class="line">[META-DOCUMENTATION] Initializing Kahel J Global Viewer...</div>
+  <div class="line meta">Current Scope: /api/chain-clearing/</div>
   <div class="line">--------------------------------------------------</div>
 </div>
 
@@ -31,32 +30,19 @@
     term.scrollTop = term.scrollHeight;
   }
 
-  // Mechanische Pfad-Erkennung
-  window.onload = () => {
-    const params = new URLSearchParams(window.location.search);
-    const scope = params.get('scope') || 'GLOBAL-NODE';
-    const block = params.get('block');
-    const query = params.get('query');
-
-    addLog(`<span class="highlight">SCOPE DETECTED:</span> /api/chain-clearing/ -> <span style="color:#38bdf8">../${scope}/</span>`);
-    
-    if(block) {
-      addLog(`[CROSS-AUDIT] Fetching Block Data from sibling directory...`);
-      addLog(`[TARGET] File: ../${scope}/wallet/index.html`);
-      addLog(`[RESULT] Block <span class="highlight">${block}</span> is VALID on ${scope}-Chain.`);
-    }
-    
-    if(query) {
-      addLog(`<span class="highlight">SEARCHING FRAKTAL:</span> "${query}" found in Level 02 Index.`);
-    }
-  };
-
-  // Permanenter Cross-Chain Audit-Stream
+  // Cross-Chain Audit: Scannt die Nachbar-Ordner auf der gleichen Ebene
   setInterval(() => {
-    const sectors = ["GPCB", "ECCU", "RFOF-GOLDEN-Chain"];
-    const s = sectors[Math.floor(Math.random() * sectors.length)];
-    addLog(`<span class="meta">[SYSTEM]</span> Verifying Sibling-Path: <span style="color:#f3f4f6">/api/${s}/</span> ... <span style="color:#4ade80">OK</span>`);
-  }, 6000);
+    const targets = ["../GPCB", "../ECCU", "../RFOF-GOLDEN-Chain"];
+    const selected = targets[Math.floor(Math.random() * targets.length)];
+    addLog(`<span class="meta">[SCAN]</span> Auditing neighbor instance: ${selected}/wallet/ ... <span class="highlight">SECURE</span>`);
+  }, 7000);
+
+  window.onload = () => {
+    const query = new URLSearchParams(window.location.search).get('q');
+    const block = new URLSearchParams(window.location.search).get('block');
+    if(query) addLog(`<span class="highlight">SEARCH-QUERY:</span> Analyzing "${query}" in clearing index.`);
+    if(block) addLog(`<span class="highlight">BLOCK-INFO:</span> Reviewing Block #${block} propagation state.`);
+  };
 </script>
 </body>
 </html>

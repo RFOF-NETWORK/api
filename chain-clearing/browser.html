@@ -32,7 +32,7 @@
     term.scrollTop = term.scrollHeight;
   }
 
-  // Verschachtelte Ketten-Analyse Simulation
+  // Analyse-Simulation (Basis)
   setInterval(() => {
     const events = [
       "GPCB 45% SAFE Audit completed.",
@@ -43,13 +43,22 @@
     addLog("<span class='highlight'>META-SYNC:</span> " + events[Math.floor(Math.random()*events.length)]);
   }, 5000);
 
-  // Simuliert das Auslesen der Unterordner-Zustände
-function simulateCrossChainAudit() {
-  const chains = ["GPCB-Liquidity", "ECCU-Anchor", "RFOF-Protocol"];
-  const selected = chains[Math.floor(Math.random() * chains.length)];
-  addLog(`<span class="meta">[CROSS-AUDIT]</span> Reading /api/${selected.split('-')[0]}/wallet/ ... <span class="highlight">INTEGRITY 100%</span>`);
-}
-setInterval(simulateCrossChainAudit, 8000);
+  // Mechatronisches Cross-Chain Audit: Prüft die Verzeichnis-Integrität der Instanzen
+  function simulateCrossChainAudit() {
+    const chains = ["GPCB", "ECCU", "RFOF-GOLDEN-Chain"];
+    const selected = chains[Math.floor(Math.random() * chains.length)];
+    addLog(`<span class="meta">[CROSS-AUDIT]</span> Reading /api/${selected}/wallet/ ... <span class="highlight">INTEGRITY 100%</span>`);
+  }
+  setInterval(simulateCrossChainAudit, 8000);
+
+  // Prüfung von URL-Parametern (falls ein Block von der index.html gesendet wurde)
+  window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const block = urlParams.get('block');
+    const query = urlParams.get('query');
+    if(block) addLog(`<span class="highlight">INSPECTING BLOCK:</span> ${block} ... Detail-Analysis initiated.`);
+    if(query) addLog(`<span class="highlight">SEARCH GUCI:</span> ${query} ... Fetching Profile-Chain-State.`);
+  };
 </script>
 </body>
 </html>

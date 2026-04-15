@@ -9,7 +9,7 @@ InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
 | :--- | :--- | :--- |
 | **User** | Jeder Account | Zugriff auf eigene Energie-Logs & Wallet. |
 | **Admin** | Selbst-Verwalter | Kontrolle über eigene Assets (Meme-Tokens/NFTs). |
-| **Manager** | System-Mitarbeiter | Steuerung von 1-4 APIs (GPCB, ECCU, Chain, Clearing). |
+| **Manager** | System-Mitarbeiter | Steuerung von 1-4 API-/s (GPCB, ECCU, Chain, Clearing). |
 | **Master** | **RFOF-NETWORK** | Absoluter Zugriff. Kann Manager ernennen/entlassen. |
 | **Dev** | Architekt | Admin-Status + X-Hub Schreibrechte (Code-Injektion). |
 

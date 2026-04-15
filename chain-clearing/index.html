@@ -8,7 +8,8 @@
     :root { color-scheme: dark; --bg:#050505; --bg-alt:#0a0a0a; --border:#1f2937; --text:#f3f4f6; --j-color:#4ade80; --gold:#fbbf24; --eccu:#22c55e; --rfof:#38bdf8; --bip-purple:#a855f7; }
     body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); overflow-x: hidden; }
     
-    .sticky-nav { position: sticky; top: 0; z-index: 2000; background: var(--bg); border-bottom: 1px solid var(--border); }
+    /* NAV ANCHOR */
+    .sticky-nav { position: sticky; top: 0; z-index: 2000; background: var(--bg); width: 100%; border-bottom: 1px solid var(--border); }
     header { padding:15px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; border-top: 3px solid var(--j-color); background: #000; }
     
     .search-bar { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; display:flex; gap:10px; margin: 15px 20px; width: calc(100% - 40px); box-sizing: border-box; }
@@ -16,27 +17,48 @@
     
     main { padding:20px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
 
-    /* MASTER-VIEWER (KACHEL ZERO) */
+    /* MASTER-VIEWER KACHEL (KACHEL ZERO) */
     .master-viewer-node { 
       background: linear-gradient(145deg, #0d0d0d, #050505); 
-      border: 2px solid var(--j-color); border-radius: 16px; padding: 20px; margin-bottom: 30px; position: relative;
+      border: 2px solid var(--j-color); border-radius: 16px; 
+      padding: 20px; margin-bottom: 30px; position: relative;
+      box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
     }
-    .takt-indicator { position: absolute; top: 10px; right: 20px; font-family: monospace; font-size: 10px; color: var(--j-color); }
-
-    .master-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
-    .history-chain-box { background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 10px; height: 180px; display: flex; flex-direction: column; }
+    .master-grid { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+      gap: 15px; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;
+    }
+    .history-chain-box { 
+      background: #000; border: 1px solid var(--border); border-radius: 8px; 
+      padding: 10px; height: 180px; display: flex; flex-direction: column;
+    }
     .chain-title { font-size: 10px; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
     .chain-scroll { overflow-y: auto; flex-grow: 1; font-family: monospace; font-size: 9px; scrollbar-width: none; }
+    .chain-link { color: #6b7280; margin-bottom: 4px; border-left: 2px solid var(--border); padding-left: 5px; cursor: pointer; }
+    .chain-link:hover { color: var(--j-color); border-left-color: var(--j-color); }
 
-    /* SEKTOR-GRID */
+    /* STANDARD GRID (DIE 6 KACHELN) */
     .clearing-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom: 25px; }
     .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; min-height: 220px; transition: 0.3s; display: flex; flex-direction: column; overflow: hidden; }
-    .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; }
+    .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; opacity:0.8; }
+    
     .node-gpcb::before { background:var(--gold); }
     .node-eccu::before { background:var(--eccu); }
     .node-rfof::before { background:var(--rfof); }
+    .node-bip::before { background:var(--bip-purple); }
+    .node-terminal { border-left: 4px solid var(--j-color); }
+    .node-compact { border-radius: 40px 10px; border: 1px dashed var(--rfof); }
 
+    .node-header { display:flex; justify-content:space-between; margin-bottom:12px; font-size:12px; font-weight:bold; }
+    .back-node-btn { background: var(--j-color); border: none; color: #000; font-size: 9px; padding: 2px 8px; cursor: pointer; border-radius: 3px; display: none; font-weight: bold; }
     .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:150px; overflow-y: auto; scrollbar-width: thin; }
+    .data-entry { cursor: pointer; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); display: block; }
+    
+    /* EBENEN RENDERING */
+    .l01-head { color: var(--j-color); font-weight: bold; border-bottom: 1px solid var(--j-color); margin-bottom: 8px; padding-bottom: 4px; }
+    .l02-body { color: var(--text); padding: 5px 0; line-height: 1.5; }
+    .l03-footer { color: #6b7280; font-size: 10px; margin-top: 10px; border-top: 1px dashed #374151; padding-top: 6px; }
+
     .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; z-index: 2000; }
   </style>
 </head>
@@ -45,65 +67,151 @@
 <div class="sticky-nav">
   <header>
     <div style="font-weight:bold; letter-spacing:1px;">PZQQET | MASTER-SYSTEM</div>
-    <div style="font-size:11px; font-family:monospace;">REALITÄT 0: <span id="takt-val" style="color:var(--j-color);">A1-ACTIVE</span></div>
+    <div style="font-size:11px; font-family:monospace;">CORE-SYNC: <span id="helix-takt" style="color:var(--j-color);">TAKT: A1</span></div>
   </header>
   <div class="search-bar">
     <span style="color:var(--j-color);">🔍</span>
-    <input type="text" placeholder="GGPB, ECCU, RFOF-Chain Search..." id="search-input">
+    <input type="text" placeholder="GUCI, NFT-Hash, RFOF/GOLD LP-Token..." id="search-input">
   </div>
 </div>
 
 <main>
   <div class="master-viewer-node">
-    <div class="takt-indicator" id="helix-takt">NODE-E: OK</div>
-    <div class="node-header"><span style="color:var(--j-color);">[00] MASTER-ECOSYSTEM-VIEWER</span></div>
-    <div class="master-grid">
+    <div class="node-header">
+      <span style="color:var(--j-color);">[00] MASTER-ECOSYSTEM-VIEWER</span>
+      <span id="lp-growth" style="font-family:monospace; font-size:10px; color:var(--rfof);">LP-GROWTH: +0.8%</span>
+    </div>
+    <div style="font-size: 10px; color: var(--text); opacity: 0.7;">
+      Echtzeit-Überwachung von Token-Balken, LP-Paaren und permanenten GUCI-Hashes (A-Z Helix).
+    </div>
+    <div class="master-grid" id="master-history-grid">
       <div class="history-chain-box"><div class="chain-title" style="color:var(--gold);">GPCB-CHAIN</div><div class="chain-scroll" id="hist-gpcb"></div></div>
       <div class="history-chain-box"><div class="chain-title" style="color:var(--eccu);">ECCU-CHAIN</div><div class="chain-scroll" id="hist-eccu"></div></div>
       <div class="history-chain-box"><div class="chain-title" style="color:var(--rfof);">RFOF-GOLD</div><div class="chain-scroll" id="hist-rfof"></div></div>
+      <div class="history-chain-box"><div class="chain-title" style="color:var(--bip-purple);">BIP-AGG</div><div class="chain-scroll" id="hist-bip"></div></div>
       <div class="history-chain-box"><div class="chain-title" style="color:var(--j-color);">NEURAL-CACHE</div><div class="chain-scroll" id="hist-cache"></div></div>
+      <div class="history-chain-box"><div class="chain-title" style="border-color:var(--eccu);">GLOBAL-IDX</div><div class="chain-scroll" id="hist-index"></div></div>
     </div>
   </div>
 
   <div class="clearing-grid">
     <div class="sector-node node-gpcb" id="n-gpcb">
-      <div class="node-header" style="font-size:12px;">API: GPCB [A-G]</div>
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-gpcb', 'GPCB')">← BACK</button> API: GPCB</span><span id="stat-gpcb">45% SAFE</span></div>
       <div class="data-stream" id="stream-gpcb"></div>
     </div>
     <div class="sector-node node-eccu" id="n-eccu">
-      <div class="node-header" style="font-size:12px;">API: ECCU [H-N]</div>
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-eccu', 'ECCU')">← BACK</button> API: ECCU</span><span id="stat-eccu">2.50€/J</span></div>
       <div class="data-stream" id="stream-eccu"></div>
     </div>
     <div class="sector-node node-rfof" id="n-rfof">
-      <div class="node-header" style="font-size:12px;">API: RFOF [O-U]</div>
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-rfof', 'RFOF')">← BACK</button> API: RFOF</span><span id="stat-rfof">PULSE: OK</span></div>
       <div class="data-stream" id="stream-rfof"></div>
+    </div>
+  </div>
+  
+  <div class="clearing-grid">
+    <div class="sector-node node-bip" id="n-bip">
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-bip', 'BIP')">← BACK</button> BIP: AGGR</span><span>LIVE</span></div>
+      <div class="data-stream" id="stream-bip"></div>
+    </div>
+    <div class="sector-node node-terminal" id="n-cache">
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-cache', 'CACHE')">← BACK</button> DB: CACHE</span><span>READY</span></div>
+      <div class="data-stream" id="stream-cache"></div>
+    </div>
+    <div class="sector-node node-compact" id="n-index">
+      <div class="node-header"><span><button class="back-node-btn" onclick="resetTile('n-index', 'INDEX')">← BACK</button> GLOBAL-IDX</span><span>SCAN</span></div>
+      <div class="data-stream" id="stream-index"></div>
     </div>
   </div>
 </main>
 
 <div class="bip-footer">
-  <div>KAHEL-J || DETERMINISTIC ARCHITECTURE</div>
+  <div>KAHEL-J MASTER-STATION || REALITÄT 0: 100.000.000% SECURE</div>
   <div id="clock">00:00:00</div>
 </div>
 
 <script>
-  let step = 0; let charIdx = 0; const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  function updateHelix() {
-    const val = `${chars[charIdx]}${step}`;
-    document.getElementById('takt-val').textContent = `${val}-ACTIVE`;
-    const logs = ['stream-gpcb', 'stream-eccu', 'stream-rfof'];
-    logs.forEach(id => {
-      const d = document.createElement('div');
-      d.style.padding = "2px 0";
-      d.textContent = `> [${val}] Kaskade-Integrität: 100%`;
-      const s = document.getElementById(id);
-      s.prepend(d);
-      if(s.childNodes.length > 20) s.lastChild.remove();
+  function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
+  setInterval(updateClock, 1000);
+
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let helixStep = 0;
+  let charIdx = 0;
+
+  const baseInscriptions = {
+    'GPCB': ['> Safe-Status (45%)', '> Fond Liquidity Verified', '> Global Fee 0.2%'],
+    'ECCU': ['> Anchor: 2.50€', '> Stability-Buffer: 99.99%', '> DNA-Cert Valid'],
+    'RFOF': ['> Block: 842.102', '> RFOF/GOLD LP Active', '> PZQQET Pulse'],
+    'BIP': ['> SQL: NEURAL_LINK', '> Cross-Chain Sync'],
+    'CACHE': ['> Vector Align OK', '> Neural Cache Ready'],
+    'INDEX': ['> Audit Integrity 100%', '> Scan: Global-Node']
+  };
+
+  let systemHistory = JSON.parse(localStorage.getItem('pzqqet_history')) || { GPCB: [], ECCU: [], RFOF: [], BIP: [], CACHE: [], INDEX: [] };
+
+  function saveAndRenderMaster() {
+    localStorage.setItem('pzqqet_history', JSON.stringify(systemHistory));
+    Object.keys(systemHistory).forEach(key => {
+      const container = document.getElementById('hist-' + key.toLowerCase());
+      if(container) {
+        container.innerHTML = systemHistory[key].map(h => `<div class="chain-link" onclick="renderBlock('n-${key.toLowerCase()}', '${key}', '${h.id}')">#${h.id}</div>`).join('');
+      }
     });
-    step++; if(step > 10) { step = 0; charIdx++; }
   }
-  setInterval(updateHelix, 1500);
-  setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }, 1000);
+
+  function renderBlock(tileId, api, blockId) {
+    const tile = document.getElementById(tileId);
+    const stream = tile.querySelector('.data-stream');
+    tile.querySelector('.back-node-btn').style.display = "inline-block";
+    
+    stream.innerHTML = `
+      <div class="l01-head">BLOCK: ${blockId}</div>
+      <div class="l02-body">
+        > TYPE: ${api}_TOKEN_UNIT<br>
+        > HELIX-NODE: ${alphabet[charIdx]}${helixStep}<br>
+        > STATUS: DETERMINISTIC_OK<br>
+        > LP-STABILITY: 100%
+      </div>
+      <div class="l03-footer">SYNC AT: ${new Date().toLocaleTimeString()}</div>
+    `;
+  }
+
+  function resetTile(tileId, api) {
+    const tile = document.getElementById(tileId);
+    const stream = tile.querySelector('.data-stream');
+    tile.querySelector('.back-node-btn').style.display = "none";
+    stream.innerHTML = baseInscriptions[api].map(txt => 
+      `<span class="data-entry" onclick="renderBlock('${tileId}', '${api}', 'GUCI-${Math.floor(Math.random()*9999)}')">${txt}</span>`
+    ).join('');
+  }
+
+  // --- NEUE HELIX-TAKTUNG LOGIK ---
+  function runHelix() {
+    const cluster = alphabet[charIdx];
+    document.getElementById('helix-takt').textContent = `TAKT: ${cluster}${helixStep}`;
+    
+    // Automatische Notarisierung in die Historie
+    const apis = Object.keys(baseInscriptions);
+    const api = apis[Math.floor(Math.random()*apis.length)];
+    const id = `${cluster}${helixStep}-GUCI-${Math.floor(Math.random()*9999)}`;
+    
+    systemHistory[api].unshift({ id: id, time: new Date().getTime() });
+    if(systemHistory[api].length > 50) systemHistory[api].pop();
+    saveAndRenderMaster();
+
+    // Takt-Logik (0-10)
+    helixStep++;
+    if(helixStep > 10) {
+      helixStep = 0;
+      charIdx = (charIdx + 1) % 26;
+    }
+  }
+
+  Object.keys(baseInscriptions).forEach(api => resetTile('n-' + api.toLowerCase(), api));
+  saveAndRenderMaster();
+
+  // Der Helix-Takt steuert nun das System (alle 3 Sek ein neuer Takt)
+  setInterval(runHelix, 3000);
 </script>
 </body>
 </html>

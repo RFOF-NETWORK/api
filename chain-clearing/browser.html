@@ -1,108 +1,89 @@
-# Code für die neue browser.html
-browser_html_content = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>CHAIN-MASTER VIEWER | BROWSER</title>
+  <title>Chain-Clearing | Master Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; --j-color:#4ade80; }
-    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); padding:10px; overflow-x: hidden; }
+    :root { color-scheme: dark; --bg:#000; --border:#1f2937; --text:#4ade80; }
+    body { margin:0; font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); padding:20px; }
     
-    /* KACHEL 0 - HEADER */
-    .kachel-zero { background: #050505; border: 1px solid var(--j-color); border-radius: 12px; padding:15px; margin-bottom: 10px; }
-    
-    /* ZWISCHENBEREICH - DAS HERZSTÜCK */
+    /* KACHEL 0 */
+    .kachel-zero { border: 1px solid var(--text); border-radius: 8px; padding: 20px; margin-bottom: 20px; background: #050505; }
+
+    /* ZWISCHENBEREICH - DISCOVERY & WÄHRUNG */
     .intermediate-zone { 
-      background: linear-gradient(180deg, #0a0a0a, #000); 
-      border-left: 2px solid var(--j-color); 
-      min-height: 200px; margin: 10px 0; padding: 15px; 
-      display: flex; flex-direction: column; gap: 15px;
+      min-height: 150px; border-left: 2px solid var(--text); padding-left: 20px; margin-bottom: 20px;
+      display: flex; flex-direction: column; gap: 10px;
     }
-    .discovery-box { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .currency-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
-    .token-card { background: #111; border: 1px solid var(--border); padding: 8px; border-radius: 4px; font-size: 11px; }
+    .discovery-entry { color: #fff; font-size: 14px; background: #111; padding: 10px; border-radius: 4px; border-left: 4px solid var(--text); }
+    .currency-ticker { display: flex; gap: 15px; font-size: 11px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
 
     /* KACHEL 7 - SUCHE */
-    .search-kachel { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; }
-    .search-kachel input { width: 100%; background: transparent; border: none; color: #fff; font-family: monospace; outline: none; }
+    .search-zone { background: #0a0a0a; border: 1px solid var(--border); border-radius: 50px; padding: 12px 25px; margin-bottom: 20px; }
+    .search-zone input { width: 100%; background: transparent; border: none; outline: none; color: #fff; }
 
-    /* DIE 8 KACHELN (Gitter) */
-    .kachel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .kachel { background: #050505; border: 1px solid var(--border); height: 80px; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; border-radius: 8px; }
-    .kachel:hover { border-color: var(--j-color); }
+    /* DIE 8 KACHELN GRID */
+    .kachel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+    .kachel-box { background: #050505; border: 1px solid var(--border); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 10px; border-radius: 4px; }
 
-    /* KACHEL 8 - NEWSFEED */
-    .kachel-news { margin-top: 10px; background: #050505; border: 1px solid var(--border); padding: 15px; font-family: monospace; font-size: 11px; height: 150px; overflow-y: auto; }
+    /* KACHEL 8 - NEWS (UNTER DEN KACHELN) */
+    .news-terminal { border: 1px solid var(--border); border-radius: 8px; padding: 15px; height: 180px; overflow-y: auto; background: #000; color: #94a3b8; }
+    .news-line { margin-bottom: 5px; font-size: 12px; }
+    .highlight { color: var(--text); font-weight: bold; }
   </style>
 </head>
 <body>
 
   <div class="kachel-zero">
-    <div style="display:flex; justify-content:space-between;">
-      <span>ABILITY API LP: <span id="lp-val">1.684.210,00 €</span></span>
-      <span style="color:var(--j-color);">MASTER ACTIVE</span>
-    </div>
+    [MASTER-CONTROL] KAHEL J GLOBAL VIEW STATUS: 100% SYNC
   </div>
 
   <div class="intermediate-zone" id="intermediate">
-    <div class="discovery-box">
-      <div style="color:#6b7280; font-size:10px; margin-bottom:5px;">DISCOVERY / NUTZER-SUCHE</div>
-      <div id="user-result" style="color:#fff;">Warte auf Eingabe...</div>
+    <div class="currency-ticker">
+      <span>RFOF: +0.2%</span> | <span>GOLD: +0.2%</span> | <span>ECCU: 2.50€</span> | <span>ABILITY: +0.8%</span>
     </div>
-    <div class="currency-matrix">
-      <div class="token-card">RFOF: <span style="color:var(--j-color);">+0.2%</span></div>
-      <div class="token-card">GOLD: <span style="color:var(--j-color);">+0.2%</span></div>
-      <div class="token-card">PHOENIX: <span style="color:var(--j-color);">+0.4%</span></div>
-      <div class="token-card">ECCU: 2.50 €</div>
+    <div id="discovery-output" class="discovery-entry">
+      System bereit. Suche nach GUCI, Wallet-ID oder Pfad-Kaskaden...
     </div>
   </div>
 
-  <div class="search-kachel">
-    <input type="text" id="master-search" placeholder="Suche GUCI, Wallet-ID oder A1-Kaskade..." oninput="handleSearch(this.value)">
+  <div class="search-zone">
+    <input type="text" placeholder="QUERY INPUT [PATH/ID/GUCI]..." oninput="runDiscovery(this.value)">
   </div>
 
   <div class="kachel-grid">
-    <div class="kachel">K1: AUTH</div>
-    <div class="kachel">K2: PAYLOAD</div>
-    <div class="kachel">K3: ACTION</div>
-    <div class="kachel">K4: FEE</div>
-    <div class="kachel">K5: LOGIC</div>
-    <div class="kachel">K6: REGISTRY</div>
-    <div class="kachel" style="border-color:var(--j-color);">K7: SYSTEM</div>
-    <div class="kachel">K8: NEWS</div>
+    <div class="kachel-box">K1: AUTH</div>
+    <div class="kachel-box">K2: PAYLOAD</div>
+    <div class="kachel-box">K3: ACTION</div>
+    <div class="kachel-box">K4: FEE</div>
+    <div class="kachel-box">K5: LOGIC</div>
+    <div class="kachel-box">K6: REGISTRY</div>
+    <div class="kachel-box" style="border-color:var(--text);">K7: SYSTEM</div>
+    <div class="kachel-box">K8: NEWS</div>
   </div>
 
-  <div class="kachel-news" id="gt-publisher">
-    > Initialisiere GT-Publisher... Realität 0 bereit.<br>
-    > Syncing Chain-Clearing Verzeichnis...
+  <div class="news-terminal" id="news-feed">
+    <div class="news-line highlight">[SYSTEM] GT-Publisher initialisiert. Realität 0 Newsfeed aktiv.</div>
   </div>
 
 <script>
-  function handleSearch(val) {
-    const res = document.getElementById('user-result');
-    const news = document.getElementById('gt-publisher');
-    if(val.length > 2) {
-      res.innerHTML = `<span style="color:var(--j-color);">NUTZER GEFUNDEN:</span> @${val}_MASTER <br> <span style="font-size:10px; color:#6b7280;">Kaskade: AA-Verified</span>`;
-      news.innerHTML += `<br>> Suche in Realität 0: ${val} ... Treffer im Sektor /profile/`;
+  function runDiscovery(v) {
+    const out = document.getElementById('discovery-output');
+    if(v.length > 2) {
+      out.innerHTML = `MATCH FOUND: @${v.toUpperCase()} | PATH: /profile/kaskade_${v} | STATUS: AAA-VALIDATED`;
     } else {
-      res.innerHTML = "Warte auf Eingabe...";
+      out.innerHTML = "System bereit. Suche nach GUCI, Wallet-ID oder Pfad-Kaskaden...";
     }
   }
 
-  // Simulations-Takt für Kachel 8
   setInterval(() => {
-    const news = document.getElementById('gt-publisher');
-    const logs = [
-      "> Neue Energie-Einheit (2 TB) in ECCU gewandelt.",
-      "> +0.8% Aufwärtsdruck durch Master-Interaktion.",
-      "> Clearing-Block #42E0 wurde notarisiert."
-    ];
-    news.innerHTML += `<br>[${new Date().toLocaleTimeString()}] ${logs[Math.floor(Math.random()*logs.length)]}`;
-    news.scrollTop = news.scrollHeight;
-  }, 4000);
+    const feed = document.getElementById('news-feed');
+    const div = document.createElement('div');
+    div.className = "news-line";
+    div.innerHTML = `[${new Date().toLocaleTimeString()}] <span class="highlight">UPDATE:</span> E-Knotenpunkt (6,5) für Sektor ${"ABC"[Math.floor(Math.random()*3)]} notarisiert.`;
+    feed.prepend(div);
+  }, 5000);
 </script>
 </body>
 </html>
-"""

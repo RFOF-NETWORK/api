@@ -1,118 +1,109 @@
-import base64
-
-# Code für die neue index.html
-index_html_content = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>PZQQET MASTER-INDEX | REALITÄT 0</title>
+  <title>PZQQET Master-Explorer | Kahel J</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root { 
-      color-scheme: dark; --bg:#000; --border:#1f2937; --text:#f3f4f6; 
-      --j-color:#4ade80; --gold:#fbbf24; --eccu:#22c55e; --rfof:#38bdf8; 
+    :root { color-scheme: dark; --bg:#050505; --bg-alt:#0a0a0a; --border:#1f2937; --text:#f3f4f6; --j-color:#4ade80; --gold:#fbbf24; --eccu:#22c55e; --rfof:#38bdf8; --bip-purple:#a855f7; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); overflow-x: hidden; }
+    
+    .sticky-nav { position: sticky; top: 0; z-index: 2000; background: var(--bg); border-bottom: 1px solid var(--border); }
+    header { padding:15px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; border-top: 3px solid var(--j-color); background: #000; }
+    
+    .search-bar { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:15px; display:flex; gap:10px; margin: 15px 20px; width: calc(100% - 40px); box-sizing: border-box; }
+    .search-bar input { flex-grow:1; background:transparent; border:none; outline:none; color:var(--text); font-family:monospace; }
+    
+    main { padding:20px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+
+    /* MASTER-VIEWER (KACHEL ZERO) */
+    .master-viewer-node { 
+      background: linear-gradient(145deg, #0d0d0d, #050505); 
+      border: 2px solid var(--j-color); border-radius: 16px; padding: 20px; margin-bottom: 30px; position: relative;
     }
-    body { margin:0; font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); overflow: hidden; }
-    
-    /* MASTER-FRAME */
-    .master-container { display: flex; flex-direction: column; height: 100vh; }
-    header { padding:15px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; border-top: 3px solid var(--j-color); }
-    
-    /* 42E0 KASKADEN-MONITOR */
-    .kaskade-bar { background: #0a0a0a; padding: 10px; display: flex; gap: 5px; border-bottom: 1px solid var(--border); }
-    .takt-dot { width: 8px; height: 8px; border-radius: 50%; background: #222; transition: 0.3s; }
-    .takt-active { background: var(--j-color); box-shadow: 0 0 8px var(--j-color); }
-    .takt-node-e { background: var(--rfof); border: 1px solid #fff; } /* Der 6,5 Knotenpunkt */
+    .takt-indicator { position: absolute; top: 10px; right: 20px; font-family: monospace; font-size: 10px; color: var(--j-color); }
+
+    .master-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
+    .history-chain-box { background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 10px; height: 180px; display: flex; flex-direction: column; }
+    .chain-title { font-size: 10px; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    .chain-scroll { overflow-y: auto; flex-grow: 1; font-family: monospace; font-size: 9px; scrollbar-width: none; }
 
     /* SEKTOR-GRID */
-    main { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; overflow-y: auto; }
-    .sector-card { background: #050505; border: 1px solid var(--border); border-radius: 8px; padding: 15px; position: relative; }
-    .sector-card::before { content: ''; position: absolute; top:0; left:0; width: 100%; height: 2px; }
-    .s-gpcb::before { background: var(--gold); }
-    .s-eccu::before { background: var(--eccu); }
-    .s-rfof::before { background: var(--rfof); }
+    .clearing-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom: 25px; }
+    .sector-node { background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; min-height: 220px; transition: 0.3s; display: flex; flex-direction: column; overflow: hidden; }
+    .sector-node::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; }
+    .node-gpcb::before { background:var(--gold); }
+    .node-eccu::before { background:var(--eccu); }
+    .node-rfof::before { background:var(--rfof); }
 
-    .log-stream { font-family: monospace; font-size: 10px; color: #6b7280; height: 100px; overflow-y: hidden; margin-top: 10px; }
-    .status-value { font-size: 18px; font-weight: bold; color: var(--j-color); margin: 5px 0; }
+    .data-stream { font-family:monospace; font-size:11px; color:#9ca3af; height:150px; overflow-y: auto; scrollbar-width: thin; }
+    .bip-footer { position:fixed; bottom:0; left:0; right:0; background:#000; padding:10px 20px; border-top:1px solid var(--border); font-size:10px; color:var(--j-color); font-family:monospace; display:flex; justify-content:space-between; z-index: 2000; }
   </style>
 </head>
 <body>
-<div class="master-container">
+
+<div class="sticky-nav">
   <header>
-    <div style="font-weight:bold;">RFOF-NETWORK | REALITÄT 0</div>
-    <div id="master-takt" style="font-family:monospace; color:var(--j-color);">TAKT: A1</div>
+    <div style="font-weight:bold; letter-spacing:1px;">PZQQET | MASTER-SYSTEM</div>
+    <div style="font-size:11px; font-family:monospace;">REALITÄT 0: <span id="takt-val" style="color:var(--j-color);">A1-ACTIVE</span></div>
   </header>
+  <div class="search-bar">
+    <span style="color:var(--j-color);">🔍</span>
+    <input type="text" placeholder="GGPB, ECCU, RFOF-Chain Search..." id="search-input">
+  </div>
+</div>
 
-  <div class="kaskade-bar" id="kaskade-dots">
+<main>
+  <div class="master-viewer-node">
+    <div class="takt-indicator" id="helix-takt">NODE-E: OK</div>
+    <div class="node-header"><span style="color:var(--j-color);">[00] MASTER-ECOSYSTEM-VIEWER</span></div>
+    <div class="master-grid">
+      <div class="history-chain-box"><div class="chain-title" style="color:var(--gold);">GPCB-CHAIN</div><div class="chain-scroll" id="hist-gpcb"></div></div>
+      <div class="history-chain-box"><div class="chain-title" style="color:var(--eccu);">ECCU-CHAIN</div><div class="chain-scroll" id="hist-eccu"></div></div>
+      <div class="history-chain-box"><div class="chain-title" style="color:var(--rfof);">RFOF-GOLD</div><div class="chain-scroll" id="hist-rfof"></div></div>
+      <div class="history-chain-box"><div class="chain-title" style="color:var(--j-color);">NEURAL-CACHE</div><div class="chain-scroll" id="hist-cache"></div></div>
     </div>
+  </div>
 
-  <main>
-    <div class="sector-card s-gpcb">
-      <div style="font-size:10px; color:var(--gold);">[A-G] INPUT-SEKTOR</div>
-      <div class="status-value" id="val-gpcb">0.00% SAFE</div>
-      <div class="log-stream" id="log-gpcb"></div>
+  <div class="clearing-grid">
+    <div class="sector-node node-gpcb" id="n-gpcb">
+      <div class="node-header" style="font-size:12px;">API: GPCB [A-G]</div>
+      <div class="data-stream" id="stream-gpcb"></div>
     </div>
-    <div class="sector-card s-eccu">
-      <div style="font-size:10px; color:var(--eccu);">[H-N] ENERGY-SEKTOR</div>
-      <div class="status-value" id="val-eccu">2.50 €/ECCU</div>
-      <div class="log-stream" id="log-eccu"></div>
+    <div class="sector-node node-eccu" id="n-eccu">
+      <div class="node-header" style="font-size:12px;">API: ECCU [H-N]</div>
+      <div class="data-stream" id="stream-eccu"></div>
     </div>
-    <div class="sector-card s-rfof">
-      <div style="font-size:10px; color:var(--rfof);">[O-U] CLEARING-SEKTOR</div>
-      <div class="status-value" id="val-rfof">+0.8% LP</div>
-      <div class="log-stream" id="log-rfof"></div>
+    <div class="sector-node node-rfof" id="n-rfof">
+      <div class="node-header" style="font-size:12px;">API: RFOF [O-U]</div>
+      <div class="data-stream" id="stream-rfof"></div>
     </div>
-  </main>
+  </div>
+</main>
+
+<div class="bip-footer">
+  <div>KAHEL-J || DETERMINISTIC ARCHITECTURE</div>
+  <div id="clock">00:00:00</div>
 </div>
 
 <script>
-  let currentTakt = 0;
-  let alphabetIndex = 0;
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  function initDots() {
-    const bar = document.getElementById('kaskade-dots');
-    for(let i=0; i<=10; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'takt-dot';
-      if(i === 6) dot.classList.add('takt-node-e');
-      dot.id = `t-${i}`;
-      bar.appendChild(dot);
-    }
+  let step = 0; let charIdx = 0; const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  function updateHelix() {
+    const val = `${chars[charIdx]}${step}`;
+    document.getElementById('takt-val').textContent = `${val}-ACTIVE`;
+    const logs = ['stream-gpcb', 'stream-eccu', 'stream-rfof'];
+    logs.forEach(id => {
+      const d = document.createElement('div');
+      d.style.padding = "2px 0";
+      d.textContent = `> [${val}] Kaskade-Integrität: 100%`;
+      const s = document.getElementById(id);
+      s.prepend(d);
+      if(s.childNodes.length > 20) s.lastChild.remove();
+    });
+    step++; if(step > 10) { step = 0; charIdx++; }
   }
-
-  function runKaskade() {
-    document.querySelectorAll('.takt-dot').forEach(d => d.classList.remove('takt-active'));
-    document.getElementById(`t-${currentTakt}`).classList.add('takt-active');
-    
-    let cluster = alphabet[alphabetIndex];
-    document.getElementById('master-takt').textContent = `TAKT: ${cluster}${currentTakt}`;
-    
-    // Log-Einträge generieren
-    addLog('gpcb', `> Syncing ${cluster}${currentTakt} to Realität 1...`);
-    
-    if(currentTakt === 6) {
-      addLog('eccu', `> PZQQET KNOTENPUNKT E ERREICHT. Fixierung läuft...`);
-    }
-
-    currentTakt++;
-    if(currentTakt > 10) {
-      currentTakt = 0;
-      alphabetIndex = (alphabetIndex + 1) % 26;
-    }
-  }
-
-  function addLog(sector, msg) {
-    const log = document.getElementById(`log-${sector}`);
-    const div = document.createElement('div');
-    div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-    log.prepend(div);
-  }
-
-  initDots();
-  setInterval(runKaskade, 1000);
+  setInterval(updateHelix, 1500);
+  setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }, 1000);
 </script>
 </body>
 </html>
-"""

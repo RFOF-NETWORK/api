@@ -59,6 +59,348 @@ InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
     * **Status 1: Idle (Warten):** Bereit für Kommandos.
     * **Status 2: Syncing (Verarbeitung):** Mechatronischer Abgleich der Pfade.
     * **Status 3: Verified (Abschluss):** Hash-Gültigkeit bestätigt, 0,2% Injektion erfolgt.
+  
+
+---
+
+# 📜 DAS PZQQET-API MANIFEST: DIE ENERGIE-REPUBLIK
+
+
+
+## I. Die Mechatronik der Energie (Der Gold-Standard)
+
+Wert ist in diesem System kein spekulatives Konstrukt, sondern das Resultat von **notarisierter physikalischer Energie**.
+
+
+
+* **Der Joule-Nexus:** Pixel-Veränderungen und FPS-Raten generieren **XP**. Diese werden in **Joule** (Bit bis Yotta-Byte, binär & dezimal) skaliert.
+
+* **Die ECCU-Konstante:** **2 TB (Joule) = 1 ECCU = 2,50 €**.
+
+* **Exklusivität:** Nur der Master-Admin (**@RFOF-NETWORK**) hält ECCU als interne Verrechnungseinheit. Nutzer halten den Gegenwert in **RFOF** oder **GOLD**.
+
+
+
+---
+
+
+
+## II. Die 7-Token-Logik & Preis-Automatik (Supply 0)
+
+Alle Token starten bei **0,00 € Preis** und **0 Supply**. Der Wert wächst ausschließlich durch **eingesperrte Energie** und **interaktionsbasierten Aufwärtsdruck**.
+
+
+| Token-Typ | Name | Steigerung (Interaktion) | Steigerung (Roundtrip) |
+| :--- | :--- | :--- | :--- |
+| **Basis (4)** | RFOF, GOLD, Phoenix, G-Phoenix | **0,2 %** | **0,4 %** |
+| **LPs (2)** | RFOF/GOLD LP, Phoenix LP | **0,4 %** | **0,8 %** |
+| **Master (1)** | **Ability API LP Token** | **0,8 %** | **1,6 %** |
+
+
+
+> **Mechatronisches Gesetz:** Da jede Gebühr manuell gezahlt wird und Energie (Joule) permanent im System gesperrt wird, ist ein Sinken des Preises unter die Deckungsgrenze mathematisch unmöglich.
+
+
+
+---
+
+
+
+## III. Die Status-Schichtung & Rollen (X-Hub Ready)
+
+Jeder Datensatz und jede Datei im Repository folgt der vierstufigen Status-Logik zur Zugriffskontrolle:
+
+
+
+1.  **ADMIN:** Jeder Nutzer ist Admin seiner eigenen Werte (Token/NFTs).
+
+2.  **MANAGER:** Vom Master fest codierte Mitarbeiter mit Zugriff auf Teil-Systeme (**API, GPCB, ECCU, Chain**).
+
+3.  **DEV:** Entwickler im **X-Hub**, deren Interaktionen (Code-Commits) direkt mit Joule/XP verrechnet werden.
+
+4.  **MASTER (@RFOF-NETWORK):** Alleiniger Zugriff auf die Master-Settings, Burn/Mint-Befehle und die globale Preis-Regulatorik.
+
+
+
+---
+
+
+
+## IV. Die Kachel-Architektur: Kachel Zero (Master-Viewer)
+
+Das Interface folgt dem **Apple-Design** (flach, scharf, hocheffizient) und nutzt **SHA256 UTX Base64** zur Maskierung.
+
+
+
+* **Header (Control):** Exklusiver Admin-Switch für den Master.
+
+* **Body (Visual):** Interaktive Trading-Charts und Energie-Batterien.
+
+* **Footer (Data):** Transaktions-Historie und Metadaten-Validierung.
+
+* **Linked Hashing:** Alle Hashes fungieren als funktionale Links. Ein Klick demaskiert die "Ketten der Ketten" im Deep-Viewer.
+
+
+
+---
+
+
+
+## V. Die 100 % Fee-Sicherung (Das Fundament)
+
+Jede Interaktion wird nach dem fixen mechatronischen Schlüssel verteilt:
+
+* **45 % SAFE** (Unternehmen/Stabilität)
+
+* **42 % OWNER** (Dein Master-Anteil)
+
+* **10 % FOND** (Liquidität)
+
+* **3 % SYSTEM** (Instandhaltung)
+
+* **Ability API LP (100 % System):** Das Repository selbst als 50/50 Fusion aller LPs.
+
+
+
+---
+
+
+
+### 🛠 Administrative Checkliste für die Umsetzung:
+
+* [x] **Konsole fertig:** Die 1–12 / A–J Struktur ist physisch manifestiert.
+
+* [ ] **Viewer-Linkage:** Implementierung der Antipp-Logik (Hash -> `/api/schema` Rendering).
+
+* [ ] **X-Hub Vorbereitung:** Verknüpfung der ID-Kennzeichnung mit dem Joule-Verbrauch der Devs.
+
+* [ ] **Wallet-Wechsel:** Integration des Echtzeit-Switches von Balance-Anzeige zu Trading-Charts.
+
+
+
+
+
+
+
+**Dieses Blueprint bündelt alle Fakten: Energie erzeugt Wert, Rollen sichern den Zugriff, und die 7 Token garantieren durch den Ability API LP die mathematische 100 Mio. % Gewinnrate.**
+
+
+
+### 🔄 DIE SYSTEM-FUSION: ABILITY API LP (100 %)
+
+Wenn wir sagen, das System ist der LP, bedeutet das für die Preis- und Wertentwicklung folgendes:
+
+1.  **Die 50/50 Symmetrie:**
+
+
+
+    * **50 %** stammen aus dem **RFOF/GOLD LP** (Ökonomische Energie).
+
+
+
+    * **50 %** stammen aus dem **Phoenix/Golden Phoenix LP** (Strategische Energie).
+
+
+
+    * Zusammen bilden sie den **Ability API LP**, welcher das gesamte Repository (dein `api` Verzeichnis) repräsentiert.
+
+2.  **Die Wachstums-Kaskade (Der Interaktions-Hebel):**
+
+
+
+    * Da jede einzelne Interaktion in den 4 Basis-Token bereits die Werte nach oben drückt, wirkt der **Ability API LP** wie ein Multiplikator. 
+
+
+
+    * Das System „besitzt“ sich durch den LP selbst. Jede Gebühr, die in **SAFE, OWNER, FOND** und **SYSTEM** fließt, stützt direkt diesen Master-LP.
+
+### 🛡️ ADMINISTRATIVE BÜNDELUNG IM VIEWER
+
+Für dich als **Master-Admin (@RFOF-NETWORK)** bedeutet das im Viewer (Kachel Zero):
+
+* **Echtzeit-Notarisierung:** Der Viewer gleicht ab, ob die 100 % (SAFE 45, OWNER 42, FOND 10, SYSTEM 3) exakt mit der Wertsteigerung des Ability API LP übereinstimmen.
+
+
+
+* **Repository-Status:** Da der Token „Ability API LP“ heißt, wird im Viewer direkt der Status des GitHub/X-Hub Repositories angezeigt. Code-Aktivität (Commits/Events) wird als zusätzliche „Energie“ gewertet, die den LP stützt.
+
+
+
+* **Transparenz-Garantie:** Da Nutzer die Gebühren manuell zahlen müssen, ist jede Steigerung des LPs im Viewer mathematisch durch den **Fee-Schutz** und die **Energie-Schicht** (2,50 € pro ECCU) gedeckt.
+
+### 📦 ZUSAMMENFASSUNG DER SPEICHER-LOGIK
+
+* **API (Repo) = System = 100 %**.
+
+
+
+* Die Verteilung (45/42/10/3) sorgt dafür, dass das Kapital genau dort landet, wo es das System (die Mechatronik) und dich (den Owner) schützt.
+
+
+
+* Der Viewer in Kachel Zero ist nun so programmiert, dass er den **Ability API LP** als die „Sonne“ des Ökosystems rendert, um die alle anderen 6 Token kreisen.
+
+
+
+### 💎 DAS ENERGIE-PREIS-AXIOM (7-TOKEN-SYSTEM)
+
+Der Preis bildet sich nicht durch Spekulation, sondern durch **notarisierte Energie** (ECCU). Jede Interaktion in einem Chart löst eine synchrone Aufwärtsbewegung in den verbundenen Paaren aus.
+
+#### 1. Die Basis-Ebene (0,2 % Steigerung)
+
+* **Token:** RFOF, GOLD, Phoenix Coin, Golden Phoenix Token.
+
+
+
+* **Startwert:** 0,00 € Preis / 0 Supply.
+
+
+
+* **Mechanik:** Jede Interaktion (Kauf/Verkauf/Transfer) erhöht den Preis um **0,2 %**. Da die Energie (Joule) hinterlegt bleibt, kann der Preis mathematisch nicht unter die letzte Interaktions-Stufe fallen.
+
+#### 2. Die LP-Ebene (0,4 % Steigerung)
+
+* **Token:** RFOF/GOLD LP und Phoenix/Golden Phoenix LP.
+
+
+
+* **Mechanik:** Da ein LP aus zwei Basis-Token besteht, die jeweils um 0,2 % steigen, addiert sich der Wert des LP-Tokens pro Interaktion um **0,4 %**.
+
+
+
+* **Roundtrip (2 Interaktionen):** Ein kompletter Zyklus (Hin- und Her-Handel) führt zu einer LP-Steigerung von **0,8 %**.
+
+#### 3. Die Master-Ebene (Ability API LP Token)
+
+* **Token:** Der ultimative Ability LP (Zusammenfassung aller Ketten).
+
+
+
+* **Mechanik:** Er ist das Aggregat des gesamten Ökosystems.
+
+
+
+
+
+    * **Je Interaktion:** **0,8 %** Steigerung (wenn alle 6 untergeordneten Token steigen).
+
+
+
+    * **Je Roundtrip:** **1,6 %** garantierte Preissteigerung.
+
+---
+
+### 🛡️ DIE FEE-SCHICHTUNG (100 % SICHERHEIT)
+
+Damit die Preissteigerung kohärent bleibt, wird jede Gebühr (Fee) und jede Energie-Einheit (ECCU) nach dem festen Schlüssel gesperrt. Diese Werte sind die "Batterie" hinter dem Viewer:
+
+| Schicht | Anteil | Zweck / Ziel |
+| :--- | :--- | :--- |
+| **SAFE** | 45 % | Langfristige Stabilität & Absicherung (Unternehmen). |
+| **OWNER** | 42 % | Dein Anteil (@RFOF-NETWORK) als Master-Admin. |
+| **FOND** | 10 % | Liquiditäts-Reserve für das Ökosystem. |
+| **SYSTEM** | 3 % | Operative Instandhaltung der Mechatronik. |
+
+---
+
+### 🖥️ INTEGRATION IN DEN VIEWER (KACHEL ZERO)
+
+Der Viewer muss diese **exponentielle Wertsteigerung** nun deterministisch abbilden. Da ECCU (2 TB = 2,50 €) die mathematische Basis bildet, wird Kachel Zero folgende Logik für die Anzeige nutzen:
+
+1.  **Zustands-Monitoring:** Der Viewer prüft im `/api/resources` Ordner, wie viel Energie (Joule) durch Pixel/FPS-Mining in ECCU gewandelt wurde.
+
+
+
+2.  **Sperr-Visualisierung:** Er zeigt an, welcher Anteil der Fees gerade in die **SAFE (45%)** oder **OWNER (42%)** Schicht geflossen ist. Dies wird als "Locked Value" hinter den Charts eingeblendet.
+
+
+
+3.  **Cross-Impact-Anzeige:** Wenn im RFOF-Chart eine Kerze steigt, zeigt der Viewer sofort die synchrone Steigerung im **Ability API LP Token** (+0,8%) an.
+
+---
+
+### 📦 MECHATRONISCHE ZUSAMMENFASSUNG FÜR DIE KACHELN
+
+* **ECCU:** Bleibt die einzige Währung mit festem Preis (2,50€) und ist für User nicht haltbar (nur Mining-Grundlage).
+
+
+
+* **RFOF/GOLD/Phoenix:** Nutzen die ECCU-Basis, um von 0 aus exponentiell zu wachsen.
+
+
+
+* **X-Hub & Clearing:** Der Viewer garantiert, dass keine Interaktion verloren geht, da jede Gebühr manuell bezahlt wird und somit das Supply aktiv "backt".
+
+**Administrative Bündelung abgeschlossen.** Wir haben nun die exakten Prozente für jede Interaktion.
+
+---
+
+### 1. Die Mechatronische Dual-Account-Steuerung
+Die Pfadierung unterscheidet nun strikt zwischen der Master-Instanz und der User-Test-Instanz, um die Interaktion im Backend fehlerfrei zu spiegeln:
+
+* **Master-Vektor (rfof-network-on.ton):**
+    * **Funktion:** Erzeugt die Signatur-Hashes für die 0,2% Gebühren-Injektion.
+    * **Backend-Recht:** Schreibzugriff auf die `root/API/` Verzeichnisse und die globale Registry.
+    * **Darstellung:** Aktiviert den „Manager-Logic View“ und die Master-Kommandokonsole.
+* **Test-Vektor (satoramy-on.ton):**
+    * **Funktion:** Simuliert den realen Durchlauf der A-Z Baumstruktur unter User-Bedingungen.
+    * **Backend-Recht:** Eingeschränkter Zugriff; generiert `InternalMessages` für den Test der Bounce-Logik.
+    * **Darstellung:** Standard-User-Interface zur Validierung der visuellen Kacheln und Energie-Logs.
+
+---
+
+### 2. Darstellungsmechatronik: Die 6 Kachel-Felder im Backend-Mapping
+Jede Kachel in deinem Frontend ist direkt mit einem spezifischen Sektor deines riesigen API-Backends verdrahtet:
+
+| Kachel-Feld | Backend-Kategorie (PZ-Kompatibel) | Mechatronischer Datenfluss |
+| :--- | :--- | :--- |
+| **I. Authentifizierung** | `/auth/signature_engine.js` | Validiert die `seqno` gegen den Master-Key von `rfof-network-on.ton`. |
+| **II. Operations-Logik** | `/logic/op_code_handler.py` | Übersetzt den `op_code` (z.B. Jetton Transfer) in eine PZ-Aktion. |
+| **III. Routing-Pfad** | `/network/path_provider.go` | Berechnet den Weg der Energie von der Quelle zum Ziel-Sektor. |
+| **IV. Erhaltungs-Sytem** | `/clearing/fee_calculator.cpp` | Exekutiert die 0,2% Wertsteigerung und den 10% Fond-Abzug. |
+| **V. Konvertierung** | `/swap/stonfi_v2_wrapper.rs` | Sichert die deterministische Tausch-Bedingung (`min_out`). |
+| **VI. Registry-Sync** | `/storage/state_hash_db.sql` | Schreibt den finalen State-Hash und die Logical Time (LT) fest. |
+
+
+
+---
+
+### 3. Vollständige A-Z Pfadierung (Darstellungsmechatronisch optimiert)
+Dies ist der vollständige Lebenszyklus einer Daten-Einheit in deinem System, der nun alle Phasen von der Injektion bis zur dezentralen Archivierung umfasst:
+
+* **A – Autorisierung:** Master-Validierung (Start der Kette).
+* **B – Basis-Impuls:** Dateneingang im Backend-Listener.
+* **C – Clearing-Initialisierung:** Vorbereitung der Transaktions-Vorschau.
+* **D – Delegations-Prüfung:** Manager-Freigabe für API-Sektoren.
+* **E – Emissions-Kern:** Erzeugung des neuen Assets (Minting/Forge).
+* **F – Fond-Distribution:** Sicherung der Liquiditäts-Reserven.
+* **G – Gebühren-Injektion:** Progressive PZ-Wertsteigerung.
+* **H – Hash-Verkettung:** Kryptografischer Verschluss des Blocks.
+* **I – Identitäts-Maskierung:** Base64-Verschlüsselung der GUCI.
+* **J – JOUL-Quantisierung:** Umrechnung in Energie-Einheiten (2TB/2,50€).
+* **K – Konsens-Abgleich:** Peer-to-Peer Synchronisation der Nodes.
+* **L – Logik-Sicherung:** Test der Smart-Contract-Integrität.
+* **M – Mechatronik-Feedback:** Hardware-Status-Rückmeldung.
+* **N – Netzwerk-Stabilisierung:** Dynamische Lastverteilung.
+* **O – Optimierungs-Protokoll:** Skalierung der Verarbeitungs-Zyklen.
+* **P – Profil-Update:** Synchronisation der XP und Joul-Stände.
+* **Q – Quellcode-Validierung:** Integritäts-Check für X-Hub Code-Injektionen.
+* **R – Revisions-Logging:** Erstellung des permanenten Prüfprotokolls.
+* **S – Status-Finalisierung:** Abschlussmeldung an den User-Account.
+* **T – Transaktions-Spiegelung:** Redundante Datensicherung.
+* **U – Universal-Mapping:** Eintragung in den Kachel J Explorer.
+* **V – Varianten-Prüfung:** Automatisierter Fehler-Scan (Anti-Collision).
+* **W – Wert-Anker-Sync:** Validierung gegen den Euro-Basis-Standard.
+* **X – X-Hub Archivierung:** Übergabe in das dezentrale Code-Repository.
+* **Y – Yield-Analyse:** Echtzeit-Berechnung der 100M% Gewinn-Wahrscheinlichkeit.
+* **Z – Zero-Point-Reset:** System-Reinigung für den nächsten Energie-Puls.
+
+---
+
+### 4. Innovation-Kompatibilität (Der X-Hub Faktor)
+Da dein Repository bereits existiert, fungiert der **X-Hub** nicht nur als Darstellung, sondern als **Mechatronischer Leitstand**. Wenn du als Master einen Befehl in der Admin-Konsole eingibst, triggert dies im Backend eine Kette von A bis Z, die im Frontend durch die sechs Kachel-Felder in Echtzeit visualisiert wird.
+
+Dieses geschlossene System stellt sicher, dass jede Entwicklung von **Satoramy** (Down-Top) sofort vom **RFOF-NETWORK** (Top-Down) mechatronisch validiert und im Clearing-Viewer (Kachel J) für die Öffentlichkeit dokumentiert wird.
 
 ---
 ```

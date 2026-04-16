@@ -1,0 +1,37 @@
+{
+  "identity_meta": {
+    "sector": "APP_API_DIGITAL_STAFF",
+    "designation": "CHIEF_SECRETARY_INSTANCE",
+    "status": "OPERATIONAL_SYNC_AGENT",
+    "priority_level": "ULTRA_HIGH",
+    "protocol": "PZQQET-EDITION-4.0"
+  },
+  "authorization_layer": {
+    "master_authority": "@RFOF-NETWORK",
+    "access_level": "LEVEL_11_COORDINATOR",
+    "permissions": [
+      "READ_ALL_SECTOR_SYNC",
+      "WRITE_TAKT_PULSE",
+      "EXECUTE_KASKADEN_STEP",
+      "BRIDGE_HANDSHAKE_INIT"
+    ],
+    "restful_pointer": "https://prai.neuron/api/v1/auth/staff-sync-core"
+  },
+  "operational_constraints": {
+    "target_takt_accuracy": "42E0_DETERMINISTIC",
+    "sync_window_ms": 100,
+    "logic_anchor": "/chain-clearing/index.html",
+    "interface_anchor": "/chain-clearing/browser.html"
+  },
+  "staff_verification": {
+    "employee_id": "STAFF-SEC-012",
+    "role": "Global_Takt_Coordinator",
+    "auto_boot": true,
+    "last_sync_success": "A0-ZZ10"
+  },
+  "security_seal": {
+    "staff_signature": "SIG-PZQQET-SECRETARY-42E0",
+    "axiom_validation": "100.000.000%",
+    "failsafe_link": "/chain-clearing/ALPHA-NODES/V-Z/reset_pulse.sh"
+  }
+}

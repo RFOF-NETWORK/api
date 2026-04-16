@@ -1,0 +1,30 @@
+{
+  "identity_meta": {
+    "sector": "ECCU",
+    "designation": "CENTRAL_VALUE_MANAGER",
+    "status": "ACTIVE_INJECTION",
+    "parity_anchor": "2.50_EUR",
+    "protocol": "PZQQET-EDITION-4.0"
+  },
+  "authorization_layer": {
+    "master_authority": "@RFOF-NETWORK",
+    "access_level": "LEVEL_10_VALUATOR",
+    "permissions": [
+      "READ_PARITY_LOGIC",
+      "SYNC_JOULE_NEXUS",
+      "VALIDATE_STORAGE_RESERVE"
+    ],
+    "restful_pointer": "https://prai.neuron/api/v1/auth/eccu-nexus"
+  },
+  "staff_verification": {
+    "employee_id": "ECCU-STAFF-005",
+    "role": "Parity_Monitor",
+    "requires_biometric_hash": true,
+    "last_notarized_takt": "0.0"
+  },
+  "security_constraints": {
+    "axiom_link": "STABLE_VALUE_AXIOM",
+    "emergency_shutdown_link": "/chain-clearing/GPCB/MANAGER/vault_control.py",
+    "validation_stamp": "ECCU-BOC-PZQQET-42E0-SIG"
+  }
+}

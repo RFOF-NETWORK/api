@@ -1,0 +1,39 @@
+{
+  "manifest_metadata": {
+    "hub_id": "X-HUB-PRIMARY-CORE",
+    "version": "4.0.1-PZQQET",
+    "master_authority": "@RFOF-NETWORK",
+    "active_axiom": "100.000.000%"
+  },
+  "injection_registry": [
+    {
+      "injection_id": "INJ-42E0-001",
+      "timestamp_r0": "2026-04-17T00:11:05Z",
+      "origin": "/STORY-HISTORY/ARCHIVE/notary_log.json",
+      "target_sectors": ["Q", "R", "S"],
+      "source_commit": "SHA256-R0-ALPHA-INIT",
+      "validation_status": "VERIFIED_STABLE",
+      "hot_swap_active": true
+    },
+    {
+      "injection_id": "INJ-42E0-002",
+      "timestamp_r0": "2026-04-17T00:12:44Z",
+      "origin": "/APP-API/kaskaden_steuerung.js",
+      "target_sectors": ["V", "W", "X", "Y", "Z"],
+      "source_commit": "SHA256-R0-BETA-SYNC",
+      "validation_status": "PENDING_TAKT_10",
+      "hot_swap_active": false
+    }
+  ],
+  "security_ledger": {
+    "integrity_check_frequency": "100ms",
+    "last_global_validation": "SUCCESS",
+    "failsafe_trigger": "/ALPHA-NODES/V-Z/reset_pulse.sh",
+    "anomaly_count": 0
+  },
+  "live_mapping": {
+    "r0_to_r1_bridge": "ACTIVE",
+    "point_e_fixation": "STABLE",
+    "on_ton_vector_sync": "SYNCHRONIZED"
+  }
+}

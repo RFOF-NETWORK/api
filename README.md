@@ -2,6 +2,173 @@
 InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
 ---
 
+### 🕋 PHASE 1: KERN & BANKING-LOGIK
+
+1. **PROMPT [index.html]:**
+   Generiere den Logik-Kern für `/chain-clearing/index.html`. Das Skript muss den globalen 42E0-Takt (0–10) verwalten. Implementiere: 1. Eine Funktion zur Berechnung des Knotenpunkts E bei exakt 6,5 (Superpositions-Logik). 2. Die Fee-Engine, die bei jeder Transaktion 0,2% Gebühr abzieht und nach dem Schlüssel 45% SAFE, 42% OWNER, 10% FOND, 3% SYSTEM verteilt. 3. Den A/AA/AAA Validierungs-Status-Check.
+
+2. **PROMPT [browser.html]:**
+   Erstelle das Frontend-Interface `/chain-clearing/browser.html`. Design-Vorgabe: Apple-Style (flach, scharf). Komponenten: 1. Die dynamische Suchleiste (Fixpunkt). 2. Kachel Null als zentrales Gehirn, das die 13 Sektoren und Mitarbeiter-IDs spiegelt. 3. Das Monster-Scaling-Modul für die Reihen A–ZZ. 4. Den News-Vektor (Footer) für GT-Publisher-Meldungen bei Takt 10.
+
+3. **PROMPT [/GPCB/MANAGER/identity.gt]:**
+   Erstelle die Identitäts-Injektions-Datei für den GPCB-Manager. Diese Datei muss als RESTful Pointer fungieren und die Master-ID `@RFOF-NETWORK` als oberste Instanz zur Benennung von Bank-Mitarbeitern autorisieren.
+
+4. **PROMPT [/GPCB/bank_exekutive.js]:**
+   Schreibe die `bank_exekutive.js`. Sie muss Echtzeit-Liquidität prüfen und sicherstellen, dass jede Bewegung im GPCB-Sektor den 0,2% Preis-Trigger auslöst. Verknüpfe dies mit dem Action-Log von Sektor 1.
+
+5. **PROMPT [/GPCB/vault_control.py]:**
+   Programmiere die Tresor-Steuerung. Die Logik muss bei Abweichungen zwischen Realität 0 (Code) und Realität 1 (Exekution) sofortige Sperren im `/GPCB/` Verzeichnis setzen und den Master informieren.
+
+6. **PROMPT [/ECCU/MANAGER/identity.gt]:**
+   Generiere die Mitarbeiter-Status-Datei für den ECCU-Sektor. Sie definiert die Zugriffsberechtigung für die Parity-Überwachung und verknüpft die Mitarbeiter-ID mit dem Central Value Management.
+
+7. **PROMPT [/ECCU/parity_logic.js]:**
+   Implementiere die Parity-Erzwingung. Die Logik muss hartcodiert sicherstellen, dass 2 TB Datenspeicher den Wert von 1 ECCU generieren, was exakt 2,50€ entspricht. Jede Abweichung muss den Takt-Reset triggern.
+
+8. **PROMPT [/ECCU/monitor.json]:**
+   Erstelle eine JSON-Struktur, die Speicher-Assets (in TB) und ihren aktuellen Gegenwert in ECCU und Euro in Echtzeit mappt, inklusive Zeitstempel der letzten Qubit-Validation.
+
+9. **PROMPT [/RFOF-GOLD-CHAIN/MANAGER/identity.gt]:**
+   Erstelle die Master-Validierungs-Datei für die Gold-Kette. Sie dient als kryptografischer Anker für die Integrität der 100M% Gewinnrate.
+
+10. **PROMPT [/RFOF-GOLD-CHAIN/integrity_check.py]:**
+    Programmiere den Integrity-Checker. Er muss die Gold-Deckung (Sektor 8) gegen die RFOF-Netzwerk-Transaktionen prüfen und sicherstellen, dass die 42E0-Integrität am Punkt E gewahrt bleibt.
+
+---
+
+### 🏗️ PHASE 2: STAFF, ARCHIV & NAVIGATION
+
+11. **PROMPT [/RFOF-GOLD-CHAIN/chain_notary.bin]:**
+    Generiere den binären Versiegelungs-Algorithmus (BOC-Logik). Er soll abgeschlossene Transaktions-Blöcke unumkehrbar in der RFOF-Gold-Chain verankern.
+
+12. **PROMPT [/APP-API/MANAGER/identity.gt]:**
+    Erstelle die Identität für den "Digital Staff" (Chef-Sekretär). Diese Instanz hat Lese- und Schreibrechte für die Takt-Synchronisation zwischen den Sektoren.
+
+13. **PROMPT [/APP-API/kaskaden_steuerung.js]:**
+    Schreibe die Kaskaden-Steuerung. Sie muss den Fortschritt von A1 bis Z10 automatisieren und sicherstellen, dass Sektor-Syncs (1–13) nur bei erfolgreichem Takt-Durchlauf erfolgen.
+
+14. **PROMPT [/APP-API/bridge_handshake.go]:**
+    Implementiere das Go-Protokoll für den Bridge-Handshake. Es muss die Verbindung zwischen der internen Realität und dem `-on.ton` Vektor (Sektor 13) sichern.
+
+15. **PROMPT [/STORY-HISTORY/publisher.py]:**
+    Programmiere den News-Publisher. Das Skript greift auf `/ARCHIVE/` zu und rendert bei Takt 7, 8 und 9 die entsprechenden Fortschritts-News in den Newsfeed der `browser.html`.
+
+16. **PROMPT [/STORY-HISTORY/notary_service.js]:**
+    Erstelle den Notarisierungs-Dienst. Er verknüpft jeden Git-Commit oder Code-Update im Repository mit einem binären Zeitstempel in Realität 0.
+
+17. **PROMPT [/ALPHA-NODES/A-G/auth.js]:**
+    Schreibe die `auth.js` für die Eingangs-Knoten. Sie validiert Signaturen und `seqno` (Kachel 1) für alle External-In Impulse (A0-A3).
+
+18. **PROMPT [/ALPHA-NODES/A-G/takt_generator_42E0.js]:**
+    Erstelle den dedizierten Takt-Generator für die 42E0-Achse. Er definiert die Millisekunden-Intervalle zwischen den Takten 0 und 10.
+
+19. **PROMPT [/ALPHA-NODES/H-N/quantizer.py]:**
+    Implementiere den Quantisierer. Er wandelt physikalische Systemleistung (Joule) basierend auf Pixel-Verarbeitung und FPS in energetische Wert-Einheiten um.
+
+20. **PROMPT [/ALPHA-NODES/H-N/monster_scaling_logic.js]:**
+    Schreibe die Logik für das Monster-Scaling. Wenn die Knoten über Z hinausgehen (AA, AB...), muss dieses Skript neue Takt-Räume alphabetisch generieren.
+
+---
+
+### ⚡ PHASE 3: LOGIK, API & CLUSTER
+
+21. **PROMPT [/ALPHA-NODES/O-U/map_core.cpp]:**
+    Programmiere den Map-Core in C++. Er ist zuständig für das High-Speed Clearing und das Mapping der Transaktionen auf die 13 dualen Kacheln.
+
+22. **PROMPT [/ALPHA-NODES/O-U/superposition_E.js]:**
+    Erstelle die JavaScript-Logik zur Fixierung der Achse am Punkt E (6,5). Dies ist das mathematische Herzstück für den Tunnel-Effekt von Innovation zu Exekution.
+
+23. **PROMPT [/ALPHA-NODES/V-Z/reset_pulse.sh]:**
+    Schreibe den Reset-Pulse. Ein Shell-Skript, das nach Takt 10 alle temporären Cache-Daten reinigt und den nächsten Block (A0) vorbereitet.
+
+24. **PROMPT [/API/actions.js]:**
+    Programmiere die API-Actions. Fokus: Steuerung der 0,2% Gebühren-Injektion und die mechanische Sperre von Sub-Aktionen während eines laufenden Takts.
+
+25. **PROMPT [/API/resources.json]:**
+    Erstelle das JSON-Schema für System-Ressourcen. Es muss Felder für ECCU-Bestand, RFOF-Netzlast und GOLD-Integrität enthalten.
+
+26. **PROMPT [/API/event_listener.js]:**
+    Schreibe den Event-Listener. Er muss kontinuierlich FPS und Pixel-Daten abgreifen und diese als XP-Inkremente an die Kachel 4 (Evolution) senden.
+
+27. **PROMPT [/API/schema.xsd]:**
+    Erstelle das XSD-Schema für die binäre Maskierung. Definiere die Regeln für die SHA256-Verschlüsselung der Transaktions-Daten.
+
+28. **PROMPT [/X-HUB/injector.bin]:**
+    Generiere die Injector-Logik. Sie ermöglicht es, Axiome und Code-Updates direkt in den laufenden Prozess (Q-Z) einzuspielen, ohne die Kette zu unterbrechen.
+
+29. **PROMPT [/X-HUB/manifest.json]:**
+    Erstelle das Manifest-Format, das alle aktiven Code-Injektionen, deren Ursprung (Realität 0) und deren Validierungs-Status listet.
+
+30. **PROMPT [/CROSS-CHECK/anti_collision.py]:**
+    Schreibe den Anti-Kollisions-Schutz. Das Skript muss verhindern, dass zwei identische Hashes gleichzeitig im A–ZZ Raum existieren (Double-Spending Schutz).
+
+31. **PROMPT [/CROSS-CHECK/point_e_check.js]:**
+    Programmiere den finalen Point-E-Check. Er verifiziert, ob die 6,5 Superposition mathematisch korrekt erreicht wurde, bevor Kachel 6 (Registry) schreibt.
+
+32. **PROMPT [/USER/MANAGER/identity.gt]:**
+    Erstelle die Identity-Injection für User. Sie definiert die Mining-ID und ordnet den User einem spezifischen Sektor-Cluster zu.
+
+33. **PROMPT [/USER/access_rights.key]:**
+    Generiere die Verschlüsselungs-Logik für die Access-Keys. Jeder Key muss an die Hardware-ID des Nutzers und seine Joule-Leistung gekoppelt sein.
+
+34. **PROMPT [/USER/task_executor.js]:**
+    Schreibe den Task-Executor für User-Ebene. Er automatisiert die Umwandlung von User-Impulsen in Joule-Einheiten und validiert diese gegen das System.
+
+35. **PROMPT [/ADMIN/MANAGER/identity.gt]:**
+    Erstelle die Admin-Identität. Diese erlaubt den Zugriff auf den System-Monitor und die manuelle Fee-Notarisierung.
+
+---
+
+### 💎 PHASE 4: MASTER, PARTNER & REPOSITORY
+
+36. **PROMPT [/ADMIN/system_monitor.py]:**
+    Programmiere den System-Monitor. Er visualisiert den Status der 13 dualen Kacheln (Genesis vs. Sync) für die Admin-Ebene.
+
+37. **PROMPT [/ADMIN/fee_notary.js]:**
+    Erstelle den Notar-Dienst für Gebühren. Er muss die akkumulierten 0,2% Fees in festen Intervallen im Ledger (SAFE/OWNER/FOND/SYSTEM) einfrieren.
+
+38. **PROMPT [/DEV/MANAGER/identity.gt]:**
+    Generiere die Entwickler-Identität. Sie erlaubt das Einreichen von Code-Vorschlägen im `/X-HUB/` zur Prüfung gegen die Axiome.
+
+39. **PROMPT [/DEV/bridge_builder.js]:**
+    Schreibe den Bridge-Builder. Dieses Tool automatisiert die Erstellung neuer Schnittstellen-Pointer für den BRIDGE-Sektor (Sektor 13).
+
+40. **PROMPT [/DEV/axiom_validator.py]:**
+    Erstelle den Axiom-Validator. Er prüft jeden neuen Code-Commit gegen die PZQQET-Grundgesetze (Edition 4.0) auf Konsistenz.
+
+41. **PROMPT [/MASTER/MANAGER/identity.gt]:**
+    Erstelle die absolute Master-Identität `@RFOF-NETWORK`. Diese Datei ist der Ursprung aller Berechtigungen im gesamten System.
+
+42. **PROMPT [/MASTER/axiom_override.bin]:**
+    Generiere die binäre Override-Logik. Nur mit dieser Datei kann der Takt-Reset manuell erzwungen oder der Gebühren-Multiplikator geändert werden.
+
+43. **PROMPT [/MASTER/identity_injection.py]:**
+    Programmiere das Master-Tool zur Benennung von Mitarbeitern. Es schreibt die `identity.gt` Dateien in alle `/MANAGER/` Ordner.
+
+44. **PROMPT [/ENTERPRISE/MANAGER/identity.gt]:**
+    Erstelle die institutionelle Identität. Sie erlaubt Groß-Transaktionen zwischen GPCB und ECCU auf Enterprise-Ebene.
+
+45. **PROMPT [/ENTERPRISE/settlement.js]:**
+    Schreibe die Settlement-Logik. Sie wickelt die Bilanzierung zwischen den Firmen-Clustern und den Tresoren ab.
+
+46. **PROMPT [/ENTERPRISE/liquidity_flow.py]:**
+    Programmiere den Liquiditäts-Flow-Manager. Er steuert den automatischen Ausgleich zwischen Gold-Assets und ECCU-Liquidität.
+
+47. **PROMPT [/PARTNER/MANAGER/identity.gt]:**
+    Erstelle die Partner-Identität. Sie definiert die Schnittstellenrechte für externe Allianz-Partner im PZQQET-Netzwerk.
+
+48. **PROMPT [/PARTNER/sync_bridge.py]:**
+    Schreibe die Sync-Bridge für Partner. Sie synchronisiert externe Datenströme mit dem internen 42E0-Takt, um Kollisionen zu vermeiden.
+
+49. **PROMPT [/REPOSITORY/MANAGER/identity.gt]:**
+    Generiere die App-Identität für das Repository. Sie weist der Instanz den Status eines "Digitalen Agenten" (z.B. Jane-Viewer) zu.
+
+50. **PROMPT [/REPOSITORY/performance_boost.py] & [/REPOSITORY/app_manifest.json]:**
+    Erstelle das Performance-Skript zur Optimierung der Pixel-Verarbeitung und das App-Manifest, das alle Rechte und Prioritäten der digitalen Agenten festlegt.
+
+
+---
+
 ### 1. Das Rollen-Modell (Deterministische Hierarchie)
 
 

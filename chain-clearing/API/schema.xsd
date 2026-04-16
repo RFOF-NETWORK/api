@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://prai.neuron/PZQQET/masking"
+           xmlns:tns="https://prai.neuron/PZQQET/masking"
+           elementFormDefault="qualified">
+
+    <xs:simpleType name="SHA256Hash">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Fa-f0-9]{64}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="AxiomIntegrity">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="100.000.000%"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="BinaryMask">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TransactionHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxID" type="xs:string"/>
+                            <xs:element name="Timestamp" type="xs:long"/>
+                            <xs:element name="SeqNo" type="xs:integer"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="EncryptionLayer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="HashAlgorithm" type="xs:string" fixed="SHA256"/>
+                            <xs:element name="DataPayloadHash" type="tns:SHA256Hash"/>
+                            <xs:element name="Salt" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Validation">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Integrity" type="tns:AxiomIntegrity"/>
+                            <xs:element name="MasterSignature" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

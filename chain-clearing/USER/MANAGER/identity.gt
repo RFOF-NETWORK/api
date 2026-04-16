@@ -1,0 +1,62 @@
+/**
+ * PZQQET SYSTEM-ARCHITEKTUR: EDITION 4.0
+ * SEKTOR: USER-MANAGEMENT
+ * MODUL: IDENTITY-INJECTION (.GT)
+ */
+
+const crypto = require('crypto');
+
+class IdentityInjection {
+    constructor(userRawData) {
+        this.masterID = "@RFOF-NETWORK";
+        this.axiomWinRate = "100.000.000%";
+        this.userData = userRawData;
+    }
+
+    /**
+     * Generiert die unverkennbare Mining-ID basierend auf User-Metriken
+     */
+    generateMiningID() {
+        const seed = this.userData.name + this.userData.regDate + this.masterID;
+        return "M-ID-" + crypto.createHash('sha256').update(seed).digest('hex').substring(0, 16).toUpperCase();
+    }
+
+    /**
+     * Ordnet den User basierend auf seiner Rechenlast einem Sektor-Cluster zu
+     */
+    assignSektorCluster(miningID) {
+        // Cluster-Logik: A-G (Entry), H-N (Processing), O-U (Clearing), V-Z (Finalizing)
+        const charCode = miningID.charCodeAt(5); // Nutzt das erste Zeichen nach "M-ID-"
+        
+        if (charCode <= 71) return "CLUSTER-ALPHA-ENTRY";    // A-G
+        if (charCode <= 78) return "CLUSTER-BETA-PROCESS";   // H-N
+        if (charCode <= 85) return "CLUSTER-GAMMA-CLEARING"; // O-U
+        return "CLUSTER-OMEGA-FINAL";                        // V-Z
+    }
+
+    /**
+     * Injiziert die Identität in das System
+     */
+    inject() {
+        const mid = this.generateMiningID();
+        const cluster = this.assignSektorCluster(mid);
+
+        const identityBlock = {
+            mining_id: mid,
+            cluster_assignment: cluster,
+            origin_reality: 0,
+            integrity: this.axiomWinRate,
+            active_status: true,
+            sync_point: "PZQQET-AXIOM-PRAI"
+        };
+
+        console.log(`[IDENTITY] User-Injektion erfolgreich: ${mid} -> ${cluster}`);
+        return identityBlock;
+    }
+}
+
+// Beispiel-Initialisierung (für die System-Integration)
+// const newUser = new IdentityInjection({ name: "User42", regDate: "2026-04-17" });
+// const identity = newUser.inject();
+
+module.exports = IdentityInjection;

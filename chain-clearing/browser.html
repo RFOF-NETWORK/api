@@ -3,160 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET COCKPIT - BROWSER</title>
+    <title>PZQQET Browser Interface | Edition 4.0</title>
     <style>
         :root {
             --apple-bg: #f5f5f7;
-            --apple-glass: rgba(255, 255, 255, 0.8);
-            --pzqqet-gold: #d4af37;
-            --pzqqet-blue: #0071e3;
-            --transition-speed: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --glass: rgba(255, 255, 255, 0.7);
+            --accent: #0071e3;
+            --text: #1d1d1f;
+            --border: rgba(0, 0, 0, 0.1);
         }
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--apple-bg);
-            color: #1d1d1f;
+            color: var(--text);
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
-        /* 1. DYNAMISCHE FRONTEND-PHYSIK */
-        .search-bar-fixed {
-            position: fixed;
-            top: 0; width: 100%;
-            height: 60px;
-            background: var(--apple-glass);
+        /* 1. DYNAMISCHE SUCHLEISTE (FIXPUNKT) */
+        header {
+            position: sticky;
+            top: 0;
             backdrop-filter: blur(20px);
-            z-index: 1000;
+            background: var(--glass);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
             display: flex;
+            justify-content: center;
+        }
+
+        .search-bar {
+            width: 80%;
+            max-width: 800px;
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 18px;
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-bar:focus {
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            border-bottom: 0.5px solid rgba(0,0,0,0.1);
+            gap: 40px;
         }
 
-        /* 2. KACHEL NULL (0) - DAS KERN-GEHIRN */
-        .tile-zero-container {
-            margin-top: 100px;
-            display: flex;
-            justify-content: center;
-            transition: var(--transition-speed);
-        }
-
+        /* 2. KACHEL NULL (ZENTRALES GEHIRN) */
         .tile-zero {
             width: 300px;
             height: 300px;
             background: white;
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            border: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
+            animation: pulse 4s infinite ease-in-out;
         }
 
-        .takt-display {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--pzqqet-blue);
-        }
+        .tile-zero h2 { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--accent); }
+        .takt-display { font-size: 48px; font-weight: 700; margin: 10px 0; }
+        .sector-status { font-size: 12px; color: #86868b; }
 
-        /* 3. DYNAMISCHER ZWISCHENBEREICH (INTERFACE-SEKTOR) */
-        .interface-sector {
-            padding: 40px;
-            display: grid;
-            grid-template-columns: repeat(7, 1fr); /* Das feste 7-Kachel-Skript */
-            gap: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .sector-active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 4. MONSTER-SCALING (A-ZZ) */
-        .monster-row {
+        /* 3. MONSTER-SCALING-MODUL (A-ZZ) */
+        .scaling-container {
+            width: 100%;
             display: flex;
-            padding: 10px 40px;
-            border-bottom: 0.5px solid rgba(0,0,0,0.05);
-            font-size: 0.8rem;
-            color: #86868b;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 20px;
+            scrollbar-width: none;
         }
 
-        /* 5. GT-PUBLISHER (NEWS-VEKTOR) */
-        footer {
-            position: fixed;
-            bottom: 0; width: 100%;
-            height: 40px;
-            background: #000;
-            color: white;
+        .node-tile {
+            min-width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding-left: 20px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+            justify-content: center;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .node-tile:hover { transform: scale(1.05); }
+        .node-label { font-weight: bold; font-size: 20px; }
+
+        /* 4. NEWS-VEKTOR (GT-PUBLISHER FOOTER) */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 15px 40px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .news-ticker {
+            color: #86868b;
+            font-style: italic;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+            50% { transform: scale(1.02); box-shadow: 0 25px 50px rgba(0,113,227,0.15); }
         }
     </style>
 </head>
 <body>
 
-    <header class="search-bar-fixed">
-        <input type="text" placeholder="PZQQET SYSTEM-SEARCH..." id="main-search" 
-               style="width: 60%; border: none; background: transparent; font-size: 1.1rem; outline: none;">
-    </header>
+<header>
+    <input type="text" class="search-bar" placeholder="Innovation eingeben (.gt) / Exekution steuern (.ton)...">
+</header>
 
-    <main>
-        <div class="tile-zero-container" id="zero-view">
-            <div class="tile-zero">
-                <div id="takt-count" class="takt-display">0.0</div>
-                <div id="status-label" style="font-weight: 600; text-transform: uppercase; font-size: 0.7rem;">Realität 0</div>
-                <canvas id="point-e-visualizer" style="position: absolute; bottom: 0;"></canvas>
-            </div>
+<main>
+    <div class="tile-zero" id="kachel-null">
+        <h2>Kachel Null</h2>
+        <div class="takt-display" id="takt-val">0.0</div>
+        <div class="sector-status" id="node-id">Initialisiere...</div>
+    </div>
+
+    <div class="scaling-container" id="scaling-row">
         </div>
+</main>
 
-        <section class="interface-sector" id="dynamic-grid"></section>
+<footer>
+    <div id="notary-status">Notarisierung: BEREIT</div>
+    <div class="news-ticker" id="news-feed">Warte auf Takt 10 für GT-Publisher News...</div>
+</footer>
 
-        <section id="monster-scaling-area"></section>
-    </main>
+<script>
+    // Mechatronische Visualisierungs-Logik
+    const taktVal = document.getElementById('takt-val');
+    const newsFeed = document.getElementById('news-feed');
+    const scalingRow = document.getElementById('scaling-row');
 
-    <footer>
-        <span id="gt-ticker">GT-PUBLISHER: SYSTEM READY | WAITING FOR TAKT 10...</span>
-    </footer>
-
-    <script>
-        // BINÄRE KOPPLUNG: Empfang der Daten von index.html
-        const syncChannel = new BroadcastChannel('pzqqet_sync');
+    // 1. Takt-Simulation (gekoppelt an index.html Logik)
+    let currentTakt = 0;
+    setInterval(() => {
+        currentTakt = (currentTakt + 0.1) % 10.1;
+        taktVal.innerText = currentTakt.toFixed(1);
         
-        syncChannel.onmessage = (event) => {
-            const { takt, sector, manager, status } = event.data;
-            
-            // 1. Takt-Anzeige updaten
-            document.getElementById('takt-count').innerText = takt.toFixed(1);
-            
-            // 2. Kachel-Null Animation bei Punkt E (6.5)
-            if (takt >= 6.5) {
-                document.querySelector('.tile-zero').style.boxShadow = "0 0 30px #d4af37";
-            }
+        if (currentTakt >= 6.4 && currentTakt <= 6.6) {
+            taktVal.style.color = '#0071e3'; // Punkt E Visualisierung
+        } else {
+            taktVal.style.color = '#1d1d1f';
+        }
 
-            // 3. Status-Update (A/AA/AAA)
-            document.getElementById('status-label').innerText = `STATUS: ${status}`;
+        if (currentTakt >= 10) {
+            newsFeed.innerText = "GT-NEWS: Block im Sektor RFOF erfolgreich notarisiert. (100M% Proof)";
+        }
+    }, 100);
 
-            // 4. GT-Publisher News fixieren bei Takt 10
-            if (takt === 10) {
-                document.getElementById('gt-ticker').innerText = 
-                    `GT-PUBLISHER: BLOCK ${sector} NOTARISIERT DURCH MANAGER ${manager} | REALITÄT 0 FIXIERT.`;
-            }
-        };
+    // 2. Monster-Scaling Generierung (A bis Z und AA...)
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let char of alphabet) {
+        let tile = document.createElement('div');
+        tile.className = 'node-tile';
+        tile.innerHTML = `<span class="node-label">${char}</span><span style="font-size:10px">Sektor Node</span>`;
+        scalingRow.appendChild(tile);
+    }
+</script>
 
-        // UI-Interaktion: Expansion bei Suche
-        document.getElementById('main-search').addEventListener('focus', () => {
-            document.getElementById('dynamic-grid').classList.add('sector-active');
-            document.getElementById('zero-view').style.transform = "scale(0.8)";
-        });
-    </script>
 </body>
 </html>

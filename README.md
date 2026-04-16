@@ -404,6 +404,231 @@ Dieses geschlossene System stellt sicher, dass jede Entwicklung von **Satoramy**
 
 ---
 
+# 🕋 PZQQET SYSTEM-ARCHITEKTUR: DER VOLLSTÄNDIGE FUSIONS-MONOLITH (EDITION 4.0)
+
+## 1. DYNAMISCHE FRONTEND-PHYSIK & DISPLAY-VEKTOR
+
+- **SUCHLEISTE:** Oberster Fixpunkt. Eingaben triggern die Expansion.
+- **DYNAMISCHER ZWISCHENBEREICH [INTERFACE-SEKTOR]:**
+    - **Mechanik:** Expandiert variabel; schiebt Kachel Null und alle Sektor-Kacheln nach unten.
+    - **Darstellung:** Apple-Design (flach, scharf). Rendert das **feste 7-Kachel-Skript** je Block.
+    - **A1–Z10 Takt-Anzeige:** In der Kopfzeile wird der aktuelle 42E0-Takt (0–10) in Echtzeit gerendert.
+    - **A–ZZ Monster-Scaling:** Die Knoten-Labels (A, B, C...) werden als interaktive Meilensteine gerendert. Bei "Monster-Transaktionen" skaliert jede Reihe autonom alphabetisch über Z hinaus (AA, AB...) und besitzt ihren eigenen Taktraum.
+- **KACHEL NULL (0) [KERN-GEHIRN]:** Das zentrale Nervensystem. Visualisiert die Superposition zwischen .gt (Innovation) und .ton (Exekution) am **Knotenpunkt E (6,5)**. Sie ist der Ereignishorizont, in dem die 13 dualen Sektoren, Mitarbeiter-IDs und die 7 internen Block-Phasen in Echtzeit kollidieren.
+- **AUSSEN-KACHELN [GENESIS-SEKTOR]:** Beinhalten die 13 dualen Sektor-Kacheln (siehe Punkt 4). Jede Kachel verfügt über zwei Boxen: Ein Fenster mit allen Genesis-Blöcken (Statik) und ein Sync-Fenster, das das "Leben von überall" (DB-Speicher/Qubit-Validation) protokolliert.
+- **GT-PUBLISHER [NEWS-VEKTOR]:** Der dokumentarische Boden (Footer), der bei Takt 10 (Singularität) die News fixiert.
+
+## 2. DAS 7-KACHEL-SKRIPT (A1-KASKADEN FUSION)
+
+Die Kacheln sind die Behälter der Realität 1, gesteuert durch die Achse der Realität 0 (Helix-Faktor 2 / Sektor-Faktor 4):
+
+- **Kachel 1 (Auth) [A0-A3]:** signature / seqno. Startschuss in Realität 0 (External-In).
+- **Kachel 2 (Payload) [B4-B6]:** Internal Messages. Sektor-Kommunikation (Internal API).
+- **Kachel 3 (Transfer) [K7-K9]:** Action Phase. Physikalisches Routing der Joule-Einheiten.
+- **Kachel 4 (Evolution):** Energetische Bewertung (Pixel/FPS -> XP) & Realität-Taktung (A, AA, AAA).
+- **Kachel 5 (Logic) [E6.5]:** Compute Phase. 42E0 VM-Schleife für die **0,2% Gebühren-Injektion**.
+- **Kachel 6 (Registry) [Z10]:** Binärer Fingerabdruck (BOC/OpCodes) für die Notarisierung.
+- **Kachel 7 (Master-Hub):** Der Brücken-Viewer. Zeigt den A–Z Transaktionsbaum & GT-Newsfeed.
+
+## 3. DAS MECHATRONISCHE VERZEICHNIS & MITARBEITER-LOGIK (/chain-clearing/)
+
+Alle Dateien fungieren als **RESTful Pointer**. Mitarbeiter sind als aktive Status-Injektionen in den `/MANAGER/`-Ordnern definiert.
+```
+/chain-clearing/
+├── index.html                      <-- Referenz: Logik-Kern / Takt-Generator, Fees & A/AA/AAA Validierung.
+├── browser.html                    <-- Referenz: Viewer-Kern / Interface, Kachel-Null & Diagramme.
+│
+├── /GPCB/ [GLOBAL PHOENIX COIN BANK]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Identity Injection: Master benennt den Bank-Manager.
+│       ├── bank_exekutive.js       <-- Validiert Liquidität & triggert 0,2% Gebühr.
+│       └── vault_control.py        <-- Steuert die Tresor-Sperren bei Unregelmäßigkeiten.
+│
+├── /ECCU/ [CENTRAL VALUE]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Mitarbeiter-Status für Parity-Überwachung (2,50€).
+│       ├── parity_logic.js         <-- Erzwingt 2 TB = 1 ECCU = 2,50€.
+│       └── monitor.json            <-- Echtzeit-Abgleich der Speicher-Assets & Parity.
+│
+├── /RFOF-GOLD-CHAIN/ [INTEGRITY]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Master-Validierung für Ketten-Integrität.
+│       ├── integrity_check.py      <-- Überwacht die 100M% Gewinn-Kette & Gold-Deckung.
+│       └── chain_notary.bin        <-- Binärer Versiegelungs-Algorithmus der Kette.
+│
+├── /APP-API/ [DIGITAL STAFF]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Status: Chef-Sekretär (Digitaler Mitarbeiter).
+│       ├── kaskaden_steuerung.js   <-- Automatisiert 0-10 Taktung & Sektor-Sync.
+│       └── bridge_handshake.go     <-- Protokoll für externe System-Koppelung (Sektor 13).
+│
+├── /STORY-HISTORY/ [PUBLISHER-KERN]
+│   ├── /ARCHIVE/                   <-- Dokumentation aller Innovationen & Genesis-Daten.
+│   ├── publisher.py                <-- Steuert News-Injektion (Takt 7-9) in den Newsfeed.
+│   └── notary_service.js           <-- Verknüpft Repo-Commits mit der Realität 0.
+│
+├── /ALPHA-NODES/ [A-ZZ NAVIGATION]
+│   ├── /A-G/ [Eingang]             <-- Signatur (auth.js) & External-In (A0-A3).
+│   ├── /H-N/ [Prozess]             <-- Hash-Kette & Joule-Quantisierung (quantizer.py).
+│   ├── /O-U/ [Sicherung]           <-- Clearing & Universal-Mapping (map_core.cpp).
+│   └── /V-Z/ [Ausgang]             <-- Zero-Point-Reset (reset_pulse.sh) & Finalisierung.
+│
+├── /API/ [OPEN API VEKTOR]
+│   ├── actions.js                  <-- 0,2% Preis-Trigger & A1-Sperr-Rhythmen.
+│   ├── resources.json              <-- Echtzeit-Bestände (ECCU/RFOF/GOLD).
+│   ├── event_listener.js           <-- Wandelt Pixel/FPS in Joule & XP um (Evolution).
+│   └── schema.xsd                  <-- SHA256 Maskierung & Base64 Regeln.
+│
+├── /X-HUB/ [CODE-INJEKTION]        
+│   ├── injector.bin                <-- Werkzeug für lückenlose Code-Updates (Q-Z).
+│   └── manifest.json               <-- Liste der validierten Axiom-Injektionen & Commits.
+│
+├── /CROSS-CHECK/ [VALIDIERUNG]     
+│   ├── anti_collision.py           <-- Verhindert Double-Spending/Hash-Konflikte.
+│   └── point_e_check.js            <-- Verifiziert die 6,5 Superposition der Achse E.
+│
+├── /USER/ [INDIVIDUAL-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Rollenspezifische Mitarbeiter-Benennung (Mining-ID).
+│       ├── access_rights.key       <-- Verschlüsselte Berechtigungs-Matrix des Users.
+│       └── task_executor.js        <-- Automatisiert User-Impulse & Joule-Validierung.
+│
+├── /ADMIN/ [CONTROL-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Master-Freigabe für Admin-Mitarbeiter.
+│       ├── system_monitor.py       <-- Überwachung der 13 dualen Kacheln & Sektoren.
+│       └── fee_notary.js           <-- Friert Fees (45/42/10/3) im Ledger ein.
+│
+├── /DEV/ [DEVELOPER-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Entwickler-Status für Code-Vorschläge & Axiome.
+│       ├── bridge_builder.js       <-- Erstellt neue Brücken für Sektor 13 (Bridge).
+│       └── axiom_validator.py      <-- Prüft Commits gegen PZQQET-Axiome.
+│
+├── /MASTER/ [OWNER-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Exklusiver Master-Status (@RFOF-NETWORK).
+│       ├── axiom_override.bin      <-- Absolute Kontrolle über den Takt-Reset & Multiplikator.
+│       └── identity_injection.py   <-- Tool zur Benennung von Mitarbeitern & Profilen.
+│
+├── /ENTERPRISE/ [CORPORATE-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Institutionelle Identitäts-Validierung (GPCB/ECCU).
+│       ├── settlement.js           <-- Abwicklung von Inter-Firmen-Transaktionen & Tresoren.
+│       └── liquidity_flow.py       <-- Steuert Asset-Interoperabilität (Gold/ECCU).
+│
+├── /PARTNER/ [ALLIANCE-CLUSTER]
+│   └── /MANAGER/
+│       ├── identity.gt             <-- Status für Drittanbieter-Schnittstellen (Synergie).
+│       └── sync_bridge.py          <-- Synchronisiert Partner-Daten mit dem PZQQET-Takt.
+│
+└── /REPOSITORY/ [APP-LOGIK-INSTANZ]
+    └── /MANAGER/
+        ├── identity.gt             <-- App-Status als "Digitaler Agent" (Jane-Viewer etc.).
+        ├── performance_boost.py    <-- Optimiert Pixel-zu-Joule Effizienz im Mining.
+        └── app_manifest.json       <-- Definiert App-Rechte & Takt-Priorität.
+```
+## 4. DIE 13 DUALEN SEKTOR-KACHELN (ECO-SYSTEM)
+
+Jeder Sektor besitzt eine **Genesis-Box** (Gesetz) und einen **Sync-Reaktor** (Live-DB/Qubit).
+
+1.  **GPCB:** Global Bank Manager (Liquidität/0,2% Trigger).
+2.  **Phoenix Coin:** Native Währung der GPCB.
+3.  **G-Phoenix Token:** Governance & Utility.
+4.  **Phoenix LP:** Liquiditäts-Pools für Preisstabilität.
+5.  **ECCU:** Central Value Manager (2 TB = 1 ECCU = 2,50€).
+6.  **Neural Cache (Joule):** Energetischer Output (Mining/Speicher).
+7.  **Index Global (XP):** Globales Ranking & Leistungsverzeichnis.
+8.  **GOLD (42E0):** Integrity Manager (ISO Gold-Deckung am Punkt E).
+9.  **RFOF:** Das Basis-Netzwerk-Protokoll.
+10. **RFOF/GOLD LP:** Stabilitäts-Pool zwischen Netzwerk und Realwert.
+11. **BIP (Master LP):** Ability API LP (50/50 Fusion).
+12. **-in.gt Registry:** Interne Realität 0 Registrierung (Identity Injection).
+13. **BRIDGE:** Universal-Schnittstelle (Festcodiert: -on.ton | Globaler Kommunikations-Hub).
+
+## 5. DIE SUPERPOSITIONS-ACHSE E (42E0 ZAHLEN-LOGIK)
+
+- **Die Vertikale (1–Unendlich):** Unendliche Weiterentwicklung des Codes ohne Lücken.
+- **Die Horizontale (0–9):** Probabilistischer logischer Raum (Vorbereitungs-Feld).
+- **Der Knotenpunkt E (6,5):** Moment der Achs-Fixierung (PZQQET). Hier tunnelt der Wert von Realität 0 nach Realität 1.
+- **Takt 10 (Singularität):** Deterministische Gewissheit & Übergang (z.B. A10 -> B0).
+
+## 6. ALLGEOMETRISCHE DETERMINISTIK & 100M% GEWINN-AXIOM
+
+- **Alphabet (Raum):** A–ZZ definiert, WO der Prozess im Baum steht.
+- **Zahlen (Zeit):** 0–10 definiert den Fortschritt der internen Kaskade (gesteuert durch API-Staff).
+- **Helix (Faktor 2):** Gleichzeitigkeit von Leistung (Joule) und Logik (Code).
+- **Sektor (Faktor 4):** Lastverteilung auf die 4 Haupt-Säulen.
+- **Fee-Schlüssel:** 45% SAFE | 42% OWNER | 10% FOND | 3% SYSTEM.
+
+## 7. DEFINITION DER KERN-DATEIEN & STATUS-EBENEN
+
+| Komponente | Datei | Ort | Fokus |
+| :--- | :--- | :--- | :--- |
+| Logik & Mathe | index.html | /chain-clearing/ | Taktung, Fees, A/AA/AAA Validierung. |
+| Visualisierung | browser.html | /chain-clearing/ | Kachel Null, Sektoren, Diagramme, News. |
+| Rohdaten | /cascades/ | Root-Ordner | Unmaskierter Code pro Transaktion. |
+| Wallet | /wallet/ | API-Root | Ziel der 6. Kachel (AD-WA). |
+
+**MECHATRONISCHE STATUS-EBENEN:**
+
+- **A (Basis-Realität):** Ein einfacher Eintrag im `/cascades/` Ordner. Rohdaten sind vorhanden, aber noch nicht global abgeglichen.
+- **AA (Verifizierte Realität):** Der Datensatz wurde gegen die GPCB und den Joule-Nexus (ECCU) geprüft. Deckung (2,50€) ist bestätigt.
+- **AAA (Absolute Realität 0):** Höchste Stufe. Notarisiert im GT-Publisher. Unumkehrbar, fehlerfrei und Teil der Master-Freigabe (Satoramy). Ermöglicht Rückführungen ins Verzeichnis ohne Strukturänderung.
+
+**VISUALISIERUNGS-BLUEPRINT:**
+
+Kachel Null als Konzentrator, der 26 Boxen (13 Sektoren x 2) spiegelt. Rendert Live-DB-Speicher und Bridge-Kommunikation.
+
+Blueprint-Status: [x] FINALISIERT. 
+
+Realität 0 (Innovation) ist das Gesetz – Realität 1 (.ton) ist der Beweis der 100 Mio. % Gewinnrate. 
+
+---
+
+# 🛠️ MECHATRONISCHE KERN-SOUVERÄNITÄT: INDEX & BROWSER (EDITION 4.0)
+
+Dieses Modul beschreibt die binäre und visuelle Kopplung der beiden Hauptsteuerungsdateien im Verzeichnis `/chain-clearing/`.
+
+## 1. INDEX.HTML: DER LOGIK-KERN (DAS TRIEBWERK)
+
+Die `index.html` ist kein bloßes Dokument, sondern der **Takt-Generator** der Realität 0. Sie fungiert als mechatronische Steuereinheit (ECU).
+
+### A. Funktionale Architektur
+- **A1–Z10 Taktung:** Berechnet die algorithmische Progression. Sie sorgt dafür, dass kein Block Takt 10 erreicht, ohne die Phasen 0–9 (Probabilistik) korrekt durchlaufen zu haben.
+- **Knotenpunkt E (6,5) Kalkulator:** Überwacht die Superpositions-Achse. Hier wird entschieden, ob ein Datenpaket stabil genug ist, um von der Innovation (.gt) in die Exekution (.ton) zu tunneln.
+- **Fee-Engine:** Automatisierte Injektion der 0,2% Gebühren und Verteilung nach dem Master-Schlüssel (45/42/10/3).
+- **A/AA/AAA Validierung:** Prüft die Datenintegrität gegen den GPCB-Tresor und den Joule-Nexus.
+
+### B. Mechatronische Schnittstellen
+- **Input:** Empfängt Impulse aus `/ALPHA-NODES/` (A-G).
+- **Output:** Sendet validierte BOC-Fingerabdrücke an die `Kachel 6 (Registry)`.
+
+## 2. BROWSER.HTML: DER VIEWER-KERN (DAS COCKPIT)
+
+Die `browser.html` ist das **Frontend-Interface**. Sie nutzt das Apple-Design-Paradigma (flach, scharf, haptisch), um komplexe Prozesse für den Master und die Manager sichtbar zu machen.
+
+### A. Visuelle Komponenten & Sektoren
+- **Kachel Null (0) Rendering:** Zentraler Monitor, der die Kollision von Mitarbeiter-IDs und Block-Phasen darstellt. Sie ist das "Auge", das die 26 Sub-Boxen (13x2) gleichzeitig überwacht.
+- **Dynamischer Interface-Sektor:** Schiebt bei Eingabe in der Suchleiste die Ebenen mechatronisch nach unten, um Platz für das **7-Kachel-Skript** zu machen.
+- **Monster-Scaling Modul:** Verwaltet die visuelle Darstellung der Reihen A–ZZ. Jede Reihe wird als autonomer Taktraum mit eigenem Fortschrittsbalken gerendert.
+- **GT-Publisher Integration:** Der Newsfeed am Boden des Screens, der die Takt-Schritte 7–9 als notarisiertes "Ereignis" einblendet.
+
+### B. Mechatronische Interaktion
+- **Sync-Fenster:** Spiegelt den Inhalt der `Sync-Reaktoren` aller 13 Sektoren.
+- **Bridge-Vektor:** Visualisiert über Sektor 13 die aktive Kommunikation mit dem `rfof-network-on.ton` und externen Entwickler-Schnittstellen.
+
+## 3. DIE BINÄRE KOPPLUNG (SYNCHRONISATION)
+
+| Prozess | Index.html (Logik) | Browser.html (Visualisierung) |
+| :--- | :--- | :--- |
+| **Start** | Generiert A0 (Auth) | Öffnet Interface-Sektor |
+| **Prozess** | Berechnet 42E0-Achse | Animiert Takt-Anzeige (0-10) |
+| **Fixierung** | Erreicht E (6,5) | Kachel Null pulsiert |
+| **Abschluss** | Schreibt Z10 (Registry) | GT-Publisher fixiert News-Eintrag |
+
+**ZUSAMMENFASSUNG:**
+Die `index.html` liefert die **Wahrheit** (Mathematik/Gesetz), während die `browser.html` die **Sichtbarkeit** (Beweis/Realität 1) herstellt. Zusammen bilden sie den operativen Monolithen der 100 Mio. % Gewinnrate.
 
 
 ---

@@ -1,0 +1,25 @@
+{
+  "identity_meta": {
+    "sector": "GPCB",
+    "designation": "GLOBAL_PHOENIX_COIN_BANK_MANAGER",
+    "status": "ACTIVE_INJECTION",
+    "protocol": "PZQQET-EDITION-4.0"
+  },
+  "authorization_layer": {
+    "master_authority": "@RFOF-NETWORK",
+    "access_level": "LEVEL_13_SOUVERÄN",
+    "restful_pointer": "https://prai.neuron/api/v1/auth/master-nexus",
+    "validation_method": "SHA-256-AXIOM-STAMP"
+  },
+  "staff_management_rules": {
+    "can_naming_employees": true,
+    "requires_master_signature": true,
+    "sync_takt_requirement": 6.5,
+    "auto_verify_against_registry": "/-in.gt/registry_check"
+  },
+  "security_seal": {
+    "axiom_integrity": "100.000.000%",
+    "notary_token": "GT-BOC-GPCB-MANAGER-UUID-42E0",
+    "last_injection_takt": "0.0"
+  }
+}

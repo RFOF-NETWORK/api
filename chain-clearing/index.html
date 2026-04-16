@@ -2,97 +2,117 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>PZQQET LOGIC CORE - INDEX</title>
-    <link rel="prefetch" href="/chain-clearing/API/actions.js">
-    <link rel="prefetch" href="/chain-clearing/X-HUB/injector.bin">
+    <title>PZQQET Logik-Kern [index.html]</title>
 </head>
 <body>
-
-    <script type="module">
-        import { initTakt } from './API/actions.js';
-        import { validatePointE } from './CROSS-CHECK/point_e_check.js';
+    <script>
+        /**
+         * PZQQET SYSTEM ARCHITEKTUR - EDITION 4.0
+         * Logik-Kern: 42E0 Takt-Generator & Fee-Engine
+         */
 
         const PZQQET_CONFIG = {
-            feeKey: { safe: 0.45, owner: 0.42, fond: 0.10, system: 0.03 },
-            baseFee: 0.002, // 0,2% Gebühren-Injektion
-            parity: 2.50,   // 1 ECCU = 2,50€
-            axisE: 6.5      // Superpositions-Knotenpunkt
+            FEES: {
+                TOTAL: 0.002, // 0,2%
+                SAFE: 0.45,   // 45%
+                OWNER: 0.42,  // 42%
+                FOND: 0.10,   // 10%
+                SYSTEM: 0.03  // 3%
+            },
+            AXIS: {
+                POINT_E: 6.5,
+                MAX_TAKT: 10
+            }
         };
 
-        class LogicCore {
+        class TaktManager {
             constructor() {
-                this.currentTakt = 0; // Bereich 0-10
-                this.state = 'A';    // Status: A, AA, AAA
-                console.log("PZQQET TRIEBWERK INITIALISIERT: Realität 0 aktiv.");
+                this.currentTakt = 0;
+                this.isSuperpositioned = false;
+                this.init();
+            }
+
+            init() {
+                console.log("PZQQET Takt-Generator 42E0 gestartet.");
+                this.startCycle();
             }
 
             /**
-             * Berechnet den 0-10 Takt basierend auf Mitarbeiter-ID und Sektor-Input
+             * 1. Funktion zur Berechnung des Knotenpunkts E (6,5)
+             * Superpositions-Logik: Innovation (.gt) trifft auf Exekution (.ton)
              */
-            processKaskade(sectorId, managerId) {
-                // Takt-Progression triggern
-                for (let i = 0; i <= 10; i++) {
-                    this.currentTakt = i;
-                    
-                    if (i === 6) { // Erreichen des Knotenpunkts E
-                        this.validateSuperposition();
-                    }
-                    
-                    this.syncToBrowser(i, sectorId, managerId);
+            checkSuperposition(takt) {
+                if (takt === PZQQET_CONFIG.AXIS.POINT_E) {
+                    this.isSuperpositioned = true;
+                    this.notarizeTransition();
+                    return "SUPERPOSITION_ACHIEVED (POINT E)";
                 }
+                this.isSuperpositioned = false;
+                return `PROBABILISTIC_STATE (${takt})`;
+            }
+
+            notarizeTransition() {
+                console.warn(">>> ACHSE FIXIERT: Tunneling von Realität 0 zu Realität 1.");
             }
 
             /**
-             * Validierung am Knotenpunkt E (6,5)
+             * 2. Fee-Engine
+             * Berechnet 0,2% Gebühr und verteilt nach Master-Schlüssel
              */
-            validateSuperposition() {
-                const isValid = validatePointE(PZQQET_CONFIG.axisE);
-                if (isValid) {
-                    this.state = 'AA'; // Übergang zur verifizierten Realität
-                    this.injectFees();
-                }
-            }
-
-            /**
-             * Berechnet und verteilt die 0,2% Gebühren
-             */
-            injectFees(amount) {
-                const totalFee = amount * PZQQET_CONFIG.baseFee;
-                console.log(`FEE INJECTED: ${totalFee} ECCU verteilt nach Master-Schlüssel.`);
-                // Verbindung zu /ADMIN/MANAGER/fee_notary.js herstellen
-            }
-
-            /**
-             * Finalisiert den Block (Takt 10)
-             */
-            sealBlock() {
-                this.state = 'AAA'; // Absolute Realität 0
-                // Übergabe an GT-Publisher via /STORY-HISTORY/publisher.py
-            }
-
-            /**
-             * Nachrichtenschnittstelle zu browser.html (Realität 1)
-             */
-            syncToBrowser(takt, sector, manager) {
-                const packet = {
-                    takt,
-                    sector,
-                    manager,
-                    status: this.state,
-                    timestamp: Date.now()
+            calculateFees(amount) {
+                const totalFee = amount * PZQQET_CONFIG.FEES.TOTAL;
+                const distribution = {
+                    total: totalFee,
+                    safe: totalFee * PZQQET_CONFIG.FEES.SAFE,
+                    owner: totalFee * PZQQET_CONFIG.FEES.OWNER,
+                    fond: totalFee * PZQQET_CONFIG.FEES.FOND,
+                    system: totalFee * PZQQET_CONFIG.FEES.SYSTEM
                 };
-                // Kommunikation via BroadcastChannel oder SharedWorker
-                const channel = new BroadcastChannel('pzqqet_sync');
-                channel.postMessage(packet);
+                
+                console.log("Fee-Injektion (0,2%) erfolgreich:", distribution);
+                return distribution;
+            }
+
+            /**
+             * 3. A/AA/AAA Validierungs-Status-Check
+             * Bestimmt die mechatronische Realitätsstufe
+             */
+            getValidationStatus(data) {
+                if (data.isNotarized && data.hasGPCB_Coverage) return "AAA (Absolute Realität 0)";
+                if (data.hasGPCB_Coverage) return "AA (Verifizierte Realität)";
+                return "A (Basis-Realität / Rohdaten)";
+            }
+
+            startCycle() {
+                // Simulierter Takt-Durchlauf von 0 bis 10
+                let interval = setInterval(() => {
+                    this.currentTakt += 0.5; // Schritte zur Erreichung von 6.5
+                    
+                    const state = this.checkSuperposition(this.currentTakt);
+                    console.log(`Takt: ${this.currentTakt} | Status: ${state}`);
+
+                    if (this.currentTakt >= PZQQET_CONFIG.AXIS.MAX_TAKT) {
+                        console.log("Singularität erreicht (Takt 10). Reset für neuen Block.");
+                        this.currentTakt = 0;
+                        // Hier würde der Trigger für den GT-Publisher Newsfeed liegen
+                    }
+                }, 1000);
             }
         }
 
-        const Engine = new LogicCore();
-        window.PZQQET_ENGINE = Engine; // Master-Zugriff
+        // Initialisierung des Systems
+        const core = new TaktManager();
+
+        // Beispiel-Transaktion zur Validierung
+        const sampleTx = {
+            amount: 1000, // Joule/ECCU
+            isNotarized: true,
+            hasGPCB_Coverage: true
+        };
+
+        core.calculateFees(sampleTx.amount);
+        console.log("Validierungs-Level:", core.getValidationStatus(sampleTx));
+
     </script>
-
-    <div id="registry-buffer" style="display:none;">
-        </div>
-
 </body>
 </html>

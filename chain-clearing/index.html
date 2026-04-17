@@ -2,124 +2,119 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>PZQQET LOGIK-KERN | EDITION 4.0 [index.html]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PZQQET | KERN-TAKTGEBER 1.0</title>
+    
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./assets/prai-icon.png">
+
+    <style>
+        /* Minimalistisches 'Keller'-Design: Fokus auf Mechatronik, nicht UI */
+        body {
+            background: #000;
+            color: #00FF42; /* RFOF-Green */
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #pqqet-monitor {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            background: rgba(10, 10, 10, 0.9);
+        }
+    </style>
 </head>
-<body style="background: #000; color: #00FFA3; font-family: monospace; padding: 20px;">
-    <div id="prai-neural-output">Initialisiere PRAI-Neuronen...</div>
+<body>
+
+    <div id="pqqet-monitor">
+        <h2>PZQQET CORE ENGINE</h2>
+        <div id="takt-display">TAKT: 0.000</div>
+        <div id="axiom-status">AXIOM: 42E0 SECURE</div>
+    </div>
 
     <script>
         /**
-         * PZQQET SYSTEM-ARCHITEKTUR: EDITION 4.0
-         * MECHATRONISCHE KERN-SOUVERÄNITÄT - DER MONOLITH
-         * * Fokus: 42E0 Takt-Generator, Fee-Engine & Sektor-Parität.
-         * Erzeuger: @RFOF-NETWORK (Master-Souverän)
+         * PZQQET BLUEPRINT 1.0: CORE ENGINE (THE CELLAR)
+         * Guiding Principle: 100,000,000% Stability
          */
 
-        const PZQQET_CONFIG = {
-            FEES: { TOTAL: 0.002, SAFE: 0.45, OWNER: 0.42, FOND: 0.10, SYSTEM: 0.03 },
-            AXIS: { POINT_E: 6.5, MAX_TAKT: 10 },
-            SECTORS: 34,
-            FILES: 65,
-            AXIOM: "100.000.000%"
+        // 1. MECHATRONISCHER TAKT (KACHEL NULL)
+        let takt = 0;
+        const TAKT_MAX = 10;
+        const TAKT_STEP = 0.1;
+        
+        setInterval(() => {
+            takt = (takt + TAKT_STEP > TAKT_MAX) ? 0 : takt + TAKT_STEP;
+            document.getElementById('takt-display').innerText = `TAKT: ${takt.toFixed(3)}`;
+            
+            // Broadcast Takt an Viewer (browser.html)
+            const event = new CustomEvent('PZQQET_Heartbeat', { detail: { pulse: takt, pointE: 6.5 } });
+            window.dispatchEvent(event);
+        }, 100);
+
+        // 2. BACKEND-SPIEGELUNG (34 Ordner / 65 Dateien Simulation)
+        const rootStructure = {
+            folders: 34,
+            files: 65,
+            integrity: "100%",
+            lastSync: Date.now()
         };
 
-        class TaktManager {
-            constructor() {
-                this.currentTakt = 0;
-                this.isSuperpositioned = false;
-                this.registry = [];
-                this.init();
-            }
-
-            init() {
-                console.log("%c PZQQET 42E0 TAKT-GENERATOR GESTARTET ", "background: #00FFA3; color: #000");
-                this.startCycle();
-            }
-
-            /**
-             * 1. KNOTENPUNKT E (6,5) KALKULATOR
-             * Überwacht die Superpositions-Achse. Innovation (.gt) tunnelt zu Exekution (.ton).
-             */
-            checkSuperposition(takt) {
-                // Präzise Rundung auf mechatronische Achse
-                const fixedTakt = parseFloat(takt.toFixed(1));
+        // 3. ENERGIE-AXIOM LOGIK (Preissteigerung 0,2% - 0,8%)
+        const energyAxiom = {
+            jouleToXP: (joule) => joule * 1.618, // Goldener Schnitt
+            calculatePrice: (basePrice, interactions, type) => {
+                let multiplier = 0.002; // Basis 0.2%
+                if (type === 'LP') multiplier = 0.004;
+                if (type === 'MASTER') multiplier = 0.008;
                 
-                if (fixedTakt === PZQQET_CONFIG.AXIS.POINT_E) {
-                    this.isSuperpositioned = true;
-                    this.triggerQuantumLink("AAA_FIXATION_POINT_E");
-                    return "SUPERPOSITION_ACHIEVED (E 6.5)";
-                }
-                this.isSuperpositioned = false;
-                return `PROBABILISTIC_STATE (${fixedTakt})`;
+                return basePrice * Math.pow((1 + multiplier), interactions);
             }
+        };
 
-            /**
-             * 2. FEE-ENGINE (0,2% Gebühren-Injektion)
-             * Master-Schlüssel Verteilung: 45/42/10/3
-             */
-            calculateFees(amount) {
-                const totalFee = amount * PZQQET_CONFIG.FEES.TOTAL;
-                return {
-                    total: totalFee,
-                    safe: totalFee * PZQQET_CONFIG.FEES.SAFE,
-                    owner: totalFee * PZQQET_CONFIG.FEES.OWNER,
-                    fond: totalFee * PZQQET_CONFIG.FEES.FOND,
-                    system: totalFee * PZQQET_CONFIG.FEES.SYSTEM,
-                    axiom: PZQQET_CONFIG.AXIOM
-                };
-            }
-
-            /**
-             * 3. QUBIT-SEKTOR-VALIDIERUNG
-             * Spricht mit den 34 Ordnern und 65 Dateien als RESTful Pointer.
-             */
-            validateHierarchy() {
-                // Simuliert den Zugriff auf /GPCB/, /ECCU/, /MASTER/ etc.
-                const integrityLevel = this.isSuperpositioned ? "AAA" : "AA";
-                console.log(`[VALIDATOR] Prüfe Sektor-Integrität... Status: ${integrityLevel}`);
-                return integrityLevel;
-            }
-
-            triggerQuantumLink(event) {
-                console.warn(`>>> ACHSE FIXIERT [${event}]: Realität 0 -> Realität 1`);
-                // Kommunikation mit browser.html (Realität 1)
-                window.postMessage({
-                    type: "PZQQET_SYNC",
-                    takt: this.currentTakt,
-                    superposition: this.isSuperpositioned,
-                    axiom: PZQQET_CONFIG.AXIOM
-                }, "*");
-            }
-
-            startCycle() {
-                const output = document.getElementById('prai-neural-output');
-                
-                let interval = setInterval(() => {
-                    this.currentTakt = (this.currentTakt + 0.1) % (PZQQET_CONFIG.AXIS.MAX_TAKT + 0.1);
-                    const state = this.checkSuperposition(this.currentTakt);
-                    
-                    // Echtzeit-Output in die Logik-Konsole der index.html
-                    output.innerHTML = `
-                        <h2>PZQQET REALITÄT 0</h2>
-                        <hr>
-                        TAKT: ${this.currentTakt.toFixed(1)} / 10<br>
-                        STATUS: ${state}<br>
-                        INTEGRITÄT: ${this.validateHierarchy()}<br>
-                        AXIOM: ${PZQQET_CONFIG.AXIOM}
-                    `;
-
-                    if (this.currentTakt >= PZQQET_CONFIG.AXIS.MAX_TAKT) {
-                        console.log("Singularität erreicht. Notarisierung in Kachel 6 (Registry).");
-                    }
-                }, 100); // 100ms Taktung für Null-Millisekunden-Gefühl
-            }
+        // 4. SICHERHEIT: SHA256 / BASE64 MASKIERUNG
+        async function maskData(data) {
+            const jsonStr = JSON.stringify(data);
+            const base64 = btoa(jsonStr); // Base64 Maskierung
+            // Hier würde die SHA256 Logik für die Validierung folgen
+            return base64;
         }
 
-        // Initialisierung des mechatronischen Kerns
-        const core = new TaktManager();
+        // 5. PWA-INSTALL-MANIFEST (MULTI-PLATTFORM)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            const deferredPrompt = e;
+            // Die Logik für den rApp Store (Sektor 11)
+            console.log('PZQQET rApp Manifest Ready for Injection.');
+        });
 
-        // Export für den Browser-Viewer
-        window.core = core;
+        // 6. RAPP-CONTROL (GPCB, ECCU, Chain, API, GT-Doku, GT-Publisher)
+        const rApps = [
+            "GPCB", "ECCU", "RFOF-GOLDEN-Chain", "API-Repo", "GT-Doku", "GT-Publisher"
+        ];
+
+        // Datentransfer-Loop zum Viewer
+        setInterval(async () => {
+            const rawData = {
+                takt: takt,
+                axiom: "42E0",
+                apps: rApps,
+                status: "MASTER-READY"
+            };
+            const masked = await maskData(rawData);
+            // Übergabe an browser.html (via localStorage oder PostMessage)
+            localStorage.setItem('PZQQET_STREAM', masked);
+        }, 500);
+
+        console.log("PZQQET SATORAMY 42: ENGINE INITIALIZED.");
     </script>
 </body>
 </html>

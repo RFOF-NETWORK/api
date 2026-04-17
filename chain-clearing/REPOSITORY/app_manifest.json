@@ -1,0 +1,29 @@
+{
+  "manifest_version": "4.0",
+  "app_identity": "PZQQET-REPO-AGENT-CORE",
+  "status": "DIGITAL_AGENT",
+  "axiom_anchor": "100.000.000%",
+  "iso_standard": "42E0",
+  "permissions": {
+    "system": [
+      "READ_SECTOR_13",
+      "WRITE_REPOSITORY_CACHE",
+      "EXECUTE_PIXEL_BOOST"
+    ],
+    "api_access": {
+      "level": "ULTRA_HIGH_SPEED",
+      "priority": 1,
+      "concurrent_tasks": "UNLIMITED"
+    },
+    "hardware_binding": {
+      "gpu_acceleration": "REQUIRED",
+      "low_latency_mode": true
+    }
+  },
+  "agent_policies": {
+    "autonomous_indexing": true,
+    "notarization_sync": "POINT_E_6.5",
+    "collision_protection": "ACTIVE"
+  },
+  "master_authority": "@RFOF-NETWORK"
+}

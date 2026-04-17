@@ -1290,3 +1290,59 @@ Die `index.html` liefert die **Wahrheit** (Mathematik/Gesetz), während die `bro
     ├── 📂 wallet/              # Spiegel-Modul (Kontext: Chain-Finance)
     └── ... (weitere Module)
 ```
+---
+
+# Zusätzlich gedacht eventuell als ziel struktur des Frontends das noch nicht ganz fertig ist:
+```
+# 📂 REPOSITORY: RFOF-NETWORK-API
+# STATUS: Synchronisiert mit /docs-meta/ (Backend-Anker)
+
+## 1. ROOT-EBENE (Zentrale Steuerung)
+├── index.html                       # Master-Dashboard (Box A-J)
+├── browser.html                     # Global Clearing Terminal (Zustand K/L)
+│
+├── 📁 wallet/                       # Globales Finanz-Modul
+│   ├── index.html                   # Launchpad, Balance, Crypto-ISO-Bridge
+│   └── browser.html                 # UTX/SHA256 Validierung & Trading-Terminal
+│
+├── 📁 profil/                       # Globales Identitäts-Modul
+│   ├── index.html                   # Base64-Maskierung, Medium-Posts, Stories
+│   └── browser.html                 # Messenger-Logik & Anfrage-Skripte
+│
+├── 📁 settings/                     # Globales Regulierungs-Modul
+│   ├── index.html                   # Master-Admin-Switch (RFOF-NETWORK), Name-History
+│   └── browser.html                 # API-Config & Dual-Sperr-Parameter (0,2% / 45%)
+│
+├── 📁 staking/                      # Globales Energie-Modul
+│   ├── index.html                   # Triple-Pool-Charts, NFT-Forge, XP-Ranking
+│   └── browser.html                 # Mining-Logs & Joul-Emissions-Viewer
+│
+## 2. SYSTEM-INSTANZEN (Sektorale Spiegelung)
+│
+├── 📁 GPCB/ (Zentralbank)           # Sektor-Dashboard & Sektor-Browser (2 Dateien)
+│   ├── 📁 wallet/ | 📁 profil/ | 📁 settings/ | 📁 staking/ (8 Dateien)
+│   └── [Jeweils index.html & browser.html pro Unterordner]
+│
+├── 📁 ECCU/ (Währungs-Anker)         # Sektor-Dashboard & Sektor-Browser (2 Dateien)
+│   ├── 📁 wallet/ | 📁 profil/ | 📁 settings/ | 📁 staking/ (8 Dateien)
+│   └── [Jeweils index.html & browser.html pro Unterordner]
+│
+├── 📁 RFOF-GOLDEN-Chain/ (Blockchain) # Sektor-Dashboard & Sektor-Browser (2 Dateien)
+│   ├── 📁 wallet/ | 📁 profil/ | 📁 settings/ | 📁 staking/ (8 Dateien)
+│   └── [Jeweils index.html & browser.html pro Unterordner]
+│
+## 3. OPERATIVE SEKTOREN & DOKUMENTATION
+│
+├── 📁 chain-clearing/               # Kachel J: Blockchain Viewer (2 Dateien)
+│   ├── index.html                   # Globaler Explorer & Suchleiste
+│   └── browser.html                 # Verschachtelte Ketten-Analyse
+│
+├── 📁 marketplace/                  # API-Handel & Vermarktung (2 Dateien)
+│   ├── index.html                   # Modul-Listing (RFOF-GOLDEN-LP Basis)
+│   └── browser.html                 # Lizenz-Clearing & Signing
+│
+├── 📁 docs-user/                    # Frontend-Handbuch für Nutzer (2 Dateien)
+├── 📁 docs-dev/                     # BIP-Spezifikationen für Entwickler (2 Dateien)
+└── 📁 docs-meta/                    # VORHANDEN: Operativer Anker (2 Dateien)
+```
+

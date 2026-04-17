@@ -2,208 +2,217 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET Browser Cockpit | Edition 4.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PZQQET | SOUVERÄNITÄTS-VIEWER 1.0</title>
     <style>
         :root {
-            --apple-bg: #f5f5f7;
-            --glass: rgba(255, 255, 255, 0.8);
-            --accent: #007AFF; /* Apple Blue */
-            --gold: #D4AF37;
-            --text: #1d1d1f;
-            --border: rgba(0, 0, 0, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --rfof-gold: #D4AF37;
+            --rfof-green: #00FF42;
+            --master-aura: 0 0 20px rgba(212, 175, 55, 0.3);
         }
 
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-            background: var(--apple-bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        body, html {
+            margin: 0; padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 00 FIXIERTER HEADER */
+        header {
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; z-index: 1000; box-sizing: border-box;
+        }
+
+        .master-aura {
+            border: 1px solid var(--rfof-gold);
+            box-shadow: var(--master-aura);
+            padding: 5px 15px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: bold; color: var(--rfof-gold);
+        }
+
+        /* PRAI-NEURONEN AVATAR */
+        .prai-avatar {
+            width: 35px; height: 35px;
+            background: linear-gradient(45deg, #1a1a1a, #333);
+            border-radius: 50%; border: 1px solid var(--glass-border);
             overflow: hidden;
         }
 
-        /* DYNAMISCHE SUCHLEISTE */
-        header {
-            padding: 20px;
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-            z-index: 1000;
+        /* 02 KACHEL NULL (FIXIERTER MONITOR) */
+        #kachel-null {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 280px; padding: 15px;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--rfof-green); border-radius: 15px;
+            z-index: 999; text-align: center;
         }
 
-        .search-bar {
-            width: 70%;
-            max-width: 900px;
-            padding: 15px 30px;
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            outline: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* 11 SEKTOREN GRID */
+        main { padding-top: 80px; padding-bottom: 120px; }
+        
+        .sector {
+            padding: 20px; margin-bottom: 40px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        .search-bar:focus { width: 85%; box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); }
-
-        main {
-            flex: 1;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            overflow-y: auto;
-        }
-
-        /* KACHEL NULL (QUBIT-KERN) */
-        .tile-zero {
-            width: 380px;
-            height: 380px;
-            background: white;
-            border-radius: 54px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-            position: relative;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .takt-display { font-size: 82px; font-weight: 700; letter-spacing: -2px; }
-        .axiom-badge { 
-            background: var(--accent); color: white; padding: 5px 15px; 
-            border-radius: 20px; font-size: 12px; margin-top: 10px;
-        }
-
-        /* MONSTER-SCALING (A-ZZ) */
-        .scaling-row {
-            display: flex;
+        /* 13 DUALE SEKTOREN GRID */
+        .dual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            padding: 20px;
-            width: 95%;
-            overflow-x: auto;
-            scrollbar-width: none;
         }
 
-        .node-tile {
-            min-width: 140px;
-            height: 140px;
-            background: white;
-            border-radius: 28px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
+        .kachel {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 15px; cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        .node-tile.active { border-color: var(--accent); transform: translateY(-5px); }
+        .kachel:hover { transform: scale(1.02); background: rgba(255,255,255,0.05); }
 
-        /* GT-PUBLISHER FOOTER */
-        footer {
-            background: #000;
-            color: white;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+        .three-layer { display: flex; flex-direction: column; gap: 10px; }
+        .layer { font-size: 0.7rem; color: #888; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .diagramm-ebene { height: 60px; background: rgba(0,255,66,0.05); border-radius: 4px; }
+
+        /* rAPP STORE SEKTOR 11 */
+        .rapp-store {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+        }
+        .rapp-icon {
+            aspect-ratio: 1; background: #111; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; font-size: 0.6rem;
         }
 
-        .status-dot { height: 8px; width: 8px; background: #34c759; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        /* OVERLAY LAYER */
+        #overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .app-card {
+            background: #1c1c1e; width: 90%; max-width: 400px; padding: 30px;
+            border-radius: 30px; text-align: center;
+        }
+        .btn-install {
+            background: #007aff; color: white; border: none;
+            padding: 12px 40px; border-radius: 20px; font-weight: bold; margin-top: 20px;
+        }
 
+        @media (max-width: 768px) {
+            .dual-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <input type="text" class="search-bar" placeholder="Innovation (.gt) / Exekution (.ton) steuern...">
-</header>
+    <header>
+        <div style="font-weight: bold; letter-spacing: 2px;">PZQQET</div>
+        <div id="master-profile" class="master-aura">@RFOF-NETWORK</div>
+        <div class="prai-avatar" id="avatar-target"></div>
+    </header>
 
-<main>
-    <div class="tile-zero" id="main-brain">
-        <div style="font-size: 12px; color: var(--accent); font-weight: 600;">KACHEL NULL [E 6.5]</div>
-        <div class="takt-display" id="display-takt">0.0</div>
-        <div id="status-label" style="font-size: 14px; color: #86868b;">Warte auf Takt...</div>
-        <div class="axiom-badge">100.000.000% AXIOM</div>
+    <div id="kachel-null">
+        <div style="font-size: 0.6rem; color: var(--rfof-green);">EREIGNISHORIZONT PUNKT E (6.5)</div>
+        <div id="live-takt" style="font-size: 1.5rem; font-weight: bold;">0.000</div>
+        <div id="sync-status" style="font-size: 0.5rem; letter-spacing: 1px;">SYNCING REALITY 0...</div>
     </div>
 
-    <div class="scaling-row" id="grid-a-zz"></div>
-</main>
+    <main id="app-flow">
+        <section class="sector">
+            <h3>03 DUALE SEKTOREN</h3>
+            <div class="dual-grid" id="dual-grid-target">
+                </div>
+        </section>
 
-<footer>
-    <div><span class="status-dot"></span> <span id="notary-text">GT-PUBLISHER: BEREIT</span></div>
-    <div id="file-count">65 DATEIEN | 34 ORDNER | @RFOF-NETWORK</div>
-</footer>
+        <section class="sector" id="sector-06">
+            <h3>06 RFOF-GOLDEN DEX</h3>
+            <div class="diagramm-ebene" style="height: 200px; border: 1px solid var(--rfof-green);">
+                <div style="padding: 10px; font-size: 0.7rem; color: var(--rfof-green);">LIVE CANDLESTICK VECTOR [SIMULATED]</div>
+            </div>
+        </section>
 
-<script>
-    /**
-     * BROWSER INTERFACE LOGIC - EDITION 4.0
-     * Deterministische Kopplung (API-less & API-ready)
-     */
+        <section class="sector">
+            <h3>11 rAPP STORE</h3>
+            <div class="rapp-store">
+                <div class="rapp-icon" onclick="openApp('GPCB')">GPCB</div>
+                <div class="rapp-icon" onclick="openApp('ECCU')">ECCU</div>
+                <div class="rapp-icon" onclick="openApp('CHAIN')">CHAIN</div>
+                <div class="rapp-icon" onclick="openApp('API')">API</div>
+                <div class="rapp-icon" onclick="openApp('GT-DOKU')">GT</div>
+                <div class="rapp-icon" onclick="openApp('GT-PUB')">PUB</div>
+            </div>
+        </section>
+    </main>
 
-    const displayTakt = document.getElementById('display-takt');
-    const statusLabel = document.getElementById('status-label');
-    const gridContainer = document.getElementById('grid-a-zz');
-    const notaryText = document.getElementById('notary-text');
+    <div id="overlay" onclick="this.style.display='none'">
+        <div class="app-card" onclick="event.stopPropagation()">
+            <div id="app-title" style="font-size: 1.5rem; margin-bottom: 10px;">App Name</div>
+            <p id="app-desc" style="color: #888; font-size: 0.9rem;">Mechatronische Repository App.</p>
+            <button class="btn-install">INSTALL rAPP</button>
+        </div>
+    </div>
 
-    // 1. MONSTER-SCALING GENERATOR (A - ZZ)
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const generateGrid = () => {
-        alphabet.split('').forEach(char => {
-            const tile = document.createElement('div');
-            tile.className = 'node-tile';
-            tile.id = `node-${char}`;
-            tile.innerHTML = `<b style="font-size: 24px;">${char}</b><br><small>SEKTOR</small>`;
-            gridContainer.appendChild(tile);
+    <script>
+        // 1. TAKT-SYNCHRONISATION AUS INDEX.HTML (KELLER)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'PZQQET_STREAM') {
+                const data = JSON.parse(atob(e.newValue)); // Base64 Demaskierung
+                document.getElementById('live-takt').innerText = data.takt.toFixed(3);
+                if (data.takt >= 6.4 && data.takt <= 6.6) {
+                    document.getElementById('kachel-null').style.borderColor = '#D4AF37';
+                } else {
+                    document.getElementById('kachel-null').style.borderColor = '#00FF42';
+                }
+            }
         });
-    };
-    generateGrid();
 
-    // 2. QUANTUM-SYNC: Hört auf die index.html (Realität 0)
-    window.addEventListener("message", (event) => {
-        if (event.data.type === "PZQQET_SYNC") {
-            const { takt, superposition, axiom } = event.data;
+        // 2. GENERIERUNG DER 13 SEKTOREN (FRAKTAL)
+        const sektoren = ["GPCB", "Phoenix Coin", "G-Phoenix Token", "Phoenix LP", "ECCU", "Joule", "XP", "GOLD", "RFOF", "RFOF/GOLD LP", "BIP", "Registry", "BRIDGE"];
+        const grid = document.getElementById('dual-grid-target');
+
+        sektoren.forEach((name, i) => {
+            const kachel = document.createElement('div');
+            kachel.className = 'kachel';
+            kachel.innerHTML = `
+                <div class="three-layer">
+                    <div class="layer">GENESIS: PZQQET/03/${i+1}</div>
+                    <div style="font-weight: bold; font-size: 0.9rem;">${name}</div>
+                    <div class="layer">SYNC: 100M %</div>
+                    <div class="diagramm-ebene" onclick="window.location.hash='#sector-06'"></div>
+                </div>
+            `;
+            kachel.onclick = () => console.log(`Tunneling to Root: /${name.toLowerCase()}/`);
+            grid.appendChild(kachel);
+        });
+
+        // 3. rAPP STORE LOGIK
+        function openApp(name) {
+            const overlay = document.getElementById('overlay');
+            const title = document.getElementById('app-title');
+            const desc = document.getElementById('app-desc');
             
-            // Takt-Update (Apple Style)
-            displayTakt.innerText = takt.toFixed(1);
-            
-            // Punkt E (6.5) Visualisierung
-            if (takt >= 6.4 && takt <= 6.6) {
-                displayTakt.style.color = "#007AFF";
-                statusLabel.innerText = "SUPERPOSITION (ACHSE E)";
-                document.getElementById('main-brain').style.transform = "scale(1.05)";
-            } else {
-                displayTakt.style.color = "#1d1d1f";
-                statusLabel.innerText = superposition ? "VALIDIERT" : "PROBABILISTIK";
-                document.getElementById('main-brain').style.transform = "scale(1)";
-            }
-
-            // Newsfeed Update bei Takt 10
-            if (takt >= 10) {
-                notaryText.innerText = "NEWS: BLOCK FINALISIERT | AAA STATUS";
-                notaryText.style.color = "#D4AF37"; // Gold
-            }
+            overlay.style.display = 'flex';
+            title.innerText = name;
+            desc.innerText = `Souveräne rApp der ${name}-Infrastruktur. Ready for Multi-Plattform Install via X-Hub.`;
         }
-    });
 
-    // 3. API-LESS RESOURCE POINTER
-    // Simuliert REST-Abfragen direkt über den Qubit-Speicherraum
-    const ResourceAPI = {
-        fetchSilo: (siloName) => {
-            console.log(`[API-LESS] Zugriff auf Resource: /chain-clearing/${siloName}/`);
-            return { integrity: "100M%", status: "LOCKED" };
+        // 4. PRAI-NEURONEN AVATAR GENERIERUNG
+        function generatePraiAvatar() {
+            const target = document.getElementById('avatar-target');
+            // Simuliert PRAI-Algorithmus: Generiert Canvas-Muster statt Upload
+            target.style.background = `radial-gradient(circle, #D4AF37 0%, #111 70%)`;
         }
-    };
-</script>
 
+        generatePraiAvatar();
+    </script>
 </body>
 </html>

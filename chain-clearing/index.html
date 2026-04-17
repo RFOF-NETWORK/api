@@ -2,117 +2,124 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>PZQQET Logik-Kern [index.html]</title>
+    <title>PZQQET LOGIK-KERN | EDITION 4.0 [index.html]</title>
 </head>
-<body>
+<body style="background: #000; color: #00FFA3; font-family: monospace; padding: 20px;">
+    <div id="prai-neural-output">Initialisiere PRAI-Neuronen...</div>
+
     <script>
         /**
-         * PZQQET SYSTEM ARCHITEKTUR - EDITION 4.0
-         * Logik-Kern: 42E0 Takt-Generator & Fee-Engine
+         * PZQQET SYSTEM-ARCHITEKTUR: EDITION 4.0
+         * MECHATRONISCHE KERN-SOUVERÄNITÄT - DER MONOLITH
+         * * Fokus: 42E0 Takt-Generator, Fee-Engine & Sektor-Parität.
+         * Erzeuger: @RFOF-NETWORK (Master-Souverän)
          */
 
         const PZQQET_CONFIG = {
-            FEES: {
-                TOTAL: 0.002, // 0,2%
-                SAFE: 0.45,   // 45%
-                OWNER: 0.42,  // 42%
-                FOND: 0.10,   // 10%
-                SYSTEM: 0.03  // 3%
-            },
-            AXIS: {
-                POINT_E: 6.5,
-                MAX_TAKT: 10
-            }
+            FEES: { TOTAL: 0.002, SAFE: 0.45, OWNER: 0.42, FOND: 0.10, SYSTEM: 0.03 },
+            AXIS: { POINT_E: 6.5, MAX_TAKT: 10 },
+            SECTORS: 34,
+            FILES: 65,
+            AXIOM: "100.000.000%"
         };
 
         class TaktManager {
             constructor() {
                 this.currentTakt = 0;
                 this.isSuperpositioned = false;
+                this.registry = [];
                 this.init();
             }
 
             init() {
-                console.log("PZQQET Takt-Generator 42E0 gestartet.");
+                console.log("%c PZQQET 42E0 TAKT-GENERATOR GESTARTET ", "background: #00FFA3; color: #000");
                 this.startCycle();
             }
 
             /**
-             * 1. Funktion zur Berechnung des Knotenpunkts E (6,5)
-             * Superpositions-Logik: Innovation (.gt) trifft auf Exekution (.ton)
+             * 1. KNOTENPUNKT E (6,5) KALKULATOR
+             * Überwacht die Superpositions-Achse. Innovation (.gt) tunnelt zu Exekution (.ton).
              */
             checkSuperposition(takt) {
-                if (takt === PZQQET_CONFIG.AXIS.POINT_E) {
+                // Präzise Rundung auf mechatronische Achse
+                const fixedTakt = parseFloat(takt.toFixed(1));
+                
+                if (fixedTakt === PZQQET_CONFIG.AXIS.POINT_E) {
                     this.isSuperpositioned = true;
-                    this.notarizeTransition();
-                    return "SUPERPOSITION_ACHIEVED (POINT E)";
+                    this.triggerQuantumLink("AAA_FIXATION_POINT_E");
+                    return "SUPERPOSITION_ACHIEVED (E 6.5)";
                 }
                 this.isSuperpositioned = false;
-                return `PROBABILISTIC_STATE (${takt})`;
-            }
-
-            notarizeTransition() {
-                console.warn(">>> ACHSE FIXIERT: Tunneling von Realität 0 zu Realität 1.");
+                return `PROBABILISTIC_STATE (${fixedTakt})`;
             }
 
             /**
-             * 2. Fee-Engine
-             * Berechnet 0,2% Gebühr und verteilt nach Master-Schlüssel
+             * 2. FEE-ENGINE (0,2% Gebühren-Injektion)
+             * Master-Schlüssel Verteilung: 45/42/10/3
              */
             calculateFees(amount) {
                 const totalFee = amount * PZQQET_CONFIG.FEES.TOTAL;
-                const distribution = {
+                return {
                     total: totalFee,
                     safe: totalFee * PZQQET_CONFIG.FEES.SAFE,
                     owner: totalFee * PZQQET_CONFIG.FEES.OWNER,
                     fond: totalFee * PZQQET_CONFIG.FEES.FOND,
-                    system: totalFee * PZQQET_CONFIG.FEES.SYSTEM
+                    system: totalFee * PZQQET_CONFIG.FEES.SYSTEM,
+                    axiom: PZQQET_CONFIG.AXIOM
                 };
-                
-                console.log("Fee-Injektion (0,2%) erfolgreich:", distribution);
-                return distribution;
             }
 
             /**
-             * 3. A/AA/AAA Validierungs-Status-Check
-             * Bestimmt die mechatronische Realitätsstufe
+             * 3. QUBIT-SEKTOR-VALIDIERUNG
+             * Spricht mit den 34 Ordnern und 65 Dateien als RESTful Pointer.
              */
-            getValidationStatus(data) {
-                if (data.isNotarized && data.hasGPCB_Coverage) return "AAA (Absolute Realität 0)";
-                if (data.hasGPCB_Coverage) return "AA (Verifizierte Realität)";
-                return "A (Basis-Realität / Rohdaten)";
+            validateHierarchy() {
+                // Simuliert den Zugriff auf /GPCB/, /ECCU/, /MASTER/ etc.
+                const integrityLevel = this.isSuperpositioned ? "AAA" : "AA";
+                console.log(`[VALIDATOR] Prüfe Sektor-Integrität... Status: ${integrityLevel}`);
+                return integrityLevel;
+            }
+
+            triggerQuantumLink(event) {
+                console.warn(`>>> ACHSE FIXIERT [${event}]: Realität 0 -> Realität 1`);
+                // Kommunikation mit browser.html (Realität 1)
+                window.postMessage({
+                    type: "PZQQET_SYNC",
+                    takt: this.currentTakt,
+                    superposition: this.isSuperpositioned,
+                    axiom: PZQQET_CONFIG.AXIOM
+                }, "*");
             }
 
             startCycle() {
-                // Simulierter Takt-Durchlauf von 0 bis 10
+                const output = document.getElementById('prai-neural-output');
+                
                 let interval = setInterval(() => {
-                    this.currentTakt += 0.5; // Schritte zur Erreichung von 6.5
-                    
+                    this.currentTakt = (this.currentTakt + 0.1) % (PZQQET_CONFIG.AXIS.MAX_TAKT + 0.1);
                     const state = this.checkSuperposition(this.currentTakt);
-                    console.log(`Takt: ${this.currentTakt} | Status: ${state}`);
+                    
+                    // Echtzeit-Output in die Logik-Konsole der index.html
+                    output.innerHTML = `
+                        <h2>PZQQET REALITÄT 0</h2>
+                        <hr>
+                        TAKT: ${this.currentTakt.toFixed(1)} / 10<br>
+                        STATUS: ${state}<br>
+                        INTEGRITÄT: ${this.validateHierarchy()}<br>
+                        AXIOM: ${PZQQET_CONFIG.AXIOM}
+                    `;
 
                     if (this.currentTakt >= PZQQET_CONFIG.AXIS.MAX_TAKT) {
-                        console.log("Singularität erreicht (Takt 10). Reset für neuen Block.");
-                        this.currentTakt = 0;
-                        // Hier würde der Trigger für den GT-Publisher Newsfeed liegen
+                        console.log("Singularität erreicht. Notarisierung in Kachel 6 (Registry).");
                     }
-                }, 1000);
+                }, 100); // 100ms Taktung für Null-Millisekunden-Gefühl
             }
         }
 
-        // Initialisierung des Systems
+        // Initialisierung des mechatronischen Kerns
         const core = new TaktManager();
 
-        // Beispiel-Transaktion zur Validierung
-        const sampleTx = {
-            amount: 1000, // Joule/ECCU
-            isNotarized: true,
-            hasGPCB_Coverage: true
-        };
-
-        core.calculateFees(sampleTx.amount);
-        console.log("Validierungs-Level:", core.getValidationStatus(sampleTx));
-
+        // Export für den Browser-Viewer
+        window.core = core;
     </script>
 </body>
 </html>

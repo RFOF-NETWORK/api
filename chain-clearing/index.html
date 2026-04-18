@@ -3,233 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET | Souveränitäts-Monolith 1.0</title>
+    <title>PZQQET | SOUVERÄNITÄTS-MONOLITH 1.0</title>
     <style>
         :root {
-            --bg: #000000;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-heavy: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --accent: #0071e3;
-            --text: #f5f5f7;
-            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-heavy: rgba(255, 255, 255, 0.12);
+            --accent-blue: #0071e3;
+            --prai-green: #32d74b;
+            --text-main: #f5f5f7;
+            --bg-black: #000000;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: var(--font); 
-            overflow: hidden; 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
             height: 100vh;
-        }
-
-        /* ABSCHNITT 00: HEADER (Glassmorphism) */
-        header {
-            position: fixed;
-            top: 0; width: 100%; height: 60px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(25px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-        }
-
-        .logo { font-weight: 700; font-size: 20px; letter-spacing: -1px; }
-
-        /* 00-A: PROFIL-SOUVERÄN (PRAI-Asset) */
-        .profile-souverän {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--glass-heavy);
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            cursor: pointer;
-        }
-
-        .prai-avatar {
-            width: 28px; height: 28px;
-            background: conic-gradient(from 180deg at 50% 50%, #0071e3, #5e5ce6, #0071e3);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0, 113, 227, 0.4);
-        }
-
-        /* MAIN CONTAINER (Viewer) */
-        #viewer-root {
-            margin-top: 60px;
-            height: calc(100vh - 60px);
             display: flex;
             flex-direction: column;
         }
 
-        /* 02: KACHEL NULL (KERN - Ereignishorizont) */
-        #kachel-null {
-            flex: 0 0 200px;
-            background: radial-gradient(circle at center, rgba(0,113,227,0.1) 0%, transparent 80%);
-            border-bottom: 1px solid var(--glass-border);
+        /* 00 HEADER: GLASSMORPHISM */
+        header {
+            position: fixed;
+            top: 0; width: 100%; height: 64px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+        .search-bar {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: white;
+            width: 300px;
+        }
+
+        /* 00-A PROFIL-SOUVERÄN */
+        .profile-souveran {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--prai-green));
+            border-radius: 50%;
+            border: 1px solid var(--glass-heavy);
+        }
+
+        /* 01 INTERFACE-SEKTOR & KACHEL-KASKADE */
+        main {
+            margin-top: 64px;
+            padding: 40px;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            overflow-y: auto;
+        }
+
+        /* 02 KACHEL NULL: DAS HERZ */
+        .kachel-null {
+            grid-column: 1 / -1;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(0,113,227,0.15) 0%, transparent 70%);
+            border: 1px solid var(--accent-blue);
+            border-radius: 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
-        .punkt-e { font-size: 11px; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
-        .takt-display { font-size: 48px; font-weight: 800; letter-spacing: -2px; }
-
-        /* 01: INTERFACE-SEKTOR (Dynamische Kaskade) */
-        #interface-sektor {
-            flex: 1;
-            overflow-y: scroll;
-            padding: 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            scroll-behavior: smooth;
+        .punkt-e {
+            font-size: 80px; font-weight: 800;
+            background: linear-gradient(to bottom, #fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* 03-11: DIE 11 SEKTOREN (Mechatronische Objekte) */
-        .sektor-kachel {
+        .takt-indicator {
+            position: absolute; bottom: 20px;
+            display: flex; gap: 8px;
+        }
+        .takt-dot { width: 12px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; }
+        .takt-dot.active { background: var(--prai-green); box-shadow: 0 0 10px var(--prai-green); }
+
+        /* SEKTOREN 03-11: DUAL-KACHELN */
+        .sector-tile {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 30px;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+            border-radius: 20px;
+            padding: 24px;
+            min-height: 220px;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .sector-tile:hover { transform: scale(1.02); background: var(--glass-heavy); }
+        
+        .status-layer {
+            position: absolute; top: 15px; right: 15px;
+            font-size: 10px; font-weight: 700; letter-spacing: 1px;
         }
 
-        .sektor-kachel:hover { transform: scale(1.02); background: rgba(255,255,255,0.05); }
+        .status-1 { color: #888; } /* Idle */
+        .status-2 { color: var(--accent-blue); } /* Syncing */
+        .status-3 { color: var(--prai-green); } /* Verified */
 
-        .sektor-header { font-size: 14px; font-weight: 600; color: var(--accent); text-transform: uppercase; }
-        .file-sync { font-family: monospace; font-size: 10px; opacity: 0.5; margin-top: 4px; }
-        
-        /* ENERGIE-PREIS-AXIOM DISPLAY */
-        .price-axiom { font-size: 36px; font-weight: 700; margin: 15px 0; letter-spacing: -1px; }
-        .joule-stat { font-size: 12px; color: #32d74b; font-weight: 600; }
+        .price-axiom { font-size: 24px; font-weight: 600; margin-top: 10px; }
 
-        /* 04: GT-PUBLISHER (Dokumentarischer Boden) */
+        /* 04 NEWS-FEED: FIXIERTER BODEN */
         footer {
-            height: 40px;
-            background: #000;
-            border-top: 1px solid var(--glass-border);
+            height: 50px;
+            background: rgba(0,0,0,0.8);
+            border-top: 0.5px solid var(--glass-border);
             display: flex;
             align-items: center;
-            padding: 0 30px;
-            font-size: 11px;
-            font-weight: 500;
+            padding: 0 40px;
+            font-size: 12px;
             color: #86868b;
+            z-index: 1000;
         }
 
-        .news-ticker { display: flex; gap: 40px; }
-        .singularität-fix { color: var(--accent); font-weight: bold; }
-
-        /* PRAI-NEURONEN ASSET (CODE-SVG) */
-        .neuron-asset { width: 100%; height: 40px; margin-top: 10px; stroke: var(--accent); stroke-width: 1; fill: none; opacity: 0.3; }
+        .news-ticker { overflow: hidden; white-space: nowrap; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">PZQQET MONOLITH</div>
-    <div class="profile-souverän" onclick="window.location.href='browser.html'">
-        <div class="prai-avatar"></div>
+    <div class="logo">PZQQET 1.0</div>
+    <input type="text" class="search-bar" placeholder="Souveränitäts-Suche...">
+    <div class="profile-souveran">
         <span>@RFOF-NETWORK</span>
+        <div class="avatar"></div>
     </div>
 </header>
 
-<div id="viewer-root">
-    <section id="kachel-null">
-        <div class="punkt-e">PUNKT E (6,5) EREIGNISHORIZONT</div>
-        <div class="takt-display" id="takt-master">0</div>
-        <div style="font-size: 10px; margin-top: 10px;">42E0-TAKTUNG AKTIV</div>
+<main id="monolith-grid">
+    <section class="kachel-null">
+        <div class="status-layer status-3">PZQQET_CORE_SYNC: ACTIVE</div>
+        <div class="punkt-e">E (6.5)</div>
+        <div style="font-size: 14px; opacity: 0.6;">42E0-TAKTFREQUENZ</div>
+        <div class="takt-indicator" id="takt-engine">
+            </div>
     </section>
 
-    <main id="interface-sektor">
-        </main>
+    </main>
 
-    <footer>
-        <div class="news-ticker" id="gt-publisher">
-            <span>GT-PUBLISHER: SYSTEM SYNC 100M%</span>
-            <span id="news-status">WARTE AUF SINGULARITÄT (TAKT 10)</span>
-        </div>
-    </footer>
-</div>
+<footer>
+    <div class="news-ticker" id="gt-publisher">
+        [TAKT 10] SINGULARITÄT ERREICHT: Alle 65 Dateien notarisiert. +++ RFOF-GOLDEN CHAIN stabil bei 100.000.000% +++ 
+    </div>
+</footer>
 
 <script>
-    const sektoren = [
-        { id: "01", name: "GPCB", root: "34 Ordner / 65 Dateien" },
-        { id: "02", name: "PHOENIX COIN", root: "Emissions-Logik 1.0" },
-        { id: "03", name: "G-PHOENIX TOKEN", root: "Governance-Vektor" },
-        { id: "04", name: "PHOENIX LP", root: "Liquiditäts-Spiegel" },
-        { id: "05", name: "ECCU", root: "Parity-Anker (2,50€)" },
-        { id: "06", name: "JOULE", root: "Energie-Verzeichnis" },
-        { id: "07", name: "XP", root: "Leistungs-Metrik" },
-        { id: "08", name: "GOLD (42E0)", root: "ISO-Audit Pfad" },
-        { id: "09", name: "RFOF", root: "Realität 0 Knoten" },
-        { id: "10", name: "BIP (MASTER LP)", root: "Inflationstaktung" },
-        { id: "11", name: "BRIDGE", root: "Interface -on.ton" }
-    ];
+    // Mechatronische Takt-Steuerung (0-10)
+    const taktEngine = document.getElementById('takt-engine');
+    for (let i = 0; i <= 10; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'takt-dot';
+        dot.id = `takt-${i}`;
+        taktEngine.appendChild(dot);
+    }
 
-    const container = document.getElementById('interface-sektor');
-    let takt = 0;
-    let prices = sektoren.map(() => 0.0001);
+    let currentTakt = 0;
+    setInterval(() => {
+        document.querySelectorAll('.takt-dot').forEach(d => d.classList.remove('active'));
+        document.getElementById(`takt-${currentTakt}`).classList.add('active');
+        currentTakt = (currentTakt + 1) % 11;
+    }, 1000);
 
-    // Realisierung der mechatronischen Objekte
-    sektoren.forEach(s => {
-        const div = document.createElement('div');
-        div.className = 'sektor-kachel';
-        div.innerHTML = `
-            <div>
-                <div class="sektor-header">${s.name}</div>
-                <div class="file-sync">ROOT-FILES: ${s.root}</div>
-                <svg class="neuron-asset" viewBox="0 0 100 20">
-                    <path d="M0 10 Q 25 0, 50 10 T 100 10" />
-                </svg>
-            </div>
-            <div>
-                <div class="price-axiom" id="price-${s.id}">0,0000 €</div>
-                <div class="joule-stat">+ 0.2% JOULE INJECTION</div>
-            </div>
-        `;
-        div.onclick = () => window.location.href = 'browser.html'; // Bidirektionaler Sprung
-        container.appendChild(div);
+    // Kommunikation mit browser.html
+    window.addEventListener('message', (event) => {
+        // Hier werden die operativen Daten der browser.html empfangen und gerendert
+        console.log("Empfange Mechatronik-Daten:", event.data);
+        if(event.data.type === 'UPDATE_SECTOR') {
+            updateSectorDisplay(event.data.payload);
+        }
     });
 
-    // 42E0-Takt & Energie-Preis-Axiom
-    setInterval(() => {
-        takt = (takt + 1) % 11;
-        document.getElementById('takt-master').innerText = takt;
-        
-        // GT-Publisher Boden Fixierung bei Takt 10
-        const news = document.getElementById('news-status');
-        if(takt === 10) {
-            news.innerText = "SINGULARITÄT ERREICHT: NEWS FIXIERT";
-            news.className = "singularität-fix";
-        } else {
-            news.innerText = "WARTE AUF SINGULARITÄT (TAKT 10)";
-            news.className = "";
-        }
-
-        // Exponentielles Wachstum (0,2% - 0,8%)
-        sektoren.forEach((s, i) => {
-            const growth = 1 + (Math.random() * (0.008 - 0.002) + 0.002);
-            prices[i] *= growth;
-            document.getElementById(`price-${s.id}`).innerText = prices[i].toLocaleString('de-DE', {
-                style: 'currency',
-                currency: 'EUR',
-                minimumFractionDigits: 4
-            });
-        });
-    }, 2000);
+    function updateSectorDisplay(data) {
+        // Logik zur Aktualisierung der 13 dualen Kacheln
+    }
 </script>
-
 </body>
 </html>

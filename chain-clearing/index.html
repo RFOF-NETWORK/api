@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<title>PZQQET – BUSINESS BROWSER</title>
+<title>PZQQET · SINGULARITÄTS-MONOLITH</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
 :root {
@@ -14,13 +14,10 @@
   --accent: #ff4dd2;
   --accent-blue: #4db8ff;
   --accent-green: #3cff9b;
-  --safe: #3cff9b;
-  --owner: #ffb347;
-  --fond: #ff4dd2;
-  --system: #4db8ff;
-  --silver: #c0c7d8;
-  --gold: #ffd86b;
-  --platin: #e6e9ff;
+  --accent-magenta: #ff4dd2;
+  --status-A: #3cff9b;
+  --status-AA: #4db8ff;
+  --status-AAA: #ff4dd2;
   --blur-strong: 40px;
   --sat-strong: 160%;
   --radius-xl: 24px;
@@ -51,7 +48,7 @@ body {
 
 /* HEADER */
 .app-header {
-  height: 60px;
+  height: 64px;
   padding: 0 18px;
   display: flex;
   align-items: center;
@@ -63,25 +60,25 @@ body {
 .app-header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 .app-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 14px;
   background: conic-gradient(from 210deg, #ff4dd2, #4db8ff, #3cff9b, #ff4dd2);
-  box-shadow: 0 0 20px rgba(255, 77, 210, 0.7);
+  box-shadow: 0 0 24px rgba(255, 77, 210, 0.7);
   position: relative;
 }
 .app-logo::after {
-  content: "B";
+  content: "P";
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
   color: #05060a;
 }
 .app-title {
@@ -89,9 +86,9 @@ body {
   flex-direction: column;
 }
 .app-title-main {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .app-title-sub {
@@ -109,19 +106,42 @@ body {
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
-.app-root-link {
-  font-size: 11px;
+.app-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.96));
-  cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  position: relative;
+  overflow: hidden;
 }
-.app-root-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.28);
+.app-identity-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: conic-gradient(from 120deg, #ff4dd2, #4db8ff, #3cff9b, #ff4dd2);
+}
+.app-identity-text {
+  display: flex;
+  flex-direction: column;
+}
+.app-identity-name {
+  font-size: 11px;
+  font-weight: 600;
+}
+.app-identity-status {
+  font-size: 10px;
+  color: var(--text-soft);
+}
+.app-identity-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.0;
+  mix-blend-mode: screen;
+  transition: opacity 0.25s ease-out, background 0.25s ease-out;
 }
 
 /* MAIN LAYOUT */
@@ -129,8 +149,8 @@ body {
   flex: 1;
   padding: 12px 14px 14px;
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
-  grid-template-rows: minmax(0, 1.4fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+  grid-template-rows: minmax(0, 1.2fr) minmax(0, 1.4fr);
   gap: 12px;
 }
 
@@ -170,11 +190,281 @@ body {
   overflow: hidden;
 }
 
-/* BUTTON-ROW (LEDGER / SOCIAL) */
-.button-row {
-  display: flex;
+/* PANEL 1: KACHEL NULL + TAKT + CLUSTER-GRID */
+.horizon-root {
+  display: grid;
+  grid-template-rows: 0.9fr 1.1fr;
   gap: 8px;
-  margin-bottom: 8px;
+  height: 100%;
+}
+.horizon-top {
+  border-radius: var(--radius-lg);
+  padding: 8px 10px;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  position: relative;
+  overflow: hidden;
+}
+.horizon-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-soft);
+}
+.horizon-sub {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+.horizon-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.horizon-orbit {
+  width: 70%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  position: relative;
+  box-shadow: 0 0 40px rgba(77, 184, 255, 0.35);
+}
+.horizon-point {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 0, #fff, #ff4dd2);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 24px rgba(255, 77, 210, 0.9);
+}
+.horizon-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(40px, -40px);
+  font-size: 11px;
+}
+.horizon-takt {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.horizon-takt-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.horizon-takt-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3cff9b, #4db8ff, #ff4dd2);
+  transition: width 0.3s ease-out;
+}
+.horizon-takt-label {
+  font-size: 11px;
+}
+.horizon-news {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(5, 6, 10, 0.9);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+/* RESET-PULSE */
+.reset-pulse {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+  z-index: 999;
+}
+
+/* CLUSTER GRID */
+.cluster-grid {
+  border-radius: var(--radius-lg);
+  padding: 8px 9px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.cluster-grid-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-soft);
+}
+.cluster-grid-sub {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+.cluster-grid-inner {
+  margin-top: 6px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.cluster-tile {
+  border-radius: 12px;
+  padding: 6px 7px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.cluster-tile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.cluster-tile-label {
+  font-size: 10px;
+}
+.cluster-tile-tag {
+  font-size: 9px;
+  color: var(--text-soft);
+}
+.cluster-tile-orb {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  right: 6px;
+  top: 6px;
+  background: conic-gradient(from 210deg, #ff4dd2, #4db8ff, #3cff9b, #ff4dd2);
+  opacity: 0.4;
+}
+
+/* PANEL 2: DATEISYSTEM-VIEWER (65 KNOTEN) */
+.viewer-root {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 6px;
+  height: 100%;
+}
+.viewer-info {
+  font-size: 11px;
+  color: var(--text-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.viewer-status-glow {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.viewer-grid {
+  border-radius: var(--radius-lg);
+  padding: 8px 9px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  overflow: auto;
+}
+.file-node {
+  border-radius: 10px;
+  padding: 3px 4px;
+  font-size: 9px;
+  background: rgba(5, 6, 10, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.file-node:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.file-node::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3cff9b, #4db8ff);
+}
+
+/* PANEL 3: FUNKTIONALE TIEFE (GPCB/ECCU/JOULE/X-HUB/RAPP) */
+.depth-root {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+  gap: 8px;
+  height: 100%;
+}
+.depth-card {
+  border-radius: var(--radius-lg);
+  padding: 8px 9px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.depth-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-soft);
+}
+.depth-sub {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+/* GPCB/ECCU */
+.ledger-controls {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+}
+.ledger-input {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(5, 6, 10, 0.96);
+  color: var(--text-main);
+  font-size: 11px;
+  padding: 4px 8px;
 }
 .btn {
   border-radius: 999px;
@@ -190,107 +480,9 @@ body {
   background: linear-gradient(135deg, #ff4dd2, #4db8ff);
   border-color: rgba(255, 255, 255, 0.3);
 }
-.btn.active {
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8);
+.btn:hover {
   transform: translateY(-1px);
-}
-
-/* LEDGER-VIEW */
-.ledger-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 8px;
-  height: 100%;
-}
-.ledger-left,
-.ledger-right {
-  border-radius: var(--radius-lg);
-  padding: 8px 9px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.ledger-title {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-soft);
-}
-.ledger-sub {
-  font-size: 11px;
-  color: var(--text-soft);
-  margin-top: 2px;
-}
-.ledger-controls {
-  margin-top: 6px;
-  display: flex;
-  gap: 6px;
-}
-.ledger-input {
-  flex: 1;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 6, 10, 0.96);
-  color: var(--text-main);
-  font-size: 11px;
-  padding: 4px 8px;
-}
-.ledger-stream {
-  margin-top: 8px;
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.ledger-stream-inner {
-  position: absolute;
-  inset: 0;
-  padding: 6px 8px;
-  font-size: 11px;
-  color: var(--text-soft);
-  overflow: auto;
-}
-.ledger-particle-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.ledger-particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-}
-.ledger-siegel {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.0;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06), transparent 60%),
-    radial-gradient(circle at 50% 50%, rgba(77, 184, 255, 0.12), transparent 70%);
-  mix-blend-mode: screen;
-  transition: opacity 0.4s ease-out;
-}
-.ledger-siegel::after {
-  content: "GPCB CLEARING";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-18deg);
-  font-size: 18px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  padding: 4px 18px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8);
 }
 .ledger-distribution {
   margin-top: 6px;
@@ -307,118 +499,6 @@ body {
 .ledger-distribution-val {
   font-weight: 500;
 }
-
-/* SOCIAL / IDENTITY VIEW */
-.social-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-  gap: 8px;
-  height: 100%;
-}
-.social-card {
-  border-radius: var(--radius-lg);
-  padding: 8px 9px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.social-title {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-soft);
-}
-.social-sub {
-  font-size: 11px;
-  color: var(--text-soft);
-  margin-top: 2px;
-}
-.social-scale {
-  margin-top: 8px;
-  flex: 1;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), rgba(5, 6, 10, 0.98));
-  position: relative;
-  overflow: hidden;
-}
-.social-scale-inner {
-  position: absolute;
-  inset: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.social-scale-bar {
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-}
-.social-scale-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #3cff9b, #4db8ff, #ff4dd2);
-  transition: width 0.25s ease-out;
-}
-.social-scale-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: var(--text-soft);
-}
-.social-status-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  margin-top: 6px;
-}
-.social-status-pill {
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.identity-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.0;
-  mix-blend-mode: screen;
-  transition: opacity 0.25s ease-out, background 0.25s ease-out;
-}
-
-/* 13 DUALE KACHELN */
-.dual-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-  gap: 8px;
-  height: 100%;
-}
-.dual-left,
-.dual-right {
-  border-radius: var(--radius-lg);
-  padding: 8px 9px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.dual-title {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-soft);
-}
-.dual-sub {
-  font-size: 11px;
-  color: var(--text-soft);
-  margin-top: 2px;
-}
-
-/* ECCU-PARITY-SLIDER */
 .parity-slider-wrap {
   margin-top: 8px;
 }
@@ -432,17 +512,17 @@ body {
   justify-content: space-between;
 }
 
-/* JOULE-KASKADE */
-.joule-cascade {
+/* JOULE-MINING */
+.joule-panel {
   margin-top: 8px;
   flex: 1;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), rgba(5, 6, 10, 0.98));
   position: relative;
   overflow: hidden;
 }
-.joule-cascade-layer {
+.joule-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -454,8 +534,44 @@ body {
   opacity: 0;
   transform: translate(-50%, -50%);
 }
+.joule-info {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-size: 10px;
+  color: var(--text-soft);
+}
 
-/* RAPP-GARANTIE */
+/* X-HUB TERMINAL */
+.terminal {
+  margin-top: 8px;
+  flex: 1;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), rgba(5, 6, 10, 0.98));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.terminal-input {
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: var(--text-main);
+  font-size: 11px;
+  padding: 4px 8px;
+  outline: none;
+}
+.terminal-log {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 10px;
+  color: var(--text-soft);
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+/* RAPP-STORE */
 .rapp-grid {
   margin-top: 8px;
   display: grid;
@@ -466,7 +582,7 @@ body {
   border-radius: 12px;
   padding: 6px 7px;
   background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   font-size: 10px;
   cursor: pointer;
   position: relative;
@@ -476,7 +592,7 @@ body {
 .rapp-tile:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 .rapp-icon {
   width: 22px;
@@ -502,71 +618,131 @@ body {
   transition: width 0.4s ease-out;
 }
 
-/* MECHATRONISCHE RÜCKKOPPLUNG-HINWEIS */
-.feedback-note {
-  margin-top: 6px;
-  font-size: 10px;
+/* PANEL 4: LOG / STATUS */
+.log-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.log-info {
+  font-size: 11px;
   color: var(--text-soft);
+  margin-bottom: 6px;
+}
+.log-stream {
+  flex: 1;
+  border-radius: var(--radius-lg);
+  padding: 8px 9px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  overflow: auto;
+  font-size: 10px;
+  white-space: pre-wrap;
 }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .app-main {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
     overflow-y: auto;
   }
 }
 </style>
 </head>
 <body>
+<div class="reset-pulse" id="resetPulse"></div>
+
 <header class="app-header">
   <div class="app-header-left">
     <div class="app-logo"></div>
     <div class="app-title">
-      <div class="app-title-main">PZQQET BUSINESS BROWSER</div>
-      <div class="app-title-sub">CHAIN-CLEARING · VIEW-CORE</div>
+      <div class="app-title-main">PZQQET SINGULARITY HOST</div>
+      <div class="app-title-sub">MASTER-LOGIK · BROWSER-VIEWER · MONOLITH</div>
     </div>
   </div>
   <div class="app-header-right">
-    <div class="app-chip">PRAI · NEURONEN-INTERFACE</div>
-    <button class="app-root-link" id="rootLink">Zurück zur Kachel Null</button>
+    <div class="app-chip">SPA · GLASSMORPHISM · 42E0</div>
+    <div class="app-identity" id="identityBox">
+      <div class="app-identity-avatar"></div>
+      <div class="app-identity-text">
+        <div class="app-identity-name">@RFOF-NETWORK</div>
+        <div class="app-identity-status" id="identityStatus">AAA · MASTER-SOUVERÄN</div>
+      </div>
+      <div class="app-identity-glow" id="identityGlow"></div>
+    </div>
   </div>
 </header>
 
 <main class="app-main">
-  <!-- PANEL 1: LEDGER & SOCIAL SWITCH -->
+  <!-- PANEL 1: KACHEL NULL + CLUSTER -->
   <section class="panel">
     <div class="panel-header">
-      <div class="panel-title">UNIVERSAL-LEDGER & IDENTITY</div>
-      <div class="panel-badge">BUTTON 1 / BUTTON 2</div>
+      <div class="panel-title">KACHEL NULL · EREIGNISHORIZONT</div>
+      <div class="panel-badge">PUNKT E (6,5) · 42E0 TAKT</div>
     </div>
     <div class="panel-body">
-      <div class="button-row">
-        <button class="btn btn-primary active" id="btnLedger">1 · Ledger & Clearing</button>
-        <button class="btn" id="btnSocial">2 · Social & Identity</button>
-      </div>
-
-      <!-- LEDGER VIEW -->
-      <div id="ledgerView" class="ledger-root">
-        <div class="ledger-left">
-          <div class="ledger-title">Universal-Ledger · 0,2% GPCB-Trigger</div>
-          <div class="ledger-sub">Transaktionen verteilen Energie: 45% SAFE · 42% OWNER · 10% FOND · 3% SYSTEM.</div>
-          <div class="ledger-controls">
-            <input id="txAmount" class="ledger-input" type="number" min="0" step="0.01" placeholder="Betrag (z.B. 1000,00)" />
-            <button class="btn btn-primary" id="btnTriggerTx">Transaktion ausführen</button>
-          </div>
-          <div class="ledger-stream">
-            <div class="ledger-particle-layer" id="ledgerParticles"></div>
-            <div class="ledger-siegel" id="ledgerSiegel"></div>
-            <div class="ledger-stream-inner" id="ledgerLog">
-              Ledger bereit. Führe eine Transaktion aus, um den GPCB-Trigger zu visualisieren.
+      <div class="horizon-root">
+        <div class="horizon-top">
+          <div class="horizon-title">Ereignishorizont · Punkt E (6,5)</div>
+          <div class="horizon-sub">Globaler 42E0-Takt (0–10). Alle Cluster & Reaktoren pulsieren synchron.</div>
+          <div class="horizon-center">
+            <div class="horizon-orbit" id="horizonOrbit">
+              <div class="horizon-point" id="horizonPoint"></div>
+              <div class="horizon-label" id="horizonLabel">Takt 0 · Idle</div>
             </div>
           </div>
+          <div class="horizon-takt">
+            <div class="horizon-takt-bar">
+              <div class="horizon-takt-fill" id="taktFill"></div>
+            </div>
+            <div class="horizon-takt-label" id="taktLabel">Takt: 0 / 10</div>
+          </div>
+          <div class="horizon-news" id="horizonNews">Singularitäts-Injektion · News-Sync aktiv</div>
         </div>
-        <div class="ledger-right">
-          <div class="ledger-title">Status-Siegel & Fee-Verteilung</div>
-          <div class="ledger-sub">GPCB-Clearing-Siegel erscheint hinter validierten Transaktionen.</div>
+        <div class="cluster-grid">
+          <div class="cluster-grid-title">Mechatronische Cluster-Matrix (15)</div>
+          <div class="cluster-grid-sub">Klick auf ein Cluster simuliert 65 Dateien als interaktive Knoten.</div>
+          <div class="cluster-grid-inner" id="clusterGrid">
+            <!-- 15 Cluster-Tiles -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 2: DATEISYSTEM-VIEWER -->
+  <section class="panel">
+    <div class="panel-header">
+      <div class="panel-title">DATEISYSTEM-SIMULATION · 65 KNOTEN</div>
+      <div class="panel-badge">STATUS-GLOW · A / AA / AAA</div>
+    </div>
+    <div class="panel-body">
+      <div class="viewer-root">
+        <div class="viewer-info">
+          <span id="viewerInfoText">Wähle ein Cluster, um die Dateien zu visualisieren.</span>
+          <span class="viewer-status-glow" id="viewerStatusGlow">Status: AAA · Master-Magenta</span>
+        </div>
+        <div class="viewer-grid" id="fileGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 3: FUNKTIONALE TIEFE -->
+  <section class="panel">
+    <div class="panel-header">
+      <div class="panel-title">FUNKTIONALE TIEFE · GPCB · ECCU · JOULE · X-HUB · RAPP</div>
+      <div class="panel-badge">BUSINESS · MINING · INJEKTOR</div>
+    </div>
+    <div class="panel-body">
+      <div class="depth-root">
+        <div class="depth-card">
+          <div class="depth-title">GPCB / ECCU · Clearing-Monitor</div>
+          <div class="depth-sub">2,50€ Parity & Fee-Mechatronik (45/42/10/3).</div>
+          <div class="ledger-controls">
+            <input id="txAmount" class="ledger-input" type="number" min="0" step="0.01" placeholder="Betrag (z.B. 1000,00)" />
+            <button class="btn btn-primary" id="btnTriggerTx">TX · 0,2% Fee</button>
+          </div>
           <div class="ledger-distribution">
             <div class="ledger-distribution-row">
               <span class="ledger-distribution-label">SAFE (45%)</span>
@@ -589,82 +765,26 @@ body {
               <span class="ledger-distribution-val" id="valTotalFee">0,00</span>
             </div>
           </div>
-          <div class="feedback-note">
-            Jede Transaktion sendet einen Energie-Impuls an Kachel Null (index.html) via <code>localStorage["pzqqet_energy_impulse"]</code>.
-          </div>
-        </div>
-      </div>
-
-      <!-- SOCIAL VIEW -->
-      <div id="socialView" class="social-root" style="display:none;">
-        <div class="social-card" id="socialCard">
-          <div class="social-title">Satoramy-ID · XP-Level</div>
-          <div class="social-sub">Mechatronische Skala aus FPS & Mining-Metriken.</div>
-          <div class="social-scale">
-            <div class="identity-glow" id="identityGlow"></div>
-            <div class="social-scale-inner">
-              <div class="social-scale-bar">
-                <div class="social-scale-fill" id="xpFill"></div>
-              </div>
-              <div class="social-scale-labels">
-                <span>0 XP</span>
-                <span id="xpLabel">Level A</span>
-                <span>∞ XP</span>
-              </div>
-              <div class="social-status-row">
-                <span>FPS / Mining-Output</span>
-                <span class="social-status-pill" id="xpStatus">A · SILBER</span>
-              </div>
-            </div>
-          </div>
-          <div class="feedback-note">
-            XP-Level wird dynamisch aus der Joule-Kaskade (unten) abgeleitet. Identity-Glow passt sich dem Status an.
-          </div>
-        </div>
-        <div class="social-card">
-          <div class="social-title">Identity-Glow · Status-Farben</div>
-          <div class="social-sub">A = Silber · AA = Gold · AAA = Platin-Glow.</div>
-          <div style="margin-top:8px; font-size:11px; color:var(--text-soft);">
-            Status wird automatisch gesetzt:
-            <ul style="margin:4px 0 0 16px; padding:0; font-size:11px;">
-              <li>A: XP &lt; 300</li>
-              <li>AA: 300 ≤ XP &lt; 800</li>
-              <li>AAA: XP ≥ 800</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PANEL 2: 13 DUALE KACHELN (ECCU / JOULE / RAPP) -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">13 DUALE KACHELN · OPERATIVE TIEFE</div>
-      <div class="panel-badge">ECCU · JOULE · RAPP</div>
-    </div>
-    <div class="panel-body">
-      <div class="dual-root">
-        <div class="dual-left">
-          <div class="dual-title">ECCU-Parity-Slider</div>
-          <div class="dual-sub">Visualisiert 2 TB = 1 ECCU = 2,50€.</div>
           <div class="parity-slider-wrap">
             <input id="paritySlider" class="parity-slider" type="range" min="0" max="4000" step="50" value="2000" />
             <div class="parity-info">
-              <span>Speicher: <span id="parityTB">2 TB</span></span>
+              <span>Speicher: <span id="parityTB">2,00 TB</span></span>
               <span>ECCU: <span id="parityECCU">1,00</span></span>
               <span>Wert: <span id="parityEUR">2,50 €</span></span>
             </div>
           </div>
-          <div class="dual-title" style="margin-top:10px;">Joule-Kaskade</div>
-          <div class="dual-sub">Mining-Output von Bit bis Yotta-Byte. Bits „regnen“ durch die Einheiten-Stufen.</div>
-          <div class="joule-cascade" id="jouleCascade">
-            <div class="joule-cascade-layer" id="jouleCascadeLayer"></div>
-          </div>
         </div>
-        <div class="dual-right">
-          <div class="dual-title">RAPP-Garantie · 6 Säulen-Apps</div>
-          <div class="dual-sub">3D-Icons mit Live-Sync-Balken (Injektions-Status der Basis-Dateien).</div>
+        <div class="depth-card">
+          <div class="depth-title">Joule-Mining · X-Hub · RAPP-Store</div>
+          <div class="depth-sub">Mausbewegung & FPS → Joule-XP-Kaskaden. Injektor-Terminal & 6 Säulen-Apps.</div>
+          <div class="joule-panel" id="joulePanel">
+            <div class="joule-layer" id="jouleLayer"></div>
+            <div class="joule-info" id="jouleInfo">XP: 0 · FPS: 0</div>
+          </div>
+          <div class="terminal">
+            <input id="terminalInput" class="terminal-input" placeholder="X-Hub Injektor: z.B. inject /GPCB/actions/create_account.sql" />
+            <div class="terminal-log" id="terminalLog">X-Hub bereit. Alle Injektionen werden als Events im Monolith protokolliert.</div>
+          </div>
           <div class="rapp-grid" id="rappGrid">
             <div class="rapp-tile" data-app="GPCB">
               <div class="rapp-icon"></div>
@@ -697,44 +817,25 @@ body {
               <div class="rapp-sync-bar"><div class="rapp-sync-fill"></div></div>
             </div>
           </div>
-          <div class="feedback-note">
-            Jeder Klick auf eine Säulen-App simuliert einen Sync der Basis-Dateien (actions/resources/events/schema) im <code>/chain-clearing/</code> View-Core.
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PANEL 3: TECHNISCHE RÜCKKOPPLUNG / LOG -->
+  <!-- PANEL 4: LOG / STATUS -->
   <section class="panel">
     <div class="panel-header">
-      <div class="panel-title">MECHATRONISCHE RÜCKKOPPLUNG</div>
-      <div class="panel-badge">ENERGIE-IMPULSE · VIEWER-LOG</div>
+      <div class="panel-title">SYSTEM-STATUS · LOG · RÜCKKOPPLUNG</div>
+      <div class="panel-badge">INPUT = OUTPUT</div>
     </div>
     <div class="panel-body">
-      <div style="font-size:11px; color:var(--text-soft); margin-bottom:6px;">
-        Jede Aktion im Browser sendet einen Energie-Impuls an die Kachel Null der <code>index.html</code> (Singularitäts-Monolith).
-        Die Kopplung erfolgt bidirektional über <code>localStorage</code> und kann von der Master-UI gelesen werden.
-      </div>
-      <div class="ledger-stream" style="height:calc(100% - 26px);">
-        <div class="ledger-stream-inner" id="browserLog">
-          Business-Browser initialisiert. Warte auf Aktionen (Transaktionen, Parity-Slides, RAPP-Sync).
+      <div class="log-root">
+        <div class="log-info">
+          Alle Aktionen (Cluster, TX, Parity, Mining, X-Hub, RAPP) werden hier als Ereignisse protokolliert.
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PANEL 4: RESERVIERT FÜR SPÄTERE TIEFE (PLATZHALTER) -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">CHAIN-CLEARING · VIEW-CORE</div>
-      <div class="panel-badge">/chain-clearing/</div>
-    </div>
-    <div class="panel-body">
-      <div style="font-size:11px; color:var(--text-soft);">
-        Dieser Bereich ist als visuelle Andockfläche für den <code>/chain-clearing/</code> View-Core reserviert.
-        Die aktuelle Version simuliert nur die Energie- und Status-Logik. Die reale Anbindung kann später über
-        VM-/Validator-Endpunkte ergänzt werden.
+        <div class="log-stream" id="systemLog">
+          Singularity-Monolith initialisiert. Warte auf Ereignisse…
+        </div>
       </div>
     </div>
   </section>
@@ -742,78 +843,152 @@ body {
 
 <script>
 /* === ELEMENTE === */
-const rootLink = document.getElementById("rootLink");
-const btnLedger = document.getElementById("btnLedger");
-const btnSocial = document.getElementById("btnSocial");
-const ledgerView = document.getElementById("ledgerView");
-const socialView = document.getElementById("socialView");
+const resetPulse = document.getElementById("resetPulse");
+const horizonLabel = document.getElementById("horizonLabel");
+const taktFill = document.getElementById("taktFill");
+const taktLabel = document.getElementById("taktLabel");
+const horizonNews = document.getElementById("horizonNews");
+const clusterGrid = document.getElementById("clusterGrid");
+const fileGrid = document.getElementById("fileGrid");
+const viewerInfoText = document.getElementById("viewerInfoText");
+const viewerStatusGlow = document.getElementById("viewerStatusGlow");
+const identityGlow = document.getElementById("identityGlow");
+const identityStatus = document.getElementById("identityStatus");
+const systemLog = document.getElementById("systemLog");
 
 const txAmount = document.getElementById("txAmount");
 const btnTriggerTx = document.getElementById("btnTriggerTx");
-const ledgerLog = document.getElementById("ledgerLog");
-const ledgerParticles = document.getElementById("ledgerParticles");
-const ledgerSiegel = document.getElementById("ledgerSiegel");
 const valSafe = document.getElementById("valSafe");
 const valOwner = document.getElementById("valOwner");
 const valFond = document.getElementById("valFond");
 const valSystem = document.getElementById("valSystem");
 const valTotalFee = document.getElementById("valTotalFee");
 
-const socialCard = document.getElementById("socialCard");
-const identityGlow = document.getElementById("identityGlow");
-const xpFill = document.getElementById("xpFill");
-const xpLabel = document.getElementById("xpLabel");
-const xpStatus = document.getElementById("xpStatus");
-
 const paritySlider = document.getElementById("paritySlider");
 const parityTB = document.getElementById("parityTB");
 const parityECCU = document.getElementById("parityECCU");
 const parityEUR = document.getElementById("parityEUR");
 
-const jouleCascadeLayer = document.getElementById("jouleCascadeLayer");
-const rappGrid = document.getElementById("rappGrid");
-const browserLog = document.getElementById("browserLog");
+const joulePanel = document.getElementById("joulePanel");
+const jouleLayer = document.getElementById("jouleLayer");
+const jouleInfo = document.getElementById("jouleInfo");
 
-/* === HELFER === */
+const terminalInput = document.getElementById("terminalInput");
+const terminalLog = document.getElementById("terminalLog");
+const rappGrid = document.getElementById("rappGrid");
+
+/* === LOG === */
 function log(msg) {
   const ts = new Date().toISOString();
-  browserLog.textContent = `[${ts}] ${msg}\n` + browserLog.textContent;
+  systemLog.textContent = `[${ts}] ${msg}\n` + systemLog.textContent;
 }
+
+/* === TAKT-GENERATOR === */
+let takt = 0;
+function tick() {
+  takt = (takt + 1) % 11;
+  taktFill.style.width = (takt / 10 * 100).toFixed(1) + "%";
+  taktLabel.textContent = "Takt: " + takt + " / 10";
+  horizonLabel.textContent = "Takt " + takt + (takt === 10 ? " · Singularität" : takt === 0 ? " · Reset" : " · Aktiv");
+  if (takt === 0) {
+    triggerResetPulse();
+  } else if (takt === 10) {
+    triggerSingularity();
+  } else {
+    horizonNews.style.opacity = 0;
+    horizonNews.style.transform = "translateY(-6px)";
+  }
+}
+function triggerResetPulse() {
+  resetPulse.style.opacity = 1;
+  setTimeout(() => {
+    resetPulse.style.opacity = 0;
+  }, 220);
+  log("Reset-Pulse · /ALPHA-NODES/reset_pulse.sh visualisiert.");
+}
+function triggerSingularity() {
+  horizonNews.style.opacity = 1;
+  horizonNews.style.transform = "translateY(0)";
+  log("Singularitäts-Injektion · News-Sync ausgelöst.");
+}
+setInterval(tick, 1000);
+
+/* === CLUSTER-MATRIX === */
+const clusters = [
+  "GPCB","ECCU","RFOF-GOLDEN-CHAIN","API-MARKETPLACE","BENUTZER-DOKU",
+  "ENTWICKLER-DOKU","IDENTITY","LEDGER","CLEARING","COMPLIANCE",
+  "LIQUIDITY","SETTLEMENT","TREASURY","DOCS","REPOSITORY"
+];
+function buildClusterGrid() {
+  clusters.forEach((name, idx) => {
+    const tile = document.createElement("div");
+    tile.className = "cluster-tile";
+    tile.dataset.cluster = name;
+    tile.innerHTML = `
+      <div class="cluster-tile-label">${idx+1}. ${name}</div>
+      <div class="cluster-tile-tag">Cluster</div>
+      <div class="cluster-tile-orb"></div>
+    `;
+    tile.addEventListener("click", () => {
+      renderFilesForCluster(name);
+      log("Cluster gewählt: " + name + " · 65 Dateien visualisiert.");
+    });
+    clusterGrid.appendChild(tile);
+  });
+}
+buildClusterGrid();
+
+/* === DATEISYSTEM-SIMULATION (65 KNOTEN) === */
+function renderFilesForCluster(cluster) {
+  fileGrid.innerHTML = "";
+  viewerInfoText.textContent = "Cluster " + cluster + " · 65 Dateien (actions/resources/events/schema/gt/bin/py/js).";
+  const types = [".sql",".sql",".sql",".sql",".yaml",".json",".gt",".js",".py",".bin"];
+  for (let i = 1; i <= 65; i++) {
+    const node = document.createElement("div");
+    node.className = "file-node";
+    const t = types[i % types.length];
+    node.textContent = cluster.toLowerCase() + "_" + i.toString().padStart(2,"0") + t;
+    node.addEventListener("click", () => {
+      log("Datei-Knoten aktiviert: " + node.textContent + " (Cluster " + cluster + ").");
+    });
+    fileGrid.appendChild(node);
+  }
+}
+
+/* === STATUS-GLOW (A / AA / AAA) via XP === */
+let xpValue = 0;
+function updateStatusGlow() {
+  let status = "A";
+  let label = "Status: A · User-Green";
+  let color = "linear-gradient(90deg, var(--status-A), rgba(255,255,255,0.1))";
+  let glowBg = "radial-gradient(circle at 50% 0, rgba(60,255,155,0.4), transparent 65%)";
+  if (xpValue >= 800) {
+    status = "AAA";
+    label = "Status: AAA · Master-Magenta";
+    color = "linear-gradient(90deg, var(--status-AAA), rgba(255,255,255,0.1))";
+    glowBg = "radial-gradient(circle at 50% 0, rgba(255,77,210,0.6), transparent 70%)";
+  } else if (xpValue >= 300) {
+    status = "AA";
+    label = "Status: AA · Dev-Blue";
+    color = "linear-gradient(90deg, var(--status-AA), rgba(255,255,255,0.1))";
+    glowBg = "radial-gradient(circle at 50% 0, rgba(77,184,255,0.5), transparent 70%)";
+  }
+  viewerStatusGlow.textContent = label;
+  viewerStatusGlow.style.background = color;
+  identityStatus.textContent = status + " · " + (status === "A" ? "USER" : status === "AA" ? "DEV" : "MASTER");
+  identityGlow.style.background = glowBg;
+  identityGlow.style.opacity = 0.6;
+  setTimeout(() => identityGlow.style.opacity = 0.0, 800);
+}
+
+/* === GPCB/ECCU: FEES & PARITY === */
 function formatAmount(v) {
   return v.toFixed(2).replace(".", ",");
 }
-
-/* === ROOT-LINK → ENERGIE-IMPULS === */
-rootLink.addEventListener("click", () => {
-  const impulse = {
-    ts: new Date().toISOString(),
-    source: "browser.html",
-    type: "NAVIGATE_ROOT",
-    energy: Math.random() * 10
-  };
-  localStorage.setItem("pzqqet_energy_impulse", JSON.stringify(impulse));
-  log("Energie-Impuls an Kachel Null gesendet (NAVIGATE_ROOT).");
-});
-
-/* === LEDGER / SOCIAL SWITCH === */
-btnLedger.addEventListener("click", () => {
-  btnLedger.classList.add("active", "btn-primary");
-  btnSocial.classList.remove("active", "btn-primary");
-  ledgerView.style.display = "grid";
-  socialView.style.display = "none";
-});
-btnSocial.addEventListener("click", () => {
-  btnSocial.classList.add("active", "btn-primary");
-  btnLedger.classList.remove("active", "btn-primary");
-  ledgerView.style.display = "grid";
-  socialView.style.display = "grid";
-});
-
-/* === UNIVERSAL-LEDGER: 0,2% GPCB-TRIGGER === */
 btnTriggerTx.addEventListener("click", () => {
-  const raw = parseFloat(txAmount.value.replace(",", "."));
+  const raw = parseFloat((txAmount.value || "").replace(",", "."));
   if (!raw || raw <= 0) {
-    log("Transaktion abgelehnt: Betrag fehlt oder ist ≤ 0.");
+    log("TX abgelehnt: Betrag fehlt oder ≤ 0.");
     return;
   }
   const fee = raw * 0.002;
@@ -821,92 +996,18 @@ btnTriggerTx.addEventListener("click", () => {
   const owner = fee * 0.42;
   const fond = fee * 0.10;
   const system = fee * 0.03;
-
   valSafe.textContent = formatAmount(safe);
   valOwner.textContent = formatAmount(owner);
   valFond.textContent = formatAmount(fond);
   valSystem.textContent = formatAmount(system);
   valTotalFee.textContent = formatAmount(fee);
-
-  const line = `TX: ${formatAmount(raw)} · Fee 0,2% = ${formatAmount(fee)} (SAFE ${formatAmount(safe)}, OWNER ${formatAmount(owner)}, FOND ${formatAmount(fond)}, SYSTEM ${formatAmount(system)})`;
-  ledgerLog.textContent = line + "\n" + ledgerLog.textContent;
-
-  spawnLedgerParticles();
-  showClearingSiegel();
-  sendEnergyImpulse("TX", fee);
+  log("TX: " + formatAmount(raw) + " · Fee 0,2% = " + formatAmount(fee) +
+      " (SAFE " + formatAmount(safe) + ", OWNER " + formatAmount(owner) +
+      ", FOND " + formatAmount(fond) + ", SYSTEM " + formatAmount(system) + ").");
 });
-
-function spawnLedgerParticles() {
-  ledgerParticles.innerHTML = "";
-  const zones = [
-    { color: getComputedStyle(document.documentElement).getPropertyValue("--safe"), label: "SAFE" },
-    { color: getComputedStyle(document.documentElement).getPropertyValue("--owner"), label: "OWNER" },
-    { color: getComputedStyle(document.documentElement).getPropertyValue("--fond"), label: "FOND" },
-    { color: getComputedStyle(document.documentElement).getPropertyValue("--system"), label: "SYSTEM" }
-  ];
-  zones.forEach((zone, idx) => {
-    for (let i = 0; i < 8; i++) {
-      const p = document.createElement("div");
-      p.className = "ledger-particle";
-      p.style.background = zone.color;
-      const x = 20 + idx * 20 + Math.random() * 10;
-      const yStart = 10 + Math.random() * 10;
-      const yEnd = 70 + Math.random() * 20;
-      p.style.left = x + "%";
-      p.style.top = yStart + "%";
-      p.style.opacity = "0";
-      ledgerParticles.appendChild(p);
-      const delay = i * 40;
-      setTimeout(() => {
-        p.style.transition = "opacity 0.3s linear, top 0.6s ease-out";
-        p.style.opacity = "1";
-        p.style.top = yEnd + "%";
-        setTimeout(() => {
-          p.style.opacity = "0";
-        }, 500);
-      }, delay);
-    }
-  });
-}
-
-function showClearingSiegel() {
-  ledgerSiegel.style.opacity = "0.4";
-  setTimeout(() => {
-    ledgerSiegel.style.opacity = "0.0";
-  }, 900);
-}
-
-/* === SOCIAL & IDENTITY: XP / STATUS / GLOW === */
-let xpValue = 0;
-function updateIdentityFromXP() {
-  const ratio = Math.min(1, xpValue / 1000);
-  xpFill.style.width = (ratio * 100).toFixed(1) + "%";
-
-  let status = "A";
-  let label = "A · SILBER";
-  let glowColor = "radial-gradient(circle at 50% 0, rgba(192,199,216,0.4), transparent 60%)";
-  if (xpValue >= 800) {
-    status = "AAA";
-    label = "AAA · PLATIN";
-    glowColor = "radial-gradient(circle at 50% 0, rgba(230,233,255,0.6), transparent 65%)";
-  } else if (xpValue >= 300) {
-    status = "AA";
-    label = "AA · GOLD";
-    glowColor = "radial-gradient(circle at 50% 0, rgba(255,216,107,0.5), transparent 65%)";
-  }
-  xpLabel.textContent = "Level " + status;
-  xpStatus.textContent = label;
-  identityGlow.style.background = glowColor;
-  identityGlow.style.opacity = "0.6";
-}
-setInterval(() => {
-  identityGlow.style.opacity = "0.0";
-}, 1200);
-
-/* === ECCU-PARITY-SLIDER === */
 function updateParity() {
-  const tb = paritySlider.value / 1000; // 0–4 TB
-  const eccu = tb / 2; // 2 TB = 1 ECCU
+  const tb = paritySlider.value / 1000;
+  const eccu = tb / 2;
   const eur = eccu * 2.5;
   parityTB.textContent = tb.toFixed(2) + " TB";
   parityECCU.textContent = eccu.toFixed(2);
@@ -914,39 +1015,70 @@ function updateParity() {
 }
 paritySlider.addEventListener("input", () => {
   updateParity();
-  sendEnergyImpulse("PARITY", paritySlider.value / 1000);
-  log("ECCU-Parity-Slider bewegt: " + parityTB.textContent + " → " + parityEUR.textContent);
+  log("ECCU-Parity: " + parityTB.textContent + " → " + parityEUR.textContent);
 });
 updateParity();
 
-/* === JOULE-KASKADE === */
-function spawnJouleBit() {
-  const units = ["bit", "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+/* === JOULE-MINING: MOUSE + FPS === */
+let lastFrameTime = performance.now();
+let frameCount = 0;
+let fps = 0;
+function frameLoop(now) {
+  frameCount++;
+  if (now - lastFrameTime >= 1000) {
+    fps = frameCount;
+    frameCount = 0;
+    lastFrameTime = now;
+    xpValue = Math.min(1200, xpValue + fps * 0.5);
+    updateStatusGlow();
+    jouleInfo.textContent = "XP: " + Math.round(xpValue) + " · FPS: " + fps;
+  }
+  requestAnimationFrame(frameLoop);
+}
+requestAnimationFrame(frameLoop);
+joulePanel.addEventListener("mousemove", (e) => {
+  xpValue = Math.min(1200, xpValue + 2);
+  spawnJouleBit(e.offsetX / joulePanel.clientWidth, e.offsetY / joulePanel.clientHeight);
+});
+function spawnJouleBit(nx, ny) {
+  const units = ["bit","byte","KB","MB","GB","TB","PB","EB","ZB","YB"];
   const idx = Math.floor(Math.random() * units.length);
   const u = units[idx];
   const bit = document.createElement("div");
   bit.className = "joule-bit";
   bit.textContent = u;
-  const x = 10 + Math.random() * 80;
-  const yStart = -5;
-  const yEnd = 105;
+  const x = nx * 100;
+  const yStart = ny * 100;
+  const yEnd = yStart + 30 + Math.random() * 20;
   bit.style.left = x + "%";
   bit.style.top = yStart + "%";
   bit.style.opacity = "0";
-  jouleCascadeLayer.appendChild(bit);
+  jouleLayer.appendChild(bit);
   requestAnimationFrame(() => {
-    bit.style.transition = "top 2.4s linear, opacity 0.4s ease-out";
+    bit.style.transition = "top 1.8s linear, opacity 0.4s ease-out";
     bit.style.opacity = "1";
     bit.style.top = yEnd + "%";
     setTimeout(() => {
       bit.style.opacity = "0";
       setTimeout(() => bit.remove(), 400);
-    }, 2000);
+    }, 1600);
   });
 }
-setInterval(spawnJouleBit, 260);
 
-/* === RAPP-GARANTIE: LIVE-SYNC === */
+/* === X-HUB TERMINAL === */
+terminalInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const cmd = terminalInput.value.trim();
+    if (!cmd) return;
+    terminalInput.value = "";
+    const ts = new Date().toISOString();
+    const line = "[" + ts + "] " + cmd;
+    terminalLog.textContent = line + "\n" + terminalLog.textContent;
+    log("X-Hub Injektion: " + cmd);
+  }
+});
+
+/* === RAPP-STORE === */
 rappGrid.addEventListener("click", (e) => {
   const tile = e.target.closest(".rapp-tile");
   if (!tile) return;
@@ -956,30 +1088,11 @@ rappGrid.addEventListener("click", (e) => {
   requestAnimationFrame(() => {
     fill.style.width = "100%";
   });
-  log("RAPP-Sync gestartet für Säulen-App: " + app + " (Basis-Dateien injiziert).");
-  sendEnergyImpulse("RAPP", Math.random() * 5);
+  log("RAPP-Store: Säulen-App " + app + " synchronisiert (Basis-Dateien injiziert).");
 });
 
-/* === MECHATRONISCHE RÜCKKOPPLUNG → INDEX.HTML === */
-function sendEnergyImpulse(kind, magnitude) {
-  const impulse = {
-    ts: new Date().toISOString(),
-    source: "browser.html",
-    type: kind,
-    magnitude,
-    rand: Math.random()
-  };
-  localStorage.setItem("pzqqet_energy_impulse", JSON.stringify(impulse));
-}
-
-/* === XP AUS JOULE-KASKADE ABLEITEN (SIMPEL) === */
-setInterval(() => {
-  xpValue = Math.min(1200, xpValue + Math.random() * 40);
-  updateIdentityFromXP();
-}, 900);
-
-/* === INIT-LOG === */
-log("Business-Browser bereit. Ledger, Identity, ECCU-Parity, Joule-Kaskade & RAPP-Garantie aktiv.");
+/* === INIT === */
+log("Singularity-Index geladen. SPA-Modus aktiv. Browser-Viewer & Master-Logik fusioniert.");
 </script>
 </body>
 </html>

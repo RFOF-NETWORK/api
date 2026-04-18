@@ -2,1145 +2,300 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<title>PZQQET MONOLITH – RFOF-NETWORK</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PZQQET – Singularitäts‑Interface</title>
+
 <style>
+/* -----------------------------------------------------------
+   GLOBAL DESIGN — APPLE GLASSMORPHISM
+----------------------------------------------------------- */
 :root {
-  --bg: #05060a;
-  --glass-bg: rgba(15, 18, 30, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --accent: #ff4dd2;
-  --accent-soft: rgba(255, 77, 210, 0.35);
-  --text-main: #f7f7ff;
-  --text-soft: #a9b0c7;
-  --user-green: #3cff9b;
-  --dev-blue: #4db8ff;
-  --master-magenta: #ff4dd2;
-  --radius-xl: 24px;
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --blur-strong: 40px;
-  --sat-strong: 160%;
-  --tick-max: 10;
-  --transition-fast: 0.18s ease-out;
-  --transition-med: 0.25s ease-out;
-  --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.65);
+    --glass-bg: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.35);
+    --blur: blur(40px);
+    --sat: saturate(160%);
+    --glow-A: 0 0 12px #00ff88;
+    --glow-AA: 0 0 12px #3da0ff;
+    --glow-AAA: 0 0 12px #ff00ff;
+    --text: #e8e8e8;
+    --accent: #9b4dff;
+    background: #0d0d0f;
+    font-family: "Inter", sans-serif;
 }
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  background: radial-gradient(circle at top, #15192b 0, #05060a 55%, #000 100%);
-  color: var(--text-main);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-  height: 100%;
-}
+
 body {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+    overflow-x: hidden;
 }
 
-/* HEADER – FIXIERTER AAA-SOUVERÄN-VECTOR */
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
-  background: linear-gradient(90deg, rgba(5, 6, 10, 0.85), rgba(10, 12, 20, 0.85));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  z-index: 100;
-}
-.app-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.app-logo-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 12px;
-  background: conic-gradient(from 210deg, #ff4dd2, #4db8ff, #3cff9b, #ff4dd2);
-  box-shadow: 0 0 24px rgba(255, 77, 210, 0.6);
-  position: relative;
-}
-.app-logo-icon::after {
-  content: "P";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  color: #05060a;
-}
-.app-logo-text {
-  display: flex;
-  flex-direction: column;
-}
-.app-logo-title {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  font-size: 13px;
-  text-transform: uppercase;
-}
-.app-logo-sub {
-  font-size: 11px;
-  color: var(--text-soft);
-}
-.app-search {
-  flex: 1;
-  max-width: 480px;
-  margin: 0 24px;
-  position: relative;
-}
-.app-search input {
-  width: 100%;
-  padding: 8px 32px 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), rgba(5, 6, 10, 0.9));
-  color: var(--text-main);
-  font-size: 13px;
-  outline: none;
-}
-.app-search input::placeholder {
-  color: rgba(169, 176, 199, 0.7);
-}
-.app-search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: var(--text-soft);
-}
-.app-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.app-profile-info {
-  text-align: right;
-}
-.app-profile-name {
-  font-size: 13px;
-  font-weight: 600;
-}
-.app-profile-role {
-  font-size: 11px;
-  color: var(--master-magenta);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-.app-profile-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 30% 20%, #ffb3ec, #ff4dd2 40%, #4db8ff 80%);
-  box-shadow: 0 0 24px rgba(255, 77, 210, 0.7);
-  position: relative;
-  cursor: pointer;
-}
-.app-profile-avatar::after {
-  content: "R";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  color: #05060a;
+/* -----------------------------------------------------------
+   00 — FIXIERTER HEADER (Glassmorphism)
+----------------------------------------------------------- */
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    backdrop-filter: var(--blur) var(--sat);
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 9999;
 }
 
-/* DROPDOWN – WALLET / PROFILE / SETTINGS */
-.profile-dropdown {
-  position: absolute;
-  top: 56px;
-  right: 16px;
-  min-width: 260px;
-  background: rgba(10, 12, 20, 0.96);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: var(--shadow-soft);
-  padding: 10px 10px 8px;
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 200;
-}
-.profile-dropdown.visible {
-  display: flex;
-}
-.profile-dropdown-header {
-  padding: 6px 8px 4px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-soft);
-}
-.profile-dropdown-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
-}
-.profile-dropdown-item:hover {
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.95));
-  transform: translateY(-1px);
-}
-.profile-dropdown-label {
-  display: flex;
-  flex-direction: column;
-}
-.profile-dropdown-title {
-  font-size: 13px;
-  font-weight: 600;
-}
-.profile-dropdown-sub {
-  font-size: 11px;
-  color: var(--text-soft);
-}
-.profile-dropdown-pill {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+/* Logo */
+#logo {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent);
 }
 
-/* MAIN LAYOUT */
-.app-main {
-  position: absolute;
-  top: 64px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 16px 18px 18px;
-  display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.4fr);
-  grid-template-rows: minmax(0, 1.6fr) minmax(0, 1.1fr);
-  gap: 14px;
+/* Suchleiste */
+#search {
+    width: 320px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.12);
+    color: var(--text);
 }
 
-/* GLASS PANELS */
-.panel {
-  border-radius: var(--radius-xl);
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.96));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.panel-header {
-  padding: 10px 14px 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-.panel-title {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-soft);
-}
-.panel-badge {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.panel-body {
-  flex: 1;
-  padding: 10px 12px 12px;
-  overflow: hidden;
+/* -----------------------------------------------------------
+   00-A — PROFIL-SOUVERÄN (Avatar + Name)
+----------------------------------------------------------- */
+#profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
 }
 
-/* A–H GRID (MASTER-CLUSTER) */
-.cluster-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 90px;
-  gap: 10px;
-}
-.cluster-tile {
-  position: relative;
-  border-radius: var(--radius-lg);
-  padding: 8px 9px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-}
-.cluster-tile:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.18);
-}
-.cluster-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-soft);
-}
-.cluster-name {
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.cluster-meta {
-  margin-top: 4px;
-  font-size: 10px;
-  color: rgba(169, 176, 199, 0.8);
-}
-.cluster-glow {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  transition: opacity var(--transition-fast);
-}
-.cluster-tile[data-role="user"] .cluster-glow {
-  background: radial-gradient(circle at 10% 0, rgba(60, 255, 155, 0.4), transparent 60%);
-}
-.cluster-tile[data-role="dev"] .cluster-glow {
-  background: radial-gradient(circle at 10% 0, rgba(77, 184, 255, 0.4), transparent 60%);
-}
-.cluster-tile[data-role="master"] .cluster-glow {
-  background: radial-gradient(circle at 10% 0, rgba(255, 77, 210, 0.5), transparent 60%);
-}
-.cluster-tile.active .cluster-glow {
-  opacity: 1;
+#avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#ff00ff,#00eaff);
 }
 
-/* KACHEL NULL – EREIGNISHORIZONT & TAKT */
-.horizon-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 10px;
-  height: 100%;
-}
-.horizon-main {
-  border-radius: var(--radius-lg);
-  padding: 10px 12px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  position: relative;
-  overflow: hidden;
-}
-.horizon-title {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-soft);
-}
-.horizon-sub {
-  font-size: 11px;
-  color: rgba(169, 176, 199, 0.9);
-  margin-top: 2px;
-}
-.horizon-center {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-.horizon-orbit {
-  width: 72%;
-  max-width: 260px;
-  aspect-ratio: 1 / 1;
-  border-radius: 999px;
-  border: 1px dashed rgba(255, 255, 255, 0.16);
-  position: relative;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
-}
-.horizon-orbit::before {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.horizon-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 36%;
-  border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-.horizon-point {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 30% 20%, #ffb3ec, #ff4dd2 60%, #4db8ff 100%);
-  box-shadow: 0 0 24px rgba(255, 77, 210, 0.9);
-  transform: translate(-50%, -50%);
-}
-.horizon-tick {
-  position: absolute;
-  bottom: 10px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.horizon-tick-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-soft);
-}
-.horizon-tick-bar {
-  flex: 1;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #3cff9b, #4db8ff, #ff4dd2);
-  position: relative;
-  overflow: hidden;
-}
-.horizon-tick-fill {
-  position: absolute;
-  inset: 0;
-  transform-origin: left center;
-  background: linear-gradient(90deg, rgba(60, 255, 155, 0.2), rgba(77, 184, 255, 0.4), rgba(255, 77, 210, 0.8));
-}
-.horizon-tick-value {
-  font-size: 11px;
-  min-width: 32px;
-  text-align: right;
+#username {
+    font-size: 15px;
+    font-weight: 600;
 }
 
-/* TAKT-RESET FLASH */
-.takt-flash {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease-out;
-  z-index: 999;
+/* Dropdown */
+#profile-menu {
+    position: absolute;
+    top: 78px;
+    right: 20px;
+    width: 260px;
+    padding: 15px;
+    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur) var(--sat);
+    border: 1px solid var(--glass-border);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* I / J – META-DOC & CHAIN CLEARING */
-.console-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-  gap: 10px;
-  height: 100%;
+.menu-btn {
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: 0.2s;
 }
-.console-panel {
-  border-radius: var(--radius-lg);
-  padding: 8px 10px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.console-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-soft);
-}
-.console-body {
-  margin-top: 6px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  overflow: hidden;
-}
-.console-input-row {
-  display: flex;
-  gap: 6px;
-}
-.console-select {
-  width: 90px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 6, 10, 0.96);
-  color: var(--text-main);
-  font-size: 11px;
-  padding: 4px 8px;
-}
-.console-url {
-  flex: 1;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 6, 10, 0.96);
-  color: var(--text-main);
-  font-size: 11px;
-  padding: 4px 8px;
-}
-.console-textarea {
-  flex: 1;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 6, 10, 0.96);
-  color: var(--text-main);
-  font-size: 11px;
-  padding: 6px 8px;
-  resize: none;
-}
-.console-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-}
-.btn {
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 6, 10, 0.96);
-  color: var(--text-main);
-  font-size: 11px;
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-.btn-primary {
-  background: linear-gradient(135deg, #ff4dd2, #4db8ff);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
-}
-.console-log {
-  flex: 1;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.02), rgba(5, 6, 10, 0.98));
-  padding: 6px 8px;
-  font-size: 11px;
-  color: var(--text-soft);
-  overflow: auto;
-  white-space: pre-wrap;
+.menu-btn:hover {
+    background: rgba(255,255,255,0.22);
 }
 
-/* K / L – API-ÜBERSICHT & SYSTEM-STATUS */
-.footer-root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 10px;
-  height: 100%;
-}
-.footer-panel {
-  border-radius: var(--radius-lg);
-  padding: 8px 10px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.footer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-soft);
-}
-.footer-body {
-  margin-top: 6px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  overflow: hidden;
-}
-.footer-list {
-  flex: 1;
-  overflow: auto;
-  font-size: 11px;
-}
-.footer-list-item {
-  padding: 4px 0;
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-}
-.footer-list-key {
-  color: var(--text-soft);
-}
-.footer-list-val {
-  color: var(--text-main);
-}
-.footer-status-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-}
-.footer-status-pill {
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-.footer-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #3cff9b;
-  box-shadow: 0 0 12px rgba(60, 255, 155, 0.8);
+/* -----------------------------------------------------------
+   01 — INTERFACE-SEKTOR (7-Kachel-Kaskade)
+----------------------------------------------------------- */
+#interface-sector {
+    margin-top: 110px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    padding: 20px;
 }
 
-/* RAPP-STORE MINI */
-.rapp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 6px;
-}
-.rapp-tile {
-  border-radius: 10px;
-  padding: 6px 7px;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 10px;
-  cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-}
-.rapp-tile:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.18);
+.kachel {
+    height: 120px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--blur) var(--sat);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
 }
 
-/* JOULE-MINING VISUAL */
-.joule-bar {
-  position: relative;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-}
-.joule-fill {
-  position: absolute;
-  inset: 0;
-  transform-origin: left center;
-  background: linear-gradient(90deg, #3cff9b, #4db8ff, #ff4dd2);
+/* -----------------------------------------------------------
+   02 — KACHEL NULL (Ereignishorizont)
+----------------------------------------------------------- */
+#kachel-null {
+    margin: 20px;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--blur) var(--sat);
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .app-main {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto;
-    overflow-y: auto;
-  }
+#takt-display {
+    font-size: 48px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* -----------------------------------------------------------
+   03 — 13 DUALE SEKTOREN
+----------------------------------------------------------- */
+#dual-sectors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    padding: 20px;
+}
+
+.dual {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--blur) var(--sat);
+}
+
+.dual h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: var(--accent);
+}
+
+/* -----------------------------------------------------------
+   RESET-PULSE (Takt 0)
+----------------------------------------------------------- */
+#reset-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
 }
 </style>
+
 </head>
 <body>
-<header class="app-header">
-  <div class="app-logo">
-    <div class="app-logo-icon"></div>
-    <div class="app-logo-text">
-      <div class="app-logo-title">PZQQET MONOLITH</div>
-      <div class="app-logo-sub">RFOF-NETWORK · 42E0</div>
-    </div>
-  </div>
-  <div class="app-search">
-    <input id="globalSearch" placeholder="Suche in Actions, Resources, Events, Schema…" />
-    <span class="app-search-icon">⌕</span>
-  </div>
-  <div class="app-profile">
-    <div class="app-profile-info">
-      <div class="app-profile-name">@RFOF-NETWORK</div>
-      <div class="app-profile-role">AAA · MASTER-SOUVERÄN</div>
-    </div>
-    <div class="app-profile-avatar" id="profileAvatar"></div>
-    <div class="profile-dropdown" id="profileDropdown">
-      <div class="profile-dropdown-header">Souverän-Vektor</div>
-      <div class="profile-dropdown-item" data-target="wallet">
-        <div class="profile-dropdown-label">
-          <div class="profile-dropdown-title">Wallet</div>
-          <div class="profile-dropdown-sub">Universal-Ledger · Fees · Mining · Staking</div>
-        </div>
-        <div class="profile-dropdown-pill">BUSINESS</div>
-      </div>
-      <div class="profile-dropdown-item" data-target="profil">
-        <div class="profile-dropdown-label">
-          <div class="profile-dropdown-title">Profile</div>
-          <div class="profile-dropdown-sub">Social X-Hub · Satoramy-ID · XP-Level</div>
-        </div>
-        <div class="profile-dropdown-pill">SOCIAL</div>
-      </div>
-      <div class="profile-dropdown-item" data-target="settings">
-        <div class="profile-dropdown-label">
-          <div class="profile-dropdown-title">Settings</div>
-          <div class="profile-dropdown-sub">Master-Switch · 45% SAFE · VM-Bypass</div>
-        </div>
-        <div class="profile-dropdown-pill">SYSTEM</div>
-      </div>
-    </div>
-  </div>
-</header>
 
-<div class="takt-flash" id="taktFlash"></div>
+<!-- -----------------------------------------------------------
+     00 — FIXIERTER HEADER
+----------------------------------------------------------- -->
+<div id="header">
+    <div id="logo">PZQQET</div>
+    <input id="search" placeholder="Suche im PZQQET‑Universum…" />
+    <div id="profile">
+        <div id="avatar"></div>
+        <div id="username">AAA‑Souverän</div>
+    </div>
+</div>
 
-<main class="app-main">
-  <!-- OBEN LINKS: A–H CLUSTER -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">A–H · MASTER-CLUSTER</div>
-      <div class="panel-badge">META-BACKEND · MODULE</div>
-    </div>
-    <div class="panel-body">
-      <div class="cluster-grid" id="clusterGrid">
-        <div class="cluster-tile" data-box="A" data-role="master">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">A · META-BACKEND</div>
-          <div class="cluster-name">API Home & Master-UI</div>
-          <div class="cluster-meta">Host-Steuerung · Root-Intelligenz</div>
-        </div>
-        <div class="cluster-tile" data-box="B" data-role="user">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">B · GLOBALE MODULE</div>
-          <div class="cluster-name">Wallet · Profil · Settings · Staking</div>
-          <div class="cluster-meta">Root-Ebene · User-Interface</div>
-        </div>
-        <div class="cluster-tile" data-box="C" data-role="dev">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">C · GPCB</div>
-          <div class="cluster-name">Zentralbank-Ebene</div>
-          <div class="cluster-meta">Clearing · 0,2% Fees · Guides</div>
-        </div>
-        <div class="cluster-tile" data-box="D" data-role="dev">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">D · ECCU</div>
-          <div class="cluster-name">Währungs-Ebene</div>
-          <div class="cluster-meta">2 TB = 1 ECCU = 2,50€</div>
-        </div>
-        <div class="cluster-tile" data-box="E" data-role="dev">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">E · RFOF-GOLDEN-CHAIN</div>
-          <div class="cluster-name">Blockchain-Ebene</div>
-          <div class="cluster-meta">Ketten- & Clearing-Logik</div>
-        </div>
-        <div class="cluster-tile" data-box="F" data-role="dev">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">F · API MARKETPLACE</div>
-          <div class="cluster-name">OpenAPI & RESTful</div>
-          <div class="cluster-meta">Kommerzielle Schnittstelle</div>
-        </div>
-        <div class="cluster-tile" data-box="G" data-role="user">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">G · BENUTZER-DOKU</div>
-          <div class="cluster-name">Meta-Dokumentation</div>
-          <div class="cluster-meta">User-Anwendung · Guides</div>
-        </div>
-        <div class="cluster-tile" data-box="H" data-role="dev">
-          <div class="cluster-glow"></div>
-          <div class="cluster-label">H · ENTWICKLER-DOKU</div>
-          <div class="cluster-name">Tech-Ebene</div>
-          <div class="cluster-meta">BIP-Spezifikationen · API</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- FRAKTALES DROPDOWN -->
+<div id="profile-menu">
+    <div class="menu-btn">WALLET – Business Explorer</div>
+    <div class="menu-btn">PROFILE – Social X‑Hub</div>
+    <div class="menu-btn">SETTINGS – Systempfad</div>
+</div>
 
-  <!-- OBEN RECHTS: KACHEL NULL / TAKT -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">KACHEL NULL · EREIGNISHORIZONT</div>
-      <div class="panel-badge">PUNKT E (6,5) · 42E0</div>
-    </div>
-    <div class="panel-body">
-      <div class="horizon-root">
-        <div class="horizon-main">
-          <div class="horizon-title">42E0 · GLOBALER TAKT</div>
-          <div class="horizon-sub">Synchronisiert alle Cluster, Fees & Reaktoren.</div>
-          <div class="horizon-center">
-            <div class="horizon-orbit" id="horizonOrbit">
-              <div class="horizon-point" id="horizonPoint"></div>
-            </div>
-          </div>
-          <div class="horizon-tick">
-            <div class="horizon-tick-label">Takt</div>
-            <div class="horizon-tick-bar">
-              <div class="horizon-tick-fill" id="taktFill"></div>
-            </div>
-            <div class="horizon-tick-value" id="taktValue">0 / 10</div>
-          </div>
-        </div>
-        <div class="horizon-main">
-          <div class="horizon-title">JOULE-MINING · XP</div>
-          <div class="horizon-sub">Mausbewegung & FPS → Energie-Kaskade.</div>
-          <div style="margin-top: 10px; font-size: 11px; color: var(--text-soft);">
-            Bewege die Maus über das Interface. Jede Bewegung erhöht die Joule-XP.
-          </div>
-          <div style="margin-top: 10px;">
-            <div class="joule-bar">
-              <div class="joule-fill" id="jouleFill"></div>
-            </div>
-          </div>
-          <div style="margin-top: 6px; display:flex; justify-content:space-between; font-size:11px;">
-            <span>Joule-XP: <span id="jouleValue">0</span></span>
-            <span>FPS: <span id="fpsValue">0</span></span>
-          </div>
-          <div style="margin-top: 10px; font-size: 11px; color: var(--text-soft);">
-            /ALPHA-NODES/reset_pulse.sh wird bei Takt 0 als Vollbild-Blitz visualisiert.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- -----------------------------------------------------------
+     01 — INTERFACE-SEKTOR (7 Kacheln)
+----------------------------------------------------------- -->
+<div id="interface-sector">
+    <div class="kachel">1</div>
+    <div class="kachel">2</div>
+    <div class="kachel">3</div>
+    <div class="kachel">4</div>
+    <div class="kachel">5</div>
+    <div class="kachel">6</div>
+    <div class="kachel">7</div>
+</div>
 
-  <!-- MITTE: I / J – META-DOC & CHAIN CLEARING -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">I / J · META-DOC & CHAIN CLEARING</div>
-      <div class="panel-badge">TERMINAL · VIEWER</div>
-    </div>
-    <div class="panel-body">
-      <div class="console-root">
-        <div class="console-panel">
-          <div class="console-header">
-            <span>META-DOCUMENTATION · TERMINAL</span>
-            <span>Box I</span>
-          </div>
-          <div class="console-body">
-            <div class="console-input-row">
-              <select class="console-select" id="consoleMethod">
-                <option>GET</option>
-                <option>POST</option>
-                <option>PUT</option>
-                <option>DELETE</option>
-                <option>PATCH</option>
-              </select>
-              <input class="console-url" id="consoleUrl" value="/accounts/schema/openapi.yaml" />
-            </div>
-            <textarea class="console-textarea" id="consoleBody" rows="4">
-{"cluster":"accounts","resource":"schema","file":"openapi.yaml"}
-            </textarea>
-            <div class="console-actions">
-              <button class="btn" id="consoleClear">Leeren</button>
-              <button class="btn btn-primary" id="consoleSend">Senden</button>
-            </div>
-          </div>
-        </div>
-        <div class="console-panel">
-          <div class="console-header">
-            <span>CHAIN CLEARING · VIEWER</span>
-            <span>Box J</span>
-          </div>
-          <div class="console-body">
-            <div class="console-log" id="consoleLog">
-              Ready. Wähle ein Cluster (A–H) oder sende eine Anfrage aus Box I.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- -----------------------------------------------------------
+     02 — KACHEL NULL (Ereignishorizont)
+----------------------------------------------------------- -->
+<div id="kachel-null">
+    <h2>Kachel Null — Ereignishorizont</h2>
+    <p>Punkt E (6,5) & globale 42E0‑Taktung</p>
+    <div id="takt-display">0</div>
+</div>
 
-  <!-- UNTEN: K / L – API-ÜBERSICHT & SYSTEM-STATUS -->
-  <section class="panel">
-    <div class="panel-header">
-      <div class="panel-title">K / L · API-ÜBERSICHT & SYSTEM-STATUS</div>
-      <div class="panel-badge">RESOURCES · VM-STATUS</div>
-    </div>
-    <div class="panel-body">
-      <div class="footer-root">
-        <div class="footer-panel">
-          <div class="footer-header">
-            <span>API-ÜBERSICHT · Box K</span>
-            <span>Ressourcen & Events</span>
-          </div>
-          <div class="footer-body">
-            <div class="footer-list" id="apiOverview">
-              <!-- Dynamisch gefüllt -->
-            </div>
-          </div>
-        </div>
-        <div class="footer-panel">
-          <div class="footer-header">
-            <span>SYSTEM-STATUS · Box L</span>
-            <span>Validator / VM</span>
-          </div>
-          <div class="footer-body">
-            <div class="footer-status-row">
-              <span>VM-Anbindung</span>
-              <span class="footer-status-pill">
-                <span class="footer-status-dot" id="vmDot"></span>
-                <span id="vmStatusLabel">ONLINE · 42E0</span>
-              </span>
-            </div>
-            <div style="margin-top: 8px; font-size: 11px; color: var(--text-soft);">
-              Alle Interaktionen aus Box I werden hier als Events gespiegelt. 405-Fehler werden durch VM-Bypass neutralisiert.
-            </div>
-            <div class="rapp-grid" style="margin-top: 10px;">
-              <div class="rapp-tile" data-app="GPCB">GPCB · Bank-App</div>
-              <div class="rapp-tile" data-app="ECCU">ECCU · Parity-App</div>
-              <div class="rapp-tile" data-app="CHAIN">Chain · Integrity</div>
-              <div class="rapp-tile" data-app="API">API · Staff</div>
-              <div class="rapp-tile" data-app="GT-DOC">GT · Docs</div>
-              <div class="rapp-tile" data-app="GT-PUB">GT · Publisher</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+<!-- -----------------------------------------------------------
+     03 — 13 DUALE SEKTOREN
+----------------------------------------------------------- -->
+<div id="dual-sectors">
+
+    <div class="dual"><h3>GPCB</h3>Cash‑Flow & Gebühren‑Injektion</div>
+    <div class="dual"><h3>Phoenix Coin</h3>Live‑Kurs & Emission</div>
+    <div class="dual"><h3>G‑Phoenix Token</h3>Governance & Staking</div>
+    <div class="dual"><h3>Phoenix LP</h3>Pool‑Tiefe & Yield</div>
+    <div class="dual"><h3>ECCU</h3>Parity‑Anker 2,50€</div>
+    <div class="dual"><h3>Joule</h3>Mining‑Output</div>
+    <div class="dual"><h3>XP</h3>Erfahrungspunkte</div>
+    <div class="dual"><h3>GOLD (42E0)</h3>Physische Deckung</div>
+    <div class="dual"><h3>RFOF</h3>Knoten‑Status</div>
+    <div class="dual"><h3>RFOF/GOLD LP</h3>Arbitrage‑Schutz</div>
+    <div class="dual"><h3>BIP</h3>Ability‑API‑Flow</div>
+    <div class="dual"><h3>Identity Registry</h3>Status A/AA/AAA</div>
+    <div class="dual"><h3>BRIDGE</h3>Schnittstelle zu ‑on.ton</div>
+
+</div>
+
+<!-- RESET-PULSE -->
+<div id="reset-flash"></div>
 
 <script>
-/* === STATE === */
+/* -----------------------------------------------------------
+   PROFIL DROPDOWN
+----------------------------------------------------------- */
+document.getElementById("profile").onclick = () => {
+    const m = document.getElementById("profile-menu");
+    m.style.display = m.style.display === "flex" ? "none" : "flex";
+};
+
+/* -----------------------------------------------------------
+   TAKT-GENERATOR (0–10)
+----------------------------------------------------------- */
 let takt = 0;
-let lastFrameTime = performance.now();
-let frameCount = 0;
-let fps = 0;
-let jouleXP = 0;
-let activeBox = null;
-
-/* === ELEMENTE === */
-const profileAvatar = document.getElementById("profileAvatar");
-const profileDropdown = document.getElementById("profileDropdown");
-const clusterGrid = document.getElementById("clusterGrid");
-const taktFill = document.getElementById("taktFill");
-const taktValue = document.getElementById("taktValue");
-const horizonPoint = document.getElementById("horizonPoint");
-const taktFlash = document.getElementById("taktFlash");
-const jouleFill = document.getElementById("jouleFill");
-const jouleValue = document.getElementById("jouleValue");
-const fpsValue = document.getElementById("fpsValue");
-const consoleMethod = document.getElementById("consoleMethod");
-const consoleUrl = document.getElementById("consoleUrl");
-const consoleBody = document.getElementById("consoleBody");
-const consoleSend = document.getElementById("consoleSend");
-const consoleClear = document.getElementById("consoleClear");
-const consoleLog = document.getElementById("consoleLog");
-const apiOverview = document.getElementById("apiOverview");
-const vmDot = document.getElementById("vmDot");
-const vmStatusLabel = document.getElementById("vmStatusLabel");
-
-/* === PROFIL-DROPDOWN === */
-let dropdownOpen = false;
-profileAvatar.addEventListener("click", () => {
-  dropdownOpen = !dropdownOpen;
-  profileDropdown.classList.toggle("visible", dropdownOpen);
-});
-document.addEventListener("click", (e) => {
-  if (!profileDropdown.contains(e.target) && !profileAvatar.contains(e.target)) {
-    dropdownOpen = false;
-    profileDropdown.classList.remove("visible");
-  }
-});
-profileDropdown.addEventListener("click", (e) => {
-  const item = e.target.closest(".profile-dropdown-item");
-  if (!item) return;
-  const target = item.getAttribute("data-target");
-  logToConsole("I", "PROFILE", `Meta-Dropdown: Öffne Modul „${target}“ (simuliert).`);
-});
-
-/* === CLUSTER-KLICK: A–H → I/J/K/L === */
-clusterGrid.addEventListener("click", (e) => {
-  const tile = e.target.closest(".cluster-tile");
-  if (!tile) return;
-  if (activeBox) activeBox.classList.remove("active");
-  activeBox = tile;
-  tile.classList.add("active");
-  const box = tile.getAttribute("data-box");
-  const label = tile.querySelector(".cluster-label")?.textContent || "";
-  const name = tile.querySelector(".cluster-name")?.textContent || "";
-  logToConsole("I", "CLUSTER", `Box ${box} aktiviert: ${label} · ${name}`);
-  updateApiOverviewForBox(box);
-});
-
-/* === TAKT-GENERATOR === */
-function updateTakt(delta) {
-  // alle ~1.2s einen Schritt
-  if (!updateTakt.acc) updateTakt.acc = 0;
-  updateTakt.acc += delta;
-  if (updateTakt.acc < 1200) return;
-  updateTakt.acc = 0;
-
-  takt = (takt + 1) % (parseInt(getComputedStyle(document.documentElement).getPropertyValue("--tick-max")) + 1);
-  const ratio = takt / parseInt(getComputedStyle(document.documentElement).getPropertyValue("--tick-max"));
-  taktFill.style.transform = `scaleX(${ratio})`;
-  taktValue.textContent = `${takt} / 10`;
-
-  const angle = 2 * Math.PI * ratio;
-  const orbit = document.getElementById("horizonOrbit");
-  const r = orbit.clientWidth * 0.5 * 0.8;
-  const cx = orbit.clientWidth / 2;
-  const cy = orbit.clientHeight / 2;
-  const x = cx + r * Math.cos(angle);
-  const y = cy + r * Math.sin(angle);
-  horizonPoint.style.left = x + "px";
-  horizonPoint.style.top = y + "px";
-
-  if (takt === 0) {
-    triggerResetPulse();
-  } else if (takt === 10) {
-    triggerSingularity();
-  }
-}
-
-/* === RESET-PULSE (Takt 0) === */
-function triggerResetPulse() {
-  taktFlash.style.opacity = "1";
-  setTimeout(() => {
-    taktFlash.style.opacity = "0";
-  }, 180);
-  logToConsole("L", "RESET", "/ALPHA-NODES/reset_pulse.sh · Vollbild-Blitz ausgeführt.");
-}
-
-/* === SINGULARITÄT (Takt 10) === */
-function triggerSingularity() {
-  logToConsole("K", "SINGULARITÄT", "GT-PUBLISHER: News-Sync bei Takt 10 (simuliert).");
-}
-
-/* === FPS & JOULE-MINING === */
-function loop(now) {
-  const delta = now - lastFrameTime;
-  lastFrameTime = now;
-  frameCount++;
-  if (!loop.acc) loop.acc = 0;
-  loop.acc += delta;
-  if (loop.acc >= 1000) {
-    fps = Math.round((frameCount * 1000) / loop.acc);
-    frameCount = 0;
-    loop.acc = 0;
-    fpsValue.textContent = fps;
-    const jouleRatio = Math.min(1, jouleXP / 1000);
-    jouleFill.style.transform = `scaleX(${jouleRatio})`;
-  }
-  updateTakt(delta);
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-document.addEventListener("mousemove", (e) => {
-  jouleXP += 1;
-  jouleValue.textContent = jouleXP;
-});
-
-/* === KONSOLE (I → J) === */
-consoleClear.addEventListener("click", () => {
-  consoleBody.value = "";
-  consoleLog.textContent = "Konsole geleert.";
-});
-consoleSend.addEventListener("click", () => {
-  const method = consoleMethod.value;
-  const url = consoleUrl.value.trim();
-  let body;
-  try {
-    body = JSON.parse(consoleBody.value || "{}");
-  } catch (e) {
-    logToConsole("I", "ERROR", "Body ist kein gültiges JSON.");
-    return;
-  }
-  const event = {
-    method,
-    url,
-    body,
-    ts: new Date().toISOString()
-  };
-  logToConsole("I", "REQUEST", JSON.stringify(event, null, 2));
-  logToConsole("J", "VIEW", `Simulierte Antwort für ${url} (Cluster-Aktion, kein echter Netzwerk-Call).`);
-  updateApiOverviewFromRequest(event);
-});
-
-/* === LOGIK: API-ÜBERSICHT (K) === */
-function updateApiOverviewForBox(box) {
-  const map = {
-    A: ["accounts/schema/openapi.yaml", "clearing/schema/openapi.yaml", "identity/schema/openapi.yaml"],
-    B: ["wallet/index.html", "profil/index.html", "settings/index.html", "staking/index.html"],
-    C: ["GPCB/wallet/", "GPCB/settings/", "GPCB/staking/"],
-    D: ["ECCU/wallet/", "ECCU/settings/", "ECCU/staking/"],
-    E: ["RFOF-GOLDEN-Chain/wallet/", "RFOF-GOLDEN-Chain/settings/"],
-    F: ["accounts/actions/", "clearing/actions/", "compliance/actions/"],
-    G: ["docs/resources/user_guide.sql", "docs/resources/api_specs.sql"],
-    H: ["docs/resources/technical_manual.sql", "config/schema/openapi.yaml"]
-  };
-  const list = map[box] || [];
-  apiOverview.innerHTML = "";
-  list.forEach((path) => {
-    const row = document.createElement("div");
-    row.className = "footer-list-item";
-    const key = document.createElement("div");
-    key.className = "footer-list-key";
-    key.textContent = path;
-    const val = document.createElement("div");
-    val.className = "footer-list-val";
-    val.textContent = "Resource · READY";
-    row.appendChild(key);
-    row.appendChild(val);
-    apiOverview.appendChild(row);
-  });
-}
-
-/* === LOGIK: API-ÜBERSICHT AUS REQUEST === */
-function updateApiOverviewFromRequest(event) {
-  const path = event.url.replace(/^\//, "");
-  const row = document.createElement("div");
-  row.className = "footer-list-item";
-  const key = document.createElement("div");
-  key.className = "footer-list-key";
-  key.textContent = path || "(root)";
-  const val = document.createElement("div");
-  val.className = "footer-list-val";
-  val.textContent = `${event.method} · EVENT`;
-  row.appendChild(key);
-  row.appendChild(val);
-  apiOverview.prepend(row);
-}
-
-/* === LOGGING-HILFSFUNKTION === */
-function logToConsole(box, channel, message) {
-  const ts = new Date().toISOString();
-  const line = `[${ts}] [${box}] [${channel}] ${message}\n`;
-  consoleLog.textContent = line + consoleLog.textContent;
-}
-
-/* === VM-STATUS-SIMULATION === */
 setInterval(() => {
-  const pulse = Math.random();
-  if (pulse < 0.9) {
-    vmDot.style.background = "#3cff9b";
-    vmDot.style.boxShadow = "0 0 12px rgba(60,255,155,0.8)";
-    vmStatusLabel.textContent = "ONLINE · 42E0";
-  } else {
-    vmDot.style.background = "#ffb347";
-    vmDot.style.boxShadow = "0 0 12px rgba(255,179,71,0.8)";
-    vmStatusLabel.textContent = "SYNC · CLEARING";
-  }
-}, 2600);
+    takt = (takt + 1) % 11;
+    document.getElementById("takt-display").textContent = takt;
 
-/* === INITIAL === */
-updateApiOverviewForBox("A");
-logToConsole("K", "INIT", "PZQQET MONOLITH · MASTER-UI A–L Matrix initialisiert.");
+    if (takt === 0) {
+        const flash = document.getElementById("reset-flash");
+        flash.style.opacity = 1;
+        setTimeout(() => flash.style.opacity = 0, 200);
+    }
+
+    if (takt === 10) {
+        console.log("Singularitäts‑Injektion ausgelöst.");
+    }
+}, 1000);
 </script>
+
 </body>
 </html>

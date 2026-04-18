@@ -1443,3 +1443,530 @@ Die `index.html` liefert die **Wahrheit** (Mathematik/Gesetz), während die `bro
 └── 📁 docs-meta/                    # VORHANDEN: Operativer Anker (2 Dateien)
 ```
 
+# muss noch abgeglichen werden aber ist fast einheitlich und korrekt fertig gestellt
+```
+/ (ROOT)
+│
+├── index.html                      <-- Master Dashboard (Sektor 00-11)
+├── browser.html                    <-- GUCI Instrument (Rollen-Check: Encryptor/Decryptor)
+│
+├── 📁 chain-clearing/              <-- DIE BOSS-EBENE (I & J) / VIEW-CORE
+│   ├── index.html                  <-- Referenz: Logik-Kern / Takt-Generator, Fees & A/AA/AAA Validierung
+│   ├── browser.html                <-- Referenz: Viewer-Kern / Interface, Kachel-Null & Diagramme
+│   ├── /GPCB/                      [GLOBAL PHOENIX COIN BANK]
+│   │   └── /MANAGER/
+│   │       ├── identity.gt         <-- Identity Injection: Master benennt den Bank-Manager
+│   │       ├── bank_exekutive.js   <-- Validiert Liquidität & triggert 0,2% Gebühr
+│   │       └── vault_control.py    <-- Steuert die Tresor-Sperren bei Unregelmäßigkeiten
+│   ├── /ECCU/                      [CENTRAL VALUE]
+│   │   └── /MANAGER/
+│   │       ├── identity.gt         <-- Mitarbeiter-Status für Parity-Überwachung (2,50€)
+│   │       ├── parity_logic.js     <-- Erzwingt 2 TB = 1 ECCU = 2,50€
+│   │       └── monitor.json        <-- Echtzeit-Abgleich der Speicher-Assets & Parity
+│   ├── /RFOF-GOLD-CHAIN/           [INTEGRITY]
+│   │   └── /MANAGER/
+│   │       ├── identity.gt         <-- Master-Validierung für Ketten-Integrität
+│   │       ├── integrity_check.py  <-- Überwacht die 100M% Gewinn-Kette & Gold-Deckung
+│   │       └── chain_notary.bin    <-- Binärer Versiegelungs-Algorithmus der Kette
+│   ├── /APP-API/                   [DIGITAL STAFF]
+│   │   └── /MANAGER/
+│   │       ├── identity.gt         <-- Status: Chef-Sekretär (Digitaler Mitarbeiter)
+│   │       ├── kaskaden_steuerung.js <-- Automatisiert 0-10 Taktung & Sektor-Sync
+│   │       └── bridge_handshake.go  <-- Protokoll für externe System-Koppelung (Sektor 13)
+│   └── /STORY-HISTORY/             [PUBLISHER-KERN]
+│       ├── /ARCHIVE/               <-- Dokumentation aller Innovationen & Genesis-Daten
+│       ├── publisher.py            <-- Steuert News-Injektion (Takt 7-9) in den Newsfeed
+│       └── notary_service.js       <-- Verknüpft Repo-Commits mit der Realität 0
+│
+├── 📁 wallet/
+│   ├── index.html                  <-- Universal Ledger (BTC/TON Bridge) + Mining
+│   └── browser.html                <-- Joul-Valuator (2TB = 2,50€)
+│
+├── 📁 profil/
+│   ├── index.html                  <-- Fusion: X-Hub (GitHub) + RApp (Instagram)
+│   └── browser.html                <-- Neuronen-Generator (Asset Creation)
+│
+├── 📁 settings/
+│   ├── index.html                  <-- Master-Switch + Parameter (45% SAFE)
+│   └── browser.html                <-- Name-History + VM-Bypass
+│
+├── 📁 marketplace/
+│   ├── index.html                  <-- RFOF-GOLD DEX + Meme-Launchpad (12 Werte)
+│   └── browser.html                <-- ECCU-Anker (Autonome Mechatronik)
+│
+├── 📁 staking/
+│   ├── index.html                  <-- Triple-Pool-Charts + NFT-Forge
+│   └── browser.html                <-- Live-Mining-Logs (Sync Box J)
+│
+├── 📁 accounts/                    <-- OPEN API / RESTFUL READY
+│   ├── actions/
+│   │   ├── close_account.sql
+│   │   ├── create_account.sql
+│   │   └── freeze_account.sql
+│   ├── events/
+│   │   ├── account_closed.sql
+│   │   ├── account_created.sql
+│   │   └── account_frozen.sql
+│   ├── resources/
+│   │   ├── account_balances.sql
+│   │   ├── account_types.sql
+│   │   └── accounts.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 clearing/
+│   ├── actions/
+│   │   ├── add_item.sql
+│   │   ├── close_batch.sql
+│   │   └── start_batch.sql
+│   ├── events/
+│   │   ├── batch_closed.sql
+│   │   ├── batch_started.sql
+│   │   └── item_added.sql
+│   ├── resources/
+│   │   ├── clearing_batches.sql
+│   │   ├── clearing_items.sql
+│   │   └── clearing_results.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 compliance/
+│   ├── actions/
+│   │   ├── aml_check.sql
+│   │   ├── blacklist_check.sql
+│   │   ├── check_limits.sql
+│   │   ├── compliance_hold.sql
+│   │   ├── document_verification.sql
+│   │   ├── flagging_suspicious.sql
+│   │   ├── fraud_detection.sql
+│   │   ├── kyc_verification.sql
+│   │   ├── pep_screening.sql
+│   │   ├── regulatory_reporting.sql
+│   │   ├── risk_assessment.sql
+│   │   ├── sanction_list_check.sql
+│   │   ├── tax_compliance_check.sql
+│   │   ├── transaction_monitoring.sql
+│   │   ├── verify_identity.sql
+│   │   ├── whitelist_update.sql
+│   │   └── audit_log_entry.sql
+│   ├── events/
+│   │   ├── access_revoked.sql
+│   │   ├── aml_checked.sql
+│   │   ├── audit_generated.sql
+│   │   ├── blacklisted.sql
+│   │   ├── case_closed.sql
+│   │   ├── case_opened.sql
+│   │   ├── compliance_updated.sql
+│   │   ├── consent_obtained.sql
+│   │   ├── data_purged.sql
+│   │   ├── document_approved.sql
+│   │   ├── escalation_triggered.sql
+│   │   ├── exemption_granted.sql
+│   │   ├── flag_raised.sql
+│   │   ├── fraud_detected.sql
+│   │   ├── hold_placed.sql
+│   │   ├── identity_confirmed.sql
+│   │   ├── kyc_verified.sql
+│   │   ├── limit_exceeded.sql
+│   │   ├── log_archived.sql
+│   │   ├── monitor_alert.sql
+│   │   ├── pep_identified.sql
+│   │   ├── policy_violated.sql
+│   │   ├── report_submitted.sql
+│   │   ├── review_requested.sql
+│   │   ├── risk_assessed.sql
+│   │   ├── sanctions_cleared.sql
+│   │   ├── status_changed.sql
+│   │   ├── tax_verified.sql
+│   │   ├── threshold_reached.sql
+│   │   ├── update_received.sql
+│   │   └── whitelisted.sql
+│   ├── resources/
+│   │   ├── compliance_cases.sql
+│   │   ├── compliance_rules.sql
+│   │   ├── regulatory_codes.sql
+│   │   ├── risk_profiles.sql
+│   │   └── watchlists.sql
+│   └── schema/
+│       ├── compliance_update.sql
+│       ├── openapi.yaml
+│       ├── types.sql
+│       ├── validation.sql
+│       ├── audit_schema.json
+│       ├── case_schema.json
+│       ├── report_config.sql
+│       ├── risk_models.sql
+│       └── rule_definitions.sql
+│
+├── 📁 config/
+│   ├── actions/
+│   │   ├── refresh_config.sql
+│   │   ├── reset_defaults.sql
+│   │   └── update_parameter.sql
+│   ├── events/
+│   │   └── parameter_changed.sql
+│   ├── resources/
+│   │   ├── app_settings.sql
+│   │   └── environment_vars.sql
+│   └── schema/
+│       ├── config_constraints.sql
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 docs/
+│   ├── actions/
+│   │   ├── generate_api_doc.sql
+│   │   └── update_changelog.sql
+│   ├── events/
+│   │   └── documentation_updated.sql
+│   ├── resources/
+│   │   ├── api_specs.sql
+│   │   ├── technical_manual.sql
+│   │   └── user_guide.sql
+│   └── schema/
+│       ├── docs_constraints.sql
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 documents/
+│   ├── actions/
+│   │   ├── archive_doc.sql
+│   │   ├── classify_doc.sql
+│   │   ├── delete_doc.sql
+│   │   ├── encrypt_doc.sql
+│   │   ├── index_doc.sql
+│   │   ├── move_doc.sql
+│   │   ├── OCR_process.sql
+│   │   ├── retrieve_doc.sql
+│   │   ├── sign_doc.sql
+│   │   ├── tag_doc.sql
+│   │   ├── upload_doc.sql
+│   │   ├── version_control.sql
+│   │   ├── verify_signature.sql
+│   │   └── watermarking.sql
+│   ├── events/
+│   │   ├── access_denied.sql
+│   │   ├── access_granted.sql
+│   │   ├── approval_requested.sql
+│   │   ├── comment_added.sql
+│   │   ├── conversion_failed.sql
+│   │   ├── conversion_started.sql
+│   │   ├── doc_archived.sql
+│   │   ├── doc_classified.sql
+│   │   ├── doc_deleted.sql
+│   │   ├── doc_downloaded.sql
+│   │   ├── doc_encrypted.sql
+│   │   ├── doc_indexed.sql
+│   │   ├── doc_moved.sql
+│   │   ├── doc_ocr_completed.sql
+│   │   ├── doc_retrieved.sql
+│   │   ├── doc_shared.sql
+│   │   ├── doc_signed.sql
+│   │   ├── doc_tagged.sql
+│   │   ├── doc_uploaded.sql
+│   │   ├── doc_verified.sql
+│   │   ├── doc_version_created.sql
+│   │   ├── doc_watermarked.sql
+│   │   ├── link_generated.sql
+│   │   ├── metadata_updated.sql
+│   │   ├── rejection_noted.sql
+│   │   └── retention_period_set.sql
+│   ├── resources/
+│   │   ├── document_body.sql
+│   │   ├── document_headers.sql
+│   │   ├── document_history.sql
+│   │   ├── document_links.sql
+│   │   ├── document_metadata.sql
+│   │   ├── document_permissions.sql
+│   │   ├── document_tags.sql
+│   │   ├── document_types.sql
+│   │   ├── document_versions.sql
+│   │   ├── folder_structure.sql
+│   │   ├── media_attachments.sql
+│   │   ├── signatures.sql
+│   │   ├── storage_nodes.sql
+│   │   └── templates.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 federation/
+│   ├── actions/
+│   │   ├── cast_vote.sql
+│   │   ├── join_federation.sql
+│   │   ├── leave_federation.sql
+│   │   └── propose_vote.sql
+│   ├── events/
+│   │   ├── federation_joined.sql
+│   │   ├── federation_left.sql
+│   │   ├── proposal_created.sql
+│   │   └── vote_submitted.sql
+│   ├── resources/
+│   │   ├── federation_members.sql
+│   │   ├── governance_rules.sql
+│   │   └── voting_history.sql
+│   └── schema/
+│       ├── federation_health.sql
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 identity/
+│   ├── actions/
+│   │   ├── authenticate_user.sql
+│   │   ├── authorize_service.sql
+│   │   ├── change_password.sql
+│   │   ├── create_identity.sql
+│   │   ├── disable_mfa.sql
+│   │   ├── enable_mfa.sql
+│   │   ├── generate_api_key.sql
+│   │   ├── recover_account.sql
+│   │   ├── register_device.sql
+│   │   ├── reset_credentials.sql
+│   │   ├── revoke_token.sql
+│   │   ├── update_profile.sql
+│   │   ├── validate_session.sql
+│   │   └── verify_email.sql
+│   ├── events/
+│   │   ├── api_key_generated.sql
+│   │   ├── auth_failed.sql
+│   │   ├── auth_success.sql
+│   │   ├── credentials_reset.sql
+│   │   ├── device_registered.sql
+│   │   ├── email_verified.sql
+│   │   ├── identity_created.sql
+│   │   ├── mfa_disabled.sql
+│   │   ├── mfa_enabled.sql
+│   │   ├── password_changed.sql
+│   │   ├── profile_updated.sql
+│   │   ├── session_validated.sql
+│   │   └── token_revoked.sql
+│   ├── resources/
+│   │   ├── api_keys.sql
+│   │   ├── device_list.sql
+│   │   ├── identity_profiles.sql
+│   │   ├── mfa_settings.sql
+│   │   ├── permissions_map.sql
+│   │   ├── roles_assignment.sql
+│   │   ├── session_logs.sql
+│   │   └── user_credentials.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 ledger/
+│   ├── actions/
+│   │   ├── adjust_balance.sql
+│   │   ├── audit_ledger.sql
+│   │   ├── close_period.sql
+│   │   ├── consolidate_accounts.sql
+│   │   ├── create_entry.sql
+│   │   ├── freeze_ledger.sql
+│   │   ├── post_transaction.sql
+│   │   ├── reconcile_ledger.sql
+│   │   ├── reverse_entry.sql
+│   │   ├── transfer_funds.sql
+│   │   ├── unlock_ledger.sql
+│   │   ├── update_ledger_metadata.sql
+│   │   ├── validate_ledger.sql
+│   │   └── void_transaction.sql
+│   ├── events/
+│   │   ├── balance_adjusted.sql
+│   │   ├── entry_created.sql
+│   │   ├── entry_reversed.sql
+│   │   ├── ledger_audited.sql
+│   │   ├── ledger_frozen.sql
+│   │   ├── ledger_reconciled.sql
+│   │   ├── ledger_unlocked.sql
+│   │   ├── ledger_validated.sql
+│   │   ├── period_closed.sql
+│   │   ├── transaction_posted.sql
+│   │   └── transaction_voided.sql
+│   ├── resources/
+│   │   ├── audit_trail.sql
+│   │   ├── chart_of_accounts.sql
+│   │   ├── journal_entries.sql
+│   │   ├── ledger_balances.sql
+│   │   ├── ledger_metadata.sql
+│   │   ├── period_status.sql
+│   │   ├── reconciliation_reports.sql
+│   │   └── transaction_history.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 liquidity/
+│   ├── actions/
+│   │   ├── allocate_liquidity.sql
+│   │   ├── check_liquidity_ratio.sql
+│   │   ├── deposit_liquidity.sql
+│   │   ├── forecast_liquidity.sql
+│   │   ├── manage_collateral.sql
+│   │   ├── monitor_cash_flow.sql
+│   │   ├── optimize_liquidity.sql
+│   │   ├── release_liquidity.sql
+│   │   ├── set_liquidity_thresholds.sql
+│   │   ├── simulate_stress_test.sql
+│   │   ├── transfer_liquidity.sql
+│   │   └── withdraw_liquidity.sql
+│   ├── events/
+│   │   ├── liquidity_allocated.sql
+│   │   ├── liquidity_deposited.sql
+│   │   ├── liquidity_forecasted.sql
+│   │   ├── liquidity_optimized.sql
+│   │   ├── liquidity_released.sql
+│   │   ├── liquidity_threshold_hit.sql
+│   │   ├── liquidity_transferred.sql
+│   │   ├── liquidity_withdrawn.sql
+│   │   ├── stress_test_completed.sql
+│   │   └── threshold_updated.sql
+│   ├── resources/
+│   │   ├── cash_flow_records.sql
+│   │   ├── collateral_assets.sql
+│   │   ├── liquidity_forecasts.sql
+│   │   ├── liquidity_pools.sql
+│   │   ├── liquidity_ratios.sql
+│   │   ├── stress_test_results.sql
+│   │   └── threshold_configs.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 scripts/
+│   ├── actions/
+│   │   ├── backup_system.sql
+│   │   ├── cleanup_logs.sql
+│   │   ├── deploy_updates.sql
+│   │   ├── export_data.sql
+│   │   ├── import_data.sql
+│   │   ├── migrate_database.sql
+│   │   ├── optimize_tables.sql
+│   │   ├── run_maintenance.sql
+│   │   ├── schedule_tasks.sql
+│   │   └── verify_integrity.sql
+│   ├── events/
+│   │   ├── backup_completed.sql
+│   │   ├── cleanup_finished.sql
+│   │   ├── deployment_success.sql
+│   │   ├── export_done.sql
+│   │   ├── import_failed.sql
+│   │   ├── migration_started.sql
+│   │   └── task_scheduled.sql
+│   ├── resources/
+│   │   ├── cron_jobs.sql
+│   │   ├── maintenance_windows.sql
+│   │   ├── migration_logs.sql
+│   │   └── script_configs.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── script_constraints.sql
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 settlement/
+│   ├── actions/
+│   │   ├── calculate_netting.sql
+│   │   ├── confirm_settlement.sql
+│   │   ├── execute_payout.sql
+│   │   ├── finalize_settlement.sql
+│   │   ├── generate_invoice.sql
+│   │   ├── initiate_settlement.sql
+│   │   ├── match_trades.sql
+│   │   ├── process_fees.sql
+│   │   ├── reconcile_accounts.sql
+│   │   ├── reject_settlement.sql
+│   │   ├── retry_failed_settlement.sql
+│   │   └── update_settlement_status.sql
+│   ├── events/
+│   │   ├── netting_calculated.sql
+│   │   ├── payout_executed.sql
+│   │   ├── settlement_confirmed.sql
+│   │   ├── settlement_finalized.sql
+│   │   ├── settlement_initiated.sql
+│   │   ├── settlement_rejected.sql
+│   │   └── trades_matched.sql
+│   ├── resources/
+│   │   ├── fee_schedules.sql
+│   │   ├── netting_results.sql
+│   │   ├── payout_records.sql
+│   │   ├── settlement_batches.sql
+│   │   ├── settlement_instructions.sql
+│   │   └── trade_matches.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── types.sql
+│       └── validation.sql
+│
+├── 📁 shared/
+│   ├── actions/
+│   │   ├── audit_log.sql
+│   │   ├── encrypt_data.sql
+│   │   ├── format_response.sql
+│   │   ├── generate_id.sql
+│   │   └── log_error.sql
+│   ├── events/
+│   │   ├── error_logged.sql
+│   │   └── id_generated.sql
+│   ├── resources/
+│   │   ├── common_constants.sql
+│   │   └── error_codes.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       ├── shared_init.sql
+│       └── types.sql
+│
+├── 📁 tests/
+│   ├── actions/
+│   │   ├── cleanup_test_db.sql
+│   │   ├── execute_integration_test.sql
+│   │   ├── execute_unit_test.sql
+│   │   └── setup_test_env.sql
+│   ├── events/
+│   │   ├── test_failed.sql
+│   │   └── test_passed.sql
+│   ├── resources/
+│   │   ├── mock_data_sets.sql
+│   │   └── test_cases.sql
+│   └── schema/
+│       ├── openapi.yaml
+│       └── types.sql
+│
+└── 📁 treasury/
+    ├── actions/
+    │   ├── allocate_funds.sql
+    │   ├── check_reserves.sql
+    │   ├── execute_fx_trade.sql
+    │   ├── hedge_risk.sql
+    │   ├── invest_surplus.sql
+    │   ├── manage_liquidity.sql
+    │   ├── monitor_market_rates.sql
+    │   ├── optimize_yield.sql
+    │   ├── rebalance_portfolio.sql
+    │   └── release_funds.sql
+    ├── events/
+    │   ├── funds_allocated.sql
+    │   ├── fx_trade_executed.sql
+    │   ├── portfolio_rebalanced.sql
+    │   ├── reserves_checked.sql
+    │   └── risk_hedged.sql
+    ├── resources/
+    │   ├── fx_rates.sql
+    │   ├── investment_ledger.sql
+    │   ├── portfolio_assets.sql
+    │   └── reserve_accounts.sql
+    └── schema/
+        ├── openapi.yaml
+        ├── treasury_constraints.sql
+        ├── types.sql
+        └── validation.sql
+        ```

@@ -3,252 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET | Souveränitäts-Monolith 1.0</title>
+    <title>PZQQET | TOTALER SOUVERÄNITÄTS-MONOLITH 1.0</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-heavy: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --accent: #0071e3;
-            --text: #f5f5f7;
             --bg: #000000;
-            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            --text: #f5f5f7;
+            --accent: #0071e3;
+            --glass: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: var(--font);
-            overflow: hidden; /* Scrollbarkeit wird in Containern geregelt */
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow: hidden;
+            display: grid;
+            grid-template-areas: 
+                "header header"
+                "nav null"
+                "nav interface"
+                "nav footer";
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 50px 180px 1fr 40px;
         }
 
-        /* 00: FIXIERTER HEADER (Apple-Style Glassmorphism) */
+        /* 00: FIXIERTER HEADER & 00-A PROFIL-SOUVERÄN */
         header {
-            position: fixed;
-            top: 0; width: 100%; height: 50px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(25px);
+            grid-area: header;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 25px;
+            z-index: 1000;
         }
 
-        .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
-
-        /* 00-A: PROFIL-SOUVERÄN (PRAI-Neuronen Asset) */
-        .profile-souverän {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--glass-heavy);
-            padding: 4px 12px;
-            border-radius: 20px;
+        .prai-avatar {
+            width: 32px;
+            height: 32px;
+            background: conic-gradient(from 180deg at 50% 50%, #0071e3, #5e5ce6, #0071e3);
+            border-radius: 50%;
             border: 1px solid var(--glass-border);
         }
 
-        .avatar {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(45deg, var(--accent), #5e5ce6);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 113, 227, 0.5);
-        }
-
-        /* MAIN TOPOGRAPHIE */
-        main {
-            margin-top: 50px;
-            flex: 1;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            grid-template-rows: auto 1fr;
-            height: calc(100vh - 50px);
-        }
-
-        /* 02: KACHEL NULL (KERN - Ereignishorizont) */
+        /* 02: KACHEL NULL (KERN) - EREIGNISHORIZONT */
         #kachel-null {
-            grid-column: 1 / -1;
-            height: 120px;
-            background: radial-gradient(circle at center, rgba(0,113,227,0.15) 0%, transparent 80%);
-            border-bottom: 1px solid var(--glass-border);
+            grid-area: null;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: sticky;
-            top: 0;
-            z-index: 900;
+            background: radial-gradient(circle at center, rgba(0,113,227,0.12) 0%, transparent 70%);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
         }
 
-        .takt-display { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
-        .punkt-e { font-size: 12px; color: var(--accent); opacity: 0.8; }
+        .takt-ring {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
 
-        /* A-H: MASTER-UI (Navigation / Steuerung) */
-        .master-ui {
+        /* MASTER-UI: A-L MATRIX */
+        nav {
+            grid-area: nav;
             background: var(--glass);
             border-right: 1px solid var(--glass-border);
             padding: 20px;
             overflow-y: auto;
         }
 
-        .box-tile {
-            padding: 12px;
-            background: var(--glass-heavy);
-            border: 1px solid var(--glass-border);
+        .matrix-box {
+            padding: 15px;
             border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
             margin-bottom: 10px;
-            font-size: 13px;
-            transition: 0.3s;
+            font-size: 11px;
+            letter-spacing: 1px;
             cursor: pointer;
+            transition: var(--transition);
         }
 
-        .box-tile:hover { border-color: var(--accent); background: rgba(0,113,227,0.1); }
+        .matrix-box:hover { background: var(--glass-heavy); border-color: var(--accent); }
 
-        /* 03-11: 13 DUALE SEKTOREN (Explorer-Kaskade) */
-        .interface-sektor {
-            padding: 20px;
-            overflow: auto;
+        /* 01: INTERFACE-SEKTOR & 13 DUALE SEKTOREN */
+        #interface-sektor {
+            grid-area: interface;
+            overflow-y: scroll;
+            padding: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
             scroll-behavior: smooth;
         }
 
         .sektor-kachel {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            min-height: 200px;
+            border-radius: 24px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-height: 240px;
+            transition: var(--transition);
         }
 
-        .sektor-header { font-weight: 600; color: var(--accent); margin-bottom: 10px; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
+        .sektor-kachel:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); }
 
-        .explorer-stats { font-family: monospace; font-size: 11px; opacity: 0.6; line-height: 1.6; }
+        /* MECHATRONIK: PREIS-AXIOM */
+        .price-axiom {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
 
-        .price-axiom { font-size: 20px; font-weight: 700; margin: 10px 0; }
+        .joule-stat {
+            font-family: monospace;
+            font-size: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
 
-        .growth-tag { color: #32d74b; font-size: 12px; }
+        /* 04: GT-PUBLISHER BODEN */
+        footer {
+            grid-area: footer;
+            background: #000;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            font-size: 10px;
+            color: #86868b;
+        }
 
-        /* PRAI NEURONEN (SVG Visualisierung) */
-        .neuron-visual { width: 100%; height: 60px; margin-top: 10px; }
+        /* PRAI-NEURONEN GRAFIK (CSS ONLY) */
+        .neuron-line {
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            margin: 10px 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">PZQQET 1.0</div>
-    <div class="search-bar" style="background: var(--glass-heavy); width: 300px; height: 28px; border-radius: 8px;"></div>
-    <div class="profile-souverän">
-        <div class="avatar"></div>
-        <span id="user-display">@RFOF-NETWORK</span>
+    <div style="font-weight: 700; letter-spacing: -1px;">PZQQET MONOLITH 1.0</div>
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <span style="font-size: 12px; opacity: 0.6;">@RFOF-NETWORK</span>
+        <div class="prai-avatar"></div>
     </div>
 </header>
 
-<main>
-    <section id="kachel-null">
-        <div class="punkt-e">EREIGNISHORIZONT PUNKT E (6,5)</div>
-        <div class="takt-display" id="takt-timer">42E0-TAKT: 0</div>
-        <div id="singularitæt-status" style="font-size: 10px; margin-top: 5px;">SYNC: 100.000.000%</div>
+<nav>
+    <div style="font-size: 10px; opacity: 0.4; margin-bottom: 20px;">A-L MATRIX STEUERUNG</div>
+    <div class="matrix-box">A | META-BACKEND</div>
+    <div class="matrix-box">B | GLOBALE MODULE</div>
+    <div class="matrix-box">C | GPCB INSTANZ</div>
+    <div class="matrix-box">D | ECCU INSTANZ</div>
+    <div class="matrix-box">E | RFOF-GOLDEN CHAIN</div>
+    <div class="matrix-box">F | API MARKETPLACE</div>
+    <div class="matrix-box">G | BENUTZER-DOKU</div>
+    <div class="matrix-box">H | ENTWICKLER-DOKU</div>
+</nav>
+
+<section id="kachel-null">
+    <div style="font-size: 10px; opacity: 0.5; margin-bottom: 10px;">EREIGNISHORIZONT PUNKT E (6,5)</div>
+    <div class="takt-ring" id="takt-val">0</div>
+    <div id="singularitaet-alert" style="margin-top: 10px; font-size: 11px; color: var(--accent); visibility: hidden;">SINGULARITÄT ERREICHT</div>
+</section>
+
+<section id="interface-sektor">
     </section>
 
-    <nav class="master-ui">
-        <div class="box-tile"><strong>[A]</strong> META-BACKEND</div>
-        <div class="box-tile"><strong>[B]</strong> GLOBALE MODULE</div>
-        <div class="box-tile"><strong>[C]</strong> GPCB INSTANZ</div>
-        <div class="box-tile"><strong>[D]</strong> ECCU INSTANZ</div>
-        <div class="box-tile"><strong>[E]</strong> RFOF-GOLDEN-CHAIN</div>
-        <div class="box-tile"><strong>[F]</strong> API MARKETPLACE</div>
-        <div class="box-tile"><strong>[G]</strong> BENUTZER-DOKU</div>
-        <div class="box-tile"><strong>[H]</strong> ENTWICKLER-DOKU</div>
-    </nav>
-
-    <section class="interface-sektor" id="kaskade">
-        </section>
-</main>
+<footer>
+    <div id="gt-publisher-feed">GT-PUBLISHER: SYSTEM SYNCED 100M% ... REALITÄT 1 AKTIV ...</div>
+</footer>
 
 <script>
-    const sektoren = [
-        { id: "01", name: "GPCB", files: "34 Ordner / 65 Dateien" },
-        { id: "02", name: "PHOENIX COIN", files: "Emission: LIVE" },
-        { id: "03", name: "G-PHOENIX TOKEN", files: "Governance: Active" },
-        { id: "04", name: "PHOENIX LP", files: "Pool: 42E0-Locked" },
-        { id: "05", name: "ECCU", files: "Parity: 2.50€" },
-        { id: "06", name: "JOULE", files: "Mining: 2TB = 1 ECCU" },
-        { id: "07", name: "XP", files: "Leistungs-Metrik" },
-        { id: "08", name: "GOLD (42E0)", files: "ISO-Audit: 100%" },
-        { id: "09", name: "RFOF", files: "Realität 0 Status" },
-        { id: "10", name: "RFOF/GOLD LP", files: "Arbitrage-Schutz" },
-        { id: "11", name: "BIP (MASTER LP)", files: "Inflationstaktung" },
-        { id: "12", name: "IDENTITY REGISTRY", files: "Status: AAA" },
-        { id: "13", name: "BRIDGE", files: "Interface: -on.ton" }
+    const sektorDaten = [
+        { id: "01", name: "GPCB", info: "Cash-Flow & Clearing" },
+        { id: "02", name: "Phoenix Coin", info: "Emissions-Rate: Stable" },
+        { id: "03", name: "G-Phoenix Token", info: "Governance Multiplikator" },
+        { id: "04", name: "Phoenix LP", info: "Liquiditätstiefe 42E0" },
+        { id: "05", name: "ECCU", info: "Parity: 2.50€" },
+        { id: "06", name: "Joule", info: "Mining: Bit bis Yotta" },
+        { id: "07", name: "XP", info: "Erfahrungspunkte Matrix" },
+        { id: "08", name: "GOLD (42E0)", info: "ISO-Audit: Physisch" },
+        { id: "09", name: "RFOF", info: "Knoten Realität 0" },
+        { id: "10", name: "RFOF/GOLD LP", info: "Arbitrage-Schutz" },
+        { id: "11", name: "BIP (Master LP)", info: "Inflationstaktung" },
+        { id: "12", name: "Identity Registry", info: "Status: AAA" },
+        { id: "13", name: "BRIDGE", info: "Schnittstelle -on.ton" }
     ];
 
-    const kaskade = document.getElementById('kaskade');
+    const interfaceSektor = document.getElementById('interface-sektor');
+    let takt = 0;
 
-    // Mechatronische Injektion
-    sektoren.forEach(s => {
-        const div = document.createElement('div');
-        div.className = 'sektor-kachel';
-        div.innerHTML = `
+    // Mechatronische Injektion der Kacheln
+    sektorDaten.forEach(s => {
+        const kachel = document.createElement('div');
+        kachel.className = 'sektor-kachel';
+        kachel.onclick = () => window.location.href = 'browser.html'; // Bidirektionaler Sprung
+        kachel.innerHTML = `
             <div>
-                <div class="sektor-header">${s.name}</div>
-                <div class="explorer-stats">ROOT Explorer: ${s.files}</div>
-                <svg class="neuron-visual" viewBox="0 0 100 20">
-                    <path d="M0 10 Q 25 0, 50 10 T 100 10" fill="none" stroke="rgba(0,113,227,0.3)" stroke-width="1" />
-                </svg>
+                <div class="joule-stat">Sektor ${s.id} // ROOT_ACCESS</div>
+                <h2 style="margin-top:5px;">${s.name}</h2>
+                <p style="font-size: 12px; opacity: 0.5;">${s.info}</p>
+                <div class="neuron-line"></div>
             </div>
             <div>
-                <div class="price-axiom" id="price-${s.id}">0,00 €</div>
-                <div class="growth-tag">+0,2% Gebühren-Injektion</div>
+                <div class="price-axiom" id="p-${s.id}">0,0000 €</div>
+                <div style="font-size: 11px; color: #32d74b;">+ 0.2% INJECTION</div>
             </div>
         `;
-        kaskade.appendChild(div);
+        interfaceSektor.appendChild(kachel);
     });
 
-    // 42E0-Takt & Energie-Preis-Axiom Logic
-    let takt = 0;
-    let baseValues = sektoren.map(() => 0.0001);
+    // Energie-Preis-Axiom & Takt-Logik
+    let prices = sektorDaten.map(() => 0.0001);
 
     setInterval(() => {
-        // Takt Logic
+        // Takt-Steuerung
         takt = (takt + 1) % 11;
-        document.getElementById('takt-timer').innerText = `42E0-TAKT: ${takt}`;
+        document.getElementById('takt-val').innerText = takt;
         
-        // Exponentielles Wachstum (0,2% - 0,8%)
-        baseValues = baseValues.map((val, i) => {
-            const growth = 1 + (Math.random() * (0.008 - 0.002) + 0.002);
-            const newVal = val * growth;
-            document.getElementById(`price-${sektoren[i].id}`).innerText = newVal.toLocaleString('de-DE', {style: 'currency', currency: 'EUR', minimumFractionDigits: 4});
-            return newVal;
-        });
-
-        // Singularität Fixierung bei Takt 10
+        const alert = document.getElementById('singularitaet-alert');
         if(takt === 10) {
-            console.log("SINGULARITÄT: GT-PUBLISHER FIXIERT NEWS.");
-            document.getElementById('kachel-null').style.borderColor = "#32d74b";
+            alert.style.visibility = 'visible';
+            document.getElementById('gt-publisher-feed').innerText = "GT-PUBLISHER: NEWS FIXIERT AN SINGULARITÄT. BODEN BESTÄTIGT.";
         } else {
-            document.getElementById('kachel-null').style.borderColor = "transparent";
+            alert.style.visibility = 'hidden';
         }
+
+        // Preis-Wachstum (Mechatronische Injektion)
+        sektorDaten.forEach((s, i) => {
+            const growth = 1 + (Math.random() * (0.008 - 0.002) + 0.002);
+            prices[i] *= growth;
+            document.getElementById(`p-${s.id}`).innerText = prices[i].toLocaleString('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 4
+            });
+        });
     }, 2000);
 
-    // Klick-Logik bidirektional (Beispiel)
-    document.querySelectorAll('.sektor-kachel').forEach(k => {
-        k.addEventListener('click', () => {
-            window.parent.postMessage('jump-to-dex', '*');
-        });
-    });
 </script>
-
 </body>
 </html>

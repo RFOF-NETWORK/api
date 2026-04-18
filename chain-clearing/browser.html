@@ -2,295 +2,202 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET | GUCI-INSTRUMENT (BOSS-LEVEL)</title>
+    <title>PZQQET | OPERATIVES INSTRUMENT (BROWSER)</title>
     <style>
         :root {
             --terminal-green: #32d74b;
-            --terminal-bg: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --apple-glass: rgba(25, 25, 25, 0.85);
+            --border: rgba(255, 255, 255, 0.1);
             --accent: #0071e3;
-            --font: "SF Mono", "Fira Code", monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            background-color: var(--terminal-bg);
+            background: #000;
             color: var(--terminal-green);
-            font-family: var(--font);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
-            display: grid;
-            grid-template-areas: 
-                "header header"
-                "explorer sidebar"
-                "terminal terminal";
-            grid-template-columns: 1fr 380px;
-            grid-template-rows: 65px 1fr 280px;
             overflow: hidden;
         }
 
-        /* 1. FRAKTALES DROPDOWN & OPERATIVER HEADER */
-        header {
-            grid-area: header;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--glass-border);
+        /* 1. FRAKTALES DROPDOWN (OBEN RECHTS) */
+        .top-nav {
+            height: 50px;
+            background: var(--apple-glass);
+            backdrop-filter: blur(15px);
             display: flex;
+            justify-content: flex-end;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 25px;
-            z-index: 2000;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .dropdown { position: relative; }
-        .drop-trigger {
-            background: var(--glass);
-            border: 1px solid var(--terminal-green);
-            color: var(--terminal-green);
-            padding: 10px 20px;
+        .dropdown {
+            position: relative;
             cursor: pointer;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 12px;
         }
 
-        .drop-content {
+        .dropdown-content {
             display: none;
             position: absolute;
-            top: 100%; left: 0;
+            right: 0; top: 100%;
+            background: var(--apple-glass);
+            width: 250px;
+            border: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            transition: 0.2s;
+        }
+        .dropdown-item:hover { background: rgba(255,255,255,0.1); }
+
+        /* 3. MASTER-UI (A-L MATRIX) */
+        .matrix-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex-grow: 1;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        /* ZUSTAND K: TERMINAL */
+        #terminal-k {
             background: #000;
-            border: 1px solid var(--terminal-green);
-            min-width: 320px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
-        }
-
-        .dropdown:hover .drop-content { display: block; }
-
-        .drop-item {
             padding: 20px;
-            border-bottom: 1px solid var(--glass-border);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .drop-item:hover { background: var(--glass); }
-        .drop-item strong { display: block; color: #fff; margin-bottom: 5px; }
-        .drop-item span { font-size: 10px; opacity: 0.7; }
-
-        /* 2. BOSS-EBENE BOX J (ZUSTAND L): UTX-EXPLORER */
-        #explorer {
-            grid-area: explorer;
-            padding: 30px;
             overflow-y: auto;
-            border-right: 1px solid var(--glass-border);
-            background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);
         }
 
-        .utx-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
+        /* ZUSTAND L: VIEWER */
+        #viewer-l {
+            background: #050505;
             padding: 20px;
+            border-left: 1px solid var(--border);
+        }
+
+        /* 2. KOMMANDOLEISTEN (A-D) */
+        .command-group {
             margin-bottom: 20px;
-            position: relative;
-            font-size: 13px;
+            border: 1px solid rgba(50, 215, 75, 0.3);
+            padding: 10px;
+            border-radius: 5px;
         }
 
-        .utx-card::before {
-            content: "ANTEIL_SYNC_ACTIVE";
-            position: absolute;
-            top: -10px; right: 20px;
-            background: var(--terminal-green);
-            color: #000;
-            font-size: 9px;
-            font-weight: bold;
-            padding: 2px 8px;
-        }
-
-        /* 3. ENERGETISCHE SYNTHESE (42E0-GESETZ) */
-        aside {
-            grid-area: sidebar;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            background: #080808;
-        }
-
-        .parity-box {
+        .cmd-label { color: #888; font-size: 10px; margin-bottom: 5px; }
+        .cmd-btn {
+            background: none;
             border: 1px solid var(--terminal-green);
-            padding: 20px;
-            background: rgba(50, 215, 75, 0.05);
-        }
-
-        .dex-interface {
-            flex-grow: 1;
-            border: 1px solid var(--glass-border);
-            background: #000;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .candlestick-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .candle { width: 100%; background: var(--terminal-green); opacity: 0.6; }
-
-        /* 4. TERMINAL BOX I (ZUSTAND K): CLEARING */
-        #terminal-console {
-            grid-area: terminal;
-            background: #000;
-            border-top: 2px solid var(--terminal-green);
-            padding: 20px;
-            overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .log-entry { margin-bottom: 4px; }
-        .log-ts { color: var(--accent); margin-right: 10px; }
-
-        /* MASTER CONTROL */
-        .master-switch-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .btn-rapp {
-            background: var(--terminal-green);
-            color: #000;
-            border: none;
-            padding: 15px;
-            font-weight: 900;
+            color: var(--terminal-green);
+            padding: 4px 8px;
+            margin: 2px;
             cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        #guci-path {
             font-size: 11px;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 4px 10px;
+            border-radius: 3px;
+        }
+        .cmd-btn:hover { background: var(--terminal-green); color: black; }
+
+        .log-entry { font-size: 12px; margin-bottom: 4px; }
+        .sys-prefix { color: var(--accent); }
+
+        /* MASTER SWITCH */
+        .master-status {
+            color: gold;
+            font-size: 11px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-<header>
+<nav class="top-nav">
     <div class="dropdown">
-        <button class="drop-trigger">SOUVERÄNITÄTS_VEKTOR</button>
-        <div class="drop-content">
-            <div class="drop-item" onclick="logAction('Universal-Ledger: Initiating Fee-Clearing...')">
-                <strong>BUTTON 1: WALLET</strong>
-                <span>45% SAFE | 42% OWNER | 10% FOND | 3% SYS</span>
-            </div>
-            <div class="drop-item" onclick="logAction('Social X-Hub: Syncing Energy-Incentives...')">
-                <strong>BUTTON 2: PROFILE (X-HUB)</strong>
-                <span>50% EIGENENERGIE-NFT LOGIK AKTIV</span>
-            </div>
-            <div class="drop-item" onclick="logAction('System: Accessing /settings/ Root...')">
-                <strong>BUTTON 3: SETTINGS</strong>
-                <span>PFAD-KOPPELUNG: /root/settings/</span>
-            </div>
+        SOUVERÄNITÄTS-VEKTOR
+        <div class="dropdown-content">
+            <div class="dropdown-item"><strong>WALLET:</strong> Ledger (45/42/10/3)</div>
+            <div class="dropdown-item"><strong>PROFILE:</strong> X-Hub & 50% Energy</div>
+            <div class="dropdown-item"><strong>SETTINGS:</strong> /root/settings/</div>
+        </div>
+    </div>
+</nav>
+
+<div class="matrix-container">
+    <div id="terminal-k">
+        <div class="master-status">Master: @RFOF-NETWORK | Access: TOTAL</div>
+        
+        <div class="command-group">
+            <div class="cmd-label">A. STAKING-TERM</div>
+            <button class="cmd-btn" onclick="exec('/sync-pool')">/sync-pool</button>
+            <button class="cmd-btn" onclick="exec('/boost-energy')">/boost-energy</button>
+            <button class="cmd-btn" onclick="exec('/verify-sha')">/verify-sha</button>
+        </div>
+
+        <div class="command-group">
+            <div class="cmd-label">B. NFT-SCHMIEDE</div>
+            <button class="cmd-btn" onclick="exec('/forge-nft')">/forge-nft</button>
+            <button class="cmd-btn" onclick="exec('/gallery-sync')">/gallery-sync</button>
+            <button class="cmd-btn" onclick="exec('/mask-id')">/mask-id</button>
+        </div>
+
+        <div class="command-group">
+            <div class="cmd-label">C. META-EXPLORER</div>
+            <button class="cmd-btn" onclick="exec('/trace-hash')">/trace-hash</button>
+            <button class="cmd-btn" onclick="exec('/clear-status')">/clear-status</button>
+            <button class="cmd-btn" onclick="exec('/map-api')">/map-api</button>
+        </div>
+
+        <div id="output-log">
+            <div class="log-entry"><span class="sys-prefix">[SYSTEM]:</span> GUCI-Handshake initialisiert...</div>
         </div>
     </div>
 
-    <div class="master-switch-container">
-        <div id="guci-path">GUCI_CONTEXT: /CHAIN-CLEARING/</div>
-        <label style="font-size: 10px;">MASTER-SOUVERÄN:</label>
-        <input type="checkbox" id="masterToggle" onchange="checkSovereignty()">
-    </div>
-</header>
-
-<main id="explorer">
-    <h2 style="color: #fff; margin-bottom: 30px; font-size: 18px;">UTX-BASE64 VIEWER (BOX J / L)</h2>
-    <div id="utx-list">
+    <div id="viewer-l">
+        <div class="cmd-label">L. CHAIN CLEARING VIEWER</div>
+        <div style="font-size: 11px; color: #555; margin-bottom: 10px;">
+            MECHATRONISCHE PFADIERUNG: 2 TB = 1 ECCU = 2,50€
         </div>
-</main>
-
-<aside>
-    <div class="parity-box">
-        <div style="font-size: 10px; opacity: 0.6;">42E0-GESETZ (SYNTESE)</div>
-        <div style="font-size: 22px; margin: 10px 0;">2 TB = 1 ECCU</div>
-        <div style="font-size: 18px; color: #fff;">VALUE: 2,50 €</div>
+        <div class="command-group">
+            <button class="cmd-btn" onclick="exec('/view-all')">/view-all</button>
+            <button class="cmd-btn" onclick="exec('/cross-check')">/cross-check</button>
+            <button class="cmd-btn" onclick="exec('/global-stats')">/global-stats</button>
+        </div>
+        <div id="visual-stream" style="font-size: 10px; border-top: 1px solid #222; padding-top: 10px;">
+            Warte auf Master-Impuls...
+        </div>
     </div>
-
-    <div class="dex-interface">
-        <div style="font-size: 10px; margin-bottom: 10px;">RFOF-GOLDEN DEX (LIVE)</div>
-        <div class="candlestick-container" id="dex-chart"></div>
-    </div>
-
-    <button class="btn-rapp" onclick="logAction('Manifest Trigger: Installing 6-Säulen-Apps...')">INSTALL rAPP MANIFEST</button>
-</aside>
-
-<footer id="terminal-console">
-    <div style="color: #fff; margin-bottom: 10px; font-weight: bold;">> INITIALIZING CLEARING CONSOLE (BOX I / K)...</div>
-    <div id="log-stream"></div>
-</footer>
+</div>
 
 <script>
-    const logStream = document.getElementById('log-stream');
-    const dexChart = document.getElementById('dex-chart');
-    const utxList = document.getElementById('utx-list');
-
-    function logAction(msg) {
+    function exec(cmd) {
+        const log = document.getElementById('output-log');
         const entry = document.createElement('div');
         entry.className = 'log-entry';
-        const ts = new Date().toLocaleTimeString();
-        entry.innerHTML = `<span class="log-ts">[${ts}]</span> > ${msg}`;
-        logStream.prepend(entry);
-    }
+        entry.innerHTML = `<span class="sys-prefix">[EXEC]:</span> ${cmd} aufgerufen.`;
+        log.prepend(entry);
 
-    // UTX Explorer Simulation (Zustand L)
-    function generateUTX() {
-        for(let i=0; i<6; i++) {
-            const card = document.createElement('div');
-            card.className = 'utx-card';
-            const hash = btoa(`PZQQET_ROOT_FILE_${Math.random()}`).substring(0, 32);
-            card.innerHTML = `
-                <strong>FILE_HASH:</strong> ${hash}<br>
-                <strong>JOULE_LOAD:</strong> ${(Math.random() * 2).toFixed(4)} YB<br>
-                <strong>VALIDATION:</strong> REALITY_0_CONFIRMED
-            `;
-            utxList.appendChild(card);
+        // MECHATRONISCHE SPIEGELUNG AN INDEX.HTML
+        window.parent.postMessage({
+            type: 'UPDATE_SECTOR',
+            command: cmd,
+            timestamp: new Date().getTime(),
+            guci: 'PZQQET-42-SATORAMY'
+        }, '*');
+
+        // Zusätzliche Logik für Energie-Synthese
+        if(cmd === '/sync-pool') {
+            document.getElementById('visual-stream').innerHTML += `<div>[BLOCK]: Verarbeite 2TB Joule -> 1 ECCU... DONE.</div>`;
         }
     }
-
-    // DEX Candlestick Simulation
-    function updateDEX() {
-        const candle = document.createElement('div');
-        candle.className = 'candle';
-        candle.style.height = Math.random() * 100 + '%';
-        dexChart.appendChild(candle);
-        if(dexChart.children.length > 35) dexChart.removeChild(dexChart.firstChild);
-    }
-
-    function checkSovereignty() {
-        const active = document.getElementById('masterToggle').checked;
-        if(active) {
-            logAction('!!! MASTER-MANAGER-SWITCH AKTIVIERT: VOLLZUGRIFF @RFOF-NETWORK !!!');
-            document.body.style.boxShadow = "inset 0 0 50px rgba(50, 215, 75, 0.2)";
-        } else {
-            logAction('Souveränität in Standby-Modus.');
-            document.body.style.boxShadow = "none";
-        }
-    }
-
-    // Initialisierung
-    generateUTX();
-    setInterval(updateDEX, 1500);
-    setInterval(() => logAction('Automatic Clearing-Pulse: 65 Files Synced.'), 8000);
-
-    // GUCI Pfad-Erkennung
-    document.getElementById('guci-path').innerText = `GUCI_CONTEXT: ${window.location.pathname.toUpperCase()}`;
 </script>
 </body>
 </html>

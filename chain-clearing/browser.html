@@ -2,217 +2,255 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PZQQET | SOUVERÄNITÄTS-VIEWER 1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PZQQET | GUCI-Instrument (Box J)</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --rfof-gold: #D4AF37;
-            --rfof-green: #00FF42;
-            --master-aura: 0 0 20px rgba(212, 175, 55, 0.3);
+            --accent: #32d74b; 
+            --terminal-bg: #0a0a0a;
+            --text: #f5f5f7;
+            --bg: #000000;
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            background: #000;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* 00 FIXIERTER HEADER */
-        header {
-            position: fixed; top: 0; width: 100%; height: 60px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px; z-index: 1000; box-sizing: border-box;
-        }
-
-        .master-aura {
-            border: 1px solid var(--rfof-gold);
-            box-shadow: var(--master-aura);
-            padding: 5px 15px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: bold; color: var(--rfof-gold);
-        }
-
-        /* PRAI-NEURONEN AVATAR */
-        .prai-avatar {
-            width: 35px; height: 35px;
-            background: linear-gradient(45deg, #1a1a1a, #333);
-            border-radius: 50%; border: 1px solid var(--glass-border);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            height: 100vh; 
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* 02 KACHEL NULL (FIXIERTER MONITOR) */
-        #kachel-null {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 280px; padding: 15px;
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--rfof-green); border-radius: 15px;
-            z-index: 999; text-align: center;
-        }
-
-        /* 11 SEKTOREN GRID */
-        main { padding-top: 80px; padding-bottom: 120px; }
-        
-        .sector {
-            padding: 20px; margin-bottom: 40px;
+        /* 1. FRAKTALES DROPDOWN / HEADER */
+        header {
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
         }
 
-        /* 13 DUALE SEKTOREN GRID */
-        .dual-grid {
+        .dropdown-menu { display: flex; gap: 10px; }
+        
+        .nav-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-btn:hover { background: var(--accent); color: #000; }
+
+        /* 2. GUCI CONTEXT INDICATOR */
+        .guci-monitor {
+            background: rgba(50, 215, 75, 0.1);
+            border: 1px solid var(--accent);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        /* MAIN LAYOUT */
+        main {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr 320px;
+            grid-template-rows: 1fr 200px;
+            gap: 15px;
+            padding: 15px;
+            flex-grow: 1;
         }
 
-        .kachel {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 15px; cursor: pointer;
-            transition: transform 0.2s;
+        .panel {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            position: relative;
         }
 
-        .kachel:hover { transform: scale(1.02); background: rgba(255,255,255,0.05); }
-
-        .three-layer { display: flex; flex-direction: column; gap: 10px; }
-        .layer { font-size: 0.7rem; color: #888; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .diagramm-ebene { height: 60px; background: rgba(0,255,66,0.05); border-radius: 4px; }
-
-        /* rAPP STORE SEKTOR 11 */
-        .rapp-store {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-        }
-        .rapp-icon {
-            aspect-ratio: 1; background: #111; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column; font-size: 0.6rem;
+        /* BOSS-EBENE / EXPLORER */
+        #block-explorer {
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
         }
 
-        /* OVERLAY LAYER */
-        #overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            display: none; justify-content: center; align-items: center; z-index: 2000;
-        }
-        .app-card {
-            background: #1c1c1e; width: 90%; max-width: 400px; padding: 30px;
-            border-radius: 30px; text-align: center;
-        }
-        .btn-install {
-            background: #007aff; color: white; border: none;
-            padding: 12px 40px; border-radius: 20px; font-weight: bold; margin-top: 20px;
+        .utx-block {
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 2px solid var(--accent);
         }
 
-        @media (max-width: 768px) {
-            .dual-grid { grid-template-columns: 1fr; }
+        /* 4. MASTER-SWITCH */
+        #master-control {
+            position: absolute;
+            top: 20px; right: 20px;
+            display: none; /* Nur für @RFOF-NETWORK */
+        }
+
+        /* ENERGETISCHE SYNTHESE UI */
+        .synthese-stat {
+            margin-bottom: 20px;
+        }
+        .parity-value { font-size: 28px; font-weight: 700; color: #fff; }
+
+        /* TERMINAL (BOX I) */
+        #terminal {
+            grid-column: 1 / -1;
+            background: var(--terminal-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 12px;
+            overflow-y: auto;
+        }
+
+        /* RFOF-GOLDEN DEX VISUAL */
+        .dex-visual {
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            margin-top: 10px;
+        }
+        .candle { flex: 1; background: var(--accent); opacity: 0.6; }
+
+        .btn-rapp {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: #000;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div style="font-weight: bold; letter-spacing: 2px;">PZQQET</div>
-        <div id="master-profile" class="master-aura">@RFOF-NETWORK</div>
-        <div class="prai-avatar" id="avatar-target"></div>
-    </header>
-
-    <div id="kachel-null">
-        <div style="font-size: 0.6rem; color: var(--rfof-green);">EREIGNISHORIZONT PUNKT E (6.5)</div>
-        <div id="live-takt" style="font-size: 1.5rem; font-weight: bold;">0.000</div>
-        <div id="sync-status" style="font-size: 0.5rem; letter-spacing: 1px;">SYNCING REALITY 0...</div>
+<header>
+    <div class="dropdown-menu">
+        <button class="nav-btn" onclick="showInfo('Wallet: 45% SAFE / 42% OWNER')">WALLET</button>
+        <button class="nav-btn" onclick="showInfo('X-Hub: Fusion Active')">PROFILE</button>
+        <button class="nav-btn" onclick="location.href='/settings/'">SETTINGS</button>
     </div>
+    <div class="guci-monitor" id="guci-path">PATH: /chain-clearing/browser.html</div>
+    <div id="master-status" style="font-size: 11px; color: var(--accent);">ROLE: ADMIN</div>
+</header>
 
-    <main id="app-flow">
-        <section class="sector">
-            <h3>03 DUALE SEKTOREN</h3>
-            <div class="dual-grid" id="dual-grid-target">
-                </div>
-        </section>
-
-        <section class="sector" id="sector-06">
-            <h3>06 RFOF-GOLDEN DEX</h3>
-            <div class="diagramm-ebene" style="height: 200px; border: 1px solid var(--rfof-green);">
-                <div style="padding: 10px; font-size: 0.7rem; color: var(--rfof-green);">LIVE CANDLESTICK VECTOR [SIMULATED]</div>
+<main>
+    <section class="panel">
+        <h3>UTX-BASE64 CHAIN-EXPLORER (BOX J)</h3>
+        <div id="block-explorer">
             </div>
-        </section>
-
-        <section class="sector">
-            <h3>11 rAPP STORE</h3>
-            <div class="rapp-store">
-                <div class="rapp-icon" onclick="openApp('GPCB')">GPCB</div>
-                <div class="rapp-icon" onclick="openApp('ECCU')">ECCU</div>
-                <div class="rapp-icon" onclick="openApp('CHAIN')">CHAIN</div>
-                <div class="rapp-icon" onclick="openApp('API')">API</div>
-                <div class="rapp-icon" onclick="openApp('GT-DOKU')">GT</div>
-                <div class="rapp-icon" onclick="openApp('GT-PUB')">PUB</div>
-            </div>
-        </section>
-    </main>
-
-    <div id="overlay" onclick="this.style.display='none'">
-        <div class="app-card" onclick="event.stopPropagation()">
-            <div id="app-title" style="font-size: 1.5rem; margin-bottom: 10px;">App Name</div>
-            <p id="app-desc" style="color: #888; font-size: 0.9rem;">Mechatronische Repository App.</p>
-            <button class="btn-install">INSTALL rAPP</button>
+        <div id="master-control">
+            <button class="nav-btn" style="border-color: red;">MASTER-SWITCH</button>
         </div>
-    </div>
+    </section>
 
-    <script>
-        // 1. TAKT-SYNCHRONISATION AUS INDEX.HTML (KELLER)
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'PZQQET_STREAM') {
-                const data = JSON.parse(atob(e.newValue)); // Base64 Demaskierung
-                document.getElementById('live-takt').innerText = data.takt.toFixed(3);
-                if (data.takt >= 6.4 && data.takt <= 6.6) {
-                    document.getElementById('kachel-null').style.borderColor = '#D4AF37';
-                } else {
-                    document.getElementById('kachel-null').style.borderColor = '#00FF42';
-                }
-            }
-        });
+    <aside class="panel" style="display: flex; flex-direction: column;">
+        <div class="synthese-stat">
+            <label style="font-size: 11px; opacity: 0.5;">42E0-GESETZ PARITY</label>
+            <div class="parity-value">€ 2.50</div>
+            <div style="font-size: 12px; opacity: 0.8;">= 1 ECCU (2 TB Joule)</div>
+        </div>
 
-        // 2. GENERIERUNG DER 13 SEKTOREN (FRAKTAL)
-        const sektoren = ["GPCB", "Phoenix Coin", "G-Phoenix Token", "Phoenix LP", "ECCU", "Joule", "XP", "GOLD", "RFOF", "RFOF/GOLD LP", "BIP", "Registry", "BRIDGE"];
-        const grid = document.getElementById('dual-grid-target');
+        <div class="synthese-stat">
+            <label style="font-size: 11px; opacity: 0.5;">RFOF-GOLDEN DEX</label>
+            <div class="dex-visual" id="dex-candles"></div>
+        </div>
 
-        sektoren.forEach((name, i) => {
-            const kachel = document.createElement('div');
-            kachel.className = 'kachel';
-            kachel.innerHTML = `
-                <div class="three-layer">
-                    <div class="layer">GENESIS: PZQQET/03/${i+1}</div>
-                    <div style="font-weight: bold; font-size: 0.9rem;">${name}</div>
-                    <div class="layer">SYNC: 100M %</div>
-                    <div class="diagramm-ebene" onclick="window.location.hash='#sector-06'"></div>
-                </div>
-            `;
-            kachel.onclick = () => console.log(`Tunneling to Root: /${name.toLowerCase()}/`);
-            grid.appendChild(kachel);
-        });
+        <button class="btn-rapp">INSTALL rAPP MANIFEST</button>
+    </aside>
 
-        // 3. rAPP STORE LOGIK
-        function openApp(name) {
-            const overlay = document.getElementById('overlay');
-            const title = document.getElementById('app-title');
-            const desc = document.getElementById('app-desc');
-            
-            overlay.style.display = 'flex';
-            title.innerText = name;
-            desc.innerText = `Souveräne rApp der ${name}-Infrastruktur. Ready for Multi-Plattform Install via X-Hub.`;
-        }
+    <section id="terminal">
+        <div style="opacity: 0.5;">[PZQQET_BOOT_SEQUENCE_COMPLETE]</div>
+        <div>> INITIALIZING GUCI CONTEXT ANALYSIS...</div>
+    </section>
+</main>
 
-        // 4. PRAI-NEURONEN AVATAR GENERIERUNG
-        function generatePraiAvatar() {
-            const target = document.getElementById('avatar-target');
-            // Simuliert PRAI-Algorithmus: Generiert Canvas-Muster statt Upload
-            target.style.background = `radial-gradient(circle, #D4AF37 0%, #111 70%)`;
-        }
+<script>
+    const terminal = document.getElementById('terminal');
+    const explorer = document.getElementById('block-explorer');
+    const dex = document.getElementById('dex-candles');
 
-        generatePraiAvatar();
-    </script>
+    // 1. GUCI-Intelligenz Simulation
+    const path = window.location.pathname;
+    document.getElementById('guci-path').innerText = `GUCI_CONTEXT: ${path.toUpperCase()} [JOUL_SYNC_ACTIVE]`;
+
+    // 2. Terminal Clearing Logs
+    const logs = [
+        "Clearing Joule Block #42E0...",
+        "UTX-Base64: Masking applied (Role: AAA)",
+        "Fee-Distribution: 45% SAFE Locked",
+        "rApp-Bridge: Injektion lückenlos",
+        "ECCU Parity-Anchor: Stable at 2.50€",
+        "Realität 0: Sync 100.000.000%"
+    ];
+
+    function addLog() {
+        const line = document.createElement('div');
+        line.innerText = `> ${new Date().toLocaleTimeString()} : ${logs[Math.floor(Math.random()*logs.length)]}`;
+        terminal.appendChild(line);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // 3. Block-Explorer (UTX-Base64)
+    function addBlock() {
+        const block = document.createElement('div');
+        block.className = 'utx-block';
+        const hash = btoa(Math.random().toString()).substring(0, 32);
+        block.innerHTML = `<strong>BLOCK_${Date.now()}</strong><br><span style="color:#888;">HASH: ${hash}</span><br>ENERGY: 2 TB JOULE`;
+        explorer.prepend(block);
+        if(explorer.children.length > 5) explorer.lastChild.remove();
+    }
+
+    // 4. DEX Visual Simulation
+    function updateDex() {
+        const candle = document.createElement('div');
+        candle.className = 'candle';
+        candle.style.height = Math.random() * 80 + 10 + "px";
+        dex.appendChild(candle);
+        if(dex.children.length > 30) dex.firstChild.remove();
+    }
+
+    // 5. Rollen-Hierarchie Simulation
+    if(window.location.hash === "#rfof-network") {
+        document.getElementById('master-control').style.display = 'block';
+        document.getElementById('master-status').innerText = "ROLE: MASTER (@RFOF-NETWORK)";
+    }
+
+    // Intervalle
+    setInterval(addLog, 2000);
+    setInterval(addBlock, 4000);
+    setInterval(updateDex, 1000);
+
+    function showInfo(msg) {
+        const line = document.createElement('div');
+        line.style.color = '#fff';
+        line.innerText = `[INFO] ${msg}`;
+        terminal.appendChild(line);
+    }
+</script>
+
 </body>
 </html>

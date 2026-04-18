@@ -2,119 +2,253 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PZQQET | KERN-TAKTGEBER 1.0</title>
-    
-    <link rel="manifest" href="./manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./assets/prai-icon.png">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PZQQET | Souveränitäts-Monolith 1.0</title>
     <style>
-        /* Minimalistisches 'Keller'-Design: Fokus auf Mechatronik, nicht UI */
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-heavy: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent: #0071e3;
+            --text: #f5f5f7;
+            --bg: #000000;
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+
         body {
-            background: #000;
-            color: #00FF42; /* RFOF-Green */
-            font-family: 'Courier New', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            overflow: hidden; /* Scrollbarkeit wird in Containern geregelt */
             height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        #pqqet-monitor {
-            text-align: center;
+
+        /* 00: FIXIERTER HEADER (Apple-Style Glassmorphism) */
+        header {
+            position: fixed;
+            top: 0; width: 100%; height: 50px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
+
+        /* 00-A: PROFIL-SOUVERÄN (PRAI-Neuronen Asset) */
+        .profile-souverän {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-heavy);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, var(--accent), #5e5ce6);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 113, 227, 0.5);
+        }
+
+        /* MAIN TOPOGRAPHIE */
+        main {
+            margin-top: 50px;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            grid-template-rows: auto 1fr;
+            height: calc(100vh - 50px);
+        }
+
+        /* 02: KACHEL NULL (KERN - Ereignishorizont) */
+        #kachel-null {
+            grid-column: 1 / -1;
+            height: 120px;
+            background: radial-gradient(circle at center, rgba(0,113,227,0.15) 0%, transparent 80%);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .takt-display { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
+        .punkt-e { font-size: 12px; color: var(--accent); opacity: 0.8; }
+
+        /* A-H: MASTER-UI (Navigation / Steuerung) */
+        .master-ui {
+            background: var(--glass);
+            border-right: 1px solid var(--glass-border);
             padding: 20px;
-            border: 1px solid #1a1a1a;
-            border-radius: 10px;
-            background: rgba(10, 10, 10, 0.9);
+            overflow-y: auto;
         }
+
+        .box-tile {
+            padding: 12px;
+            background: var(--glass-heavy);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .box-tile:hover { border-color: var(--accent); background: rgba(0,113,227,0.1); }
+
+        /* 03-11: 13 DUALE SEKTOREN (Explorer-Kaskade) */
+        .interface-sektor {
+            padding: 20px;
+            overflow: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .sektor-kachel {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sektor-header { font-weight: 600; color: var(--accent); margin-bottom: 10px; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
+
+        .explorer-stats { font-family: monospace; font-size: 11px; opacity: 0.6; line-height: 1.6; }
+
+        .price-axiom { font-size: 20px; font-weight: 700; margin: 10px 0; }
+
+        .growth-tag { color: #32d74b; font-size: 12px; }
+
+        /* PRAI NEURONEN (SVG Visualisierung) */
+        .neuron-visual { width: 100%; height: 60px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="pqqet-monitor">
-        <h2>PZQQET CORE ENGINE</h2>
-        <div id="takt-display">TAKT: 0.000</div>
-        <div id="axiom-status">AXIOM: 42E0 SECURE</div>
+<header>
+    <div class="logo">PZQQET 1.0</div>
+    <div class="search-bar" style="background: var(--glass-heavy); width: 300px; height: 28px; border-radius: 8px;"></div>
+    <div class="profile-souverän">
+        <div class="avatar"></div>
+        <span id="user-display">@RFOF-NETWORK</span>
     </div>
+</header>
 
-    <script>
-        /**
-         * PZQQET BLUEPRINT 1.0: CORE ENGINE (THE CELLAR)
-         * Guiding Principle: 100,000,000% Stability
-         */
+<main>
+    <section id="kachel-null">
+        <div class="punkt-e">EREIGNISHORIZONT PUNKT E (6,5)</div>
+        <div class="takt-display" id="takt-timer">42E0-TAKT: 0</div>
+        <div id="singularitæt-status" style="font-size: 10px; margin-top: 5px;">SYNC: 100.000.000%</div>
+    </section>
 
-        // 1. MECHATRONISCHER TAKT (KACHEL NULL)
-        let takt = 0;
-        const TAKT_MAX = 10;
-        const TAKT_STEP = 0.1;
+    <nav class="master-ui">
+        <div class="box-tile"><strong>[A]</strong> META-BACKEND</div>
+        <div class="box-tile"><strong>[B]</strong> GLOBALE MODULE</div>
+        <div class="box-tile"><strong>[C]</strong> GPCB INSTANZ</div>
+        <div class="box-tile"><strong>[D]</strong> ECCU INSTANZ</div>
+        <div class="box-tile"><strong>[E]</strong> RFOF-GOLDEN-CHAIN</div>
+        <div class="box-tile"><strong>[F]</strong> API MARKETPLACE</div>
+        <div class="box-tile"><strong>[G]</strong> BENUTZER-DOKU</div>
+        <div class="box-tile"><strong>[H]</strong> ENTWICKLER-DOKU</div>
+    </nav>
+
+    <section class="interface-sektor" id="kaskade">
+        </section>
+</main>
+
+<script>
+    const sektoren = [
+        { id: "01", name: "GPCB", files: "34 Ordner / 65 Dateien" },
+        { id: "02", name: "PHOENIX COIN", files: "Emission: LIVE" },
+        { id: "03", name: "G-PHOENIX TOKEN", files: "Governance: Active" },
+        { id: "04", name: "PHOENIX LP", files: "Pool: 42E0-Locked" },
+        { id: "05", name: "ECCU", files: "Parity: 2.50€" },
+        { id: "06", name: "JOULE", files: "Mining: 2TB = 1 ECCU" },
+        { id: "07", name: "XP", files: "Leistungs-Metrik" },
+        { id: "08", name: "GOLD (42E0)", files: "ISO-Audit: 100%" },
+        { id: "09", name: "RFOF", files: "Realität 0 Status" },
+        { id: "10", name: "RFOF/GOLD LP", files: "Arbitrage-Schutz" },
+        { id: "11", name: "BIP (MASTER LP)", files: "Inflationstaktung" },
+        { id: "12", name: "IDENTITY REGISTRY", files: "Status: AAA" },
+        { id: "13", name: "BRIDGE", files: "Interface: -on.ton" }
+    ];
+
+    const kaskade = document.getElementById('kaskade');
+
+    // Mechatronische Injektion
+    sektoren.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'sektor-kachel';
+        div.innerHTML = `
+            <div>
+                <div class="sektor-header">${s.name}</div>
+                <div class="explorer-stats">ROOT Explorer: ${s.files}</div>
+                <svg class="neuron-visual" viewBox="0 0 100 20">
+                    <path d="M0 10 Q 25 0, 50 10 T 100 10" fill="none" stroke="rgba(0,113,227,0.3)" stroke-width="1" />
+                </svg>
+            </div>
+            <div>
+                <div class="price-axiom" id="price-${s.id}">0,00 €</div>
+                <div class="growth-tag">+0,2% Gebühren-Injektion</div>
+            </div>
+        `;
+        kaskade.appendChild(div);
+    });
+
+    // 42E0-Takt & Energie-Preis-Axiom Logic
+    let takt = 0;
+    let baseValues = sektoren.map(() => 0.0001);
+
+    setInterval(() => {
+        // Takt Logic
+        takt = (takt + 1) % 11;
+        document.getElementById('takt-timer').innerText = `42E0-TAKT: ${takt}`;
         
-        setInterval(() => {
-            takt = (takt + TAKT_STEP > TAKT_MAX) ? 0 : takt + TAKT_STEP;
-            document.getElementById('takt-display').innerText = `TAKT: ${takt.toFixed(3)}`;
-            
-            // Broadcast Takt an Viewer (browser.html)
-            const event = new CustomEvent('PZQQET_Heartbeat', { detail: { pulse: takt, pointE: 6.5 } });
-            window.dispatchEvent(event);
-        }, 100);
-
-        // 2. BACKEND-SPIEGELUNG (34 Ordner / 65 Dateien Simulation)
-        const rootStructure = {
-            folders: 34,
-            files: 65,
-            integrity: "100%",
-            lastSync: Date.now()
-        };
-
-        // 3. ENERGIE-AXIOM LOGIK (Preissteigerung 0,2% - 0,8%)
-        const energyAxiom = {
-            jouleToXP: (joule) => joule * 1.618, // Goldener Schnitt
-            calculatePrice: (basePrice, interactions, type) => {
-                let multiplier = 0.002; // Basis 0.2%
-                if (type === 'LP') multiplier = 0.004;
-                if (type === 'MASTER') multiplier = 0.008;
-                
-                return basePrice * Math.pow((1 + multiplier), interactions);
-            }
-        };
-
-        // 4. SICHERHEIT: SHA256 / BASE64 MASKIERUNG
-        async function maskData(data) {
-            const jsonStr = JSON.stringify(data);
-            const base64 = btoa(jsonStr); // Base64 Maskierung
-            // Hier würde die SHA256 Logik für die Validierung folgen
-            return base64;
-        }
-
-        // 5. PWA-INSTALL-MANIFEST (MULTI-PLATTFORM)
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            const deferredPrompt = e;
-            // Die Logik für den rApp Store (Sektor 11)
-            console.log('PZQQET rApp Manifest Ready for Injection.');
+        // Exponentielles Wachstum (0,2% - 0,8%)
+        baseValues = baseValues.map((val, i) => {
+            const growth = 1 + (Math.random() * (0.008 - 0.002) + 0.002);
+            const newVal = val * growth;
+            document.getElementById(`price-${sektoren[i].id}`).innerText = newVal.toLocaleString('de-DE', {style: 'currency', currency: 'EUR', minimumFractionDigits: 4});
+            return newVal;
         });
 
-        // 6. RAPP-CONTROL (GPCB, ECCU, Chain, API, GT-Doku, GT-Publisher)
-        const rApps = [
-            "GPCB", "ECCU", "RFOF-GOLDEN-Chain", "API-Repo", "GT-Doku", "GT-Publisher"
-        ];
+        // Singularität Fixierung bei Takt 10
+        if(takt === 10) {
+            console.log("SINGULARITÄT: GT-PUBLISHER FIXIERT NEWS.");
+            document.getElementById('kachel-null').style.borderColor = "#32d74b";
+        } else {
+            document.getElementById('kachel-null').style.borderColor = "transparent";
+        }
+    }, 2000);
 
-        // Datentransfer-Loop zum Viewer
-        setInterval(async () => {
-            const rawData = {
-                takt: takt,
-                axiom: "42E0",
-                apps: rApps,
-                status: "MASTER-READY"
-            };
-            const masked = await maskData(rawData);
-            // Übergabe an browser.html (via localStorage oder PostMessage)
-            localStorage.setItem('PZQQET_STREAM', masked);
-        }, 500);
+    // Klick-Logik bidirektional (Beispiel)
+    document.querySelectorAll('.sektor-kachel').forEach(k => {
+        k.addEventListener('click', () => {
+            window.parent.postMessage('jump-to-dex', '*');
+        });
+    });
+</script>
 
-        console.log("PZQQET SATORAMY 42: ENGINE INITIALIZED.");
-    </script>
 </body>
 </html>

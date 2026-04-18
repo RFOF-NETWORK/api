@@ -3,254 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET | GUCI-Instrument (Box J)</title>
+    <title>PZQQET | GUCI-INSTRUMENT (BOX I/J)</title>
     <style>
         :root {
+            --terminal-green: #32d74b;
+            --terminal-bg: #050505;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #32d74b; 
-            --terminal-bg: #0a0a0a;
-            --text: #f5f5f7;
-            --bg: #000000;
+            --font: "SF Mono", "Fira Code", monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-            height: 100vh; 
+        
+        body {
+            background-color: var(--terminal-bg);
+            color: var(--terminal-green);
+            font-family: var(--font);
+            height: 100vh;
+            display: grid;
+            grid-template-areas: 
+                "header header"
+                "explorer sidebar"
+                "terminal terminal";
+            grid-template-columns: 1fr 350px;
+            grid-template-rows: 60px 1fr 250px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         /* 1. FRAKTALES DROPDOWN / HEADER */
         header {
-            padding: 10px 20px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(25px);
+            grid-area: header;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
-        .dropdown-menu { display: flex; gap: 10px; }
-        
-        .nav-btn {
+        .dropdown { position: relative; display: inline-block; }
+        .drop-trigger {
             background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 12px;
+            border: 1px solid var(--terminal-green);
+            color: var(--terminal-green);
+            padding: 8px 16px;
             cursor: pointer;
-            transition: 0.2s;
+            font-weight: bold;
         }
 
-        .nav-btn:hover { background: var(--accent); color: #000; }
-
-        /* 2. GUCI CONTEXT INDICATOR */
-        .guci-monitor {
-            background: rgba(50, 215, 75, 0.1);
-            border: 1px solid var(--accent);
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 11px;
-        }
-
-        /* MAIN LAYOUT */
-        main {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            grid-template-rows: 1fr 200px;
-            gap: 15px;
-            padding: 15px;
-            flex-grow: 1;
-        }
-
-        .panel {
-            background: var(--glass);
+        .drop-content {
+            display: none;
+            position: absolute;
+            background: #000;
             border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            backdrop-filter: blur(15px);
-            padding: 20px;
-            position: relative;
+            min-width: 280px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        /* BOSS-EBENE / EXPLORER */
-        #block-explorer {
+        .dropdown:hover .drop-content { display: block; }
+        .drop-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .drop-item:hover { background: var(--glass); }
+
+        /* 2. BOSS-EBENE BOX J (Zustand L): UTX-EXPLORER */
+        #explorer {
+            grid-area: explorer;
+            padding: 20px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 12px;
+            border-right: 1px solid var(--glass-border);
         }
 
         .utx-block {
-            background: rgba(255,255,255,0.02);
-            margin-bottom: 8px;
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 2px solid var(--accent);
-        }
-
-        /* 4. MASTER-SWITCH */
-        #master-control {
-            position: absolute;
-            top: 20px; right: 20px;
-            display: none; /* Nur für @RFOF-NETWORK */
-        }
-
-        /* ENERGETISCHE SYNTHESE UI */
-        .synthese-stat {
-            margin-bottom: 20px;
-        }
-        .parity-value { font-size: 28px; font-weight: 700; color: #fff; }
-
-        /* TERMINAL (BOX I) */
-        #terminal {
-            grid-column: 1 / -1;
-            background: var(--terminal-bg);
-            border: 1px solid #1a1a1a;
-            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
             padding: 15px;
-            font-family: 'Courier New', monospace;
-            color: var(--accent);
+            margin-bottom: 15px;
             font-size: 12px;
-            overflow-y: auto;
+            position: relative;
+        }
+        .utx-block::before {
+            content: "GENESIS JOULE BLOCK";
+            font-size: 9px;
+            position: absolute;
+            top: -7px; left: 10px;
+            background: var(--terminal-bg);
+            padding: 0 5px;
         }
 
-        /* RFOF-GOLDEN DEX VISUAL */
-        .dex-visual {
-            height: 100px;
+        /* 3. ENERGETISCHE SYNTHESE & DEX */
+        aside {
+            grid-area: sidebar;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .parity-display {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px dashed var(--terminal-green);
+        }
+
+        .dex-window {
+            flex-grow: 1;
+            background: #000;
+            border: 1px solid var(--glass-border);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-sim {
+            flex-grow: 1;
             display: flex;
             align-items: flex-end;
             gap: 2px;
-            margin-top: 10px;
         }
-        .candle { flex: 1; background: var(--accent); opacity: 0.6; }
+        .candle { width: 100%; background: var(--terminal-green); opacity: 0.5; }
 
-        .btn-rapp {
-            width: 100%;
-            padding: 12px;
-            background: #fff;
+        /* 4. TERMINAL BOX I (Zustand K) */
+        #terminal-console {
+            grid-area: terminal;
+            background: #000;
+            border-top: 2px solid var(--terminal-green);
+            padding: 15px;
+            font-size: 13px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+
+        /* RECHTE-MATRIX / MASTER SWITCH */
+        .master-switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 10px;
+        }
+        input[type="checkbox"] { accent-color: var(--terminal-green); }
+
+        .btn-install {
+            background: var(--terminal-green);
             color: #000;
-            border-radius: 10px;
-            font-weight: 700;
             border: none;
+            padding: 12px;
+            font-weight: 900;
             cursor: pointer;
             margin-top: auto;
+        }
+
+        .guci-badge {
+            font-size: 10px;
+            background: var(--terminal-green);
+            color: #000;
+            padding: 2px 5px;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="dropdown-menu">
-        <button class="nav-btn" onclick="showInfo('Wallet: 45% SAFE / 42% OWNER')">WALLET</button>
-        <button class="nav-btn" onclick="showInfo('X-Hub: Fusion Active')">PROFILE</button>
-        <button class="nav-btn" onclick="location.href='/settings/'">SETTINGS</button>
+    <div class="dropdown">
+        <button class="drop-trigger">SATORAMY_VIEWER_ROOT</button>
+        <div class="drop-content">
+            <div class="drop-item" onclick="logAction('Wallet Ledger accessed')">
+                <strong>BUTTON 1: WALLET</strong><br>
+                Mechatronik: 45% SAFE / 42% OWNER / 10% FOND / 3% SYS
+            </div>
+            <div class="drop-item" onclick="logAction('Social X-Hub Fusion active')">
+                <strong>BUTTON 2: PROFILE</strong><br>
+                X-Hub Fusion: 50% Energie-Incentive NFT
+            </div>
+            <div class="drop-item" onclick="location.href='/settings/'">
+                <strong>BUTTON 3: SETTINGS</strong><br>
+                Root-Path: /settings/
+            </div>
+        </div>
     </div>
-    <div class="guci-monitor" id="guci-path">PATH: /chain-clearing/browser.html</div>
-    <div id="master-status" style="font-size: 11px; color: var(--accent);">ROLE: ADMIN</div>
+
+    <div class="master-switch">
+        <span>GUCI: ANALYSIS ACTIVE</span>
+        <div class="guci-badge" id="path-indicator">PATH: /chain-clearing/</div>
+        <label>MASTER-SWITCH:</label>
+        <input type="checkbox" id="masterSwitch" onchange="toggleMaster()">
+    </div>
 </header>
 
-<main>
-    <section class="panel">
-        <h3>UTX-BASE64 CHAIN-EXPLORER (BOX J)</h3>
-        <div id="block-explorer">
-            </div>
-        <div id="master-control">
-            <button class="nav-btn" style="border-color: red;">MASTER-SWITCH</button>
+<main id="explorer">
+    <h3 style="margin-bottom: 20px;">UTX-BASE64 EXPLORER (BOX J / L)</h3>
+    <div id="block-container">
         </div>
-    </section>
-
-    <aside class="panel" style="display: flex; flex-direction: column;">
-        <div class="synthese-stat">
-            <label style="font-size: 11px; opacity: 0.5;">42E0-GESETZ PARITY</label>
-            <div class="parity-value">€ 2.50</div>
-            <div style="font-size: 12px; opacity: 0.8;">= 1 ECCU (2 TB Joule)</div>
-        </div>
-
-        <div class="synthese-stat">
-            <label style="font-size: 11px; opacity: 0.5;">RFOF-GOLDEN DEX</label>
-            <div class="dex-visual" id="dex-candles"></div>
-        </div>
-
-        <button class="btn-rapp">INSTALL rAPP MANIFEST</button>
-    </aside>
-
-    <section id="terminal">
-        <div style="opacity: 0.5;">[PZQQET_BOOT_SEQUENCE_COMPLETE]</div>
-        <div>> INITIALIZING GUCI CONTEXT ANALYSIS...</div>
-    </section>
 </main>
 
+<aside>
+    <div class="parity-display">
+        <div style="font-size: 10px; opacity: 0.7;">42E0-GESETZ SYNTHESE</div>
+        <div style="font-size: 24px; font-weight: bold;">2 TB = 2,50€</div>
+        <div style="font-size: 11px;">1 ECCU FIXED</div>
+    </div>
+
+    <div class="dex-window">
+        <div style="font-size: 10px; margin-bottom: 10px;">RFOF/GOLD LP LIVE-TRADING</div>
+        <div class="chart-sim" id="dex-chart"></div>
+    </div>
+
+    <button class="btn-install" onclick="logAction('Install Manifest triggered')">INSTALL rAPP MANIFEST</button>
+</aside>
+
+<footer id="terminal-console">
+    <div style="color: #fff; margin-bottom: 5px;">> INITIALIZING CLEARING CONSOLE (BOX I / K)...</div>
+    <div id="logs"></div>
+</footer>
+
 <script>
-    const terminal = document.getElementById('terminal');
-    const explorer = document.getElementById('block-explorer');
-    const dex = document.getElementById('dex-candles');
+    const logs = document.getElementById('logs');
+    const blockContainer = document.getElementById('block-container');
+    const dexChart = document.getElementById('dex-chart');
 
-    // 1. GUCI-Intelligenz Simulation
-    const path = window.location.pathname;
-    document.getElementById('guci-path').innerText = `GUCI_CONTEXT: ${path.toUpperCase()} [JOUL_SYNC_ACTIVE]`;
-
-    // 2. Terminal Clearing Logs
-    const logs = [
-        "Clearing Joule Block #42E0...",
-        "UTX-Base64: Masking applied (Role: AAA)",
-        "Fee-Distribution: 45% SAFE Locked",
-        "rApp-Bridge: Injektion lückenlos",
-        "ECCU Parity-Anchor: Stable at 2.50€",
-        "Realität 0: Sync 100.000.000%"
-    ];
-
-    function addLog() {
-        const line = document.createElement('div');
-        line.innerText = `> ${new Date().toLocaleTimeString()} : ${logs[Math.floor(Math.random()*logs.length)]}`;
-        terminal.appendChild(line);
-        terminal.scrollTop = terminal.scrollHeight;
+    function logAction(msg) {
+        const entry = document.createElement('div');
+        entry.innerText = `[${new Date().toLocaleTimeString()}] > ${msg}`;
+        logs.prepend(entry);
     }
 
-    // 3. Block-Explorer (UTX-Base64)
-    function addBlock() {
-        const block = document.createElement('div');
-        block.className = 'utx-block';
-        const hash = btoa(Math.random().toString()).substring(0, 32);
-        block.innerHTML = `<strong>BLOCK_${Date.now()}</strong><br><span style="color:#888;">HASH: ${hash}</span><br>ENERGY: 2 TB JOULE`;
-        explorer.prepend(block);
-        if(explorer.children.length > 5) explorer.lastChild.remove();
+    // UTX-Base64 Block Generierung
+    function generateBlocks() {
+        for(let i=0; i<5; i++) {
+            const block = document.createElement('div');
+            block.className = 'utx-block';
+            const base64Data = btoa(`PZQQET_BLOCK_${Math.random()}`);
+            block.innerHTML = `
+                HASH: <span style="color:#fff">${base64Data.substring(0, 24)}...</span><br>
+                JOULE_LOAD: 2.00 TB<br>
+                STATUS: CLEARING_VALIDATED
+            `;
+            blockContainer.appendChild(block);
+        }
     }
 
-    // 4. DEX Visual Simulation
+    // DEX Simulation
     function updateDex() {
         const candle = document.createElement('div');
         candle.className = 'candle';
-        candle.style.height = Math.random() * 80 + 10 + "px";
-        dex.appendChild(candle);
-        if(dex.children.length > 30) dex.firstChild.remove();
+        candle.style.height = Math.random() * 100 + '%';
+        dexChart.appendChild(candle);
+        if(dexChart.children.length > 40) dexChart.removeChild(dexChart.firstChild);
     }
 
-    // 5. Rollen-Hierarchie Simulation
-    if(window.location.hash === "#rfof-network") {
-        document.getElementById('master-control').style.display = 'block';
-        document.getElementById('master-status').innerText = "ROLE: MASTER (@RFOF-NETWORK)";
+    // Master Switch Logik
+    function toggleMaster() {
+        const isMaster = document.getElementById('masterSwitch').checked;
+        if(isMaster) {
+            logAction('MASTER-SOUVERÄNITÄT AKTIVIERT (@RFOF-NETWORK)');
+            document.body.style.border = "1px solid red";
+        } else {
+            logAction('MASTER-SOUVERÄNITÄT DEAKTIVIERT');
+            document.body.style.border = "none";
+        }
     }
 
-    // Intervalle
-    setInterval(addLog, 2000);
-    setInterval(addBlock, 4000);
+    // GUCI Intelligenz: Pfad-Analyse
+    document.getElementById('path-indicator').innerText = `CONTEXT: ${window.location.pathname}`;
+
+    // Initialisierung
+    generateBlocks();
     setInterval(updateDex, 1000);
+    setInterval(() => logAction('Automatic Joule-Clearing Sync...'), 5000);
 
-    function showInfo(msg) {
-        const line = document.createElement('div');
-        line.style.color = '#fff';
-        line.innerText = `[INFO] ${msg}`;
-        terminal.appendChild(line);
-    }
 </script>
-
 </body>
 </html>

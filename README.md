@@ -1,6 +1,103 @@
 # api
 InterBOxSpiderWeb.NET PRVPNRFAI.py 2025 - 2029
 
+
+---
+
+# 🕋 PZQQET MASTER-INTEGRATION: ROOT-SOUVERÄNITÄT & BOSS-EBENE
+
+## STATUS: 100.000.000% VOLLSTÄNDIG | FUSION BLUEPRINT 1.0 & 2.0
+
+
+
+### 1. MECHATRONISCHE ROLLEN- & WERTE-LOGIK (UNVERÄNDERLICH)
+
+
+
+* **Rollen-Definition:** * **Master (@RFOF-NETWORK):** Agiert als **Verschlüsseler** (Schöpfer der Gesetze/Code). Einziger Account mit physischer Gewalt über die 45% SAFE und 0,2% Steigerungs-Parameter.
+
+    * **User/Admin:** Agieren als **Entschlüsseler** (Knotenpunkte). Sie validieren das Netzwerk durch beigesteuerte Sicherheit (Joule/XP) gemäß ihrer Rolle (A, AA, AAA).
+
+* **ECCU-Autonomie:** ECCU ist im DEX sichtbar, jedoch **nicht handelbar**. Die Mechatronik arbeitet autonom als mathematischer Floor-Price-Anker für alle Rollen.
+
+* **Energie-Axiom:** Alle Preise starten bei **0,00 €**. Wert entsteht ausschließlich durch die Injektion von Interaktions-Energie ($TX_i$) und die Fixierung von **2 TB = 1 ECCU = 2,50 €**.
+
+
+
+---
+
+
+
+### 2. OPERATIVE MODUL-ARCHITEKTUR (ROOT-ORDNER)
+
+
+
+Jede Website im Repository-Root folgt dieser geglätteten 4-Abschnitt-Struktur:
+
+
+
+| REIHENFOLGE | MODUL (ORDNER) | ABSCHNITTE (OBJEKTE IN DER DARSTELLUNG) |
+| :--- | :--- | :--- |
+| **01** | **MARKETPLACE** | 1. **RFOF-GOLDEN DEX** (Candlesticks – RFOF/GOLD/LP-Trading)<br>2. **MEME-LAUNCHPAD** (Inkubator – Start 0,00€ / 12 interne Wert-Arten + Extensions)<br>3. **NFT-MARKET** (-in.gt Domains / PRAI-Kollektionen)<br>**CLEARING:** Lizenz-Validierung (ECCU Check – Autonome Mechatronik) |
+| **02** | **SETTINGS** | 1. **MASTER-SWITCH** (Nur RFOF-NETWORK – Verschlüsseler-Modus)<br>2. **PARAMETER-CENTER** (45% SAFE / 42% OWNER / 10% FOND / 3% SYSTEM)<br>3. **NAME-HISTORY** (Tag-Tracking – Lückenlose Historie)<br>**CLEARING:** VM-Bypass (405-Error Lösung via Box L) |
+| **03** | **PROFIL** | 1. **SOCIAL X-HUB** (Fusion: GitHub/X-Hub + RApp Instagram/Medium-Stil)<br>2. **NEURONEN-GENERATOR** (Asset-Creation – Absolute Design-Souveränität)<br>3. **XP-STATUS** (Joule-Skalierung – Visualisierung der Sicherheit)<br>**CLEARING:** Base64 Masking (Privacy Shield – Rollenbasierte Entschlüsselung) |
+| **04** | **WALLET** | 1. **UNIVERSAL-LEDGER** (ISO/Crypto Bridge – BTC, TON, EUR, US)<br>2. **MINING-REAKTOR** (Pixel/FPS -> Joule – Echte Energie-Verrechnung)<br>3. **TRADING-UNIT** (UTX-Chain Swaps – Verschachtelte Ketten)<br>**CLEARING:** Joul-Valuator (Fixierung: 2 TB = 1 ECCU = 2,50€) |
+| **05** | **STAKING** | 1. **TRIPLE-POOL-CHARTS** (LP-Performance & Arbitrage-Schutz)<br>2. **NFT-FORGE** (Joule-Schmiede – Umwandlung von XP in Utility-Assets)<br>3. **XP-RANKING** (Beweis der individuellen Beitrags-Sicherheit)<br>**CLEARING:** Live-Mining-Logs (Direkt-Sync mit Box J Viewer) |
+
+
+
+---
+
+
+
+### 3. GEGLÄTTETE REPOSITORY-STRUKTUR (DATEI-PFADE)
+
+
+
+```text
+
+/ (ROOT)
+
+├── index.html                  <-- Master Dashboard (Sektor 00-11)
+
+├── browser.html                <-- GUCI Instrument (Rollen-Check: Encryptor/Decryptor)
+
+├── 📁 wallet/
+
+│   ├── index.html              <-- Universal Ledger (BTC/TON Bridge) + Mining
+
+│   └── browser.html            <-- Joul-Valuator (2TB = 2,50€)
+
+├── 📁 profil/
+
+│   ├── index.html              <-- Fusion: X-Hub (GitHub) + RApp (Instagram)
+
+│   └── browser.html            <-- Neuronen-Generator (Asset Creation)
+
+├── 📁 settings/
+
+│   ├── index.html              <-- Master-Switch + Parameter (45% SAFE)
+
+│   └── browser.html            <-- Name-History + VM-Bypass
+
+├── 📁 marketplace/
+
+│   ├── index.html              <-- RFOF-GOLD DEX + Meme-Launchpad (12 Werte)
+
+│   └── browser.html            <-- ECCU-Anker (Autonome Mechatronik)
+
+├── 📁 staking/
+
+│   ├── index.html              <-- Triple-Pool-Charts + NFT-Forge
+
+│   └── browser.html            <-- Live-Mining-Logs (Sync Box J)
+
+├── 📁 chain-clearing/          <-- DIE BOSS-EBENE (I & J)
+
+│   ├── index.html              <-- Block-Explorer (UTX-Base64)
+
+│   └── browser.html            <-- Hashing-Terminal (Kette-in-Kette)
+```
 ---
 
 # 🕋 PZQQET BLUEPRINT 1.0: DER TOTALE SOUVERÄNITÄTS-MONOLITH (ULTIMATIVE FUSION)

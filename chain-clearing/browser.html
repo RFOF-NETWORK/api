@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PZQQET | GUCI-INSTRUMENT (BOX I/J)</title>
+    <title>PZQQET | GUCI-INSTRUMENT (BOSS-LEVEL)</title>
     <style>
         :root {
             --terminal-green: #32d74b;
             --terminal-bg: #050505;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #0071e3;
             --font: "SF Mono", "Fira Code", monospace;
         }
 
@@ -25,145 +26,159 @@
                 "header header"
                 "explorer sidebar"
                 "terminal terminal";
-            grid-template-columns: 1fr 350px;
-            grid-template-rows: 60px 1fr 250px;
+            grid-template-columns: 1fr 380px;
+            grid-template-rows: 65px 1fr 280px;
             overflow: hidden;
         }
 
-        /* 1. FRAKTALES DROPDOWN / HEADER */
+        /* 1. FRAKTALES DROPDOWN & OPERATIVER HEADER */
         header {
             grid-area: header;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 25px;
+            z-index: 2000;
         }
 
-        .dropdown { position: relative; display: inline-block; }
+        .dropdown { position: relative; }
         .drop-trigger {
             background: var(--glass);
             border: 1px solid var(--terminal-green);
             color: var(--terminal-green);
-            padding: 8px 16px;
+            padding: 10px 20px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .drop-content {
             display: none;
             position: absolute;
+            top: 100%; left: 0;
             background: #000;
-            border: 1px solid var(--glass-border);
-            min-width: 280px;
-            z-index: 2000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid var(--terminal-green);
+            min-width: 320px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
         }
 
         .dropdown:hover .drop-content { display: block; }
-        .drop-item {
-            padding: 15px;
-            border-bottom: 1px solid var(--glass-border);
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .drop-item:hover { background: var(--glass); }
 
-        /* 2. BOSS-EBENE BOX J (Zustand L): UTX-EXPLORER */
+        .drop-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .drop-item:hover { background: var(--glass); }
+        .drop-item strong { display: block; color: #fff; margin-bottom: 5px; }
+        .drop-item span { font-size: 10px; opacity: 0.7; }
+
+        /* 2. BOSS-EBENE BOX J (ZUSTAND L): UTX-EXPLORER */
         #explorer {
             grid-area: explorer;
-            padding: 20px;
+            padding: 30px;
             overflow-y: auto;
             border-right: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);
         }
 
-        .utx-block {
+        .utx-card {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            padding: 15px;
-            margin-bottom: 15px;
-            font-size: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
             position: relative;
-        }
-        .utx-block::before {
-            content: "GENESIS JOULE BLOCK";
-            font-size: 9px;
-            position: absolute;
-            top: -7px; left: 10px;
-            background: var(--terminal-bg);
-            padding: 0 5px;
+            font-size: 13px;
         }
 
-        /* 3. ENERGETISCHE SYNTHESE & DEX */
+        .utx-card::before {
+            content: "ANTEIL_SYNC_ACTIVE";
+            position: absolute;
+            top: -10px; right: 20px;
+            background: var(--terminal-green);
+            color: #000;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 8px;
+        }
+
+        /* 3. ENERGETISCHE SYNTHESE (42E0-GESETZ) */
         aside {
             grid-area: sidebar;
-            padding: 20px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+            background: #080808;
         }
 
-        .parity-display {
-            background: var(--glass);
+        .parity-box {
+            border: 1px solid var(--terminal-green);
             padding: 20px;
-            border-radius: 4px;
-            border: 1px dashed var(--terminal-green);
+            background: rgba(50, 215, 75, 0.05);
         }
 
-        .dex-window {
+        .dex-interface {
             flex-grow: 1;
-            background: #000;
             border: 1px solid var(--glass-border);
-            padding: 10px;
+            background: #000;
+            padding: 15px;
             display: flex;
             flex-direction: column;
         }
 
-        .chart-sim {
+        .candlestick-container {
             flex-grow: 1;
             display: flex;
             align-items: flex-end;
-            gap: 2px;
+            gap: 3px;
+            border-bottom: 1px solid var(--glass-border);
         }
-        .candle { width: 100%; background: var(--terminal-green); opacity: 0.5; }
 
-        /* 4. TERMINAL BOX I (Zustand K) */
+        .candle { width: 100%; background: var(--terminal-green); opacity: 0.6; }
+
+        /* 4. TERMINAL BOX I (ZUSTAND K): CLEARING */
         #terminal-console {
             grid-area: terminal;
             background: #000;
             border-top: 2px solid var(--terminal-green);
-            padding: 15px;
-            font-size: 13px;
+            padding: 20px;
             overflow-y: auto;
-            line-height: 1.4;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        /* RECHTE-MATRIX / MASTER SWITCH */
-        .master-switch {
+        .log-entry { margin-bottom: 4px; }
+        .log-ts { color: var(--accent); margin-right: 10px; }
+
+        /* MASTER CONTROL */
+        .master-switch-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 10px;
+            gap: 15px;
         }
-        input[type="checkbox"] { accent-color: var(--terminal-green); }
 
-        .btn-install {
+        .btn-rapp {
             background: var(--terminal-green);
             color: #000;
             border: none;
-            padding: 12px;
+            padding: 15px;
             font-weight: 900;
             cursor: pointer;
-            margin-top: auto;
+            text-transform: uppercase;
         }
 
-        .guci-badge {
-            font-size: 10px;
-            background: var(--terminal-green);
-            color: #000;
-            padding: 2px 5px;
+        #guci-path {
+            font-size: 11px;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 4px 10px;
         }
     </style>
 </head>
@@ -171,112 +186,111 @@
 
 <header>
     <div class="dropdown">
-        <button class="drop-trigger">SATORAMY_VIEWER_ROOT</button>
+        <button class="drop-trigger">SOUVERÄNITÄTS_VEKTOR</button>
         <div class="drop-content">
-            <div class="drop-item" onclick="logAction('Wallet Ledger accessed')">
-                <strong>BUTTON 1: WALLET</strong><br>
-                Mechatronik: 45% SAFE / 42% OWNER / 10% FOND / 3% SYS
+            <div class="drop-item" onclick="logAction('Universal-Ledger: Initiating Fee-Clearing...')">
+                <strong>BUTTON 1: WALLET</strong>
+                <span>45% SAFE | 42% OWNER | 10% FOND | 3% SYS</span>
             </div>
-            <div class="drop-item" onclick="logAction('Social X-Hub Fusion active')">
-                <strong>BUTTON 2: PROFILE</strong><br>
-                X-Hub Fusion: 50% Energie-Incentive NFT
+            <div class="drop-item" onclick="logAction('Social X-Hub: Syncing Energy-Incentives...')">
+                <strong>BUTTON 2: PROFILE (X-HUB)</strong>
+                <span>50% EIGENENERGIE-NFT LOGIK AKTIV</span>
             </div>
-            <div class="drop-item" onclick="location.href='/settings/'">
-                <strong>BUTTON 3: SETTINGS</strong><br>
-                Root-Path: /settings/
+            <div class="drop-item" onclick="logAction('System: Accessing /settings/ Root...')">
+                <strong>BUTTON 3: SETTINGS</strong>
+                <span>PFAD-KOPPELUNG: /root/settings/</span>
             </div>
         </div>
     </div>
 
-    <div class="master-switch">
-        <span>GUCI: ANALYSIS ACTIVE</span>
-        <div class="guci-badge" id="path-indicator">PATH: /chain-clearing/</div>
-        <label>MASTER-SWITCH:</label>
-        <input type="checkbox" id="masterSwitch" onchange="toggleMaster()">
+    <div class="master-switch-container">
+        <div id="guci-path">GUCI_CONTEXT: /CHAIN-CLEARING/</div>
+        <label style="font-size: 10px;">MASTER-SOUVERÄN:</label>
+        <input type="checkbox" id="masterToggle" onchange="checkSovereignty()">
     </div>
 </header>
 
 <main id="explorer">
-    <h3 style="margin-bottom: 20px;">UTX-BASE64 EXPLORER (BOX J / L)</h3>
-    <div id="block-container">
+    <h2 style="color: #fff; margin-bottom: 30px; font-size: 18px;">UTX-BASE64 VIEWER (BOX J / L)</h2>
+    <div id="utx-list">
         </div>
 </main>
 
 <aside>
-    <div class="parity-display">
-        <div style="font-size: 10px; opacity: 0.7;">42E0-GESETZ SYNTHESE</div>
-        <div style="font-size: 24px; font-weight: bold;">2 TB = 2,50€</div>
-        <div style="font-size: 11px;">1 ECCU FIXED</div>
+    <div class="parity-box">
+        <div style="font-size: 10px; opacity: 0.6;">42E0-GESETZ (SYNTESE)</div>
+        <div style="font-size: 22px; margin: 10px 0;">2 TB = 1 ECCU</div>
+        <div style="font-size: 18px; color: #fff;">VALUE: 2,50 €</div>
     </div>
 
-    <div class="dex-window">
-        <div style="font-size: 10px; margin-bottom: 10px;">RFOF/GOLD LP LIVE-TRADING</div>
-        <div class="chart-sim" id="dex-chart"></div>
+    <div class="dex-interface">
+        <div style="font-size: 10px; margin-bottom: 10px;">RFOF-GOLDEN DEX (LIVE)</div>
+        <div class="candlestick-container" id="dex-chart"></div>
     </div>
 
-    <button class="btn-install" onclick="logAction('Install Manifest triggered')">INSTALL rAPP MANIFEST</button>
+    <button class="btn-rapp" onclick="logAction('Manifest Trigger: Installing 6-Säulen-Apps...')">INSTALL rAPP MANIFEST</button>
 </aside>
 
 <footer id="terminal-console">
-    <div style="color: #fff; margin-bottom: 5px;">> INITIALIZING CLEARING CONSOLE (BOX I / K)...</div>
-    <div id="logs"></div>
+    <div style="color: #fff; margin-bottom: 10px; font-weight: bold;">> INITIALIZING CLEARING CONSOLE (BOX I / K)...</div>
+    <div id="log-stream"></div>
 </footer>
 
 <script>
-    const logs = document.getElementById('logs');
-    const blockContainer = document.getElementById('block-container');
+    const logStream = document.getElementById('log-stream');
     const dexChart = document.getElementById('dex-chart');
+    const utxList = document.getElementById('utx-list');
 
     function logAction(msg) {
         const entry = document.createElement('div');
-        entry.innerText = `[${new Date().toLocaleTimeString()}] > ${msg}`;
-        logs.prepend(entry);
+        entry.className = 'log-entry';
+        const ts = new Date().toLocaleTimeString();
+        entry.innerHTML = `<span class="log-ts">[${ts}]</span> > ${msg}`;
+        logStream.prepend(entry);
     }
 
-    // UTX-Base64 Block Generierung
-    function generateBlocks() {
-        for(let i=0; i<5; i++) {
-            const block = document.createElement('div');
-            block.className = 'utx-block';
-            const base64Data = btoa(`PZQQET_BLOCK_${Math.random()}`);
-            block.innerHTML = `
-                HASH: <span style="color:#fff">${base64Data.substring(0, 24)}...</span><br>
-                JOULE_LOAD: 2.00 TB<br>
-                STATUS: CLEARING_VALIDATED
+    // UTX Explorer Simulation (Zustand L)
+    function generateUTX() {
+        for(let i=0; i<6; i++) {
+            const card = document.createElement('div');
+            card.className = 'utx-card';
+            const hash = btoa(`PZQQET_ROOT_FILE_${Math.random()}`).substring(0, 32);
+            card.innerHTML = `
+                <strong>FILE_HASH:</strong> ${hash}<br>
+                <strong>JOULE_LOAD:</strong> ${(Math.random() * 2).toFixed(4)} YB<br>
+                <strong>VALIDATION:</strong> REALITY_0_CONFIRMED
             `;
-            blockContainer.appendChild(block);
+            utxList.appendChild(card);
         }
     }
 
-    // DEX Simulation
-    function updateDex() {
+    // DEX Candlestick Simulation
+    function updateDEX() {
         const candle = document.createElement('div');
         candle.className = 'candle';
         candle.style.height = Math.random() * 100 + '%';
         dexChart.appendChild(candle);
-        if(dexChart.children.length > 40) dexChart.removeChild(dexChart.firstChild);
+        if(dexChart.children.length > 35) dexChart.removeChild(dexChart.firstChild);
     }
 
-    // Master Switch Logik
-    function toggleMaster() {
-        const isMaster = document.getElementById('masterSwitch').checked;
-        if(isMaster) {
-            logAction('MASTER-SOUVERÄNITÄT AKTIVIERT (@RFOF-NETWORK)');
-            document.body.style.border = "1px solid red";
+    function checkSovereignty() {
+        const active = document.getElementById('masterToggle').checked;
+        if(active) {
+            logAction('!!! MASTER-MANAGER-SWITCH AKTIVIERT: VOLLZUGRIFF @RFOF-NETWORK !!!');
+            document.body.style.boxShadow = "inset 0 0 50px rgba(50, 215, 75, 0.2)";
         } else {
-            logAction('MASTER-SOUVERÄNITÄT DEAKTIVIERT');
-            document.body.style.border = "none";
+            logAction('Souveränität in Standby-Modus.');
+            document.body.style.boxShadow = "none";
         }
     }
 
-    // GUCI Intelligenz: Pfad-Analyse
-    document.getElementById('path-indicator').innerText = `CONTEXT: ${window.location.pathname}`;
-
     // Initialisierung
-    generateBlocks();
-    setInterval(updateDex, 1000);
-    setInterval(() => logAction('Automatic Joule-Clearing Sync...'), 5000);
+    generateUTX();
+    setInterval(updateDEX, 1500);
+    setInterval(() => logAction('Automatic Clearing-Pulse: 65 Files Synced.'), 8000);
 
+    // GUCI Pfad-Erkennung
+    document.getElementById('guci-path').innerText = `GUCI_CONTEXT: ${window.location.pathname.toUpperCase()}`;
 </script>
 </body>
 </html>

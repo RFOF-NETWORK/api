@@ -2,29 +2,164 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF‑NETWORK | Wallet Console</title>
+  <title>RFOF‑NETWORK | Wallet Explorer / TXf Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root { color-scheme: dark; --bg:#05060a; --bg-alt:#0f1117; --border:#1f2933; --text:#f9fafb; --accent:#38bdf8; }
-    body { margin:0; font-family:monospace; background:var(--bg); color:var(--text); padding:20px; }
-    header { border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:20px; display:flex; justify-content:space-between; }
-    .console { background:#000; border:1px solid var(--border); border-radius:8px; padding:15px; height:400px; overflow-y:auto; border-left:3px solid var(--accent); }
-    .input-area { margin-top:20px; display:flex; gap:10px; }
-    input { flex:1; background:var(--bg-alt); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:4px; }
-    .log-entry { margin-bottom:5px; font-size:12px; }
-    .tag-green { color:#4ade80; }
+    :root {
+      color-scheme: dark;
+      --bg:#05060a;
+      --bg-alt:#0f1117;
+      --border:#1f2933;
+      --text:#f9fafb;
+      --muted:#9ca3af;
+      --accent:#38bdf8;
+      --green:#4ade80;
+      --red:#ef4444;
+    }
+    body {
+      margin:0;
+      font-family:monospace;
+      background:var(--bg);
+      color:var(--text);
+      padding:20px;
+    }
+    header {
+      border-bottom:1px solid var(--border);
+      padding-bottom:10px;
+      margin-bottom:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .tag-green { color:var(--green); }
     .tag-blue { color:var(--accent); }
-    .mining-stats { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px; }
-    .stat-box { background:var(--bg-alt); border:1px solid var(--border); padding:10px; border-radius:8px; }
+    .tag-error { color:var(--red); }
+    .mining-stats {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-bottom:20px;
+    }
+    .stat-box {
+      background:var(--bg-alt);
+      border:1px solid var(--border);
+      padding:10px;
+      border-radius:8px;
+    }
+    .console {
+      background:#000;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:15px;
+      height:220px;
+      overflow-y:auto;
+      border-left:3px solid var(--accent);
+      margin-bottom:20px;
+    }
+    .input-area {
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
+    }
+    input {
+      flex:1;
+      background:var(--bg-alt);
+      border:1px solid var(--border);
+      color:var(--text);
+      padding:10px;
+      border-radius:4px;
+    }
+    button {
+      background:var(--accent);
+      border:none;
+      padding:10px 20px;
+      border-radius:4px;
+      cursor:pointer;
+      font-weight:bold;
+      color:#000;
+    }
+    .log-entry {
+      margin-bottom:5px;
+      font-size:12px;
+    }
+
+    /* TXf Viewer / 7-Kachel-Logik */
+    .viewer-section {
+      background:var(--bg-alt);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:15px;
+      margin-bottom:20px;
+    }
+    .viewer-title {
+      font-size:13px;
+      margin-bottom:4px;
+    }
+    .viewer-sub {
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    .tx-meta {
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .tx-hash {
+      color:var(--accent);
+      cursor:pointer;
+      word-break:break-all;
+    }
+    .kachel-grid {
+      display:grid;
+      grid-template-columns: repeat(7, minmax(0,1fr));
+      gap:6px;
+      margin-bottom:12px;
+      font-size:10px;
+    }
+    .kachel {
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:6px;
+      text-align:left;
+      background:#020617;
+    }
+    .kachel-label {
+      color:var(--muted);
+      margin-bottom:2px;
+    }
+    .kachel-value {
+      color:var(--accent);
+      font-size:10px;
+    }
+
+    .chart-row {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .chart-box {
+      background:#000;
+      border:1px solid var(--border);
+      border-radius:8px;
+      height:180px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      color:var(--muted);
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <div><b>RFOF-CON / WALLET / EXPLORER</b></div>
+  <div><b>RFOF-CON / WALLET / EXPLORER · TXf</b></div>
   <div class="tag-blue" id="guci-display">GUCI-LOADING</div>
 </header>
 
+<!-- MINING / STATUS (TXi-Faktor sichtbar) -->
 <div class="mining-stats">
   <div class="stat-box">
     <div style="font-size:10px; color:var(--muted);">MINING STATUS (PIXEL/FPS)</div>
@@ -36,19 +171,74 @@
   </div>
 </div>
 
+<!-- KONSOLE (TXi-Kommando-Ebene, bleibt 1:1) -->
 <div class="console" id="console-output">
   <div class="log-entry tag-blue">[SYSTEM] Wallet Browser Initialized...</div>
   <div class="log-entry">[INFO] Monitoring Global Ecosystem BIP-Ticker...</div>
 </div>
 
 <div class="input-area">
-  <input type="text" id="cmd-input" placeholder="Kommando eingeben (z.B. /sync oder /mine)..." />
-  <button onclick="processCmd()" style="background:var(--accent); border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-weight:bold;">EXEC</button>
+  <input type="text" id="cmd-input" placeholder="Kommando (z.B. /mine, /send, /recv, /swap, /deposit, /withdraw, /sync)..." />
+  <button onclick="processCmd()">EXEC</button>
+</div>
+
+<!-- TXf VIEWER: zeigt den TXi-Faktor als 7-Kachel-Logik + Charts -->
+<div class="viewer-section">
+  <div class="viewer-title">TXf-Viewer · Nachher-Zustand</div>
+  <div class="viewer-sub">Pro Transaktion: 7‑Kachel‑Logik + Candlesticks + Mechatronische Interaktionsdiagrammatik</div>
+
+  <div id="tx-meta" class="tx-meta">
+    Kein TX ausgewählt. Führe ein Kommando aus (/mine, /send, /recv, /swap, /deposit, /withdraw, /sync), um den TXf‑Viewer zu füllen.
+  </div>
+
+  <div class="kachel-grid" id="kachel-grid">
+    <!-- 7 Kacheln: werden dynamisch gefüllt -->
+    <div class="kachel">
+      <div class="kachel-label">1 · Typ</div>
+      <div class="kachel-value" id="k1">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">2 · Energie</div>
+      <div class="kachel-value" id="k2">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">3 · Fee</div>
+      <div class="kachel-value" id="k3">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">4 · SAFE/OWNER</div>
+      <div class="kachel-value" id="k4">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">5 · FOND/SYSTEM</div>
+      <div class="kachel-value" id="k5">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">6 · LP‑Impact</div>
+      <div class="kachel-value" id="k6">–</div>
+    </div>
+    <div class="kachel">
+      <div class="kachel-label">7 · TX‑ID</div>
+      <div class="kachel-value tx-hash" id="k7">–</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-box" id="chart-candles">
+      [ CANDLESTICK‑CHART (TXf‑Kerzen) ]
+    </div>
+    <div class="chart-box" id="chart-mecha">
+      [ MECHATRONISCHE INTERAKTIONS‑DIAGRAMMATIK ]
+    </div>
+  </div>
 </div>
 
 <script>
   const output = document.getElementById("console-output");
-  document.getElementById("guci-display").textContent = localStorage.getItem("globalClientID");
+  const txMeta = document.getElementById("tx-meta");
+
+  document.getElementById("guci-display").textContent =
+    localStorage.getItem("globalClientID") || "NO-GUCI";
 
   function log(msg, type = "") {
     const div = document.createElement("div");
@@ -58,30 +248,102 @@
     output.scrollTop = output.scrollHeight;
   }
 
+  // TXf-Viewer: füllt die 7-Kachel-Logik aus einem TX-Objekt
+  function renderTXF(tx) {
+    if (!tx) {
+      txMeta.textContent = "Kein TX ausgewählt.";
+      return;
+    }
+    txMeta.innerHTML =
+      `TX-Typ: <span class="tag-blue">${tx.type}</span> · Betrag: <span class="tag-green">${tx.amount}</span> · Zeit: ${new Date(tx.time).toLocaleTimeString()}`;
+
+    document.getElementById("k1").textContent = tx.type || "–";
+    document.getElementById("k2").textContent = tx.energy || "–";
+    document.getElementById("k3").textContent = tx.fee || "–";
+    document.getElementById("k4").textContent = tx.safeOwner || "–";
+    document.getElementById("k5").textContent = tx.fondSystem || "–";
+    document.getElementById("k6").textContent = tx.lpImpact || "–";
+    document.getElementById("k7").textContent = tx.id || "–";
+  }
+
+  // Hilfsfunktion: erzeugt deterministisch einen TX-Eintrag aus einer Aktion
+  function createTX(type, amountJoule) {
+    const now = Date.now();
+    const id = "0x" + now.toString(16);
+    const feeBase = 0.002; // 0,2% symbolisch, echte Logik liegt in /api/
+    const fee = (amountJoule * feeBase).toFixed(4) + " J";
+    const tx = {
+      id,
+      type,
+      time: now,
+      amount: amountJoule + " J",
+      energy: amountJoule + " J",
+      fee,
+      safeOwner: "45% SAFE / 42% OWNER",
+      fondSystem: "10% FOND / 3% SYSTEM",
+      lpImpact: "+0,2% / +0,4% (Basis/RT)"
+    };
+    localStorage.setItem("lastTX", JSON.stringify(tx));
+    return tx;
+  }
+
   function processCmd() {
     const input = document.getElementById("cmd-input");
-    const cmd = input.value;
+    const cmd = (input.value || "").trim();
+    if (!cmd) return;
+
     log(`> EXECUTING: ${cmd}`, "tag-blue");
 
-    if(cmd === "/mine") {
-      log("MINING TRIGERED... Energy +5 Joul", "tag-green");
-      let j = parseInt(localStorage.getItem("totalJoul") || "0");
-      localStorage.setItem("totalJoul", j + 5);
-    } else if(cmd === "/sync") {
+    let tx = null;
+
+    if (cmd === "/mine") {
+      log("MINING TRIGGERED... Energy +5 Joule", "tag-green");
+      let j = parseInt(localStorage.getItem("totalJoul") || "0", 10);
+      j += 5;
+      localStorage.setItem("totalJoul", j.toString());
+      tx = createTX("MINE", 5);
+    } else if (cmd === "/sync") {
       log("SYNCING WITH RFOF-GOLDEN-CHAIN...", "tag-blue");
       log("0.2% FEE LOCK VALIDATED.", "tag-green");
+      tx = createTX("SYNC", 0);
+    } else if (cmd === "/send") {
+      log("SEND REQUEST REGISTERED (TXi) – TXf folgt im Viewer.", "tag-blue");
+      tx = createTX("SEND", 10);
+    } else if (cmd === "/recv" || cmd === "/receive") {
+      log("RECEIVE EVENT REGISTERED – Eingang wird im TXf-Viewer gespiegelt.", "tag-green");
+      tx = createTX("RECEIVE", 10);
+    } else if (cmd === "/swap") {
+      log("SWAP INITIATED – Paarwechsel wird im TXf-Viewer abgebildet.", "tag-blue");
+      tx = createTX("SWAP", 15);
+    } else if (cmd === "/deposit") {
+      log("DEPOSIT REGISTERED – Einzahlen in SAFE/FOND.", "tag-blue");
+      tx = createTX("DEPOSIT", 20);
+    } else if (cmd === "/withdraw") {
+      log("WITHDRAW REGISTERED – Auszahlung aus SAFE/FOND.", "tag-blue");
+      tx = createTX("WITHDRAW", 20);
     } else {
-      log("UNKNOWN COMMAND. Use /mine or /sync.", "tag-error");
+      log("UNKNOWN COMMAND. Use /mine, /sync, /send, /recv, /swap, /deposit, /withdraw.", "tag-error");
     }
+
+    if (tx) {
+      renderTXF(tx);
+    }
+
     input.value = "";
   }
 
-  // Automatischer BIP-Ticker Simulator (Ethisches Monitoring)
-  setInterval(() => {
-    if(Math.random() > 0.7) {
-      log(`GLOBAL TX DETECTED: 0x${Math.random().toString(16).slice(2,8)}... PRICE UP +0.002%`, "tag-green");
+  // Beim Laden: letzten TXf-Zustand wiederherstellen (Persistenz)
+  (function initTXF() {
+    const raw = localStorage.getItem("lastTX");
+    if (raw) {
+      try {
+        const tx = JSON.parse(raw);
+        renderTXF(tx);
+      } catch(e) {
+        console.error(e);
+      }
     }
-  }, 4000);
+  })();
 </script>
 </body>
 </html>

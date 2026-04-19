@@ -2,31 +2,27 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>CHAIN-CLEARING | PZQQET SINGULARITY MONOLITH</title>
+  <title>Chain-Clearing | Monolith</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
       color-scheme: dark;
-      --bg: #02040a;
-      --bg-soft: rgba(15, 23, 42, 0.7);
-      --bg-strong: rgba(15, 23, 42, 0.95);
-      --glass: rgba(15, 23, 42, 0.6);
-      --border: rgba(148, 163, 184, 0.35);
-      --border-soft: rgba(148, 163, 184, 0.15);
+      --bg: #020617;
+      --bg-soft: rgba(15,23,42,0.75);
+      --bg-strong: rgba(15,23,42,0.95);
+      --glass: rgba(15,23,42,0.65);
+      --border: rgba(148,163,184,0.35);
+      --border-strong: rgba(148,163,184,0.7);
       --text: #e5e7eb;
       --muted: #9ca3af;
       --accent: #4ade80;
-      --accent-soft: rgba(74, 222, 128, 0.25);
+      --accent-soft: rgba(74,222,128,0.25);
       --gold: #fbbf24;
       --eccu: #22c55e;
       --rfof: #38bdf8;
       --bip: #a855f7;
       --danger: #f97373;
-      --shadow-strong: 0 0 60px rgba(15, 23, 42, 0.9);
-      --shadow-soft: 0 0 40px rgba(15, 23, 42, 0.7);
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 10px;
+      --shadow-soft: 0 0 40px rgba(15,23,42,0.9);
       --blur: 40px;
       --sat: 160%;
     }
@@ -38,109 +34,82 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #02040a 40%, #000 100%);
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
       color: var(--text);
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* GLOBAL GLASSMORPHISM */
     .glass {
       background: var(--glass);
-      border-radius: var(--radius-lg);
+      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
     }
 
-    .glass-soft {
-      background: rgba(15, 23, 42, 0.5);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-    }
+    /* GLOBAL NAV (BOX B) */
 
-    .pill {
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.25), transparent);
-    }
-
-    /* STICKY HEADER + PROFILE DROPDOWN */
-    .sticky-shell {
+    .top-shell {
       position: sticky;
       top: 0;
       z-index: 2000;
-      backdrop-filter: blur(30px) saturate(160%);
-      -webkit-backdrop-filter: blur(30px) saturate(160%);
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7), transparent);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      background: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0.75));
+      border-bottom: 1px solid var(--border-strong);
     }
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 22px;
+      padding: 10px 18px;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       font-size: 11px;
       text-transform: uppercase;
+      color: var(--accent);
     }
 
-    .brand-logo {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #4ade80, #22c55e, #0ea5e9);
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.7);
-    }
-
-    .header-status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
+    .core-status {
       font-family: monospace;
+      font-size: 11px;
+      color: var(--muted);
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    .core-status span {
+      color: var(--accent);
     }
 
-    .search-bar {
-      margin: 0 22px 14px;
-      padding: 10px 14px;
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 18px 12px;
+      gap: 12px;
+    }
+
+    .search-shell {
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
-      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
     }
 
-    .search-bar span {
+    .search-shell span {
       font-size: 14px;
       color: var(--accent);
     }
 
-    .search-bar input {
+    .search-shell input {
       flex: 1;
       border: none;
       outline: none;
@@ -150,1483 +119,2003 @@
       font-family: monospace;
     }
 
-    .profile-nav {
+    .profile-actions {
       display: flex;
-      align-items: center;
       gap: 8px;
     }
 
-    .profile-avatar {
-      width: 28px;
-      height: 28px;
+    .pill-btn {
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #4ade80, #22c55e, #0ea5e9);
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.7);
-    }
-
-    .profile-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .profile-name {
+      border: 1px solid var(--border);
+      padding: 6px 12px;
       font-size: 11px;
-      font-weight: 500;
-    }
-
-    .profile-id {
-      font-size: 9px;
-      color: var(--muted);
-      font-family: monospace;
-    }
-
-    .profile-buttons {
-      display: flex;
-      gap: 6px;
-      margin-left: 14px;
-    }
-
-    .profile-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
-      padding: 4px 10px;
-      font-size: 10px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
       color: var(--text);
-      transition: 0.18s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
     }
 
-    .profile-btn span.icon {
-      font-size: 11px;
+    .pill-btn span.icon {
+      font-size: 13px;
     }
 
-    .profile-btn:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 18px rgba(74, 222, 128, 0.4);
+    .pill-btn.wallet { border-color: rgba(74,222,128,0.7); }
+    .pill-btn.profile { border-color: rgba(59,130,246,0.7); }
+    .pill-btn.settings { border-color: rgba(248,250,252,0.35); }
+
+    .pill-btn:hover {
+      box-shadow: 0 0 18px rgba(148,163,184,0.45);
       transform: translateY(-1px);
     }
 
+    /* LAYOUT */
+
     main {
       max-width: 1320px;
-      margin: 18px auto 80px;
-      padding: 0 18px 40px;
+      margin: 18px auto 40px;
+      padding: 0 16px 40px;
     }
 
-    /* KACHEL NULL – MASTER NERVENSYSTEM */
-    .kachel-null {
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 1080px) {
+      .grid-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* KACHEL 0 – MASTER NERVENSYSTEM */
+
+    .kachel-zero {
+      border-radius: 18px;
+      padding: 16px 16px 14px;
       position: relative;
-      padding: 18px 18px 16px;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(74, 222, 128, 0.7);
-      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), rgba(15, 23, 42, 0.95));
-      box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
       overflow: hidden;
     }
 
-    .kachel-null::before {
+    .kachel-zero::before {
       content: "";
       position: absolute;
       inset: -40%;
-      background: radial-gradient(circle at 10% 0%, rgba(34, 197, 94, 0.18), transparent 60%),
-                  radial-gradient(circle at 90% 0%, rgba(56, 189, 248, 0.18), transparent 60%);
-      opacity: 0.7;
+      background: radial-gradient(circle at 10% 0, rgba(74,222,128,0.18), transparent 55%),
+                  radial-gradient(circle at 90% 0, rgba(56,189,248,0.18), transparent 55%);
+      opacity: 0.9;
       pointer-events: none;
     }
 
-    .kachel-null-inner {
+    .k0-inner {
       position: relative;
       z-index: 1;
     }
 
-    .kachel-null-header {
+    .k0-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
       margin-bottom: 10px;
     }
 
-    .kachel-null-title {
+    .k0-title {
       font-size: 11px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      color: var(--accent);
+      font-weight: 700;
     }
 
-    .kachel-null-title span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(74, 222, 128, 0.9);
-    }
-
-    .kachel-null-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 10px;
+    .k0-meta {
       font-family: monospace;
-    }
-
-    .takt-pill {
-      border-radius: 999px;
-      padding: 3px 8px;
-      border: 1px solid rgba(74, 222, 128, 0.7);
-      background: rgba(15, 23, 42, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
       font-size: 10px;
-    }
-
-    .takt-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(74, 222, 128, 0.9);
-    }
-
-    .kachel-null-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-      gap: 14px;
-      margin-top: 10px;
-    }
-
-    .history-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      color: var(--muted);
+      display: flex;
       gap: 10px;
+      align-items: center;
     }
 
-    .history-box {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
-      padding: 8px 9px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-height: 110px;
+    .k0-meta span.badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.7);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .history-title {
-      font-size: 10px;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-      padding-bottom: 4px;
+    .k0-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 960px) {
+      .k0-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .k0-block {
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+    }
+
+    .k0-block-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .k0-block-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .k0-block-value {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .k0-takt-bar {
+      position: relative;
+      margin-top: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      overflow: hidden;
+    }
+
+    .k0-takt-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(74,222,128,0.1), rgba(74,222,128,0.9));
+      transform-origin: left center;
+      transform: scaleX(0.1);
+      transition: transform 0.18s ease-out;
+    }
+
+    .k0-takt-e {
+      position: absolute;
+      top: -3px;
+      width: 2px;
+      bottom: -3px;
+      background: var(--gold);
+      left: 65%;
+      opacity: 0.8;
+    }
+
+    .k0-history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .history-box {
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      max-height: 140px;
+    }
+
+    .history-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(148,163,184,0.35);
+      padding-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .history-scroll {
       flex: 1;
       overflow-y: auto;
-      font-size: 9px;
-      font-family: monospace;
-      padding-right: 2px;
+      scrollbar-width: thin;
     }
 
-    .history-link {
+    .history-item {
+      font-family: monospace;
+      font-size: 9px;
+      color: var(--muted);
       padding: 2px 0;
-      border-left: 2px solid rgba(148, 163, 184, 0.4);
-      padding-left: 5px;
-      margin-bottom: 2px;
+      border-left: 2px solid rgba(148,163,184,0.35);
+      padding-left: 4px;
       cursor: pointer;
-      color: var(--muted);
-      transition: 0.15s ease;
-    }
-
-    .history-link:hover {
-      color: var(--accent);
-      border-left-color: var(--accent);
-    }
-
-    .kachel-null-right {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .kachel-null-diagram-shell {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
-      padding: 8px 10px 10px;
-    }
-
-    .diagram-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      margin-bottom: 4px;
-    }
-
-    .diagram-toggle {
-      display: inline-flex;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      transition: color 0.12s ease, border-color 0.12s ease;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       overflow: hidden;
     }
 
-    .diagram-toggle button {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 9px;
-      padding: 3px 8px;
-      cursor: pointer;
-    }
-
-    .diagram-toggle button.active {
-      background: rgba(74, 222, 128, 0.18);
+    .history-item:hover {
       color: var(--accent);
-    }
-
-    canvas {
-      width: 100%;
-      height: 120px;
-      border-radius: 10px;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
-    }
-
-    .kachel-null-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      margin-top: 6px;
-      color: var(--muted);
-      font-family: monospace;
-    }
-
-    /* GENESIS / SYNC VIEWER */
-    .viewer-shell {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 16px;
-    }
-
-    .viewer-panel {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.85));
-      padding: 12px 12px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .viewer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-    }
-
-    .viewer-title {
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .viewer-title span.badge {
-      border-radius: 999px;
-      padding: 2px 7px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      font-size: 9px;
-      font-family: monospace;
-      color: var(--muted);
-    }
-
-    .viewer-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 9px;
-      font-family: monospace;
-      color: var(--muted);
-    }
-
-    .viewer-body {
-      display: grid;
-      grid-template-rows: auto 130px 110px;
-      gap: 8px;
-    }
-
-    .sector-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 8px;
-    }
-
-    .sector-card {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8));
-      padding: 7px 8px;
-      font-size: 9px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    .sector-card:hover {
       border-color: var(--accent);
-      box-shadow: 0 0 18px rgba(74, 222, 128, 0.35);
-      transform: translateY(-1px);
     }
 
-    .sector-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-    }
-
-    .sector-status {
-      font-size: 9px;
-      font-family: monospace;
-    }
-
-    .sector-status span {
-      padding: 1px 5px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-    }
-
-    .sector-meta {
-      font-size: 8px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 4px;
-    }
-
-    .sector-meta span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .sector-footer {
-      font-size: 8px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 2px;
-    }
-
-    .sector-footer span.hash {
-      font-family: monospace;
-      opacity: 0.8;
-    }
-
-    .viewer-diagram-shell {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8));
-      padding: 6px 8px 8px;
-    }
-
-    .viewer-diagram-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      margin-bottom: 4px;
-    }
-
-    .viewer-diagram-meta {
-      font-size: 8px;
-      color: var(--muted);
-      font-family: monospace;
-    }
-
-    .viewer-diagram {
-      width: 100%;
-      height: 90px;
-      border-radius: 10px;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .viewer-diagram-inner {
-      position: absolute;
-      inset: 0;
-    }
-
-    .viewer-footer {
-      border-radius: var(--radius-md);
-      border: 1px dashed rgba(148, 163, 184, 0.4);
-      padding: 6px 8px;
-      font-size: 8px;
-      color: var(--muted);
-      font-family: monospace;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* TERMINAL / META CONSOLE */
-    .terminal-shell {
-      margin-top: 18px;
+    .k0-bottom-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
-      gap: 14px;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .terminal {
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-      padding: 10px 10px 8px;
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: 260px;
-      box-shadow: var(--shadow-soft);
+    @media (max-width: 960px) {
+      .k0-bottom-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
-    .terminal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    .terminal-dots {
-      display: flex;
-      gap: 4px;
-    }
-
-    .terminal-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.7);
-    }
-
-    .terminal-body {
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-      border-radius: 10px;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(15, 23, 42, 0.9);
-    }
-
-    .terminal-line {
-      padding: 2px 6px;
-      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
-      cursor: pointer;
-      transition: 0.12s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .terminal-line:hover {
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--accent);
-    }
-
-    .terminal-line span.meta {
-      color: var(--muted);
-    }
-
-    .terminal-line span.highlight {
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    .terminal-footer {
-      font-size: 8px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 2px;
-    }
-
-    .az-shell {
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-      padding: 10px 10px 8px;
-      font-size: 9px;
-      font-family: monospace;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: 260px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .az-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--muted);
-    }
-
-    .az-timeline {
+    .az-grid {
       display: grid;
       grid-template-columns: repeat(13, minmax(0, 1fr));
       gap: 4px;
       margin-top: 4px;
     }
 
-    .az-node {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      padding: 3px 0;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.12s ease;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+    @media (max-width: 900px) {
+      .az-grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
     }
 
-    .az-node span {
+    .az-phase {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      padding: 3px 4px;
+      font-size: 9px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .az-phase span {
+      font-weight: 600;
+      color: var(--accent);
+      margin-right: 2px;
+    }
+
+    .az-phase.active {
+      border-color: var(--accent);
+      background: rgba(22,163,74,0.25);
+      color: var(--text);
+      box-shadow: 0 0 12px rgba(34,197,94,0.45);
+    }
+
+    .terminal {
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+      padding: 6px 8px;
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .term-line {
+      margin-bottom: 2px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.12s ease;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .term-line:hover {
+      color: var(--accent);
+    }
+
+    .term-tag {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .term-meta {
+      color: var(--rfof);
+    }
+
+    .inline-detail {
+      margin-top: 3px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px dashed rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.9);
+      font-size: 9px;
+      color: var(--muted);
+    }
+
+    .copy-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 1px 6px;
+      font-size: 9px;
+      cursor: pointer;
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* GENESIS + SYNC VIEWER */
+
+    .viewer-shell {
+      border-radius: 18px;
+      padding: 12px 12px 10px;
+      margin-top: 16px;
+    }
+
+    .viewer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .viewer-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .viewer-title span {
+      color: var(--accent);
+    }
+
+    .viewer-meta {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .viewer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 960px) {
+      .viewer-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .view-box {
+      border-radius: 14px;
+      padding: 8px 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .view-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .view-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .view-label span {
+      color: var(--accent);
+    }
+
+    .view-status {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    .files-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 1100px) {
+      .files-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .files-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .file-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 3px 5px;
+      font-size: 9px;
+      font-family: monospace;
+      color: var(--muted);
+      cursor: pointer;
+      background: rgba(15,23,42,0.9);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .file-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px rgba(34,197,94,0.45);
+      background: rgba(15,23,42,1);
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      border-radius: 999px;
+      padding: 2px 6px;
+      border: 1px solid rgba(148,163,184,0.6);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-badge.a { border-color: rgba(148,163,184,0.7); color: var(--muted); }
+    .status-badge.aa { border-color: rgba(56,189,248,0.8); color: var(--rfof); }
+    .status-badge.aaa { border-color: rgba(74,222,128,0.9); color: var(--accent); }
+
+    .xp-indicator {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    .clearing-indicator {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .diagram-shell {
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+      padding: 4px 6px 6px;
+    }
+
+    .diagram-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .diagram-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      overflow: hidden;
+    }
+
+    .diagram-toggle button {
+      border: none;
+      background: transparent;
+      padding: 2px 6px;
+      font-size: 9px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .diagram-toggle button.active {
+      background: rgba(15,23,42,0.95);
+      color: var(--accent);
+    }
+
+    .diagram-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .diagram-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    canvas.diagram {
+      width: 100%;
+      height: 90px;
+      border-radius: 8px;
+      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(15,23,42,0.9));
+      border: 1px solid rgba(15,23,42,1);
       display: block;
+    }
+
+    /* 13 DUAL-SEKTOREN */
+
+    .sectors-shell {
+      margin-top: 18px;
+      border-radius: 18px;
+      padding: 10px 12px 12px;
+    }
+
+    .sectors-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .sectors-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .sectors-title span {
+      color: var(--accent);
+    }
+
+    .sectors-meta {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .sectors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .sector-card {
+      border-radius: 14px;
+      padding: 8px 8px 6px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sector-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .sector-card[data-sector="GOLD"]::before {
+      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.35), transparent 55%);
+    }
+
+    .sector-card[data-sector="GPCB"]::before {
+      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.25), transparent 55%);
+    }
+
+    .sector-card[data-sector="ECCU"]::before {
+      background: radial-gradient(circle at 0 0, rgba(34,197,94,0.25), transparent 55%);
+    }
+
+    .sector-card[data-sector="RFOF"]::before {
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), transparent 55%);
+    }
+
+    .sector-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sector-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .sector-name {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sector-aaa {
+      font-family: monospace;
+      font-size: 10px;
+    }
+
+    .sector-aaa span {
+      padding: 1px 5px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .sector-aaa span[data-grade="A"] { border-color: rgba(148,163,184,0.7); color: var(--muted); }
+    .sector-aaa span[data-grade="AA"] { border-color: rgba(56,189,248,0.8); color: var(--rfof); }
+    .sector-aaa span[data-grade="AAA"] { border-color: rgba(74,222,128,0.9); color: var(--accent); }
+
+    .sector-box-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .sector-box {
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.95);
+      padding: 4px 5px;
+      font-size: 9px;
+      font-family: monospace;
+      max-height: 70px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .sector-box-title {
+      color: var(--muted);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .sector-line {
+      padding: 1px 0;
+      cursor: pointer;
+      color: var(--muted);
+      border-left: 2px solid rgba(148,163,184,0.35);
+      padding-left: 4px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: color 0.12s ease, border-color 0.12s ease;
+    }
+
+    .sector-line:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .sector-diagram-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4px;
+      margin-top: 3px;
+    }
+
+    .sector-diagram {
+      border-radius: 8px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(15,23,42,0.9));
+      height: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sector-diagram-label {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 8px;
+      color: var(--muted);
+    }
+
+    .sector-diagram-pulse {
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 100%, rgba(74,222,128,0.25), transparent 60%);
+      transform-origin: center bottom;
+      transform: scaleY(0.2);
+      transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+    }
+
+    .sector-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3px;
+      font-size: 9px;
+      color: var(--muted);
+    }
+
+    .sector-footer-row button {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: var(--muted);
+      font-size: 9px;
+      padding: 1px 6px;
+      cursor: pointer;
+    }
+
+    .sector-footer-row button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* X-HUB + RAPP-STORE + MANAGER-ORDNER */
+
+    .side-shell {
+      border-radius: 18px;
+      padding: 10px 12px 12px;
+    }
+
+    .side-section {
+      border-radius: 14px;
+      padding: 8px 8px 6px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+      margin-bottom: 10px;
+    }
+
+    .side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .side-header span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .side-header span.label strong {
+      color: var(--accent);
+    }
+
+    .side-header span.meta {
+      font-family: monospace;
       font-size: 9px;
     }
 
-    .az-node.active {
+    .xhub-terminal {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 10px;
+      max-height: 120px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .xhub-input-row {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .xhub-input-row input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: var(--text);
+      font-size: 10px;
+      padding: 3px 6px;
+      font-family: monospace;
+      outline: none;
+    }
+
+    .xhub-input-row button {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: var(--muted);
+      font-size: 9px;
+      padding: 2px 8px;
+      cursor: pointer;
+    }
+
+    .xhub-input-row button:hover {
       border-color: var(--accent);
       color: var(--accent);
-      box-shadow: 0 0 16px rgba(74, 222, 128, 0.4);
     }
 
-    .az-node:hover {
-      border-color: var(--accent);
+    .rapp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+      margin-top: 4px;
     }
 
-    .az-desc {
-      margin-top: 6px;
-      font-size: 8px;
+    .rapp-pill {
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.95);
+      padding: 4px 5px;
+      font-size: 9px;
       color: var(--muted);
-      min-height: 32px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .rapp-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px rgba(34,197,94,0.45);
+    }
+
+    .rapp-name {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .rapp-bar {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      overflow: hidden;
+    }
+
+    .rapp-bar-fill {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, rgba(56,189,248,0.2), rgba(56,189,248,0.9));
+      transform-origin: left center;
+      transform: scaleX(0.4);
+      transition: transform 0.18s ease-out;
+    }
+
+    .manager-list {
+      max-height: 180px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      font-size: 10px;
+      font-family: monospace;
+      color: var(--muted);
+    }
+
+    .manager-group {
+      margin-bottom: 4px;
+      padding-bottom: 3px;
+      border-bottom: 1px dashed rgba(148,163,184,0.35);
+    }
+
+    .manager-title {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 9px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .manager-file {
+      padding-left: 6px;
+      cursor: pointer;
+      border-left: 2px solid rgba(148,163,184,0.35);
+      margin-bottom: 1px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: color 0.12s ease, border-color 0.12s ease;
+    }
+
+    .manager-file:hover {
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
     /* FOOTER */
+
     .footer-bar {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       padding: 6px 16px;
-      border-top: 1px solid rgba(148, 163, 184, 0.4);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+      border-top: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.9));
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 9px;
+      font-size: 10px;
       font-family: monospace;
-      z-index: 3000;
+      color: var(--muted);
+      z-index: 1500;
     }
 
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .footer-bar span.accent {
+      color: var(--accent);
     }
 
-    .footer-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .xp-bar-shell {
-      width: 120px;
-      height: 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      overflow: hidden;
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .xp-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #22c55e, #4ade80, #38bdf8);
-      box-shadow: 0 0 14px rgba(34, 197, 94, 0.7);
-      transition: width 0.15s linear;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 980px) {
-      .kachel-null-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .viewer-shell {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .terminal-shell {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 720px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .profile-nav {
-        width: 100%;
-        justify-content: space-between;
-      }
-      .profile-buttons {
-        margin-left: 0;
-      }
-      .search-bar {
-        margin: 0 14px 12px;
-      }
-      main {
-        padding: 0 12px 80px;
-      }
+    .identity-glow {
+      text-shadow: 0 0 8px rgba(74,222,128,0.8);
     }
   </style>
 </head>
 <body>
-  <div class="sticky-shell">
+  <div class="top-shell">
     <header>
-      <div class="brand">
-        <div class="brand-logo"></div>
-        <div>PZQQET | MASTER-SYSTEM</div>
-      </div>
-      <div class="profile-nav">
-        <div class="profile-avatar" id="identityGlow"></div>
-        <div class="profile-info">
-          <div class="profile-name">SATORAMY</div>
-          <div class="profile-id" id="xpLabel">XP: 0 | J: 0.00</div>
-        </div>
-        <div class="profile-buttons">
-          <button class="profile-btn" data-module="wallet">
-            <span class="icon">💳</span><span>Wallet</span>
-          </button>
-          <button class="profile-btn" data-module="profile">
-            <span class="icon">👤</span><span>Profile</span>
-          </button>
-          <button class="profile-btn" data-module="settings">
-            <span class="icon">⚙️</span><span>Settings</span>
-          </button>
-        </div>
+      <div class="brand">CHAIN-CLEARING / MONOLITH</div>
+      <div class="core-status">
+        CORE-SYNC: <span id="coreSyncState">ULTRA-ACTIVE</span> · Takt <span id="taktDisplay">0</span>/10 · XP <span id="xpDisplay">0</span>
       </div>
     </header>
-    <div class="search-bar">
-      <span>🔍</span>
-      <input id="searchInput" placeholder="GUCI, NFT-Hash, RFOF/GOLD LP-Token, Block-ID, A–Z Phase..." />
+    <div class="nav-row">
+      <div class="search-shell">
+        <span>🔍</span>
+        <input id="searchInput" placeholder="GUCI, Block, Hash, identity.gt, RFOF/GOLD LP-Token..." />
+      </div>
+      <div class="profile-actions">
+        <button class="pill-btn wallet" id="btnWallet">
+          <span class="icon">💳</span>
+          <span>Wallet</span>
+        </button>
+        <button class="pill-btn profile" id="btnProfile">
+          <span class="icon">👤</span>
+          <span>Profile</span>
+        </button>
+        <button class="pill-btn settings" id="btnSettings">
+          <span class="icon">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </div>
     </div>
   </div>
 
   <main>
-    <!-- KACHEL NULL -->
-    <section class="kachel-null">
-      <div class="kachel-null-inner">
-        <div class="kachel-null-header">
-          <div class="kachel-null-title">
-            <span class="dot"></span>
-            <span>[02] KACHEL NULL – EREIGNISHORIZONT E (6,5)</span>
-          </div>
-          <div class="kachel-null-meta">
-            <div class="takt-pill">
-              <div class="takt-dot" id="taktDot"></div>
-              <span id="taktLabel">42E0 Takt: 0</span>
+    <div class="grid-main">
+      <!-- LEFT: KACHEL 0 + GENESIS/SYNC + SECTORS -->
+      <div>
+        <!-- KACHEL 0 -->
+        <section class="glass kachel-zero" id="kachelZero">
+          <div class="k0-inner">
+            <div class="k0-header">
+              <div class="k0-title">[02] KACHEL NULL · NERVENSYSTEM</div>
+              <div class="k0-meta">
+                <span class="badge">EREIGNISHORIZONT E (6,5)</span>
+                <span>Takt: <span id="k0TaktLabel">0</span>/10</span>
+                <span>Singularität @10</span>
+              </div>
             </div>
-            <span id="taktPhase">Phase: Idle</span>
-          </div>
-        </div>
-        <div class="kachel-null-grid">
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:6px;">
-              7-Kachel-Skript (A1–Z10), Monster-Scaling (A–ZZ), Schatten-Objekte & Superposition .gt ↔ .ton
-            </div>
-            <div class="history-grid">
-              <div class="history-box">
-                <div class="history-title" style="color:var(--gold);">
-                  <span>GPCB-CHAIN</span>
-                  <span class="pill">45% SAFE</span>
+
+            <div class="k0-row">
+              <div class="k0-block">
+                <div class="k0-block-header">
+                  <div class="k0-block-title">42E0 Taktgenerator</div>
+                  <div class="k0-block-value" id="k0TaktValue">0.0</div>
                 </div>
+                <div class="k0-takt-bar">
+                  <div class="k0-takt-fill" id="k0TaktFill"></div>
+                  <div class="k0-takt-e"></div>
+                </div>
+                <div style="margin-top:6px;font-size:9px;color:var(--muted);">
+                  Reset-Pulse bei <strong>0</strong>, Singularitäts-Injektion bei <strong>10</strong>. Alle UI-Elemente pulsieren synchron.
+                </div>
+              </div>
+
+              <div class="k0-block">
+                <div class="k0-block-header">
+                  <div class="k0-block-title">XP / Joule · Identitäts-Glow</div>
+                  <div class="k0-block-value" id="k0XPValue">XP 0 · 0.0 J</div>
+                </div>
+                <div style="font-size:9px;color:var(--muted);">
+                  Mausbewegung + FPS → XP → Joule (Bit → Yotta). XP beeinflusst AAA, Diagramme, Clearing, Genesis/Sync.
+                </div>
+                <div style="margin-top:4px;font-size:9px;color:var(--muted);">
+                  Identity: <span id="k0IdentityGrade" class="status-badge aaa identity-glow">AAA</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="k0-history-grid" id="historyGrid">
+              <div class="history-box">
+                <div class="history-title" style="color:var(--gold);">GPCB-CHAIN</div>
                 <div class="history-scroll" id="hist-gpcb"></div>
               </div>
               <div class="history-box">
-                <div class="history-title" style="color:var(--eccu);">
-                  <span>ECCU-CHAIN</span>
-                  <span class="pill">2 TB = 2,50€</span>
-                </div>
+                <div class="history-title" style="color:var(--eccu);">ECCU-CHAIN</div>
                 <div class="history-scroll" id="hist-eccu"></div>
               </div>
               <div class="history-box">
-                <div class="history-title" style="color:var(--rfof);">
-                  <span>RFOF-GOLD</span>
-                  <span class="pill">42E0</span>
-                </div>
+                <div class="history-title" style="color:var(--rfof);">RFOF-GOLD</div>
                 <div class="history-scroll" id="hist-rfof"></div>
               </div>
               <div class="history-box">
-                <div class="history-title" style="color:var(--bip);">
-                  <span>BIP-AGG</span>
-                  <span class="pill">Ability LP</span>
-                </div>
+                <div class="history-title" style="color:var(--bip);">BIP-AGG</div>
                 <div class="history-scroll" id="hist-bip"></div>
               </div>
               <div class="history-box">
-                <div class="history-title" style="color:var(--accent);">
-                  <span>NEURAL-CACHE</span>
-                  <span class="pill">XP/Joule</span>
-                </div>
+                <div class="history-title" style="color:var(--accent);">NEURAL-CACHE</div>
                 <div class="history-scroll" id="hist-cache"></div>
               </div>
               <div class="history-box">
-                <div class="history-title">
-                  <span>GLOBAL-IDX</span>
-                  <span class="pill">A–Z MAP</span>
-                </div>
+                <div class="history-title">GLOBAL-IDX</div>
                 <div class="history-scroll" id="hist-index"></div>
               </div>
             </div>
+
+            <div class="k0-bottom-row">
+              <div class="k0-block">
+                <div class="k0-block-header">
+                  <div class="k0-block-title">A–Z Pfadierung · Backend-Simulation</div>
+                  <div class="k0-block-value" id="azActiveLabel">Phase: A</div>
+                </div>
+                <div class="az-grid" id="azGrid"></div>
+              </div>
+              <div class="k0-block">
+                <div class="k0-block-header">
+                  <div class="k0-block-title">Meta-Console · Terminal (browser.html)</div>
+                  <div class="k0-block-value">META-LOG</div>
+                </div>
+                <div class="terminal" id="metaTerminal"></div>
+              </div>
+            </div>
           </div>
-          <div class="kachel-null-right">
-            <div class="kachel-null-diagram-shell">
-              <div class="diagram-header">
-                <span style="font-size:10px;">KACHEL NULL – MASTER-DIAGRAMM</span>
-                <div class="diagram-toggle">
-                  <button id="k0CandlesBtn" class="active">Candles</button>
-                  <button id="k0MechaBtn">Mechatronik</button>
+        </section>
+
+        <!-- GENESIS + SYNC VIEWER -->
+        <section class="glass viewer-shell" id="viewerShell">
+          <div class="viewer-header">
+            <div class="viewer-title"><span>BOX I/J</span> · Chain-Clearing Viewer</div>
+            <div class="viewer-meta">
+              <span>GENESIS (statisch) · SYNC (dynamisch)</span>
+              <span>65 Dateien / Cluster</span>
+            </div>
+          </div>
+
+          <div class="viewer-grid">
+            <!-- GENESIS VIEW -->
+            <div class="view-box" id="genesisView">
+              <div class="view-header-row">
+                <div class="view-label"><span>GENESIS-VIEW</span> · Statisch</div>
+                <div class="view-status" id="genesisStatus">A/AA/AAA stabil</div>
+              </div>
+
+              <div class="files-grid" id="genesisFiles"></div>
+
+              <div class="status-row">
+                <div>
+                  <span class="status-badge aa">AAA-Validierung</span>
+                </div>
+                <div>
+                  <span class="xp-indicator" id="genesisXP">XP: 0</span> ·
+                  <span class="clearing-indicator" id="genesisClearing">Clearing: OK</span>
                 </div>
               </div>
-              <canvas id="k0Canvas"></canvas>
-            </div>
-            <div class="kachel-null-footer">
-              <span>Superposition: .gt ↔ .ton | Schatten-Objekte für fehlende Dateien aktiv</span>
-              <span id="k0Info">A1–Z10: Ready</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- GENESIS / SYNC VIEWER -->
-    <section class="viewer-shell">
-      <!-- GENESIS VIEW -->
-      <div class="viewer-panel" id="genesisPanel">
-        <div class="viewer-header">
-          <div class="viewer-title">
-            <span>GENESIS-VIEW</span>
-            <span class="badge">STATIC STATE</span>
-          </div>
-          <div class="viewer-meta">
-            <span>Cluster: <span id="genesisCluster">GPCB</span></span>
-            <span>Files: <span id="genesisFiles">65</span></span>
-          </div>
-        </div>
-        <div class="viewer-body">
-          <div class="sector-grid" id="genesisSectors"></div>
-          <div class="viewer-diagram-shell">
-            <div class="viewer-diagram-header">
-              <span>GENESIS-DIAGRAMM</span>
-              <div class="diagram-toggle">
-                <button id="gCandlesBtn" class="active">Candles</button>
-                <button id="gMechaBtn">Mechatronik</button>
+              <div class="diagram-shell">
+                <div class="diagram-header">
+                  <span>Diagramm-Ebene · Genesis</span>
+                  <div class="diagram-toggle">
+                    <button id="btnGenesisCandles" class="active">Candles</button>
+                    <button id="btnGenesisMecha">Mechatronik</button>
+                  </div>
+                </div>
+                <div class="diagram-row">
+                  <canvas class="diagram" id="genesisCandles"></canvas>
+                  <canvas class="diagram" id="genesisMecha"></canvas>
+                </div>
               </div>
             </div>
-            <div class="viewer-diagram">
-              <canvas id="genesisCanvas"></canvas>
-            </div>
-          </div>
-          <div class="viewer-footer">
-            <span>Clearing-Status: <span id="genesisClearing">OK</span> | A/AA/AAA: <span id="genesisAAA">A</span></span>
-            <span>Hash: <span id="genesisHash">0xGENESIS</span></span>
-          </div>
-        </div>
-      </div>
 
-      <!-- SYNC VIEW -->
-      <div class="viewer-panel" id="syncPanel">
-        <div class="viewer-header">
-          <div class="viewer-title">
-            <span>SYNC-VIEW</span>
-            <span class="badge">LIVE STATE</span>
-          </div>
-          <div class="viewer-meta">
-            <span>Cluster: <span id="syncCluster">GPCB</span></span>
-            <span>XP/J: <span id="syncXP">0 / 0.00</span></span>
-          </div>
-        </div>
-        <div class="viewer-body">
-          <div class="sector-grid" id="syncSectors"></div>
-          <div class="viewer-diagram-shell">
-            <div class="viewer-diagram-header">
-              <span>SYNC-DIAGRAMM</span>
-              <div class="diagram-toggle">
-                <button id="sCandlesBtn" class="active">Candles</button>
-                <button id="sMechaBtn">Mechatronik</button>
+            <!-- SYNC VIEW -->
+            <div class="view-box" id="syncView">
+              <div class="view-header-row">
+                <div class="view-label"><span>SYNC-VIEW</span> · Dynamisch</div>
+                <div class="view-status" id="syncStatus">Clearing-Monitor aktiv</div>
+              </div>
+
+              <div class="files-grid" id="syncFiles"></div>
+
+              <div class="status-row">
+                <div>
+                  <span class="status-badge aaa">AAA-Validierung</span>
+                </div>
+                <div>
+                  <span class="xp-indicator" id="syncXP">XP: 0</span> ·
+                  <span class="clearing-indicator" id="syncClearing">Clearing: 0.2% SAFE/OWNER/FOND/SYSTEM</span>
+                </div>
+              </div>
+
+              <div class="diagram-shell">
+                <div class="diagram-header">
+                  <span>Diagramm-Ebene · Sync</span>
+                  <div class="diagram-toggle">
+                    <button id="btnSyncCandles" class="active">Candles</button>
+                    <button id="btnSyncMecha">Mechatronik</button>
+                  </div>
+                </div>
+                <div class="diagram-row">
+                  <canvas class="diagram" id="syncCandles"></canvas>
+                  <canvas class="diagram" id="syncMecha"></canvas>
+                </div>
               </div>
             </div>
-            <div class="viewer-diagram">
-              <canvas id="syncCanvas"></canvas>
+          </div>
+        </section>
+
+        <!-- 13 DUAL-SEKTOREN -->
+        <section class="glass sectors-shell" id="sectorsShell">
+          <div class="sectors-header">
+            <div class="sectors-title"><span>13 Dual-Sektoren</span> · Genesis + Sync</div>
+            <div class="sectors-meta">GPCB · Phoenix Coin · G-Phoenix · Phoenix LP · ECCU · Joule · XP · GOLD · RFOF · RFOF/GOLD LP · BIP · Identity Registry · BRIDGE</div>
+          </div>
+          <div class="sectors-grid" id="sectorsGrid"></div>
+        </section>
+      </div>
+
+      <!-- RIGHT: X-HUB, RAPP-STORE, MANAGER-ORDNER -->
+      <div>
+        <section class="glass side-shell">
+          <!-- X-HUB -->
+          <div class="side-section">
+            <div class="side-header">
+              <span class="label"><strong>X-HUB</strong> · Injektor</span>
+              <span class="meta">Axiom-Validator · Bridge-Handshake</span>
+            </div>
+            <div class="xhub-terminal" id="xhubTerminal"></div>
+            <div class="xhub-input-row">
+              <input id="xhubInput" placeholder="injector.bin / axiom / bridge_handshake.go ..." />
+              <button id="xhubSend">Inject</button>
             </div>
           </div>
-          <div class="viewer-footer">
-            <span>Clearing-Monitor: <span id="syncClearing">GPCB/ECCU 0,2% SAFE/OWNER/FOND/SYSTEM</span></span>
-            <span>Events: <span id="syncEvents">0</span></span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- TERMINAL + A–Z PFADIERUNG -->
-    <section class="terminal-shell">
-      <div class="terminal">
-        <div class="terminal-header">
-          <div>
-            <span style="color:var(--accent);font-weight:600;">META-CONSOLE</span>
-            <span style="margin-left:6px;">Kachel J – Chain-Clearing Viewer</span>
+          <!-- RAPP-STORE -->
+          <div class="side-section">
+            <div class="side-header">
+              <span class="label"><strong>RAPP-STORE</strong> · 6 Säulen-Apps</span>
+              <span class="meta">Native Web-Components</span>
+            </div>
+            <div class="rapp-grid" id="rappGrid"></div>
           </div>
-          <div class="terminal-dots">
-            <div class="terminal-dot" style="background:#f97373;"></div>
-            <div class="terminal-dot" style="background:#fbbf24;"></div>
-            <div class="terminal-dot" style="background:#22c55e;"></div>
-          </div>
-        </div>
-        <div class="terminal-body" id="terminalBody"></div>
-        <div class="terminal-footer">
-          <span>GUCI: <span id="guciLabel">level=02 | node=SYSTEM</span></span>
-          <span>Deep-Dive: Level 02 / 03 | Click Log = Re-Verify</span>
-        </div>
-      </div>
 
-      <div class="az-shell">
-        <div class="az-header">
-          <span>A–Z PFADIERUNG</span>
-          <span>Backend-Phasen (26)</span>
-        </div>
-        <div class="az-timeline" id="azTimelineTop"></div>
-        <div class="az-timeline" id="azTimelineBottom"></div>
-        <div class="az-desc" id="azDesc">Phase auswählen, um die Backend-Simulation zu sehen.</div>
+          <!-- MANAGER-ORDNER -->
+          <div class="side-section">
+            <div class="side-header">
+              <span class="label"><strong>MANAGER-ORDNER</strong> · Repo-Simulation</span>
+              <span class="meta">65 Dateien / Cluster</span>
+            </div>
+            <div class="manager-list" id="managerList"></div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   </main>
 
   <div class="footer-bar">
-    <div class="footer-left">
-      <span>KAHEL-J MASTER-STATION || PERMANENT-DB-STORAGE ACTIVE</span>
-      <span>|</span>
-      <span id="footerClock">00:00:00</span>
-    </div>
-    <div class="footer-right">
-      <span>XP/Joule</span>
-      <div class="xp-bar-shell">
-        <div class="xp-bar-fill" id="xpBar"></div>
-      </div>
-      <span id="aaaLabel">Status: A</span>
+    <div>CHAIN-CLEARING / MASTER-STATION · <span class="accent">PERMANENT-DB-STORAGE ACTIVE</span></div>
+    <div>
+      <span id="footerClock">00:00:00</span> · Identity: <span id="footerIdentity" class="identity-glow">AAA</span>
     </div>
   </div>
 
   <script>
-    // ---------- CORE DATA ----------
-
-    const sectors = [
-      { id: "GPCB", label: "GPCB", desc: "GLOBAL PHOENIX COIN BANK", color: "#fbbf24" },
-      { id: "PHOENIX", label: "Phoenix Coin", desc: "Emission & Live-Kurs", color: "#fb7185" },
-      { id: "GPHOENIX", label: "G-Phoenix Token", desc: "Governance & Staking", color: "#a855f7" },
-      { id: "PHOENIX_LP", label: "Phoenix LP", desc: "Pool-Tiefe & Yield", color: "#22c55e" },
-      { id: "ECCU", label: "ECCU", desc: "Parity-Anker 2 TB = 2,50€", color: "#22c55e" },
-      { id: "JOULE", label: "Joule", desc: "Mining-Output", color: "#4ade80" },
-      { id: "XP", label: "XP", desc: "Erfahrungspunkte", color: "#38bdf8" },
-      { id: "GOLD", label: "GOLD (42E0)", desc: "Physische Deckung", color: "#facc15" },
-      { id: "RFOF", label: "RFOF", desc: "Realität 0", color: "#0ea5e9" },
-      { id: "RFOF_LP", label: "RFOF/GOLD LP", desc: "Arbitrage-Schutz", color: "#22c55e" },
-      { id: "BIP", label: "BIP (Master LP)", desc: "Ability-API-Flow", color: "#a855f7" },
-      { id: "IDENTITY", label: "Identity Registry", desc: "A/AA/AAA Rollen", color: "#e5e7eb" },
-      { id: "BRIDGE", label: "BRIDGE", desc: "Schnittstelle -on.ton", color: "#38bdf8" }
-    ];
-
-    const managerFiles = {
-      GPCB: ["identity.gt", "bank_exekutive.js", "vault_control.py"],
-      ECCU: ["identity.gt", "parity_logic.js", "monitor.json"],
-      "RFOF-GOLD-CHAIN": ["identity.gt", "integrity_check.py", "chain_notary.bin"],
-      "APP-API": ["identity.gt", "kaskaden_steuerung.js", "bridge_handshake.go"],
-      "STORY-HISTORY": ["ARCHIVE/", "publisher.py", "notary_service.js"],
-      "ALPHA-NODES": ["auth.js", "quantizer.py", "map_core.cpp", "reset_pulse.sh"],
-      API: ["actions.js", "resources.json", "event_listener.js", "schema.xsd"],
-      "X-HUB": ["injector.bin", "manifest.json"],
-      "CROSS-CHECK": ["anti_collision.py", "point_e_check.js"],
-      USER: ["identity.gt", "access_rights.key", "task_executor.js"],
-      ADMIN: ["identity.gt", "system_monitor.py", "fee_notary.js"],
-      DEV: ["identity.gt", "bridge_builder.js", "axiom_validator.py"],
-      MASTER: ["identity.gt", "axiom_override.bin", "identity_injection.py"],
-      ENTERPRISE: ["identity.gt", "settlement.js", "liquidity_flow.py"],
-      PARTNER: ["identity.gt", "sync_bridge.py"],
-      REPOSITORY: ["identity.gt", "performance_boost.py", "app_manifest.json"]
+    // -----------------------------
+    // GLOBAL STATE
+    // -----------------------------
+    const state = {
+      takt: 0,
+      xp: 0,
+      joule: 0,
+      azPhase: "A",
+      history: {
+        GPCB: [],
+        ECCU: [],
+        RFOF: [],
+        BIP: [],
+        CACHE: [],
+        INDEX: []
+      },
+      sectors: [],
+      diagrams: {},
+      lastFrameTime: performance.now(),
+      fpsAccumulator: 0,
+      fpsFrames: 0
     };
 
-    const azPhases = [
-      ["A", "Autorisierung"],
-      ["B", "Basis-Impuls"],
-      ["C", "Clearing-Initialisierung"],
-      ["D", "Delegations-Prüfung"],
-      ["E", "Emissions-Kern"],
-      ["F", "Fond-Distribution"],
-      ["G", "Gebühren-Injektion"],
-      ["H", "Hash-Verkettung"],
-      ["I", "Identitäts-Maskierung"],
-      ["J", "Joule-Quantisierung"],
-      ["K", "Konsens-Abgleich"],
-      ["L", "Logik-Sicherung"],
-      ["M", "Mechatronik-Feedback"],
-      ["N", "Netzwerk-Stabilisierung"],
-      ["O", "Optimierungs-Protokoll"],
-      ["P", "Profil-Update"],
-      ["Q", "Quellcode-Validierung"],
-      ["R", "Revisions-Logging"],
-      ["S", "Status-Finalisierung"],
-      ["T", "Transaktions-Spiegelung"],
-      ["U", "Universal-Mapping"],
-      ["V", "Varianten-Prüfung"],
-      ["W", "Wert-Anker-Sync"],
-      ["X", "X-Hub Archivierung"],
-      ["Y", "Yield-Analyse"],
-      ["Z", "Zero-Point-Reset"]
-    ];
+    const STORAGE_KEY = "chain_clearing_history_v1";
 
-    // ---------- STATE ----------
-
-    let takt = 0;
-    let xp = 0;
-    let joule = 0;
-    let xpLevel = "A";
-    let xpLastTime = performance.now();
-    let frameCount = 0;
-    let fps = 0;
-    let syncEvents = 0;
-
-    let systemHistory = JSON.parse(localStorage.getItem("pzqqet_history_v2") || "null") || {
-      GPCB: [],
-      ECCU: [],
-      RFOF: [],
-      BIP: [],
-      CACHE: [],
-      INDEX: []
-    };
-
-    // ---------- UTILS ----------
-
-    function randHash(len = 10) {
-      return Math.random().toString(16).substring(2, 2 + len).toUpperCase();
+    // -----------------------------
+    // UTIL
+    // -----------------------------
+    function formatTime(t) {
+      return t.toString().padStart(2, "0");
     }
 
-    function randFrom(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    function updateClock() {
+      const now = new Date();
+      const s = `${formatTime(now.getHours())}:${formatTime(now.getMinutes())}:${formatTime(now.getSeconds())}`;
+      document.getElementById("footerClock").textContent = s;
     }
 
-    function updateLocalStorage() {
-      localStorage.setItem("pzqqet_history_v2", JSON.stringify(systemHistory));
-    }
-
-    function formatTime() {
-      const d = new Date();
-      return d.toLocaleTimeString();
-    }
-
-    // ---------- HISTORY RENDERING ----------
-
-    function renderHistory() {
-      const keys = ["GPCB", "ECCU", "RFOF", "BIP", "CACHE", "INDEX"];
-      keys.forEach(key => {
-        const el = document.getElementById("hist-" + key.toLowerCase());
-        if (!el) return;
-        el.innerHTML = systemHistory[key]
-          .slice(0, 40)
-          .map(h => `<div class="history-link" onclick="deepDiveBlock('${key}','${h.id}')">#${h.id}</div>`)
-          .join("");
-      });
-    }
-
-    function addHistoryEntry(api, id) {
-      if (!systemHistory[api]) systemHistory[api] = [];
-      systemHistory[api].unshift({ id, time: Date.now() });
-      if (systemHistory[api].length > 80) systemHistory[api].pop();
-      updateLocalStorage();
-      renderHistory();
-    }
-
-    window.deepDiveBlock = function(api, id) {
-      logTerminal(`DEEP-DIVE ${api}: BLOCK ${id} → Level 03 Rendering`, "highlight");
-      document.getElementById("guciLabel").textContent = `level=03 | node=${api}`;
-      syncEvents++;
-      document.getElementById("syncEvents").textContent = syncEvents;
-    };
-
-    // ---------- TERMINAL ----------
-
-    const terminalBody = document.getElementById("terminalBody");
-
-    function logTerminal(msg, type = "info") {
-      const line = document.createElement("div");
-      line.className = "terminal-line";
-      const time = formatTime();
-      let prefix = `<span class="meta">[${time}]</span> `;
-      if (type === "highlight") {
-        prefix += `<span class="highlight">META-SYNC:</span> `;
-      } else if (type === "audit") {
-        prefix += `<span class="meta">[CROSS-AUDIT]</span> `;
-      } else if (type === "guci") {
-        prefix += `<span class="highlight">GUCI:</span> `;
+    function copyToClipboard(text) {
+      try {
+        navigator.clipboard.writeText(text);
+      } catch (e) {
+        console.log("Clipboard not available", e);
       }
-      line.innerHTML = prefix + msg;
-      line.onclick = () => {
-        line.style.color = "#4ade80";
-        logTerminal("Re-Verify: " + msg, "info");
-      };
-      terminalBody.appendChild(line);
-      terminalBody.scrollTop = terminalBody.scrollHeight;
     }
 
-    function initTerminal() {
-      logTerminal("Initializing Kahel J Global Viewer...", "highlight");
-      logTerminal("Merging API Streams: GPCB, ECCU, RFOF-GOLDEN-CHAIN.", "info");
-      logTerminal("Synchronizing Documentation-Nodes with Live-State.", "info");
-      logTerminal("@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.", "info");
+    function pseudoHash(seed) {
+      let h = 0;
+      for (let i = 0; i < seed.length; i++) {
+        h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+      }
+      return "0x" + ("00000000" + h.toString(16).toUpperCase()).slice(-8);
     }
 
-    function simulateTerminalEvents() {
-      const events = [
-        "GPCB 45% SAFE Audit completed.",
-        "ECCU Joul-Anchor at 2.50€ parity.",
-        "RFOF-G Block propagated to all Sektoren.",
-        "Kachel J Cross-Validation successful.",
-        "Phoenix LP Yield-Update synced.",
-        "Ability API LP Token 0,8% Roundtrip confirmed."
-      ];
-      logTerminal(randFrom(events), "highlight");
+    // -----------------------------
+    // LOCAL STORAGE (KACHEL 0 HISTORY)
+    // -----------------------------
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"].forEach(k => {
+            if (Array.isArray(parsed[k])) state.history[k] = parsed[k];
+          });
+        }
+      } catch (e) {
+        console.log("History load failed", e);
+      }
     }
 
-    function simulateCrossAudit() {
-      const chains = ["GPCB", "ECCU", "RFOF-GOLD-CHAIN"];
-      const selected = randFrom(chains);
-      logTerminal(`Reading path: ${selected}/MANAGER/... LINK VERIFIED`, "audit");
+    function saveHistory() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
+      } catch (e) {
+        console.log("History save failed", e);
+      }
     }
 
-    // ---------- A–Z PFADIERUNG ----------
+    // -----------------------------
+    // META TERMINAL
+    // -----------------------------
+    const metaTerminal = document.getElementById("metaTerminal");
 
-    const azTimelineTop = document.getElementById("azTimelineTop");
-    const azTimelineBottom = document.getElementById("azTimelineBottom");
-    const azDesc = document.getElementById("azDesc");
-
-    function initAZ() {
-      azTimelineTop.innerHTML = "";
-      azTimelineBottom.innerHTML = "";
-      azPhases.slice(0, 13).forEach(([letter, label]) => {
-        const node = document.createElement("div");
-        node.className = "az-node";
-        node.dataset.phase = letter;
-        node.innerHTML = `<span>${letter}</span>`;
-        node.onclick = () => selectAZ(letter, label);
-        azTimelineTop.appendChild(node);
+    function addMetaLog(msg, tag = "INFO") {
+      const line = document.createElement("div");
+      line.className = "term-line";
+      const time = new Date().toLocaleTimeString();
+      line.innerHTML = `[${time}] <span class="term-tag">${tag}</span> ${msg}`;
+      line.addEventListener("click", () => {
+        if (line.dataset.expanded === "1") {
+          const detail = line.nextSibling;
+          if (detail && detail.classList && detail.classList.contains("inline-detail")) {
+            detail.remove();
+          }
+          line.dataset.expanded = "0";
+          return;
+        }
+        const detail = document.createElement("div");
+        detail.className = "inline-detail";
+        const hash = pseudoHash(msg + time);
+        detail.innerHTML = `
+          Hash: <code>${hash}</code>
+          <button class="copy-btn">copy</button><br/>
+          Block: <code>#${Math.floor(Math.random()*999999)}</code><br/>
+          Level: 02/03 · GUCI-Trace aktiv
+        `;
+        detail.querySelector(".copy-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          copyToClipboard(hash);
+        });
+        line.after(detail);
+        line.dataset.expanded = "1";
       });
-      azPhases.slice(13).forEach(([letter, label]) => {
-        const node = document.createElement("div");
-        node.className = "az-node";
-        node.dataset.phase = letter;
-        node.innerHTML = `<span>${letter}</span>`;
-        node.onclick = () => selectAZ(letter, label);
-        azTimelineBottom.appendChild(node);
+      metaTerminal.appendChild(line);
+      metaTerminal.scrollTop = metaTerminal.scrollHeight;
+    }
+
+    // -----------------------------
+    // A–Z PHASEN
+    // -----------------------------
+    const azPhases = [
+      ["A","Autorisierung"],
+      ["B","Basis-Impuls"],
+      ["C","Clearing-Initialisierung"],
+      ["D","Delegations-Prüfung"],
+      ["E","Emissions-Kern"],
+      ["F","Fond-Distribution"],
+      ["G","Gebühren-Injektion"],
+      ["H","Hash-Verkettung"],
+      ["I","Identitäts-Maskierung"],
+      ["J","Joule-Quantisierung"],
+      ["K","Konsens-Abgleich"],
+      ["L","Logik-Sicherung"],
+      ["M","Mechatronik-Feedback"],
+      ["N","Netzwerk-Stabilisierung"],
+      ["O","Optimierungs-Protokoll"],
+      ["P","Profil-Update"],
+      ["Q","Quellcode-Validierung"],
+      ["R","Revisions-Logging"],
+      ["S","Status-Finalisierung"],
+      ["T","Transaktions-Spiegelung"],
+      ["U","Universal-Mapping"],
+      ["V","Varianten-Prüfung"],
+      ["W","Wert-Anker-Sync"],
+      ["X","X-Hub Archivierung"],
+      ["Y","Yield-Analyse"],
+      ["Z","Zero-Point-Reset"]
+    ];
+
+    function renderAZGrid() {
+      const grid = document.getElementById("azGrid");
+      grid.innerHTML = "";
+      azPhases.forEach(([letter, label]) => {
+        const div = document.createElement("div");
+        div.className = "az-phase";
+        div.dataset.phase = letter;
+        div.innerHTML = `<span>${letter}</span>${label}`;
+        div.addEventListener("click", () => {
+          state.azPhase = letter;
+          document.getElementById("azActiveLabel").textContent = `Phase: ${letter}`;
+          Array.from(grid.children).forEach(c => c.classList.remove("active"));
+          div.classList.add("active");
+          addMetaLog(`A–Z Phase ${letter} (${label}) aktiviert.`, "A-Z");
+        });
+        grid.appendChild(div);
+      });
+      // default A
+      const first = grid.querySelector(".az-phase");
+      if (first) first.classList.add("active");
+    }
+
+    // -----------------------------
+    // HISTORY GRID (KACHEL 0)
+    // -----------------------------
+    function renderHistoryGrid() {
+      const keys = ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"];
+      keys.forEach(key => {
+        const container = document.getElementById("hist-" + key.toLowerCase());
+        if (!container) return;
+        container.innerHTML = "";
+        state.history[key].forEach(entry => {
+          const div = document.createElement("div");
+          div.className = "history-item";
+          div.textContent = "#" + entry.id;
+          div.title = entry.id;
+          div.addEventListener("click", () => {
+            const msg = `${key} BLOCK ${entry.id} · HASH ${entry.hash}`;
+            addMetaLog(msg, "BLOCK");
+          });
+          container.appendChild(div);
+        });
       });
     }
 
-    function selectAZ(letter, label) {
-      document.querySelectorAll(".az-node").forEach(n => n.classList.remove("active"));
-      document.querySelectorAll(`.az-node[data-phase="${letter}"]`).forEach(n => n.classList.add("active"));
-      azDesc.textContent = `${letter} – ${label}: Backend-Simulation aktiv. XP/Joule & Clearing-Status werden synchronisiert.`;
-      logTerminal(`A–Z Phase ${letter} (${label}) executed.`, "info");
+    function pushHistory(key, id) {
+      const hash = pseudoHash(key + id);
+      const arr = state.history[key];
+      arr.unshift({ id, hash, ts: Date.now() });
+      if (arr.length > 50) arr.pop();
+      saveHistory();
+      renderHistoryGrid();
     }
 
-    // ---------- GENESIS / SYNC SECTORS ----------
+    // -----------------------------
+    // GENESIS / SYNC FILES (65 Dateien / Cluster)
+    // -----------------------------
+    const managerDefinition = {
+      GPCB: ["identity.gt","bank_exekutive.js","vault_control.py"],
+      ECCU: ["identity.gt","parity_logic.js","monitor.json"],
+      "RFOF-GOLD-CHAIN": ["identity.gt","integrity_check.py","chain_notary.bin"],
+      "APP-API": ["identity.gt","kaskaden_steuerung.js","bridge_handshake.go"],
+      "STORY-HISTORY": ["ARCHIVE/","publisher.py","notary_service.js"],
+      "ALPHA-NODES": ["auth.js","quantizer.py","map_core.cpp","reset_pulse.sh"],
+      API: ["actions.js","resources.json","event_listener.js","schema.xsd"],
+      "X-HUB": ["injector.bin","manifest.json"],
+      "CROSS-CHECK": ["anti_collision.py","point_e_check.js"],
+      USER: ["identity.gt","access_rights.key","task_executor.js"],
+      ADMIN: ["identity.gt","system_monitor.py","fee_notary.js"],
+      DEV: ["identity.gt","bridge_builder.js","axiom_validator.py"],
+      MASTER: ["identity.gt","axiom_override.bin","identity_injection.py"],
+      ENTERPRISE: ["identity.gt","settlement.js","liquidity_flow.py"],
+      PARTNER: ["identity.gt","sync_bridge.py"],
+      REPOSITORY: ["identity.gt","performance_boost.py","app_manifest.json"]
+    };
 
-    const genesisSectorsEl = document.getElementById("genesisSectors");
-    const syncSectorsEl = document.getElementById("syncSectors");
+    function collectClusterFiles() {
+      const files = [];
+      Object.entries(managerDefinition).forEach(([folder, arr]) => {
+        arr.forEach(name => {
+          files.push({ folder, name });
+        });
+      });
+      // we only need 65; if more, slice; if less, we still show all
+      return files.slice(0, 65);
+    }
 
-    function randomAAA() {
-      const r = Math.random();
-      if (r > 0.8) return "AAA";
-      if (r > 0.4) return "AA";
-      return "A";
+    function renderGenesisSyncFiles() {
+      const files = collectClusterFiles();
+      const genesisContainer = document.getElementById("genesisFiles");
+      const syncContainer = document.getElementById("syncFiles");
+      genesisContainer.innerHTML = "";
+      syncContainer.innerHTML = "";
+
+      files.forEach((file, idx) => {
+        const hash = pseudoHash(file.folder + "/" + file.name + "::GENESIS");
+        const pillG = document.createElement("div");
+        pillG.className = "file-pill";
+        pillG.textContent = `${file.folder}/${file.name}`;
+        pillG.title = `GENESIS · ${hash}`;
+        pillG.addEventListener("click", () => {
+          addMetaLog(`GENESIS-FILE ${file.folder}/${file.name} · HASH ${hash}`, "GENESIS");
+        });
+        genesisContainer.appendChild(pillG);
+
+        const hashS = pseudoHash(file.folder + "/" + file.name + "::SYNC");
+        const pillS = document.createElement("div");
+        pillS.className = "file-pill";
+        pillS.textContent = `${file.folder}/${file.name}`;
+        pillS.title = `SYNC · ${hashS}`;
+        pillS.addEventListener("click", () => {
+          addMetaLog(`SYNC-FILE ${file.folder}/${file.name} · HASH ${hashS}`, "SYNC");
+        });
+        syncContainer.appendChild(pillS);
+      });
+    }
+
+    // -----------------------------
+    // 13 DUAL-SEKTOREN
+    // -----------------------------
+    const sectorNames = [
+      "GPCB",
+      "Phoenix Coin",
+      "G-Phoenix Token",
+      "Phoenix LP",
+      "ECCU",
+      "Joule",
+      "XP",
+      "GOLD (42E0)",
+      "RFOF",
+      "RFOF/GOLD LP",
+      "BIP (Master LP)",
+      "Identity Registry",
+      "BRIDGE"
+    ];
+
+    function initSectors() {
+      state.sectors = sectorNames.map((name, idx) => {
+        const grade = idx % 3 === 0 ? "AAA" : (idx % 3 === 1 ? "AA" : "A");
+        return {
+          id: idx,
+          name,
+          grade,
+          clearing: "OK",
+          xp: 0
+        };
+      });
     }
 
     function renderSectors() {
-      genesisSectorsEl.innerHTML = "";
-      syncSectorsEl.innerHTML = "";
-      sectors.forEach(sec => {
-        const baseHash = randHash(6);
-        const aaa = randomAAA();
+      const grid = document.getElementById("sectorsGrid");
+      grid.innerHTML = "";
+      state.sectors.forEach(sector => {
+        const card = document.createElement("div");
+        card.className = "sector-card";
+        card.dataset.sector = sector.name.includes("GOLD") ? "GOLD" : sector.name.split(" ")[0].replace(/[()]/g,"");
 
-        const genesisCard = document.createElement("div");
-        genesisCard.className = "sector-card";
-        genesisCard.style.borderColor = sec.color;
-        genesisCard.innerHTML = `
-          <div class="sector-header">
-            <span>${sec.label}</span>
-            <span class="sector-status"><span>${aaa}</span></span>
-          </div>
-          <div class="sector-meta">
-            <span>${sec.desc}</span>
-            <span>Files: 65</span>
-          </div>
-          <div class="sector-footer">
-            <span>Genesis-Box</span>
-            <span class="hash">0x${baseHash}</span>
+        const inner = document.createElement("div");
+        inner.className = "sector-inner";
+
+        const header = document.createElement("div");
+        header.className = "sector-header-row";
+        header.innerHTML = `
+          <div class="sector-name">${sector.name}</div>
+          <div class="sector-aaa"><span data-grade="${sector.grade}">${sector.grade}</span></div>
+        `;
+
+        const boxRow = document.createElement("div");
+        boxRow.className = "sector-box-row";
+
+        const genesisBox = document.createElement("div");
+        genesisBox.className = "sector-box";
+        genesisBox.innerHTML = `<div class="sector-box-title">Genesis</div>`;
+        ["HASH: " + pseudoHash(sector.name + "::GENESIS"),
+         "BLOCK: #" + (1000 + sector.id),
+         "STATE: STATIC",
+         "FILES: 65/65"].forEach(line => {
+          const div = document.createElement("div");
+          div.className = "sector-line";
+          div.textContent = line;
+          div.addEventListener("click", () => {
+            addMetaLog(`GENESIS-SEKTOR ${sector.name} · ${line}`, "GENESIS");
+          });
+          genesisBox.appendChild(div);
+        });
+
+        const syncBox = document.createElement("div");
+        syncBox.className = "sector-box";
+        syncBox.innerHTML = `<div class="sector-box-title">Sync</div>`;
+        ["HASH: " + pseudoHash(sector.name + "::SYNC"),
+         "BLOCK: #" + (2000 + sector.id),
+         "CLEARING: 0.2% SAFE/OWNER/FOND/SYSTEM",
+         "XP-LINKED"].forEach(line => {
+          const div = document.createElement("div");
+          div.className = "sector-line";
+          div.textContent = line;
+          div.addEventListener("click", () => {
+            addMetaLog(`SYNC-SEKTOR ${sector.name} · ${line}`, "SYNC");
+          });
+          syncBox.appendChild(div);
+        });
+
+        boxRow.appendChild(genesisBox);
+        boxRow.appendChild(syncBox);
+
+        const diagRow = document.createElement("div");
+        diagRow.className = "sector-diagram-row";
+
+        const diagCandles = document.createElement("div");
+        diagCandles.className = "sector-diagram";
+        diagCandles.innerHTML = `<div class="sector-diagram-label">Candles</div><div class="sector-diagram-pulse"></div>`;
+
+        const diagMecha = document.createElement("div");
+        diagMecha.className = "sector-diagram";
+        diagMecha.innerHTML = `<div class="sector-diagram-label">Mechatronik</div><div class="sector-diagram-pulse"></div>`;
+
+        diagRow.appendChild(diagCandles);
+        diagRow.appendChild(diagMecha);
+
+        const footer = document.createElement("div");
+        footer.className = "sector-footer-row";
+        footer.innerHTML = `
+          <div>XP: <span id="sectorXP-${sector.id}">0</span> · Clearing: <span id="sectorClearing-${sector.id}">${sector.clearing}</span></div>
+          <div>
+            <button data-sector="${sector.id}" class="btn-drill">Drill-Down</button>
+            <button data-sector="${sector.id}" class="btn-reset">Reset</button>
           </div>
         `;
-        genesisCard.onclick = () => {
-          document.getElementById("genesisCluster").textContent = sec.label;
-          document.getElementById("genesisHash").textContent = "0x" + randHash(8);
-          document.getElementById("genesisAAA").textContent = aaa;
-          document.getElementById("genesisClearing").textContent = "OK (" + sec.label + ")";
-        };
-        genesisSectorsEl.appendChild(genesisCard);
 
-        const syncCard = document.createElement("div");
-        syncCard.className = "sector-card";
-        syncCard.style.borderColor = sec.color;
-        syncCard.innerHTML = `
-          <div class="sector-header">
-            <span>${sec.label}</span>
-            <span class="sector-status"><span>${aaa}</span></span>
-          </div>
-          <div class="sector-meta">
-            <span>${sec.desc}</span>
-            <span>XP/J Sync</span>
-          </div>
-          <div class="sector-footer">
-            <span>Sync-Box</span>
-            <span class="hash">0x${baseHash}</span>
-          </div>
-        `;
-        syncCard.onclick = () => {
-          document.getElementById("syncCluster").textContent = sec.label;
-          document.getElementById("syncClearing").textContent = `${sec.label} Clearing-Status synchronisiert`;
-          syncEvents++;
-          document.getElementById("syncEvents").textContent = syncEvents;
-        };
-        syncSectorsEl.appendChild(syncCard);
+        inner.appendChild(header);
+        inner.appendChild(boxRow);
+        inner.appendChild(diagRow);
+        inner.appendChild(footer);
+        card.appendChild(inner);
+        grid.appendChild(card);
+
+        // store pulses for takt sync
+        state.diagrams["sectorCandles-" + sector.id] = diagCandles.querySelector(".sector-diagram-pulse");
+        state.diagrams["sectorMecha-" + sector.id] = diagMecha.querySelector(".sector-diagram-pulse");
+      });
+
+      grid.querySelectorAll(".btn-drill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = parseInt(btn.dataset.sector, 10);
+          const sector = state.sectors.find(s => s.id === id);
+          if (!sector) return;
+          addMetaLog(`DRILL-DOWN Sektor ${sector.name} · Level 03 Rendering aktiviert.`, "L03");
+        });
+      });
+
+      grid.querySelectorAll(".btn-reset").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = parseInt(btn.dataset.sector, 10);
+          const sector = state.sectors.find(s => s.id === id);
+          if (!sector) return;
+          sector.xp = 0;
+          sector.clearing = "OK";
+          document.getElementById("sectorXP-" + id).textContent = "0";
+          document.getElementById("sectorClearing-" + id).textContent = "OK";
+          addMetaLog(`RESET Sektor ${sector.name} · Zero-Point-Reset (Z) ausgeführt.`, "RESET");
+        });
       });
     }
 
-    // ---------- DIAGRAMS (CANVAS) ----------
+    // -----------------------------
+    // X-HUB
+    // -----------------------------
+    const xhubTerminal = document.getElementById("xhubTerminal");
 
-    const k0Canvas = document.getElementById("k0Canvas");
-    const genesisCanvas = document.getElementById("genesisCanvas");
-    const syncCanvas = document.getElementById("syncCanvas");
+    function addXHubLog(msg) {
+      const line = document.createElement("div");
+      line.className = "term-line";
+      const time = new Date().toLocaleTimeString();
+      line.innerHTML = `[${time}] <span class="term-meta">[X-HUB]</span> ${msg}`;
+      xhubTerminal.appendChild(line);
+      xhubTerminal.scrollTop = xhubTerminal.scrollHeight;
+    }
 
-    const k0Ctx = k0Canvas.getContext("2d");
-    const gCtx = genesisCanvas.getContext("2d");
-    const sCtx = syncCanvas.getContext("2d");
+    // -----------------------------
+    // RAPP-STORE
+    // -----------------------------
+    const rappApps = [
+      "CLEARING-APP",
+      "XP-MONITOR",
+      "JOULE-MINER",
+      "IDENTITY-VIEW",
+      "BRIDGE-APP",
+      "RFOF-DASH"
+    ];
 
-    let k0Mode = "candles";
-    let gMode = "candles";
-    let sMode = "candles";
+    function renderRappStore() {
+      const grid = document.getElementById("rappGrid");
+      grid.innerHTML = "";
+      rappApps.forEach((name, idx) => {
+        const div = document.createElement("div");
+        div.className = "rapp-pill";
+        div.innerHTML = `
+          <div class="rapp-name">${name}</div>
+          <div style="font-size:8px;">Native Web-Component · Manager-Status: READY</div>
+          <div class="rapp-bar"><div class="rapp-bar-fill" id="rappBar-${idx}"></div></div>
+        `;
+        div.addEventListener("click", () => {
+          addXHubLog(`RAPP ${name} · Injektions-Status aktualisiert.`);
+        });
+        grid.appendChild(div);
+      });
+    }
 
+    // -----------------------------
+    // MANAGER-ORDNER
+    // -----------------------------
+    function renderManagerList() {
+      const list = document.getElementById("managerList");
+      list.innerHTML = "";
+      Object.entries(managerDefinition).forEach(([folder, files]) => {
+        const group = document.createElement("div");
+        group.className = "manager-group";
+        const title = document.createElement("div");
+        title.className = "manager-title";
+        title.textContent = folder;
+        group.appendChild(title);
+        files.forEach(name => {
+          const fileDiv = document.createElement("div");
+          fileDiv.className = "manager-file";
+          fileDiv.textContent = name;
+          fileDiv.title = `${folder}/${name}`;
+          fileDiv.addEventListener("click", () => {
+            const hash = pseudoHash(folder + "/" + name);
+            addMetaLog(`MANAGER-FILE ${folder}/${name} · HASH ${hash}`, "FILE");
+          });
+          group.appendChild(fileDiv);
+        });
+        list.appendChild(group);
+      });
+    }
+
+    // -----------------------------
+    // DIAGRAMME (CANVAS)
+    // -----------------------------
     function drawCandles(ctx, t) {
       const w = ctx.canvas.width;
       const h = ctx.canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      const bars = 18;
-      const barWidth = w / bars;
-      for (let i = 0; i < bars; i++) {
-        const x = i * barWidth + barWidth * 0.2;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(0,0,w,h);
+
+      const count = 16;
+      const candleWidth = w / (count * 1.4);
+      for (let i = 0; i < count; i++) {
+        const x = (i + 0.5) * (w / count);
         const base = h * 0.8;
-        const height = (Math.sin(t / 400 + i * 0.4) * 0.5 + 0.5) * (h * 0.5);
+        const height = (Math.sin(t/400 + i*0.4) * 0.3 + 0.7) * (h*0.4);
         const top = base - height;
-        ctx.strokeStyle = "rgba(148, 163, 184, 0.6)";
+        const color = i % 2 === 0 ? "#4ade80" : "#f97316";
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(x + barWidth * 0.3, top - 6);
-        ctx.lineTo(x + barWidth * 0.3, base + 4);
+        ctx.moveTo(x, top);
+        ctx.lineTo(x, base);
         ctx.stroke();
-        ctx.fillStyle = i % 2 === 0 ? "rgba(34, 197, 94, 0.8)" : "rgba(248, 113, 113, 0.8)";
-        ctx.fillRect(x, top, barWidth * 0.6, height);
+        ctx.fillStyle = color;
+        ctx.fillRect(x - candleWidth/2, top + height*0.2, candleWidth, height*0.6);
       }
     }
 
     function drawMecha(ctx, t) {
       const w = ctx.canvas.width;
       const h = ctx.canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      const cx = w / 2;
-      const cy = h / 2;
-      ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(0,0,w,h);
+
+      const cx = w/2;
+      const cy = h*0.6;
+      const radius = Math.min(w,h)*0.25;
+      ctx.strokeStyle = "rgba(148,163,184,0.6)";
+      ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(cx, cy, Math.min(w, h) * 0.35, 0, Math.PI * 2);
+      ctx.arc(cx, cy, radius, 0, Math.PI*2);
       ctx.stroke();
+
       const particles = 18;
       for (let i = 0; i < particles; i++) {
-        const angle = (i / particles) * Math.PI * 2 + t / 800;
-        const radius = Math.min(w, h) * (0.18 + 0.12 * Math.sin(t / 600 + i));
-        const x = cx + Math.cos(angle) * radius;
-        const y = cy + Math.sin(angle) * radius;
-        const energy = (Math.sin(t / 300 + i) * 0.5 + 0.5);
-        const r = 2 + energy * 3;
-        const color = `rgba(${34 + energy * 40}, ${197}, ${94 + energy * 80}, ${0.6 + energy * 0.3})`;
+        const angle = (t/800) + i * (Math.PI*2/particles);
+        const r = radius * (0.7 + 0.3*Math.sin(t/600 + i));
+        const x = cx + Math.cos(angle)*r;
+        const y = cy + Math.sin(angle)*r;
+        const alpha = 0.4 + 0.4*Math.sin(t/500 + i);
+        ctx.fillStyle = `rgba(56,189,248,${alpha})`;
         ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.arc(x,y,2,0,Math.PI*2);
         ctx.fill();
       }
+
+      ctx.fillStyle = "rgba(74,222,128,0.9)";
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI*2);
+      ctx.fill();
     }
 
-    function resizeCanvas() {
-      [k0Canvas, genesisCanvas, syncCanvas].forEach(c => {
-        const rect = c.getBoundingClientRect();
-        c.width = rect.width * window.devicePixelRatio;
-        c.height = rect.height * window.devicePixelRatio;
+    function initDiagrams() {
+      const genesisCandles = document.getElementById("genesisCandles").getContext("2d");
+      const genesisMecha = document.getElementById("genesisMecha").getContext("2d");
+      const syncCandles = document.getElementById("syncCandles").getContext("2d");
+      const syncMecha = document.getElementById("syncMecha").getContext("2d");
+      state.diagrams.genesisCandles = genesisCandles;
+      state.diagrams.genesisMecha = genesisMecha;
+      state.diagrams.syncCandles = syncCandles;
+      state.diagrams.syncMecha = syncMecha;
+    }
+
+    function resizeDiagrams() {
+      ["genesisCandles","genesisMecha","syncCandles","syncMecha"].forEach(id => {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = rect.height * window.devicePixelRatio;
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(window.devicePixelRatio,0,0,window.devicePixelRatio,0,0);
       });
     }
 
-    window.addEventListener("resize", resizeCanvas);
-
-    // ---------- TAKTGENERATOR ----------
-
-    const taktLabel = document.getElementById("taktLabel");
-    const taktPhase = document.getElementById("taktPhase");
-    const taktDot = document.getElementById("taktDot");
-    const k0Info = document.getElementById("k0Info");
-
-    function updateTakt() {
-      takt = (takt + 1) % 11;
-      taktLabel.textContent = "42E0 Takt: " + takt;
-      let phase = "Idle";
-      if (takt === 0) phase = "Reset-Pulse";
-      else if (takt === 10) phase = "Singularität";
-      else if (takt === 6) phase = "E (6,5) – Ereignishorizont";
-      taktPhase.textContent = "Phase: " + phase;
-
-      const intensity = 0.4 + (takt / 10) * 0.6;
-      taktDot.style.boxShadow = `0 0 16px rgba(74, 222, 128, ${intensity})`;
-      taktDot.style.transform = takt === 10 ? "scale(1.3)" : "scale(1)";
-
-      k0Info.textContent = `A1–Z10: Takt ${takt} | Phase: ${phase}`;
-    }
-
-    // ---------- XP / JOULE MINING ----------
-
-    const xpLabel = document.getElementById("xpLabel");
-    const xpBar = document.getElementById("xpBar");
-    const aaaLabel = document.getElementById("aaaLabel");
-    const identityGlow = document.getElementById("identityGlow");
-    const syncXPLabel = document.getElementById("syncXP");
-
-    function updateXP(delta) {
-      xp += delta;
-      if (xp < 0) xp = 0;
-      joule = xp / 1000;
-      const xpDisplay = Math.floor(xp);
-      const jouleDisplay = joule.toFixed(2);
-      xpLabel.textContent = `XP: ${xpDisplay} | J: ${jouleDisplay}`;
-      syncXPLabel.textContent = `${xpDisplay} / ${jouleDisplay}`;
-      const pct = Math.min(100, xp / 50);
-      xpBar.style.width = pct + "%";
-
-      if (xp > 800) xpLevel = "AAA";
-      else if (xp > 300) xpLevel = "AA";
-      else xpLevel = "A";
-      aaaLabel.textContent = "Status: " + xpLevel;
-
-      const glowIntensity = 0.4 + Math.min(0.6, xp / 1000);
-      identityGlow.style.boxShadow = `0 0 24px rgba(74, 222, 128, ${glowIntensity})`;
-    }
-
-    document.addEventListener("mousemove", () => {
-      updateXP(0.2);
-    });
-
-    function fpsLoop(now) {
-      frameCount++;
-      const diff = now - xpLastTime;
-      if (diff >= 1000) {
-        fps = (frameCount / diff) * 1000;
-        frameCount = 0;
-        xpLastTime = now;
-        updateXP(fps * 0.02);
+    // -----------------------------
+    // Takt + XP / JOULE
+    // -----------------------------
+    function updateTakt(dt) {
+      const speed = 0.0015; // cycles per ms
+      state.takt += dt * speed * 10;
+      if (state.takt >= 10.0) {
+        state.takt = 0.0;
+        addMetaLog("42E0 Singularität erreicht · Zero-Point-Reset (Z) getriggert.", "42E0");
       }
-      requestAnimationFrame(fpsLoop);
-    }
+      const taktInt = Math.floor(state.takt);
+      document.getElementById("taktDisplay").textContent = taktInt;
+      document.getElementById("k0TaktLabel").textContent = taktInt;
+      document.getElementById("k0TaktValue").textContent = state.takt.toFixed(1);
+      const fill = document.getElementById("k0TaktFill");
+      fill.style.transform = `scaleX(${Math.max(0.05, state.takt/10)})`;
 
-    // ---------- PROFILE BUTTONS ----------
-
-    document.querySelectorAll(".profile-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const module = btn.dataset.module;
-        if (module === "wallet") {
-          logTerminal("Wallet: Universal-Ledger, Mining, Fees, Staking – Viewer-Sync aktiviert.", "info");
-        } else if (module === "profile") {
-          logTerminal("Profile: Social X-Hub, Satoramy-ID, XP-Level – rApp-Overlay geladen.", "info");
-        } else if (module === "settings") {
-          logTerminal("Settings: SAFE/OWNER/FOND/SYSTEM, VM-Bypass – Parameter-Konsole geöffnet.", "info");
+      // Puls für Sektoren
+      Object.keys(state.diagrams).forEach(key => {
+        if (key.startsWith("sector")) {
+          const el = state.diagrams[key];
+          if (!el) return;
+          const phase = Math.sin(state.takt/10 * Math.PI*2);
+          const scale = 0.2 + 0.4 * (phase*0.5 + 0.5);
+          el.style.transform = `scaleY(${scale})`;
+          el.style.opacity = 0.3 + 0.4*(phase*0.5 + 0.5);
         }
       });
-    });
 
-    // ---------- SEARCH / GUCI ----------
+      // RAPP bars
+      rappApps.forEach((_, idx) => {
+        const bar = document.getElementById("rappBar-" + idx);
+        if (!bar) return;
+        const phase = Math.sin(state.takt/10 * Math.PI*2 + idx);
+        const scale = 0.2 + 0.6*(phase*0.5 + 0.5);
+        bar.style.transform = `scaleX(${scale})`;
+      });
+    }
 
-    const searchInput = document.getElementById("searchInput");
+    function updateXPFromFPS(dt) {
+      const fps = state.fpsFrames > 0 ? state.fpsFrames / (state.fpsAccumulator/1000) : 0;
+      state.fpsAccumulator = 0;
+      state.fpsFrames = 0;
+      const gain = Math.min(0.5, fps/120);
+      state.xp += gain;
+      state.joule = state.xp / 100;
+      document.getElementById("xpDisplay").textContent = state.xp.toFixed(1);
+      document.getElementById("k0XPValue").textContent = `XP ${state.xp.toFixed(1)} · ${state.joule.toFixed(3)} J`;
 
-    searchInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        const q = searchInput.value.trim();
-        if (!q) return;
-        logTerminal(`SEARCH GUCI: ${q} ... Fetching Profile-Chain-State.`, "guci");
-        document.getElementById("guciLabel").textContent = `query=${encodeURIComponent(q)}`;
+      // Identity grade
+      let grade = "A";
+      if (state.xp > 200) grade = "AAA";
+      else if (state.xp > 50) grade = "AA";
+      document.getElementById("k0IdentityGrade").textContent = grade;
+      document.getElementById("footerIdentity").textContent = grade;
+    }
+
+    function onMouseMove() {
+      state.xp += 0.02;
+    }
+
+    // -----------------------------
+    // GENESIS / SYNC STATUS
+    // -----------------------------
+    function updateGenesisSyncStatus() {
+      document.getElementById("genesisXP").textContent = `XP: ${state.xp.toFixed(1)}`;
+      document.getElementById("syncXP").textContent = `XP: ${state.xp.toFixed(1)}`;
+      document.getElementById("genesisClearing").textContent = "Clearing: OK";
+      document.getElementById("syncClearing").textContent = "Clearing: 0.2% SAFE/OWNER/FOND/SYSTEM";
+    }
+
+    // -----------------------------
+    // MAIN LOOP
+    // -----------------------------
+    function loop(now) {
+      const dt = now - state.lastFrameTime;
+      state.lastFrameTime = now;
+      state.fpsAccumulator += dt;
+      state.fpsFrames++;
+
+      updateTakt(dt);
+
+      if (state.fpsAccumulator >= 1000) {
+        updateXPFromFPS(state.fpsAccumulator);
+        updateGenesisSyncStatus();
       }
-    });
 
-    function parseURLParams() {
+      // diagrams
+      if (state.diagrams.genesisCandles) drawCandles(state.diagrams.genesisCandles, now);
+      if (state.diagrams.genesisMecha) drawMecha(state.diagrams.genesisMecha, now);
+      if (state.diagrams.syncCandles) drawCandles(state.diagrams.syncCandles, now + 200);
+      if (state.diagrams.syncMecha) drawMecha(state.diagrams.syncMecha, now + 200);
+
+      requestAnimationFrame(loop);
+    }
+
+    // -----------------------------
+    // SEARCH / GUCI PARAMS
+    // -----------------------------
+    function parseGUCIParams() {
       const params = new URLSearchParams(window.location.search);
-      const level = params.get("level") || "02";
-      const node = params.get("node") || "SYSTEM";
       const block = params.get("block");
       const query = params.get("query");
+      const level = params.get("level") || "02";
+      const node = params.get("node") || "SYSTEM";
 
-      document.getElementById("guciLabel").textContent = `level=${level} | node=${node}`;
+      addMetaLog(`RENDERING LEVEL: ${level} | NODE: ${node}`, "LEVEL");
+
       if (block) {
-        logTerminal(`INSPECTING BLOCK: #${block} ... Detail-Analysis initiated.`, "highlight");
+        addMetaLog(`INSPECTING BLOCK: #${block} · Detail-Analysis initiated.`, "BLOCK");
+        pushHistory("GPCB", block);
       }
       if (query) {
-        logTerminal(`SEARCH GUCI: ${decodeURIComponent(query)} ... Fetching Profile-Chain-State.`, "guci");
+        addMetaLog(`SEARCH GUCI: ${decodeURIComponent(query)} · Fetching Profile-Chain-State.`, "GUCI");
       }
       if (level === "03" && block) {
-        logTerminal(`DEEP-DIVE Level 03 Rendering for Block: ${block}`, "highlight");
+        addMetaLog(`[L03] Deep-Dive Rendering for Block: ${block}`, "L03");
       } else if (level === "02") {
-        logTerminal(`Browsing Level 02 Meta-Structure of ${node}.`, "info");
+        addMetaLog(`[L02] Browsing Level 02 Meta-Structure of ${node}.`, "L02");
       }
     }
 
-    // ---------- CLEARING / FEE SIM ----------
-
-    function simulateClearing() {
-      const feeDist = "SAFE 45% | OWNER 42% | FOND 10% | SYSTEM 3%";
-      logTerminal(`Clearing-Status: 0,2% Fee verteilt → ${feeDist}`, "info");
-      document.getElementById("syncClearing").textContent = `GPCB/ECCU Clearing: ${feeDist}`;
+    // -----------------------------
+    // WALLET / PROFILE / SETTINGS
+    // -----------------------------
+    function initGlobalButtons() {
+      document.getElementById("btnWallet").addEventListener("click", () => {
+        addMetaLog("WALLET: Universal-Ledger · Mining · Fees · Staking geöffnet.", "WALLET");
+      });
+      document.getElementById("btnProfile").addEventListener("click", () => {
+        addMetaLog("PROFILE: Social X-Hub · Satoramy-ID · XP-Level geöffnet.", "PROFILE");
+      });
+      document.getElementById("btnSettings").addEventListener("click", () => {
+        addMetaLog("SETTINGS: Systemparameter · SAFE/OWNER/FOND/SYSTEM · VM-Bypass geöffnet.", "SETTINGS");
+      });
     }
 
-    // ---------- LIVE UPDATE / BLOCKS ----------
-
-    function simulateBlocks() {
-      const apis = ["GPCB", "ECCU", "RFOF", "BIP", "CACHE", "INDEX"];
-      const api = randFrom(apis);
-      const id = "BLOCK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-      addHistoryEntry(api, id);
-      logTerminal(`New Block ${id} in ${api} registered.`, "info");
-    }
-
-    // ---------- DIAGRAM MODE TOGGLES ----------
-
-    document.getElementById("k0CandlesBtn").onclick = () => {
-      k0Mode = "candles";
-      document.getElementById("k0CandlesBtn").classList.add("active");
-      document.getElementById("k0MechaBtn").classList.remove("active");
-    };
-    document.getElementById("k0MechaBtn").onclick = () => {
-      k0Mode = "mecha";
-      document.getElementById("k0MechaBtn").classList.add("active");
-      document.getElementById("k0CandlesBtn").classList.remove("active");
-    };
-
-    document.getElementById("gCandlesBtn").onclick = () => {
-      gMode = "candles";
-      document.getElementById("gCandlesBtn").classList.add("active");
-      document.getElementById("gMechaBtn").classList.remove("active");
-    };
-    document.getElementById("gMechaBtn").onclick = () => {
-      gMode = "mecha";
-      document.getElementById("gMechaBtn").classList.add("active");
-      document.getElementById("gCandlesBtn").classList.remove("active");
-    };
-
-    document.getElementById("sCandlesBtn").onclick = () => {
-      sMode = "candles";
-      document.getElementById("sCandlesBtn").classList.add("active");
-      document.getElementById("sMechaBtn").classList.remove("active");
-    };
-    document.getElementById("sMechaBtn").onclick = () => {
-      sMode = "mecha";
-      document.getElementById("sMechaBtn").classList.add("active");
-      document.getElementById("sCandlesBtn").classList.remove("active");
-    };
-
-    // ---------- FOOTER CLOCK ----------
-
-    const footerClock = document.getElementById("footerClock");
-    function updateClock() {
-      footerClock.textContent = formatTime();
-    }
-
-    // ---------- MAIN LOOP ----------
-
-    function renderLoop(ts) {
-      if (k0Mode === "candles") drawCandles(k0Ctx, ts);
-      else drawMecha(k0Ctx, ts);
-
-      if (gMode === "candles") drawCandles(gCtx, ts);
-      else drawMecha(gCtx, ts);
-
-      if (sMode === "candles") drawCandles(sCtx, ts);
-      else drawMecha(sCtx, ts);
-
-      requestAnimationFrame(renderLoop);
-    }
-
-    // ---------- INIT ----------
-
+    // -----------------------------
+    // INIT
+    // -----------------------------
     function init() {
-      resizeCanvas();
-      renderHistory();
-      renderSectors();
-      initTerminal();
-      initAZ();
-      parseURLParams();
       updateClock();
-      updateTakt();
-      simulateClearing();
-
       setInterval(updateClock, 1000);
-      setInterval(updateTakt, 2000);
-      setInterval(simulateTerminalEvents, 5000);
-      setInterval(simulateCrossAudit, 8000);
-      setInterval(simulateBlocks, 6000);
-      setInterval(simulateClearing, 12000);
 
-      requestAnimationFrame(renderLoop);
-      requestAnimationFrame(fpsLoop);
+      loadHistory();
+      renderHistoryGrid();
+      renderAZGrid();
+      renderGenesisSyncFiles();
+      initSectors();
+      renderSectors();
+      renderRappStore();
+      renderManagerList();
+      initGlobalButtons();
+
+      initDiagrams();
+      resizeDiagrams();
+      window.addEventListener("resize", () => {
+        resizeDiagrams();
+      });
+
+      document.addEventListener("mousemove", onMouseMove);
+
+      // X-HUB input
+      document.getElementById("xhubSend").addEventListener("click", () => {
+        const input = document.getElementById("xhubInput");
+        const val = input.value.trim();
+        if (!val) return;
+        addXHubLog(`Injection: ${val} · Energie-Impuls ausgelöst.`);
+        addMetaLog(`X-HUB Injection: ${val}`, "X-HUB");
+        input.value = "";
+      });
+
+      // initial logs
+      addMetaLog("Initializing Chain-Clearing Monolith...", "INIT");
+      addMetaLog("Merging API Streams: GPCB, ECCU, RFOF-GOLD-CHAIN.", "INIT");
+      addMetaLog("Synchronizing Documentation-Nodes with Live-State.", "INIT");
+      addMetaLog("@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.", "META");
+
+      parseGUCIParams();
+
+      // simulate history growth
+      setInterval(() => {
+        const keys = ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"];
+        const key = keys[Math.floor(Math.random()*keys.length)];
+        const id = "BLOCK-" + Math.random().toString(36).substring(2,8).toUpperCase();
+        pushHistory(key, id);
+        addMetaLog(`META-SYNC: ${key} ${id} propagated to all Sektoren.`, "SYNC");
+      }, 6000);
+
+      // cross-chain audit
+      setInterval(() => {
+        const neighbors = ["GPCB","ECCU","RFOF-GOLD-CHAIN"];
+        const target = neighbors[Math.floor(Math.random()*neighbors.length)];
+        addMetaLog(`[CROSS-AUDIT] Reading path: ${target}/wallet/ ... INTEGRITY 100%`, "AUDIT");
+      }, 9000);
+
+      state.lastFrameTime = performance.now();
+      requestAnimationFrame(loop);
     }
 
-    init();
+    document.addEventListener("DOMContentLoaded", init);
   </script>
 </body>
 </html>

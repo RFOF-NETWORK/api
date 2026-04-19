@@ -41,6 +41,13 @@
     .brand span { color:var(--accent); }
     .guci-display { font-size:12px; font-family:monospace; color:var(--muted); }
 
+    /* Zusatz: GUCI-Link */
+    .guci-link {
+      color:var(--accent);
+      text-decoration:none;
+      cursor:pointer;
+    }
+
     /* Status-Bar */
     .status-bar {
       background:#020617;
@@ -81,6 +88,7 @@
     .euro-balance-value {
       font-size:26px;
       font-weight:700;
+      color:var(--accent);
     }
     .euro-balance-actions {
       display:flex;
@@ -101,6 +109,10 @@
       border-color:var(--accent);
       color:var(--accent);
       background:var(--accent-soft);
+      cursor:pointer;
+    }
+    .btn-chip.master-only {
+      cursor:pointer;
     }
     /* END: Euro-Gesamtbalance */
 
@@ -116,7 +128,7 @@
       border:1px solid var(--border);
       border-radius:12px;
       padding:14px;
-      cursor:default;
+      cursor:pointer;
       transition:0.18s border-color, 0.18s background-color, 0.18s transform;
     }
     .coin-tile:hover {
@@ -144,10 +156,11 @@
       font-size:20px;
       font-weight:700;
       margin:4px 0;
+      color:var(--accent);
     }
     .val-fiat {
       font-size:11px;
-      color:var(--muted);
+      color:var(--accent);
     }
 
     /* Detail-View / Trading-Charts */
@@ -158,6 +171,7 @@
       padding:18px 18px 20px;
       margin-bottom:24px;
       border-left:4px solid var(--accent);
+      display:none; /* initial versteckt, wird per app.js geöffnet */
     }
     .detail-header {
       display:flex;
@@ -182,6 +196,7 @@
       border-radius:4px;
       font-size:11px;
       padding:4px 8px;
+      cursor:pointer;
     }
     .chart-tabs {
       display:flex;
@@ -194,6 +209,7 @@
       border-radius:999px;
       border:1px solid var(--border);
       color:var(--muted);
+      cursor:pointer;
     }
     .chart-tab-active {
       border-color:var(--accent);
@@ -226,7 +242,7 @@
       padding:8px 12px;
       font-size:11px;
       font-weight:600;
-      cursor:default;
+      cursor:pointer;
     }
     .btn-buy {
       background:#16a34a;
@@ -255,6 +271,7 @@
       border-radius:10px;
       padding:10px 12px;
       margin-top:10px;
+      display:none; /* wird per app.js für MASTER sichtbar */
     }
     .master-admin-title {
       margin:0 0 4px;
@@ -275,7 +292,7 @@
       font-weight:600;
       background:var(--accent);
       color:#020617;
-      cursor:default;
+      cursor:pointer;
     }
 
     /* BEGIN: Mining-Sektion */
@@ -328,7 +345,7 @@
       font-size:11px;
       font-weight:600;
       padding:8px 12px;
-      cursor:default;
+      cursor:pointer;
     }
     /* END: Mining-Sektion */
 
@@ -346,7 +363,7 @@
       font-size:11px;
       font-weight:600;
       padding:8px 12px;
-      cursor:default;
+      cursor:pointer;
       margin-top:8px;
     }
 
@@ -361,6 +378,11 @@
     .history-entry {
       margin-bottom:2px;
     }
+    .hash-link {
+      color:var(--accent);
+      text-decoration:none;
+      cursor:pointer;
+    }
     /* END: Wallet Transaktionshistorie */
   </style>
 </head>
@@ -370,7 +392,12 @@
   <div class="brand">
     <a href="../index.html"><span>RFOF‑NETWORK</span> · WALLET</a>
   </div>
-  <div class="guci-display">GUCI: <span>83f74bfc-1067-4be8-a959-9368111126b9</span></div>
+  <div class="guci-display">
+    GUCI:
+    <a class="guci-link" href="../viewer/index.html?guci=83f74bfc-1067-4be8-a959-9368111126b9">
+      83f74bfc-1067-4be8-a959-9368111126b9
+    </a>
+  </div>
 </header>
 
 <div class="status-bar">
@@ -386,11 +413,11 @@
     <div class="euro-balance-label">Gesamtwert der Wallet</div>
     <div class="euro-balance-value">0.00€</div>
     <div class="euro-balance-actions">
-      <div class="btn-chip-primary">Send</div>
-      <div class="btn-chip-primary">Receive</div>
-      <div class="btn-chip-primary">Swap (Bridge)</div>
-      <div class="btn-chip">Einzahlen (EUR/BTC/TON)</div>
-      <div class="btn-chip">Auszahlen (EUR/BTC/TON)</div>
+      <div class="btn-chip-primary" onclick="openSend()">Send</div>
+      <div class="btn-chip-primary" onclick="openReceive()">Receive</div>
+      <div class="btn-chip-primary" onclick="openSwap()">Swap (Bridge)</div>
+      <div class="btn-chip master-only" onclick="openDeposit()">Einzahlen (EUR/BTC/TON)</div>
+      <div class="btn-chip master-only" onclick="openWithdraw()">Auszahlen (EUR/BTC/TON)</div>
     </div>
   </section>
   <!-- END: Euro-Gesamtbalance -->
@@ -398,7 +425,7 @@
   <!-- Balance-Grid -->
   <section class="balance-grid">
     <!-- Standard-Token -->
-    <article class="coin-tile">
+    <article class="coin-tile" onclick="openDetail('RFOF')">
       <div class="coin-header">
         <div class="coin-name">RFOF</div>
         <div class="coin-tag">Basis‑Token</div>
@@ -407,7 +434,7 @@
       <div class="val-fiat">Exponentieller Floor: 0.00€</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" onclick="openDetail('GOLD (42E0)')">
       <div class="coin-header">
         <div class="coin-name">GOLD (42E0)</div>
         <div class="coin-tag">Basis‑Token</div>
@@ -416,7 +443,7 @@
       <div class="val-fiat">Safe‑Anker: 0.00€</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" onclick="openDetail('Phoenix Coin')">
       <div class="coin-header">
         <div class="coin-name">Phoenix Coin</div>
         <div class="coin-tag">Native Währung</div>
@@ -425,7 +452,7 @@
       <div class="val-fiat">Preis‑Floor: 0.00€</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" onclick="openDetail('G‑Phoenix Token')">
       <div class="coin-header">
         <div class="coin-name">G‑Phoenix Token</div>
         <div class="coin-tag">Governance & Utility</div>
@@ -434,7 +461,7 @@
       <div class="val-fiat">Governance‑Anteil: 0.00€</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" onclick="openDetail('ECCU')">
       <div class="coin-header">
         <div class="coin-name">ECCU</div>
         <div class="coin-tag">Utility‑Basis</div>
@@ -444,7 +471,7 @@
     </article>
 
     <!-- LP-Token (nur anzeigen, wenn vorhanden – hier nur UI-Platzhalter) -->
-    <article class="coin-tile">
+    <article class="coin-tile" data-lp="true" onclick="openDetail('Phoenix LP')">
       <div class="coin-header">
         <div class="coin-name">Phoenix LP</div>
         <div class="coin-tag">LP‑Token</div>
@@ -453,7 +480,7 @@
       <div class="val-fiat">LP‑Anteil (nur bei Besitz sichtbar)</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" data-lp="true" onclick="openDetail('RFOF/GOLD LP')">
       <div class="coin-header">
         <div class="coin-name">RFOF/GOLD LP</div>
         <div class="coin-tag">LP‑Token</div>
@@ -462,7 +489,7 @@
       <div class="val-fiat">Stabilitäts‑Pool (nur bei Besitz sichtbar)</div>
     </article>
 
-    <article class="coin-tile">
+    <article class="coin-tile" data-lp="true" onclick="openDetail('BIP (Ability API LP)')">
       <div class="coin-header">
         <div class="coin-name">BIP (Ability API LP)</div>
         <div class="coin-tag">Master‑LP</div>
@@ -481,23 +508,26 @@
           Balance: 0.0000&nbsp;|&nbsp;Steigerung: 0,2% pro Interaktion · 0,4% Roundtrip (Basis‑Token)
         </p>
       </div>
-      <button class="detail-close">✕ Schließen</button>
+      <button class="detail-close" onclick="closeDetail()">✕ Schließen</button>
     </div>
 
     <div class="chart-tabs">
-      <div class="chart-tab chart-tab-active">Standard‑Candlesticks</div>
-      <div class="chart-tab">Mechatronische Ansicht</div>
+      <div class="chart-tab chart-tab-active" onclick="switchChartMode('standard')">Standard‑Candlesticks</div>
+      <div class="chart-tab" onclick="switchChartMode('mecha')">Mechatronische Ansicht</div>
     </div>
 
-    <div class="chart-placeholder">
+    <div id="chart-standard" class="chart-placeholder">
       [ TRADING CHART RENDERING... ]
+    </div>
+    <div id="chart-mecha" class="chart-placeholder" style="display:none;">
+      [ MECHATRONIC BLUE CANDLES ]
     </div>
 
     <!-- BEGIN: DEX-Buttons -->
     <div class="trade-actions">
       <button class="btn-action btn-buy">Buy</button>
       <button class="btn-action btn-sell">Sell</button>
-      <button class="btn-action btn-dex">Zum DEX (RFOF‑GOLDEN‑DEX)</button>
+      <button class="btn-action btn-dex" onclick="openDEX()">Zum DEX (RFOF‑GOLDEN‑DEX)</button>
     </div>
     <!-- END: DEX-Buttons -->
 
@@ -518,8 +548,16 @@
     <div style="margin-top:16px;">
       <h3 style="font-size:13px; margin:0 0 4px;">TOKEN HISTORIE (SHA256 UTX)</h3>
       <div class="history-list">
-        <div class="history-entry">[15:13:30] UTX_VALIDATED: 0x12390d8d8b... +0.2% UP</div>
-        <div class="history-entry">[15:13:36] UTX_VALIDATED: 0xec717da0b9... +0.2% UP</div>
+        <div class="history-entry">
+          [15:13:30] UTX_VALIDATED:
+          <a class="hash-link" href="../viewer/index.html?tx=0x12390d8d8b">0x12390d8d8b...</a>
+          +0.2% UP
+        </div>
+        <div class="history-entry">
+          [15:13:36] UTX_VALIDATED:
+          <a class="hash-link" href="../viewer/index.html?tx=0xec717da0b9">0xec717da0b9...</a>
+          +0.2% UP
+        </div>
       </div>
     </div>
   </section>
@@ -535,7 +573,7 @@
       <div class="mining-pill">Output: +5 Joule / Tick (Platzhalter)</div>
     </div>
 
-    <button class="btn-mining">Mining starten</button>
+    <button class="btn-mining" onclick="startMining()">Mining starten</button>
   </section>
   <!-- END: Mining-Sektion -->
 
@@ -546,7 +584,7 @@
     <p class="section-sub">
       Erstelle Token mit Koppelung an den RFOF‑Preis‑Floor. Launchpad‑Einstieg aus der Wallet.
     </p>
-    <button class="btn-outline">NEUEN TOKEN MINTEN</button>
+    <button class="btn-outline" onclick="openLaunchpad()">NEUEN TOKEN MINTEN</button>
     <p class="launchpad-note">
       Das Launchpad wird später im API Marketplace als eigene Seite gerendert.
     </p>
@@ -560,10 +598,22 @@
       Übersicht aller Interaktionen: Send, Receive, Swap, Mining, Launchpad, DEX‑Aktionen (UI‑Platzhalter).
     </p>
     <div class="history-list">
-      <div class="history-entry">[15:13:30] SEND: 10 RFOF an GUCI‑XYZ...</div>
-      <div class="history-entry">[15:14:02] SWAP: 5 GOLD → 2 ECCU...</div>
-      <div class="history-entry">[15:15:10] LAUNCHPAD: Meme‑Token „PHX‑MEME“ erstellt...</div>
-      <div class="history-entry">[15:16:45] MINING: +5 Joule quantisiert...</div>
+      <div class="history-entry">
+        [15:13:30]
+        <a class="hash-link" href="../viewer/index.html?tx=0xsend001">SEND: 10 RFOF an GUCI‑XYZ...</a>
+      </div>
+      <div class="history-entry">
+        [15:14:02]
+        <a class="hash-link" href="../viewer/index.html?tx=0xswap001">SWAP: 5 GOLD → 2 ECCU...</a>
+      </div>
+      <div class="history-entry">
+        [15:15:10]
+        <a class="hash-link" href="../viewer/index.html?tx=0xlaunch001">LAUNCHPAD: Meme‑Token „PHX‑MEME“ erstellt...</a>
+      </div>
+      <div class="history-entry">
+        [15:16:45]
+        <a class="hash-link" href="../viewer/index.html?tx=0xmine001">MINING: +5 Joule quantisiert...</a>
+      </div>
     </div>
   </section>
   <!-- END: Wallet Transaktionshistorie -->

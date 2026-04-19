@@ -388,7 +388,7 @@
   </div>
   <div class="guci-display">
     GUCI:
-    <a class="guci-link" href="../viewer/index.html?guci=83f74bfc-1067-4be8-a959-9368111126b9">
+    <a class="guci-link" href="../wallet/browser.html?guci=83f74bfc-1067-4be8-a959-9368111126b9">
       83f74bfc-1067-4be8-a959-9368111126b9
     </a>
   </div>
@@ -546,12 +546,12 @@
       <div class="history-list">
         <div class="history-entry">
           [15:13:30] UTX_VALIDATED:
-          <a class="hash-link" href="../viewer/index.html?tx=0x12390d8d8b">0x12390d8d8b...</a>
+          <a class="hash-link" href="../wallet/browser.html?tx=0x12390d8d8b">0x12390d8d8b...</a>
           +0.2% UP
         </div>
         <div class="history-entry">
           [15:13:36] UTX_VALIDATED:
-          <a class="hash-link" href="../viewer/index.html?tx=0xec717da0b9">0xec717da0b9...</a>
+          <a class="hash-link" href="../wallet/browser.html?tx=0xec717da0b9">0xec717da0b9...</a>
           +0.2% UP
         </div>
       </div>
@@ -618,39 +618,47 @@
 
 </main>
 
-<!-- WICHTIG: zuerst den UI-Controller laden -->
+<!-- WICHTIG: app.js EINBINDEN -->
 <script src="app.js"></script>
 
-<!-- Brücke: index.html ↔ browser.html (TXf-Viewer) -->
+<!-- HASH-LINK FIX: Weiterleitung zu browser.html -->
 <script>
-  (function () {
-    // GUCI aus dem bestehenden Persistenz-System holen
-    const guci = localStorage.getItem('globalClientID') || '';
+document.addEventListener('click', (ev) => {
+  const link = ev.target.closest('.hash-link');
+  if (!link) return;
 
-    // 1. Optionaler "Explorer / TXf-Viewer"-Button in der index.html:
-    // <button class="btn-explorer">Explorer / TXf-Viewer</button>
-    const explorerButtons = document.querySelectorAll('.btn-explorer');
-    explorerButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const url = 'browser.html' + (guci ? ('?guci=' + encodeURIComponent(guci)) : '');
-        window.open(url, '_blank'); // oder window.location.href = url;
-      });
-    });
+  ev.preventDefault();
 
-    // 2. Falls du History-Links aus app.js zusätzlich im Browser öffnen willst:
-    // app.js erzeugt bereits ../viewer/index.html?tx=...
-    // Hier kannst du ergänzend alle .hash-link auch in browser.html spiegeln:
-    document.addEventListener('click', (ev) => {
-      const a = ev.target.closest('.hash-link-txf');
-      if (!a) return;
-      ev.preventDefault();
-      const txId = a.getAttribute('data-tx') || '';
-      const url = 'browser.html' +
-        (txId ? ('?tx=' + encodeURIComponent(txId)) : '') +
-        (guci ? ( (txId ? '&' : '?') + 'guci=' + encodeURIComponent(guci)) : '');
-      window.open(url, '_blank');
+  const tx = link.getAttribute('data-tx') || '';
+  const guci = localStorage.getItem('globalClientID') || '';
+
+  let url = 'browser.html';
+  const params = [];
+
+  if (tx) params.push('tx=' + encodeURIComponent(tx));
+  if (guci) params.push('guci=' + encodeURIComponent(guci));
+
+  if (params.length > 0) {
+    url += '?' + params.join('&');
+  }
+
+  window.location.href = url;
+});
+</script>
+
+<!-- VERKNÜPFUNG ZUM TXf-VIEWER -->
+<script>
+(function () {
+  const guci = localStorage.getItem('globalClientID') || '';
+
+  document.querySelectorAll('.btn-explorer').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let url = 'browser.html';
+      if (guci) url += '?guci=' + encodeURIComponent(guci);
+      window.location.href = url;
     });
-  })();
+  });
+})();
 </script>
 
 </body>

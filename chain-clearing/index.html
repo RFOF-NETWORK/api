@@ -2,1982 +2,3020 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>chain-clearing / index.html</title>
-  <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CHAIN-CLEARING / RFOF-NETWORK</title>
+  <meta name="viewport" content="width=1440, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <style>
     :root {
       --bg: #05060a;
       --bg-elevated: rgba(15, 18, 30, 0.85);
-      --accent: #42e0ff;
-      --accent-soft: rgba(66, 224, 255, 0.35);
-      --accent-strong: rgba(66, 224, 255, 0.8);
-      --danger: #ff4b81;
-      --success: #42ff9e;
+      --bg-elevated-strong: rgba(10, 12, 22, 0.95);
+      --accent: #7df9ff;
+      --accent-soft: rgba(125, 249, 255, 0.18);
+      --accent-strong: #00e0ff;
+      --danger: #ff4b6a;
       --text: #f5f7ff;
-      --muted: #8b92b0;
-      --border: rgba(255, 255, 255, 0.08);
-      --radius-lg: 22px;
+      --text-soft: #a7b0d0;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(125, 249, 255, 0.45);
+      --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.75);
+      --radius-lg: 24px;
       --radius-md: 16px;
       --radius-sm: 10px;
       --blur-strong: 40px;
-      --glass-bg: rgba(10, 12, 22, 0.78);
-      --glass-bg-soft: rgba(10, 12, 22, 0.6);
-      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.65);
-      --shadow-subtle: 0 14px 40px rgba(0, 0, 0, 0.55);
-      --grid-gap: 14px;
-      --header-height: 72px;
+      --blur-soft: 24px;
       --transition-fast: 0.18s ease-out;
-      --transition-med: 0.25s ease-out;
-      --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      --transition-med: 0.28s ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      --grid-gap: 18px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      -webkit-font-smoothing: antialiased;
     }
 
-    html, body {
-      width: 1280px;
-      max-width: 1280px;
-      min-width: 1280px;
-      height: 100%;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #15192b 0, #05060a 52%, #000 100%);
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background: radial-gradient(circle at top, #151a33 0, #05060a 55%, #000 100%);
       color: var(--text);
       font-family: var(--font-sans);
     }
 
     body {
       display: flex;
-      align-items: stretch;
+      justify-content: center;
+    }
+
+    #page-wrapper {
+      width: 1440px;
+      min-height: 100vh;
+      padding: 24px 0;
+      display: flex;
       justify-content: center;
     }
 
     #app-root {
-      width: 1280px;
-      height: 100vh;
+      position: relative;
+      width: 1440px;
+      min-height: 900px;
+      height: auto;
+      margin: 0 auto;
+      border-radius: 32px;
+      overflow: visible;
+      background: radial-gradient(circle at top left, #1b2340 0, #05060a 55%, #000 100%);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .bg-orbit {
+      position: absolute;
+      inset: -20%;
+      pointer-events: none;
+      opacity: 0.55;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0, 255, 255, 0.12) 0, transparent 45%),
+        radial-gradient(circle at 90% 10%, rgba(255, 0, 128, 0.12) 0, transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(0, 128, 255, 0.18) 0, transparent 55%);
+      mix-blend-mode: screen;
+      filter: blur(4px);
+      z-index: 0;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+          rgba(255, 255, 255, 0.04) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.04) 1px,
+          transparent 1px
+        );
+      background-size: 40px 40px;
+      opacity: 0.18;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, transparent 0, rgba(0, 0, 0, 0.7) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 900px;
       display: flex;
       flex-direction: column;
-      padding: 16px 18px 18px 18px;
+      padding: 18px 22px;
+      gap: 14px;
+      overflow: visible;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, rgba(125, 249, 255, 0.18), rgba(10, 12, 22, 0.96));
+      backdrop-filter: blur(var(--blur-soft)) saturate(160%);
+      border: 1px solid rgba(125, 249, 255, 0.35);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.85);
+    }
+
+    .app-header-left {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
-    .glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .glass-soft {
-      background: var(--glass-bg-soft);
-      backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-subtle);
-    }
-
-    .pill {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.9));
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 6px 14px;
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.16), rgba(10, 12, 22, 0.95));
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-    }
-
-    .btn:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.26), rgba(10, 12, 22, 0.98));
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      border-color: rgba(66, 224, 255, 0.6);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-
-    .btn-ghost:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.9));
-    }
-
-    .badge {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.2), rgba(10, 12, 22, 0.9));
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .badge-muted {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--muted);
-      border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-    }
-
-    .row-space {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .col {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .mono {
-      font-family: var(--font-mono);
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .tiny {
-      font-size: 10px;
-    }
-
-    .small {
-      font-size: 12px;
-    }
-
-    .title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .headline {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .glow-accent {
-      box-shadow: 0 0 18px rgba(66, 224, 255, 0.55);
-    }
-
-    .glow-aaa {
-      box-shadow: 0 0 18px rgba(66, 255, 158, 0.55);
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.16), transparent);
-      margin: 8px 0;
-    }
-
-    /* Layout */
-
-    #app-shell {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      height: 100%;
-    }
-
-    #app-header {
-      height: var(--header-height);
-      min-height: var(--header-height);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    #app-main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 340px 1fr 320px;
-      grid-template-rows: 1fr;
-      gap: var(--grid-gap);
-      min-height: 0;
-    }
-
-    #left-column,
-    #center-column,
-    #right-column {
-      display: flex;
-      flex-direction: column;
-      gap: var(--grid-gap);
-      min-height: 0;
-    }
-
-    /* Login Screen */
-
-    #login-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.08), rgba(0, 0, 0, 0.96));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-
-    #login-card {
-      width: 420px;
-      padding: 26px 26px 22px 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .login-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .login-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .field-label {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .field {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.96));
-      padding: 8px 14px;
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-      font-family: var(--font-sans);
-    }
-
-    .field::placeholder {
-      color: rgba(255, 255, 255, 0.35);
-    }
-
-    .field:focus {
-      border-color: rgba(66, 224, 255, 0.7);
-      box-shadow: 0 0 0 1px rgba(66, 224, 255, 0.4);
-    }
-
-    .login-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-
-    .login-meta {
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Header */
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
+    .logo-orb {
       width: 32px;
       height: 32px;
-      border-radius: 14px;
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.4), rgba(10, 12, 22, 0.98));
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-    }
-
-    .brand-logo span {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-    }
-
-    .brand-text-main {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .brand-text-sub {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .profile-shell {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 210deg,
+        #7df9ff,
+        #00e0ff,
+        #ff4b6a,
+        #7df9ff
+      );
+      padding: 2px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 24px rgba(125, 249, 255, 0.7);
       position: relative;
+      overflow: hidden;
     }
 
-    .xp-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.96));
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-    }
-
-    .xp-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 12px rgba(66, 224, 255, 0.7);
-    }
-
-    .profile-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 8px 4px 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.96));
-      cursor: pointer;
-      transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .profile-chip:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.26), rgba(10, 12, 22, 0.98));
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.4), rgba(10, 12, 22, 0.98));
+    .logo-orb-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #151a33 45%, #05060a 100%);
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--accent);
       font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+      font-weight: 700;
+      letter-spacing: 0.08em;
     }
 
-    .profile-meta {
+    .app-title-block {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
 
-    .profile-name {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .profile-id {
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-family: var(--font-mono);
-    }
-
-    .profile-aaa {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top, rgba(66, 255, 158, 0.2), rgba(10, 12, 22, 0.9));
-      color: var(--success);
-      letter-spacing: 0.12em;
+    .app-title {
+      font-size: 15px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
+      color: var(--accent);
     }
 
-    .profile-dropdown {
-      position: absolute;
-      top: 40px;
-      right: 0;
-      width: 260px;
-      padding: 12px 12px 10px 12px;
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 20;
-    }
-
-    .profile-dropdown.visible {
-      display: flex;
-    }
-
-    .profile-dropdown-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .profile-dropdown-buttons {
-      display: flex;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .profile-dropdown-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    /* Left Column: Kachel 0 + Mini-Sektoren */
-
-    #kachel-zero {
-      flex: 1;
-      padding: 12px 12px 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 0;
-    }
-
-    #kachel-zero-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #kachel-zero-main {
-      display: grid;
-      grid-template-rows: 120px 1fr;
-      gap: 8px;
-      min-height: 0;
-    }
-
-    .takt-strip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .takt-bar {
-      flex: 1;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(66, 224, 255, 0.1), rgba(66, 224, 255, 0.6), rgba(66, 224, 255, 0.1));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .takt-pulse {
-      position: absolute;
-      top: -4px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 18px rgba(66, 224, 255, 0.8);
-      transform: translateX(0);
-    }
-
-    .takt-label {
+    .app-subtitle {
       font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--muted);
-    }
-
-    .horizon-grid {
-      flex: 1;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.08), rgba(10, 12, 22, 0.96));
-      padding: 8px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .horizon-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    .horizon-canvas {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(5, 6, 10, 0.98));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .horizon-canvas-inner {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 22px 22px;
-      opacity: 0.9;
-    }
-
-    .horizon-node {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 14px rgba(66, 224, 255, 0.7);
-    }
-
-    .horizon-node-core {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 22px rgba(66, 224, 255, 0.9);
-    }
-
-    #mini-sectors {
-      height: 180px;
-      padding: 8px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 1fr;
-      gap: 6px;
-    }
-
-    .mini-sector {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px 7px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
-    }
-
-    .mini-sector:hover {
-      border-color: rgba(66, 224, 255, 0.6);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.98));
-    }
-
-    .mini-sector-name {
-      font-size: 10px;
+      color: var(--text-soft);
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
-    .mini-sector-row {
+    .app-header-right {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 9px;
-      color: var(--muted);
-      font-family: var(--font-mono);
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .mini-sector-dot {
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), rgba(10, 12, 22, 0.9));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: radial-gradient(circle, var(--success), rgba(66, 255, 158, 0.1));
-      box-shadow: 0 0 10px rgba(66, 255, 158, 0.7);
+      background: #00ff9d;
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.9);
     }
 
-    /* Center Column: Genesis + Sync */
-
-    #center-column {
-      min-height: 0;
+    .pill-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
     }
 
-    .viewer-shell {
+    .pill-value {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .app-main {
       flex: 1;
       display: grid;
-      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 280px 1.2fr 320px;
       gap: var(--grid-gap);
-      min-height: 0;
+      padding: 4px 2px 4px 2px;
+      align-items: flex-start;
     }
 
-    .viewer-panel {
-      padding: 10px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .viewer-header {
+    .panel {
+      position: relative;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, rgba(125, 249, 255, 0.12), rgba(10, 12, 22, 0.96));
+      backdrop-filter: blur(var(--blur-strong)) saturate(170%);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
       display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-header {
+      padding: 12px 16px 8px 16px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .panel-title {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .viewer-title {
-      font-size: 11px;
-      letter-spacing: 0.16em;
+    .panel-title span {
+      color: var(--accent);
+    }
+
+    .panel-badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.35);
       text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
     }
 
-    .viewer-body {
-      display: grid;
-      grid-template-columns: 1.1fr 1.1fr 0.9fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .viewer-block {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px 7px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 4px;
-      min-height: 0;
-    }
-
-    .viewer-block-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-    }
-
-    .viewer-block-body {
-      min-height: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .diagram-canvas {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-sm);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.04), rgba(5, 6, 10, 0.98));
-      overflow: hidden;
-    }
-
-    .diagram-layer-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 18px 18px;
-      opacity: 0.9;
-    }
-
-    .diagram-layer-particles {
-      position: absolute;
-      inset: 0;
-    }
-
-    .diagram-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 10px rgba(66, 224, 255, 0.7);
-    }
-
-    .diagram-candle {
-      position: absolute;
-      width: 6px;
-      border-radius: 999px;
-      background: linear-gradient(to top, rgba(66, 224, 255, 0.1), rgba(66, 224, 255, 0.9));
-    }
-
-    .viewer-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Right Column: Block History + Terminal */
-
-    #right-column {
-      min-height: 0;
-    }
-
-    #block-history-panel {
+    .panel-body {
       flex: 1;
-      padding: 10px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .history-list {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px;
+      padding: 10px 14px 14px 14px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 10px;
       min-height: 0;
-      overflow: hidden;
     }
 
-    .history-scroll {
+    .panel-scroll {
       flex: 1;
       overflow-y: auto;
       padding-right: 4px;
     }
 
-    .history-item {
-      border-radius: 9px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 4px 6px;
-      display: grid;
-      grid-template-columns: 1.4fr 1.2fr;
+    .panel-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .panel-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .panel-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+    }
+
+    /* LOGIN VIEW */
+    #login-view {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      background: radial-gradient(circle at top, rgba(10, 12, 22, 0.96), rgba(0, 0, 0, 0.98));
+      backdrop-filter: blur(40px) saturate(180%);
+      transition: opacity var(--transition-med), transform var(--transition-med);
+    }
+
+    #login-view.hidden {
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(1.02);
+    }
+
+    .login-card {
+      width: 520px;
+      border-radius: 28px;
+      padding: 26px 26px 22px 26px;
+      background: radial-gradient(circle at top left, rgba(125, 249, 255, 0.16), rgba(10, 12, 22, 0.98));
+      border: 1px solid rgba(125, 249, 255, 0.4);
+      box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(125, 249, 255, 0.18) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(255, 75, 106, 0.18) 0, transparent 55%);
+      opacity: 0.6;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .login-card-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .login-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .login-title-block {
+      display: flex;
+      flex-direction: column;
       gap: 4px;
-      font-size: 10px;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
     }
 
-    .history-item:hover {
-      border-color: rgba(66, 224, 255, 0.6);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.98));
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
+    .login-title {
+      font-size: 18px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
 
-    .history-item-main {
+    .login-subtitle {
+      font-size: 12px;
+      color: var(--text-soft);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .login-meta {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-    }
-
-    .history-item-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
       align-items: flex-end;
-      text-align: right;
-    }
-
-    .history-hash {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 160px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .history-user {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 140px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #terminal-panel {
-      height: 210px;
-      padding: 8px 9px;
-      display: grid;
-      grid-template-rows: auto 1fr;
       gap: 4px;
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .terminal-header {
+    .login-meta span {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .login-meta strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .login-form {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .login-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .input-shell {
+      position: relative;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(10, 12, 22, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-shell-inner {
+      flex: 1;
+      border-radius: 999px;
+      background: rgba(5, 6, 10, 0.9);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-prefix {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .input-field {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+      font-family: var(--font-sans);
+    }
+
+    .input-field::placeholder {
+      color: rgba(167, 176, 208, 0.5);
+    }
+
+    .input-shell:focus-within {
+      border-color: var(--accent-strong);
+      box-shadow: 0 0 0 1px rgba(125, 249, 255, 0.4);
+    }
+
+    .login-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 8px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), rgba(10, 12, 22, 0.98));
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top, var(--accent-strong), #007bff);
+      color: #020308;
+      border-color: rgba(125, 249, 255, 0.9);
+      box-shadow:
+        0 12px 40px rgba(0, 224, 255, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.16);
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), rgba(10, 12, 22, 0.98));
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-style: dashed;
+      border-color: rgba(255, 255, 255, 0.16);
+      color: var(--text-soft);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-primary:hover {
+      box-shadow:
+        0 16px 50px rgba(0, 224, 255, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .login-toggle {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .login-toggle button {
+      border: none;
+      background: none;
+      color: var(--accent);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .login-toggle button:hover {
+      text-decoration: underline;
+    }
+
+    .login-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 10px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 8px;
+      margin-top: 4px;
     }
 
-    .terminal-body {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--muted);
-      overflow-y: auto;
-    }
-
-    .terminal-line {
-      padding: 1px 0;
-      cursor: pointer;
-      transition: color var(--transition-fast), background var(--transition-fast);
-    }
-
-    .terminal-line:hover {
+    .login-footer span strong {
       color: var(--accent);
-      background: rgba(66, 224, 255, 0.06);
     }
 
-    /* Scrollbars */
+    .login-error {
+      font-size: 11px;
+      color: var(--danger);
+      text-transform: none;
+      letter-spacing: 0.02em;
+      min-height: 14px;
+    }
 
-    ::-webkit-scrollbar {
+    /* LEFT PANEL: PROFILE / IDENTITY */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .avatar-orb {
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      padding: 2px;
+      background: conic-gradient(
+        from 210deg,
+        #7df9ff,
+        #00e0ff,
+        #ff4b6a,
+        #7df9ff
+      );
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 24px rgba(125, 249, 255, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-orb-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #151a33 45%, #05060a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .profile-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .profile-username {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .profile-meta-line {
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text-soft);
+    }
+
+    .tag-accent {
+      border-color: rgba(125, 249, 255, 0.6);
+      color: var(--accent);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .profile-section {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric-card {
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+    }
+
+    .metric-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .metric-sub {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .id-block {
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      background: radial-gradient(circle at top, rgba(125, 249, 255, 0.12), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(125, 249, 255, 0.4);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 10px;
+      line-height: 1.5;
+      color: var(--accent);
+      word-break: break-all;
+      position: relative;
+      padding-right: 32px;
+    }
+
+    .id-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .id-copy-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text-soft);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 3px 6px;
+      cursor: pointer;
+    }
+
+    .id-copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .logout-row {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .logout-row span {
+      font-size: 10px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .btn-logout {
+      font-size: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: radial-gradient(circle at top, rgba(255, 75, 106, 0.9), rgba(120, 0, 40, 0.9));
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+    }
+
+    .btn-logout:hover {
+      box-shadow: 0 10px 30px rgba(255, 75, 106, 0.7);
+    }
+
+    /* CENTER PANEL: SIMULATION */
+    .sim-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sim-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sim-mode-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.4);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sim-mode-pill span {
+      color: var(--accent);
+    }
+
+    .sim-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-mini {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+    }
+
+    .btn-mini-accent {
+      border-color: rgba(125, 249, 255, 0.6);
+      color: var(--accent);
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .sim-layout {
+      display: grid;
+      grid-template-rows: 1.1fr 0.9fr;
+      gap: 10px;
+      margin-top: 8px;
+      height: calc(100% - 14px);
+      min-height: 0;
+    }
+
+    .sim-blocks,
+    .sim-candles {
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.04), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .sim-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 4px;
+    }
+
+    .sim-section-header span {
+      color: var(--accent);
+    }
+
+    .sim-section-body {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .sim-block-list,
+    .sim-candle-list {
+      flex: 1.4;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 6px 6px 6px 8px;
+      overflow-y: auto;
+      font-size: 11px;
+    }
+
+    .sim-block-list::-webkit-scrollbar,
+    .sim-candle-list::-webkit-scrollbar {
       width: 6px;
-      height: 6px;
     }
 
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
+    .sim-block-list::-webkit-scrollbar-thumb,
+    .sim-candle-list::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.16);
       border-radius: 999px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.26);
+    .sim-block-item,
+    .sim-candle-item {
+      border-radius: 8px;
+      padding: 6px 8px;
+      margin-bottom: 4px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      cursor: pointer;
     }
 
-    /* Utility */
+    .sim-block-item:hover,
+    .sim-candle-item:hover {
+      border-color: rgba(125, 249, 255, 0.6);
+      box-shadow: 0 0 0 1px rgba(125, 249, 255, 0.4);
+    }
+
+    .sim-block-item-header,
+    .sim-candle-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+    }
+
+    .sim-block-item-header span,
+    .sim-candle-item-header span {
+      color: var(--accent);
+    }
+
+    .sim-block-item-body,
+    .sim-candle-item-body {
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .sim-block-item-body strong,
+    .sim-candle-item-body strong {
+      color: var(--text);
+    }
+
+    .sim-mini-chart {
+      flex: 1;
+      border-radius: var(--radius-sm);
+      background: radial-gradient(circle at top, rgba(125, 249, 255, 0.12), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(125, 249, 255, 0.4);
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text-soft);
+      min-width: 0;
+    }
+
+    .sim-mini-chart canvas {
+      flex: 1;
+      width: 100%;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .sim-mini-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      margin-right: 4px;
+    }
+
+    .legend-dot-block {
+      background: #7df9ff;
+      box-shadow: 0 0 10px rgba(125, 249, 255, 0.8);
+    }
+
+    .legend-dot-candle {
+      background: #ff4b6a;
+      box-shadow: 0 0 10px rgba(255, 75, 106, 0.8);
+    }
+
+    /* RIGHT PANEL: SETTINGS / STATE / SECTORS / FILES */
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .settings-group {
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .settings-group-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-soft);
+      gap: 8px;
+    }
+
+    .settings-row span {
+      flex: 1;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .toggle.on {
+      background: radial-gradient(circle at top, rgba(125, 249, 255, 0.6), rgba(0, 0, 0, 0.9));
+      border-color: rgba(125, 249, 255, 0.9);
+      box-shadow: 0 0 18px rgba(125, 249, 255, 0.8);
+    }
+
+    .toggle.on .toggle-thumb {
+      transform: translateX(18px);
+      background: #7df9ff;
+      box-shadow: 0 0 16px rgba(125, 249, 255, 0.9);
+    }
+
+    .settings-select {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--text);
+      font-size: 11px;
+      padding: 4px 8px;
+      outline: none;
+      font-family: var(--font-sans);
+    }
+
+    .settings-select:focus {
+      border-color: var(--accent);
+    }
+
+    .state-view {
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      background: radial-gradient(circle at top, rgba(125, 249, 255, 0.12), rgba(5, 6, 10, 0.96));
+      border: 1px solid rgba(125, 249, 255, 0.4);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 10px;
+      color: var(--text-soft);
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .state-view::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .state-view::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+    }
+
+    .state-view pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .sector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .sector-card {
+      border-radius: 10px;
+      padding: 4px 6px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 9px;
+      cursor: pointer;
+    }
+
+    .sector-card:hover {
+      border-color: rgba(125, 249, 255, 0.7);
+      box-shadow: 0 0 0 1px rgba(125, 249, 255, 0.4);
+    }
+
+    .sector-title {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .sector-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-soft);
+    }
+
+    .file-list {
+      max-height: 140px;
+      overflow-y: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 4px 4px 4px 6px;
+      font-size: 10px;
+    }
+
+    .file-item {
+      padding: 3px 4px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text-soft);
+    }
+
+    .file-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--accent);
+    }
+
+    .file-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-meta {
+      margin-left: 6px;
+      font-family: "SF Mono", ui-monospace;
+      font-size: 9px;
+    }
+
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px 4px 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), rgba(10, 12, 22, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 10px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 6px;
+    }
+
+    .footer-bar span strong {
+      color: var(--accent);
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #00ff9d;
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.9);
+    }
+
+    .footer-badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .footer-badge span {
+      color: var(--accent);
+    }
+
+    /* OVERLAYS: BLOCK / CANDLE / FILE / SECTOR DETAIL */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(24px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+    }
+
+    .overlay.visible {
+      display: flex;
+    }
+
+    .overlay-card {
+      width: 520px;
+      max-height: 80vh;
+      border-radius: 24px;
+      background: radial-gradient(circle at top left, rgba(125, 249, 255, 0.16), rgba(10, 12, 22, 0.98));
+      border: 1px solid rgba(125, 249, 255, 0.4);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95);
+      padding: 16px 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .overlay-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 6px;
+    }
+
+    .overlay-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+    }
+
+    .overlay-subtitle {
+      font-size: 10px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .overlay-close {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--text-soft);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+
+    .overlay-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-top: 6px;
+      font-size: 11px;
+      color: var(--text-soft);
+      font-family: "SF Mono", ui-monospace;
+    }
+
+    .overlay-body pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .mono {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .muted {
+      color: var(--text-soft);
+    }
+
+    .accent {
+      color: var(--accent);
+    }
 
     .hidden {
       display: none !important;
     }
-
-    .fade-in {
-      animation: fadeIn 0.25s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
-  <div id="app-root">
-    <!-- LOGIN OVERLAY -->
-    <div id="login-overlay">
-      <div id="login-card" class="glass">
-        <div class="row-space">
-          <div class="col" style="gap:4px;">
-            <div class="login-title">CHAIN CLEARING LOGIN</div>
-            <div class="login-sub">
-              GUCI‑Style Identity · MASTER‑RFOF‑NETWORK‑ID · Lokale, deterministische Session
+  <div id="page-wrapper">
+    <div id="app-root">
+      <div class="bg-orbit"></div>
+      <div class="bg-grid"></div>
+      <div class="bg-vignette"></div>
+
+      <!-- LOGIN OVERLAY -->
+      <div id="login-view">
+        <div class="login-card">
+          <div class="login-card-inner">
+            <div class="login-header">
+              <div class="login-title-block">
+                <div class="login-title">RFOF-NETWORK / CHAIN-CLEARING</div>
+                <div class="login-subtitle" id="login-mode-label">
+                  MODE: EXISTING IDENTITY
+                </div>
+              </div>
+              <div class="login-meta">
+                <span>LOCAL AUTH / <strong>GUCI-STYLE</strong></span>
+                <span class="mono">SHA-256 / LOCALSTORAGE</span>
+              </div>
             </div>
-          </div>
-          <div class="badge">/chain-clearing</div>
-        </div>
 
-        <div class="divider"></div>
+            <div class="login-form">
+              <div class="login-fields">
+                <div>
+                  <div class="field-label">Username</div>
+                  <div class="input-shell">
+                    <div class="input-shell-inner">
+                      <div class="input-prefix">USER</div>
+                      <input
+                        id="login-username"
+                        class="input-field"
+                        type="text"
+                        autocomplete="username"
+                        placeholder="rfof-operator"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-        <div class="col" style="gap:10px;">
-          <div class="col">
-            <label class="field-label" for="login-username">Username</label>
-            <input id="login-username" class="field" type="text" autocomplete="off" placeholder="z.B. phoenix.operator" />
-          </div>
+                <div>
+                  <div class="field-label">Passphrase</div>
+                  <div class="input-shell">
+                    <div class="input-shell-inner">
+                      <div class="input-prefix">PASS</div>
+                      <input
+                        id="login-password"
+                        class="input-field"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="••••••••••"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-          <div class="col">
-            <label class="field-label" for="login-password">Passphrase</label>
-            <input id="login-password" class="field" type="password" autocomplete="off" placeholder="••••••••" />
-          </div>
-        </div>
+                <div>
+                  <div class="field-label">Avatar-Seed (optional)</div>
+                  <div class="input-shell">
+                    <div class="input-shell-inner">
+                      <div class="input-prefix">AVTR</div>
+                      <input
+                        id="login-avatar"
+                        class="input-field"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="emoji, initials, or leave empty"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-        <div class="login-footer">
-          <div class="login-meta" id="login-meta">
-            MASTER-RFOF-NETWORK-ID wird deterministisch aus Username + Loginzeitpunkt erzeugt.
-          </div>
-          <div class="row" style="gap:6px;">
-            <button id="login-btn" class="btn">
-              <span>Login</span>
-            </button>
+                <div class="login-error" id="login-error"></div>
+              </div>
+
+              <div class="login-actions">
+                <button id="btn-login" class="btn btn-primary">
+                  <span id="btn-login-label">Login</span>
+                  <span class="mono" id="btn-login-mode">EXISTING</span>
+                </button>
+                <button id="btn-guest" class="btn btn-secondary">
+                  <span>Quick Guest Session</span>
+                  <span class="mono">RFOF-GUEST</span>
+                </button>
+                <div class="login-toggle">
+                  <span id="login-toggle-text">Neuer Nutzer?</span>
+                  <button id="btn-toggle-mode">Registrieren</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="login-footer">
+              <span>Storage: <strong>Per-User / Deterministic Identity</strong></span>
+              <span class="mono">/chain-clearing/index.html</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- APP SHELL -->
-    <div id="app-shell" class="hidden">
-      <!-- HEADER -->
-      <header id="app-header" class="glass">
-        <div class="brand">
-          <div class="brand-logo">
-            <span>CC</span>
+      <!-- DETAIL OVERLAYS -->
+      <div id="overlay-block" class="overlay">
+        <div class="overlay-card">
+          <div class="overlay-header">
+            <div>
+              <div class="overlay-title">Block Detail</div>
+              <div class="overlay-subtitle mono" id="overlay-block-title"></div>
+            </div>
+            <button class="overlay-close" data-overlay-close="overlay-block">Close</button>
           </div>
-          <div class="col" style="gap:2px;">
-            <div class="brand-text-main">CHAIN CLEARING MONOLITH</div>
-            <div class="brand-text-sub">GENESIS · SYNC · CLEARING · XP/JOULE · AAA</div>
-          </div>
-        </div>
-
-        <div class="profile-shell">
-          <div class="xp-pill" id="xp-pill">
-            <div class="xp-dot" id="xp-dot"></div>
-            <span class="small">XP</span>
-            <span class="mono small" id="xp-value">0</span>
-            <span class="tiny muted">Joule</span>
-            <span class="mono tiny" id="joule-value">0 b</span>
-          </div>
-
-          <div class="profile-chip" id="profile-chip">
-            <div class="avatar" id="avatar">
-              <span id="avatar-initials">CC</span>
-            </div>
-            <div class="profile-meta">
-              <div class="row" style="gap:6px; align-items:center;">
-                <span class="profile-name" id="profile-name">–</span>
-                <span class="profile-aaa" id="profile-aaa">AAA-0</span>
-              </div>
-              <div class="profile-id" id="profile-id">RFOF-NETWORK::–</div>
-            </div>
-          </div>
-
-          <div id="profile-dropdown" class="profile-dropdown glass-soft">
-            <div class="profile-dropdown-header">
-              <div class="avatar" style="width:26px;height:26px;font-size:12px;" id="dropdown-avatar">
-                <span id="dropdown-avatar-initials">CC</span>
-              </div>
-              <div class="col" style="gap:2px;">
-                <span class="small" id="dropdown-name">–</span>
-                <span class="tiny mono muted" id="dropdown-id">RFOF-NETWORK::–</span>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <div class="profile-dropdown-buttons">
-              <button class="btn btn-ghost small" id="btn-wallet">Wallet</button>
-              <button class="btn btn-ghost small" id="btn-profile">Profile</button>
-              <button class="btn btn-ghost small" id="btn-settings">Settings</button>
-            </div>
-            <div class="profile-dropdown-footer">
-              <span class="tiny muted mono" id="dropdown-last-login">last: –</span>
-              <button class="btn btn-ghost tiny" id="btn-logout">Logout</button>
-            </div>
+          <div class="overlay-body">
+            <pre id="overlay-block-body"></pre>
           </div>
         </div>
-      </header>
+      </div>
 
-      <!-- MAIN GRID -->
-      <main id="app-main">
-        <!-- LEFT COLUMN -->
-        <section id="left-column">
-          <div id="kachel-zero" class="glass">
-            <div id="kachel-zero-header">
-              <div class="col" style="gap:2px;">
-                <span class="title">KACHEL 0 · SEKTOR 02</span>
-                <span class="small muted">Nervensystem · Ereignishorizont E(6,5) · 42E0 Takt</span>
-              </div>
-              <div class="row" style="gap:6px;">
-                <span class="badge-muted mono tiny" id="kachel-zero-time">–</span>
-                <span class="badge tiny">AAA NEXUS</span>
-              </div>
+      <div id="overlay-candle" class="overlay">
+        <div class="overlay-card">
+          <div class="overlay-header">
+            <div>
+              <div class="overlay-title">Candle Detail</div>
+              <div class="overlay-subtitle mono" id="overlay-candle-title"></div>
             </div>
-
-            <div id="kachel-zero-main">
-              <div class="col" style="gap:6px;">
-                <div class="takt-strip">
-                  <span class="takt-label">42E0</span>
-                  <div class="takt-bar">
-                    <div class="takt-pulse" id="takt-pulse"></div>
-                  </div>
-                  <span class="takt-label" id="takt-label">t=0</span>
-                </div>
-                <div class="row-space">
-                  <span class="tiny muted mono">RESET @ t=0 · SINGULARITÄT @ t=10</span>
-                  <span class="tiny muted mono">E(6,5) · 7‑Kachel‑Skript A1–Z10</span>
-                </div>
-              </div>
-
-              <div class="horizon-grid">
-                <div class="horizon-meta">
-                  <span>HISTORY‑GRID · 6 CHAINS</span>
-                  <span id="horizon-meta-right">.gt ↔ .ton · SUPERPOSITION</span>
-                </div>
-                <div class="horizon-canvas">
-                  <div class="horizon-canvas-inner"></div>
-                  <div class="horizon-node-core" id="horizon-core"></div>
-                  <div class="horizon-node" id="horizon-node-gt"></div>
-                  <div class="horizon-node" id="horizon-node-ton"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div id="mini-sectors">
-              <!-- 13 Mini-Sektoren -->
-            </div>
+            <button class="overlay-close" data-overlay-close="overlay-candle">Close</button>
           </div>
-        </section>
+          <div class="overlay-body">
+            <pre id="overlay-candle-body"></pre>
+          </div>
+        </div>
+      </div>
 
-        <!-- CENTER COLUMN -->
-        <section id="center-column">
-          <div class="viewer-shell">
-            <!-- GENESIS VIEW -->
-            <div class="viewer-panel glass" id="genesis-panel">
-              <div class="viewer-header">
-                <div class="col" style="gap:2px;">
-                  <span class="viewer-title">GENESIS‑VIEW</span>
-                  <span class="tiny muted">Statische Initialisierung · 65 Dateien · deterministische Seeds</span>
-                </div>
-                <div class="row" style="gap:6px;">
-                  <span class="badge-muted tiny mono" id="genesis-status">GENESIS: READY</span>
-                  <button class="btn-ghost btn tiny" id="btn-genesis-sync">Re‑Hash</button>
-                </div>
-              </div>
-
-              <div class="viewer-body">
-                <!-- Block / Clearing / AAA -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">BLOCK‑/CLEARING‑STATUS</span>
-                    <span class="tiny mono muted" id="genesis-block-count">Blocks: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-block-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Candle-Sticks -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">CANDLE‑STICKS</span>
-                    <span class="tiny mono muted" id="genesis-candle-count">Candles: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-candle-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Mechatronische Interaktion -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">MECHATRONISCHE INTERAKTION</span>
-                    <span class="tiny mono muted" id="genesis-xp-link">XP→Joule</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-mecha-layer"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="viewer-footer">
-                <span class="tiny mono" id="genesis-footer-left">GENESIS · A→Z Pfadierung · Manager‑Ordner simuliert</span>
-                <span class="tiny mono muted" id="genesis-footer-right">ECCU‑Parity · 0,2 % Fee‑Mechanik</span>
-              </div>
+      <div id="overlay-file" class="overlay">
+        <div class="overlay-card">
+          <div class="overlay-header">
+            <div>
+              <div class="overlay-title">File Detail</div>
+              <div class="overlay-subtitle mono" id="overlay-file-title"></div>
             </div>
+            <button class="overlay-close" data-overlay-close="overlay-file">Close</button>
+          </div>
+          <div class="overlay-body">
+            <pre id="overlay-file-body"></pre>
+          </div>
+        </div>
+      </div>
 
-            <!-- SYNC VIEW -->
-            <div class="viewer-panel glass" id="sync-panel">
-              <div class="viewer-header">
-                <div class="col" style="gap:2px;">
-                  <span class="viewer-title">SYNC‑VIEW</span>
-                  <span class="tiny muted">Dynamische Synchronisation · XP/Joule‑gekoppelt · AAA‑Validierung</span>
-                </div>
-                <div class="row" style="gap:6px;">
-                  <span class="badge-muted tiny mono" id="sync-status">SYNC: IDLE</span>
-                  <button class="btn tiny" id="btn-sync-pulse">Sync‑Impulse</button>
-                </div>
-              </div>
+      <div id="overlay-sector" class="overlay">
+        <div class="overlay-card">
+          <div class="overlay-header">
+            <div>
+              <div class="overlay-title">Sector Detail</div>
+              <div class="overlay-subtitle mono" id="overlay-sector-title"></div>
+            </div>
+            <button class="overlay-close" data-overlay-close="overlay-sector">Close</button>
+          </div>
+          <div class="overlay-body">
+            <pre id="overlay-sector-body"></pre>
+          </div>
+        </div>
+      </div>
 
-              <div class="viewer-body">
-                <!-- Block / Clearing / AAA -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">BLOCK‑/CLEARING‑STATUS</span>
-                    <span class="tiny mono muted" id="sync-block-count">Blocks: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-block-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Candle-Sticks -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">CANDLE‑STICKS</span>
-                    <span class="tiny mono muted" id="sync-candle-count">Candles: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-candle-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Mechatronische Interaktion -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">MECHATRONISCHE INTERAKTION</span>
-                    <span class="tiny mono muted" id="sync-xp-link">XP→Joule</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-mecha-layer"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="viewer-footer">
-                <span class="tiny mono" id="sync-footer-left">SYNC · Cross‑Chain‑Audit · X‑Hub Injektor</span>
-                <span class="tiny mono muted" id="sync-footer-right">bank_exekutive.js · parity_logic.js · integrity_check.py</span>
+      <!-- APP SHELL -->
+      <div class="app-shell">
+        <header class="app-header">
+          <div class="app-header-left">
+            <div class="logo-orb">
+              <div class="logo-orb-inner">CC</div>
+            </div>
+            <div class="app-title-block">
+              <div class="app-title">CHAIN-CLEARING / RFOF-NETWORK</div>
+              <div class="app-subtitle">
+                DETERMINISTIC IDENTITY · LOCAL STATE · INTERACTION-DRIVEN BLOCKS
               </div>
             </div>
           </div>
-        </section>
-
-        <!-- RIGHT COLUMN -->
-        <section id="right-column">
-          <div id="block-history-panel" class="glass">
-            <div class="row-space">
-              <div class="col" style="gap:2px;">
-                <span class="title">BLOCK‑HISTORY</span>
-                <span class="tiny muted">Global · Kachel 0 · Nutzergebunden (`MASTER‑RFOF‑NETWORK‑ID`)</span>
-              </div>
-              <div class="row" style="gap:6px;">
-                <span class="badge-muted tiny mono" id="history-count">0 Blöcke</span>
-                <button class="btn-ghost btn tiny" id="btn-history-clear">History leeren</button>
-              </div>
+          <div class="app-header-right">
+            <div class="pill">
+              <div class="pill-dot"></div>
+              <div class="pill-label">SESSION</div>
+              <div class="pill-value mono" id="header-session-id">—</div>
             </div>
-            <div class="history-list">
-              <div class="history-scroll" id="history-scroll"></div>
+            <div class="pill">
+              <div class="pill-label">USER</div>
+              <div class="pill-value mono" id="header-username">—</div>
             </div>
           </div>
+        </header>
 
-          <div id="terminal-panel" class="glass">
-            <div class="terminal-header">
-              <span class="tiny">X‑HUB · META‑CONSOLE</span>
-              <span class="tiny mono muted" id="terminal-status">LEVEL 02 · GUCI‑PARAMETER</span>
+        <main class="app-main">
+          <!-- LEFT: PROFILE / IDENTITY -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>Identity</span> / Profile
+              </div>
+              <div class="panel-badge">LOCAL / PERSISTENT</div>
             </div>
-            <div class="terminal-body" id="terminal-body"></div>
+            <div class="panel-body">
+              <div class="profile-header">
+                <div class="avatar-orb">
+                  <div class="avatar-orb-inner" id="profile-avatar">?</div>
+                </div>
+                <div class="profile-main">
+                  <div class="profile-username" id="profile-username">—</div>
+                  <div class="profile-meta-line">
+                    <span id="profile-aaa">AAA: —</span>
+                    <div class="dot"></div>
+                    <span id="profile-xp">XP: —</span>
+                    <div class="dot"></div>
+                    <span id="profile-joule">JouleBits: —</span>
+                  </div>
+                  <div class="profile-tags">
+                    <div class="tag tag-accent mono" id="profile-master-id-short">
+                      RFOF-NETWORK::—
+                    </div>
+                    <div class="tag" id="profile-last-login">Last Login: —</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-section">
+                <div class="section-label">Core Metrics</div>
+                <div class="metric-row">
+                  <div class="metric-card">
+                    <div class="metric-label">XP</div>
+                    <div class="metric-value mono" id="metric-xp">0</div>
+                    <div class="metric-sub">Interaction-driven</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">JouleBits</div>
+                    <div class="metric-value mono" id="metric-joule">0</div>
+                    <div class="metric-sub">Energy of actions</div>
+                  </div>
+                </div>
+                <div class="metric-row">
+                  <div class="metric-card">
+                    <div class="metric-label">AAA-Level</div>
+                    <div class="metric-value mono" id="metric-aaa">0</div>
+                    <div class="metric-sub">Adaptive Access Authority</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">Blocks / Candles</div>
+                    <div class="metric-value mono" id="metric-blocks-candles">0 / 0</div>
+                    <div class="metric-sub">History length</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-section">
+                <div class="section-label">MASTER-RFOF-NETWORK-ID</div>
+                <div class="id-block">
+                  <div class="id-label">Deterministic Identity</div>
+                  <button class="id-copy-btn" id="btn-copy-master-id">Copy</button>
+                  <div id="profile-master-id" class="mono">
+                    RFOF-NETWORK::username::EXT::<sha256>
+                  </div>
+                </div>
+              </div>
+
+              <div class="profile-section">
+                <div class="section-label">Mining / Interaction</div>
+                <div class="metric-row">
+                  <div class="metric-card">
+                    <div class="metric-label">Mouse Energy</div>
+                    <div class="metric-value mono" id="metric-mouse-energy">0</div>
+                    <div class="metric-sub">Δ movement</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">FPS</div>
+                    <div class="metric-value mono" id="metric-fps">0</div>
+                    <div class="metric-sub">Mining loop</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="logout-row">
+                <span>Session Control</span>
+                <button class="btn-logout" id="btn-logout">Logout</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- CENTER: SIMULATION -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>Chain-Clearing</span> / Blocks · Candles · Sectors · Paths
+              </div>
+              <div class="panel-badge">INTERACTION-DRIVEN</div>
+            </div>
+            <div class="panel-body">
+              <div class="sim-toolbar">
+                <div class="sim-toolbar-left">
+                  <div class="sim-mode-pill">
+                    MODE
+                    <span id="sim-mode-label">MANUAL</span>
+                  </div>
+                  <div class="mono muted" id="sim-summary">
+                    Blocks: 0 · Candles: 0 · Sectors: 0 · Files: 0
+                  </div>
+                </div>
+                <div class="sim-toolbar-right">
+                  <button class="btn-mini btn-mini-accent" id="btn-new-block">
+                    + Block
+                  </button>
+                  <button class="btn-mini btn-mini-accent" id="btn-new-candle">
+                    + Candle
+                  </button>
+                  <button class="btn-mini" id="btn-random-sector">
+                    Mutate Sector
+                  </button>
+                  <button class="btn-mini" id="btn-path-step">
+                    A-Z Path Step
+                  </button>
+                  <button class="btn-mini" id="btn-clear-history">
+                    Clear History
+                  </button>
+                </div>
+              </div>
+
+              <div class="sim-layout">
+                <div class="sim-blocks">
+                  <div class="sim-section-header">
+                    <div>Block History <span id="sim-block-count">(0)</span></div>
+                    <div class="mono muted" id="sim-block-meta">No blocks yet</div>
+                  </div>
+                  <div class="sim-section-body">
+                    <div class="sim-block-list" id="block-list"></div>
+                    <div class="sim-mini-chart">
+                      <div class="sim-mini-legend">
+                        <div>
+                          <span class="legend-dot legend-dot-block"></span>Blocks
+                        </div>
+                        <div class="mono" id="sim-block-chart-label">XP / JouleBits</div>
+                      </div>
+                      <canvas id="block-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sim-candles">
+                  <div class="sim-section-header">
+                    <div>Candle History <span id="sim-candle-count">(0)</span></div>
+                    <div class="mono muted" id="sim-candle-meta">No candles yet</div>
+                  </div>
+                  <div class="sim-section-body">
+                    <div class="sim-candle-list" id="candle-list"></div>
+                    <div class="sim-mini-chart">
+                      <div class="sim-mini-legend">
+                        <div>
+                          <span class="legend-dot legend-dot-candle"></span>Candles
+                        </div>
+                        <div class="mono" id="sim-candle-chart-label">Sector State</div>
+                      </div>
+                      <canvas id="candle-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RIGHT: SETTINGS / STATE / SECTORS / FILES -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span>Settings</span> / State · Sectors · Files
+              </div>
+              <div class="panel-badge">PER-USER</div>
+            </div>
+            <div class="panel-body">
+              <div class="panel-scroll">
+                <div class="settings-section">
+                  <div class="settings-group">
+                    <div class="settings-group-title">Interaction Model</div>
+                    <div class="settings-row">
+                      <span>Deterministic Blocks Only</span>
+                      <div
+                        class="toggle on"
+                        id="toggle-deterministic"
+                        data-setting-key="deterministicBlocks"
+                      >
+                        <div class="toggle-thumb"></div>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <span>XP Gain Multiplier</span>
+                      <select
+                        class="settings-select"
+                        id="select-xp-multiplier"
+                        data-setting-key="xpMultiplier"
+                      >
+                        <option value="1">1x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                        <option value="3">3x</option>
+                      </select>
+                    </div>
+                    <div class="settings-row">
+                      <span>JouleBits Intensity</span>
+                      <select
+                        class="settings-select"
+                        id="select-joule-intensity"
+                        data-setting-key="jouleIntensity"
+                      >
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="settings-group">
+                    <div class="settings-group-title">Visual</div>
+                    <div class="settings-row">
+                      <span>High-Contrast Mode</span>
+                      <div
+                        class="toggle"
+                        id="toggle-high-contrast"
+                        data-setting-key="highContrast"
+                      >
+                        <div class="toggle-thumb"></div>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <span>Show Raw State</span>
+                      <div
+                        class="toggle on"
+                        id="toggle-show-state"
+                        data-setting-key="showState"
+                      >
+                        <div class="toggle-thumb"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="settings-group">
+                    <div class="settings-group-title">Sectors (13 Dual-Sectors)</div>
+                    <div class="settings-row">
+                      <span>Active Sectors</span>
+                      <span class="mono" id="sector-count">0</span>
+                    </div>
+                    <div class="settings-row">
+                      <span>Last Mutation</span>
+                      <span class="mono" id="sector-last-mutation">—</span>
+                    </div>
+                    <div class="sector-grid" id="sector-grid"></div>
+                  </div>
+
+                  <div class="settings-group">
+                    <div class="settings-group-title">Manager / 65 Files</div>
+                    <div class="settings-row">
+                      <span>Total Files</span>
+                      <span class="mono" id="file-count">0</span>
+                    </div>
+                    <div class="file-list" id="file-list"></div>
+                  </div>
+
+                  <div class="settings-group">
+                    <div class="settings-group-title">Raw User State</div>
+                    <div
+                      class="state-view"
+                      id="state-view"
+                      aria-label="Raw JSON state"
+                    >
+                      <pre id="state-json">{}</pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer class="footer-bar">
+          <span>
+            Identity:
+            <strong id="footer-master-id-short">RFOF-NETWORK::—</strong>
+          </span>
+          <div class="footer-right">
+            <div class="footer-dot"></div>
+            <div class="footer-badge">
+              SESSION:
+              <span class="mono" id="footer-session-mode">UNAUTHENTICATED</span>
+            </div>
           </div>
-        </section>
-      </main>
+        </footer>
+      </div>
     </div>
   </div>
 
   <script>
-    // --- Utility: SHA-256 (minimal) ---
-    async function sha256(text) {
+    // SHA-256
+    async function sha256Hex(input) {
       const encoder = new TextEncoder();
-      const data = encoder.encode(text);
+      const data = encoder.encode(input);
       const hashBuffer = await crypto.subtle.digest("SHA-256", data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+      return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
     }
 
-    // --- Storage Keys ---
-    const STORAGE_KEY_USER = "chain-clearing.current-user-id";
-    const STORAGE_PREFIX_USER = "chain-clearing.user.";
-
-    // --- Global State ---
-    const state = {
-      user: null,
-      takt: 0,
-      taktDirection: 1,
-      xp: 0,
-      jouleBits: 0,
-      aaaLevel: 0,
-      blocks: [],
-      candles: [],
-      sectors: [],
-      mouseEnergy: 0,
-      lastMouseTime: performance.now(),
-      lastTaktTime: performance.now(),
-      lastXPUpdate: performance.now()
+    const STORAGE_KEYS = {
+      USERS: "chainClearing.users",
+      CURRENT_USER: "chainClearing.currentUser",
     };
 
-    // --- DOM Refs ---
-    const loginOverlay = document.getElementById("login-overlay");
-    const loginBtn = document.getElementById("login-btn");
-    const loginUsername = document.getElementById("login-username");
-    const loginPassword = document.getElementById("login-password");
-    const loginMeta = document.getElementById("login-meta");
-
-    const appShell = document.getElementById("app-shell");
-
-    const profileChip = document.getElementById("profile-chip");
-    const profileDropdown = document.getElementById("profile-dropdown");
-    const btnLogout = document.getElementById("btn-logout");
-    const btnWallet = document.getElementById("btn-wallet");
-    const btnProfile = document.getElementById("btn-profile");
-    const btnSettings = document.getElementById("btn-settings");
-
-    const avatar = document.getElementById("avatar");
-    const avatarInitials = document.getElementById("avatar-initials");
-    const dropdownAvatar = document.getElementById("dropdown-avatar");
-    const dropdownAvatarInitials = document.getElementById("dropdown-avatar-initials");
-    const profileName = document.getElementById("profile-name");
-    const profileAAA = document.getElementById("profile-aaa");
-    const profileId = document.getElementById("profile-id");
-    const dropdownName = document.getElementById("dropdown-name");
-    const dropdownId = document.getElementById("dropdown-id");
-    const dropdownLastLogin = document.getElementById("dropdown-last-login");
-
-    const xpValue = document.getElementById("xp-value");
-    const jouleValue = document.getElementById("joule-value");
-    const xpDot = document.getElementById("xp-dot");
-
-    const taktPulse = document.getElementById("takt-pulse");
-    const taktLabel = document.getElementById("takt-label");
-    const kachelZeroTime = document.getElementById("kachel-zero-time");
-
-    const horizonCore = document.getElementById("horizon-core");
-    const horizonNodeGt = document.getElementById("horizon-node-gt");
-    const horizonNodeTon = document.getElementById("horizon-node-ton");
-
-    const miniSectorsContainer = document.getElementById("mini-sectors");
-
-    const genesisBlockLayer = document.getElementById("genesis-block-layer");
-    const genesisCandleLayer = document.getElementById("genesis-candle-layer");
-    const genesisMechaLayer = document.getElementById("genesis-mecha-layer");
-    const syncBlockLayer = document.getElementById("sync-block-layer");
-    const syncCandleLayer = document.getElementById("sync-candle-layer");
-    const syncMechaLayer = document.getElementById("sync-mecha-layer");
-
-    const genesisBlockCount = document.getElementById("genesis-block-count");
-    const genesisCandleCount = document.getElementById("genesis-candle-count");
-    const syncBlockCount = document.getElementById("sync-block-count");
-    const syncCandleCount = document.getElementById("sync-candle-count");
-    const genesisStatus = document.getElementById("genesis-status");
-    const syncStatus = document.getElementById("sync-status");
-    const genesisFooterLeft = document.getElementById("genesis-footer-left");
-    const genesisFooterRight = document.getElementById("genesis-footer-right");
-    const syncFooterLeft = document.getElementById("sync-footer-left");
-    const syncFooterRight = document.getElementById("sync-footer-right");
-
-    const btnGenesisSync = document.getElementById("btn-genesis-sync");
-    const btnSyncPulse = document.getElementById("btn-sync-pulse");
-
-    const historyScroll = document.getElementById("history-scroll");
-    const historyCount = document.getElementById("history-count");
-    const btnHistoryClear = document.getElementById("btn-history-clear");
-
-    const terminalBody = document.getElementById("terminal-body");
-    const terminalStatus = document.getElementById("terminal-status");
-
-    const dropdownLastLoginEl = dropdownLastLogin;
-
-    // --- Helpers: User Storage ---
-
-    function userStorageKey(masterId) {
-      return STORAGE_PREFIX_USER + masterId;
-    }
-
-    function loadUserFromStorage(masterId) {
-      const raw = localStorage.getItem(userStorageKey(masterId));
-      if (!raw) return null;
+    function loadUsers() {
       try {
+        const raw = localStorage.getItem(STORAGE_KEYS.USERS);
+        if (!raw) return {};
         return JSON.parse(raw);
       } catch {
-        return null;
+        return {};
       }
     }
 
-    function saveUserToStorage(user) {
-      if (!user || !user.masterId) return;
-      localStorage.setItem(userStorageKey(user.masterId), JSON.stringify(user));
-      localStorage.setItem(STORAGE_KEY_USER, user.masterId);
+    function saveUsers(users) {
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
     }
 
-    function clearCurrentUser() {
-      localStorage.removeItem(STORAGE_KEY_USER);
+    function loadCurrentUserId() {
+      return localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
     }
 
-    function loadCurrentUser() {
-      const masterId = localStorage.getItem(STORAGE_KEY_USER);
-      if (!masterId) return null;
-      return loadUserFromStorage(masterId);
+    function saveCurrentUserId(username) {
+      if (username) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, username);
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+      }
     }
 
-    // --- MASTER-RFOF-NETWORK-ID ---
-
-    async function createMasterId(username, loginTimestamp) {
-      const hash = await sha256(username + loginTimestamp);
-      return `RFOF-NETWORK::${username}::EXT::${hash}`;
+    function createEmptyProfile(username, avatarSeed, loginTimestamp, masterId) {
+      return {
+        username,
+        MASTER_RFOF_NETWORK_ID: masterId,
+        avatar: avatarSeed || "",
+        xp: 0,
+        jouleBits: 0,
+        aaaLevel: 0,
+        lastLogin: loginTimestamp,
+        blockHistory: [],
+        candleHistory: [],
+        sectorState: {
+          sectors: [],
+          lastMutation: null,
+        },
+        files: [],
+        pathState: {
+          current: "A",
+          steps: [],
+        },
+        mining: {
+          mouseEnergy: 0,
+          fps: 0,
+        },
+        settings: {
+          deterministicBlocks: true,
+          xpMultiplier: 1,
+          jouleIntensity: "medium",
+          highContrast: false,
+          showState: true,
+        },
+      };
     }
 
-    function initialsFromUsername(username) {
-      if (!username) return "CC";
-      const parts = username.split(/[\s._-]+/).filter(Boolean);
-      if (parts.length === 0) return username.slice(0, 2).toUpperCase();
+    function ensureProfileShape(profile) {
+      const now = Date.now();
+      if (!profile.MASTER_RFOF_NETWORK_ID) {
+        profile.MASTER_RFOF_NETWORK_ID =
+          "RFOF-NETWORK::" + profile.username + "::EXT::<missing>";
+      }
+      if (!Array.isArray(profile.blockHistory)) profile.blockHistory = [];
+      if (!Array.isArray(profile.candleHistory)) profile.candleHistory = [];
+      if (!profile.sectorState) {
+        profile.sectorState = { sectors: [], lastMutation: null };
+      } else {
+        if (!Array.isArray(profile.sectorState.sectors)) {
+          profile.sectorState.sectors = [];
+        }
+      }
+      if (!Array.isArray(profile.files)) profile.files = [];
+      if (!profile.pathState) {
+        profile.pathState = { current: "A", steps: [] };
+      }
+      if (!profile.mining) {
+        profile.mining = { mouseEnergy: 0, fps: 0 };
+      }
+      if (!profile.settings) {
+        profile.settings = {
+          deterministicBlocks: true,
+          xpMultiplier: 1,
+          jouleIntensity: "medium",
+          highContrast: false,
+          showState: true,
+        };
+      } else {
+        profile.settings = {
+          deterministicBlocks:
+            profile.settings.deterministicBlocks !== undefined
+              ? profile.settings.deterministicBlocks
+              : true,
+          xpMultiplier:
+            profile.settings.xpMultiplier !== undefined
+              ? profile.settings.xpMultiplier
+              : 1,
+          jouleIntensity:
+            profile.settings.jouleIntensity || "medium",
+          highContrast:
+            profile.settings.highContrast !== undefined
+              ? profile.settings.highContrast
+              : false,
+          showState:
+            profile.settings.showState !== undefined
+              ? profile.settings.showState
+              : true,
+        };
+      }
+      if (!profile.lastLogin) profile.lastLogin = now;
+      if (typeof profile.xp !== "number") profile.xp = 0;
+      if (typeof profile.jouleBits !== "number") profile.jouleBits = 0;
+      if (typeof profile.aaaLevel !== "number") profile.aaaLevel = 0;
+      return profile;
+    }
+
+    const AppState = {
+      currentUser: null,
+      users: {},
+      loginMode: "login",
+      guestCounter: 0,
+      sessionId: null,
+      lastFrameTime: performance.now(),
+      fpsAccumulator: 0,
+      fpsFrames: 0,
+      lastMouseX: null,
+      lastMouseY: null,
+    };
+
+    function generateSessionId() {
+      const t = Date.now().toString(16);
+      const r = Math.floor(Math.random() * 0xffff)
+        .toString(16)
+        .padStart(4, "0");
+      return `CC-${t}-${r}`.toUpperCase();
+    }
+
+    const loginView = document.getElementById("login-view");
+    const loginUsernameInput = document.getElementById("login-username");
+    const loginPasswordInput = document.getElementById("login-password");
+    const loginAvatarInput = document.getElementById("login-avatar");
+    const loginErrorEl = document.getElementById("login-error");
+    const loginModeLabel = document.getElementById("login-mode-label");
+    const btnLogin = document.getElementById("btn-login");
+    const btnLoginLabel = document.getElementById("btn-login-label");
+    const btnLoginMode = document.getElementById("btn-login-mode");
+    const btnToggleMode = document.getElementById("btn-toggle-mode");
+    const btnGuest = document.getElementById("btn-guest");
+
+    const headerSessionIdEl = document.getElementById("header-session-id");
+    const headerUsernameEl = document.getElementById("header-username");
+    const footerSessionModeEl = document.getElementById("footer-session-mode");
+    const footerMasterIdShortEl = document.getElementById(
+      "footer-master-id-short"
+    );
+
+    const profileAvatarEl = document.getElementById("profile-avatar");
+    const profileUsernameEl = document.getElementById("profile-username");
+    const profileAAAEl = document.getElementById("profile-aaa");
+    const profileXPEl = document.getElementById("profile-xp");
+    const profileJouleEl = document.getElementById("profile-joule");
+    const profileMasterIdShortEl = document.getElementById(
+      "profile-master-id-short"
+    );
+    const profileLastLoginEl = document.getElementById("profile-last-login");
+    const profileMasterIdEl = document.getElementById("profile-master-id");
+    const btnCopyMasterId = document.getElementById("btn-copy-master-id");
+    const btnLogout = document.getElementById("btn-logout");
+
+    const metricXPEl = document.getElementById("metric-xp");
+    const metricJouleEl = document.getElementById("metric-joule");
+    const metricAAAEl = document.getElementById("metric-aaa");
+    const metricBlocksCandlesEl = document.getElementById(
+      "metric-blocks-candles"
+    );
+    const metricMouseEnergyEl = document.getElementById("metric-mouse-energy");
+    const metricFpsEl = document.getElementById("metric-fps");
+
+    const simModeLabelEl = document.getElementById("sim-mode-label");
+    const simSummaryEl = document.getElementById("sim-summary");
+    const simBlockCountEl = document.getElementById("sim-block-count");
+    const simBlockMetaEl = document.getElementById("sim-block-meta");
+    const simCandleCountEl = document.getElementById("sim-candle-count");
+    const simCandleMetaEl = document.getElementById("sim-candle-meta");
+    const blockListEl = document.getElementById("block-list");
+    const candleListEl = document.getElementById("candle-list");
+    const blockChartCanvas = document.getElementById("block-chart");
+    const candleChartCanvas = document.getElementById("candle-chart");
+    const simBlockChartLabelEl = document.getElementById(
+      "sim-block-chart-label"
+    );
+    const simCandleChartLabelEl = document.getElementById(
+      "sim-candle-chart-label"
+    );
+
+    const btnNewBlock = document.getElementById("btn-new-block");
+    const btnNewCandle = document.getElementById("btn-new-candle");
+    const btnRandomSector = document.getElementById("btn-random-sector");
+    const btnClearHistory = document.getElementById("btn-clear-history");
+    const btnPathStep = document.getElementById("btn-path-step");
+
+    const toggleDeterministic = document.getElementById("toggle-deterministic");
+    const toggleHighContrast = document.getElementById("toggle-high-contrast");
+    const toggleShowState = document.getElementById("toggle-show-state");
+    const selectXpMultiplier = document.getElementById("select-xp-multiplier");
+    const selectJouleIntensity = document.getElementById(
+      "select-joule-intensity"
+    );
+    const sectorCountEl = document.getElementById("sector-count");
+    const sectorLastMutationEl = document.getElementById(
+      "sector-last-mutation"
+    );
+    const sectorGridEl = document.getElementById("sector-grid");
+    const fileCountEl = document.getElementById("file-count");
+    const fileListEl = document.getElementById("file-list");
+    const stateViewEl = document.getElementById("state-view");
+    const stateJsonEl = document.getElementById("state-json");
+
+    const overlayBlock = document.getElementById("overlay-block");
+    const overlayBlockTitle = document.getElementById("overlay-block-title");
+    const overlayBlockBody = document.getElementById("overlay-block-body");
+
+    const overlayCandle = document.getElementById("overlay-candle");
+    const overlayCandleTitle = document.getElementById("overlay-candle-title");
+    const overlayCandleBody = document.getElementById("overlay-candle-body");
+
+    const overlayFile = document.getElementById("overlay-file");
+    const overlayFileTitle = document.getElementById("overlay-file-title");
+    const overlayFileBody = document.getElementById("overlay-file-body");
+
+    const overlaySector = document.getElementById("overlay-sector");
+    const overlaySectorTitle = document.getElementById("overlay-sector-title");
+    const overlaySectorBody = document.getElementById("overlay-sector-body");
+
+    function setLoginMode(mode) {
+      AppState.loginMode = mode;
+      if (mode === "login") {
+        loginModeLabel.textContent = "MODE: EXISTING IDENTITY";
+        btnLoginLabel.textContent = "Login";
+        btnLoginMode.textContent = "EXISTING";
+        btnToggleMode.textContent = "Registrieren";
+        document.getElementById("login-toggle-text").textContent =
+          "Neuer Nutzer?";
+      } else {
+        loginModeLabel.textContent = "MODE: NEW IDENTITY";
+        btnLoginLabel.textContent = "Registrieren";
+        btnLoginMode.textContent = "NEW";
+        btnToggleMode.textContent = "Login";
+        document.getElementById("login-toggle-text").textContent =
+          "Bereits registriert?";
+      }
+      loginErrorEl.textContent = "";
+    }
+
+    btnToggleMode.addEventListener("click", () => {
+      setLoginMode(AppState.loginMode === "login" ? "register" : "login");
+    });
+
+    btnGuest.addEventListener("click", async () => {
+      AppState.guestCounter += 1;
+      const username = `guest-${AppState.guestCounter}`;
+      const passwordHash = await sha256Hex("guest-session-" + Date.now());
+      const loginTimestamp = Date.now();
+      const masterIdHash = await sha256Hex(username + loginTimestamp);
+      const masterIdFull =
+        `RFOF-NETWORK::${username}::EXT::` + masterIdHash.toUpperCase();
+      const profile = createEmptyProfile(
+        username,
+        "G",
+        loginTimestamp,
+        masterIdFull
+      );
+      const users = loadUsers();
+      users[username] = {
+        passwordHash,
+        profile,
+      };
+      saveUsers(users);
+      AppState.users = users;
+      await completeLogin(username, profile);
+    });
+
+    btnLogin.addEventListener("click", async () => {
+      const username = loginUsernameInput.value.trim();
+      const password = loginPasswordInput.value;
+      const avatarSeed = loginAvatarInput.value.trim();
+      loginErrorEl.textContent = "";
+
+      if (!username || !password) {
+        loginErrorEl.textContent = "Bitte Username und Passphrase ausfüllen.";
+        return;
+      }
+
+      const users = loadUsers();
+      AppState.users = users;
+      const passwordHash = await sha256Hex(password);
+
+      if (AppState.loginMode === "login") {
+        const userRecord = users[username];
+        if (!userRecord) {
+          loginErrorEl.textContent = "Unbekannter Nutzer. Bitte registrieren.";
+          return;
+        }
+        if (userRecord.passwordHash !== passwordHash) {
+          loginErrorEl.textContent = "Passphrase ungültig.";
+          return;
+        }
+        const now = Date.now();
+        userRecord.profile.lastLogin = now;
+        ensureProfileShape(userRecord.profile);
+        users[username] = userRecord;
+        saveUsers(users);
+        await completeLogin(username, userRecord.profile);
+      } else {
+        if (users[username]) {
+          loginErrorEl.textContent =
+            "Nutzer existiert bereits. Bitte Login verwenden.";
+          return;
+        }
+        const loginTimestamp = Date.now();
+        const masterHash = await sha256Hex(username + loginTimestamp);
+        const masterIdFull =
+          `RFOF-NETWORK::${username}::EXT::` + masterHash.toUpperCase();
+        const profile = createEmptyProfile(
+          username,
+          avatarSeed,
+          loginTimestamp,
+          masterIdFull
+        );
+        users[username] = {
+          passwordHash,
+          profile,
+        };
+        saveUsers(users);
+        AppState.users = users;
+        await completeLogin(username, profile);
+      }
+    });
+
+    async function completeLogin(username, profile) {
+      AppState.currentUser = ensureProfileShape(profile);
+      AppState.sessionId = generateSessionId();
+      saveCurrentUserId(username);
+      initSectorsIfNeeded();
+      initFilesIfNeeded();
+      updateUIFromProfile();
+      loginView.classList.add("hidden");
+    }
+
+    btnLogout.addEventListener("click", () => {
+      AppState.currentUser = null;
+      AppState.sessionId = null;
+      saveCurrentUserId(null);
+      headerSessionIdEl.textContent = "—";
+      headerUsernameEl.textContent = "—";
+      footerSessionModeEl.textContent = "UNAUTHENTICATED";
+      footerMasterIdShortEl.textContent = "RFOF-NETWORK::—";
+      loginUsernameInput.value = "";
+      loginPasswordInput.value = "";
+      loginAvatarInput.value = "";
+      loginErrorEl.textContent = "";
+      loginView.classList.remove("hidden");
+    });
+
+    btnCopyMasterId.addEventListener("click", async () => {
+      if (!AppState.currentUser) return;
+      try {
+        await navigator.clipboard.writeText(
+          AppState.currentUser.MASTER_RFOF_NETWORK_ID
+        );
+        btnCopyMasterId.textContent = "Copied";
+        setTimeout(() => {
+          btnCopyMasterId.textContent = "Copy";
+        }, 900);
+      } catch {
+        btnCopyMasterId.textContent = "Error";
+        setTimeout(() => {
+          btnCopyMasterId.textContent = "Copy";
+        }, 900);
+      }
+    });
+
+    function avatarFromSeed(username, avatarSeed) {
+      if (avatarSeed && avatarSeed.trim()) return avatarSeed.trim().slice(0, 2);
+      if (!username) return "?";
+      const parts = username.split(/[\s\-_.]+/).filter(Boolean);
       if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
 
-    // --- Login Flow ---
-
-    async function handleLogin() {
-      const username = (loginUsername.value || "").trim();
-      const password = loginPassword.value || "";
-
-      if (!username || !password) {
-        loginMeta.textContent = "Bitte Username und Passphrase eingeben.";
-        loginMeta.style.color = "#ff4b81";
-        return;
-      }
-
-      loginMeta.textContent = "Erzeuge MASTER‑RFOF‑NETWORK‑ID …";
-      loginMeta.style.color = "#8b92b0";
-
-      const loginTimestamp = new Date().toISOString();
-      const masterId = await createMasterId(username, loginTimestamp);
-      const passwordHash = await sha256(password);
-
-      let user = loadUserFromStorage(masterId);
-      if (!user) {
-        user = {
-          username,
-          masterId,
-          avatar: initialsFromUsername(username),
-          xp: 0,
-          jouleBits: 0,
-          aaaLevel: 0,
-          lastLogin: loginTimestamp,
-          blockHistory: [],
-          candleHistory: [],
-          sectorState: {},
-          settings: {},
-          passwordHash
-        };
-        logTerminal(`NEW USER · ${username} · MASTER‑RFOF‑NETWORK‑ID initialisiert.`);
-      } else {
-        user.lastLogin = loginTimestamp;
-        logTerminal(`LOGIN · ${username} · bestehendes Profil geladen.`);
-      }
-
-      state.user = user;
-      state.xp = user.xp || 0;
-      state.jouleBits = user.jouleBits || 0;
-      state.aaaLevel = user.aaaLevel || 0;
-      state.blocks = user.blockHistory || [];
-      state.candles = user.candleHistory || [];
-
-      saveUserToStorage(user);
-      hydrateUIFromUser();
-      loginOverlay.classList.add("hidden");
-      appShell.classList.remove("hidden");
-      appShell.classList.add("fade-in");
+    function formatDateTime(ts) {
+      if (!ts) return "—";
+      const d = new Date(ts);
+      return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(d.getDate()).padStart(2, "0") +
+        " " +
+        String(d.getHours()).padStart(2, "0") +
+        ":" +
+        String(d.getMinutes()).padStart(2, "0")
+      );
     }
 
-    function handleLogout() {
-      if (!state.user) return;
-      logTerminal(`LOGOUT · ${state.user.username} · Session beendet.`);
-      clearCurrentUser();
-      state.user = null;
-      appShell.classList.add("hidden");
-      loginOverlay.classList.remove("hidden");
-      loginOverlay.classList.add("fade-in");
-      loginPassword.value = "";
+    function shortMasterId(masterId) {
+      if (!masterId) return "RFOF-NETWORK::—";
+      if (masterId.length <= 32) return masterId;
+      return masterId.slice(0, 32) + "…";
     }
 
-    // --- UI Hydration ---
+    function updateUIFromProfile() {
+      const profile = AppState.currentUser;
+      if (!profile) return;
 
-    function hydrateUIFromUser() {
-      const user = state.user;
-      if (!user) return;
+      const username = profile.username;
+      const avatar = avatarFromSeed(username, profile.avatar);
+      const masterId = profile.MASTER_RFOF_NETWORK_ID;
+      const lastLogin = profile.lastLogin;
 
-      const initials = user.avatar || initialsFromUsername(user.username);
-      avatarInitials.textContent = initials;
-      dropdownAvatarInitials.textContent = initials;
-      profileName.textContent = user.username;
-      dropdownName.textContent = user.username;
-      profileId.textContent = user.masterId;
-      dropdownId.textContent = user.masterId;
-      profileAAA.textContent = `AAA-${user.aaaLevel || 0}`;
-      xpValue.textContent = user.xp || 0;
-      jouleValue.textContent = `${user.jouleBits || 0} b`;
-      dropdownLastLoginEl.textContent = `last: ${user.lastLogin || "–"}`;
+      profileAvatarEl.textContent = avatar;
+      profileUsernameEl.textContent = username;
+      profileAAAEl.textContent = "AAA: " + profile.aaaLevel;
+      profileXPEl.textContent = "XP: " + profile.xp;
+      profileJouleEl.textContent = "JouleBits: " + profile.jouleBits;
+      profileMasterIdShortEl.textContent = shortMasterId(masterId);
+      profileLastLoginEl.textContent = "Last Login: " + formatDateTime(lastLogin);
+      profileMasterIdEl.textContent = masterId;
+
+      metricXPEl.textContent = profile.xp;
+      metricJouleEl.textContent = profile.jouleBits;
+      metricAAAEl.textContent = profile.aaaLevel;
+      metricBlocksCandlesEl.textContent =
+        (profile.blockHistory?.length || 0) +
+        " / " +
+        (profile.candleHistory?.length || 0);
+
+      metricMouseEnergyEl.textContent = Math.round(
+        profile.mining.mouseEnergy
+      );
+      metricFpsEl.textContent = Math.round(profile.mining.fps);
+
+      headerSessionIdEl.textContent = AppState.sessionId || "—";
+      headerUsernameEl.textContent = username;
+      footerSessionModeEl.textContent = "AUTHENTICATED";
+      footerMasterIdShortEl.textContent = shortMasterId(masterId);
+
+      toggleDeterministic.classList.toggle(
+        "on",
+        !!profile.settings.deterministicBlocks
+      );
+      toggleHighContrast.classList.toggle(
+        "on",
+        !!profile.settings.highContrast
+      );
+      toggleShowState.classList.toggle("on", !!profile.settings.showState);
+      selectXpMultiplier.value = String(profile.settings.xpMultiplier || 1);
+      selectJouleIntensity.value = profile.settings.jouleIntensity || "medium";
+
+      document.body.style.filter = profile.settings.highContrast
+        ? "contrast(1.15) saturate(1.1)"
+        : "none";
+
+      stateViewEl.style.display = profile.settings.showState ? "block" : "none";
+
+      const blockCount = profile.blockHistory.length;
+      const candleCount = profile.candleHistory.length;
+      const sectorCount = profile.sectorState.sectors.length;
+      const fileCount = profile.files.length;
+      simSummaryEl.textContent =
+        "Blocks: " +
+        blockCount +
+        " · Candles: " +
+        candleCount +
+        " · Sectors: " +
+        sectorCount +
+        " · Files: " +
+        fileCount;
+      simBlockCountEl.textContent = "(" + blockCount + ")";
+      simCandleCountEl.textContent = "(" + candleCount + ")";
+      simBlockMetaEl.textContent =
+        blockCount === 0
+          ? "No blocks yet"
+          : "Last block #" +
+            profile.blockHistory[blockCount - 1].index +
+            " · " +
+            formatDateTime(profile.blockHistory[blockCount - 1].timestamp);
+      simCandleMetaEl.textContent =
+        candleCount === 0
+          ? "No candles yet"
+          : "Last candle #" +
+            profile.candleHistory[candleCount - 1].index +
+            " · " +
+            formatDateTime(profile.candleHistory[candleCount - 1].timestamp);
+
+      sectorCountEl.textContent = sectorCount;
+      sectorLastMutationEl.textContent = profile.sectorState.lastMutation
+        ? formatDateTime(profile.sectorState.lastMutation)
+        : "—";
+
+      fileCountEl.textContent = fileCount;
 
       renderBlockHistory();
-      renderMiniSectors();
-      updateKachelZeroTime();
+      renderCandleHistory();
+      renderSectors();
+      renderFiles();
+      renderStateJson();
+      drawBlockChart();
+      drawCandleChart();
     }
 
-    // --- XP / Joule / Mouse Energy ---
-
-    function handleMouseMove(e) {
-      const now = performance.now();
-      const dt = now - state.lastMouseTime;
-      state.lastMouseTime = now;
-      const energy = Math.min(5, Math.max(0.2, 16 / Math.max(8, dt)));
-      state.mouseEnergy += energy;
+    function persistCurrentUser() {
+      if (!AppState.currentUser) return;
+      const username = AppState.currentUser.username;
+      const users = loadUsers();
+      const record = users[username];
+      if (!record) return;
+      record.profile = AppState.currentUser;
+      users[username] = record;
+      saveUsers(users);
+      AppState.users = users;
     }
 
-    function updateXP(dt) {
-      const energyDrain = Math.min(state.mouseEnergy, dt * 0.02);
-      const xpGain = energyDrain * 0.8;
-      state.mouseEnergy -= energyDrain;
-      if (xpGain > 0.01) {
-        state.xp += xpGain;
-        const jouleGain = xpGain * 0.05;
-        state.jouleBits += jouleGain;
-        if (state.jouleBits > 1000) {
-          state.aaaLevel = Math.min(999, Math.floor(state.jouleBits / 1000));
-        }
-        xpValue.textContent = state.xp.toFixed(1);
-        jouleValue.textContent = `${state.jouleBits.toFixed(1)} b`;
-        profileAAA.textContent = `AAA-${state.aaaLevel}`;
-        xpDot.style.boxShadow = `0 0 14px rgba(66, 224, 255, ${0.4 + Math.min(0.6, state.mouseEnergy / 40)})`;
-      }
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // --- Takt / Kachel 0 ---
-
-    function updateTakt(dt) {
-      const now = performance.now();
-      if (now - state.lastTaktTime < 420) return;
-      state.lastTaktTime = now;
-
-      state.takt += state.taktDirection;
-      if (state.takt >= 10) {
-        state.takt = 10;
-        state.taktDirection = -1;
-        logTerminal("42E0 · SINGULARITÄTS‑IMPULS @ t=10");
-        spawnSingularityPulse();
-      } else if (state.takt <= 0) {
-        state.takt = 0;
-        state.taktDirection = 1;
-        logTerminal("42E0 · RESET‑PULSE @ t=0");
-      }
-
-      const t = state.takt;
-      taktLabel.textContent = `t=${t}`;
-      const barWidth = document.querySelector(".takt-bar").clientWidth || 1;
-      const x = (t / 10) * (barWidth - 18);
-      taktPulse.style.transform = `translateX(${x}px)`;
-
-      const core = horizonCore;
-      const gt = horizonNodeGt;
-      const ton = horizonNodeTon;
-
-      const centerX = 50;
-      const centerY = 50;
-      core.style.left = `${centerX - 7}px`;
-      core.style.top = `${centerY - 7}px`;
-
-      const angle = (t / 10) * Math.PI * 2;
-      const radius = 26;
-      const gtX = centerX + radius * Math.cos(angle);
-      const gtY = centerY + radius * Math.sin(angle);
-      const tonX = centerX + radius * Math.cos(angle + Math.PI);
-      const tonY = centerY + radius * Math.sin(angle + Math.PI);
-
-      gt.style.left = `${gtX - 5}px`;
-      gt.style.top = `${gtY - 5}px`;
-      ton.style.left = `${tonX - 5}px`;
-      ton.style.top = `${tonY - 5}px`;
+    function xpGainFromSettings() {
+      const s = AppState.currentUser.settings;
+      const base = 10;
+      const mult = Number(s.xpMultiplier || 1);
+      return Math.round(base * mult);
     }
 
-    function updateKachelZeroTime() {
-      const now = new Date().toISOString();
-      kachelZeroTime.textContent = now;
+    function jouleGainFromSettings() {
+      const s = AppState.currentUser.settings;
+      const base =
+        s.jouleIntensity === "low"
+          ? 3
+          : s.jouleIntensity === "high"
+          ? 12
+          : 7;
+      return base;
     }
 
-    function spawnSingularityPulse() {
-      const layer = genesisMechaLayer;
-      const pulse = document.createElement("div");
-      pulse.className = "diagram-particle";
-      pulse.style.left = "50%";
-      pulse.style.top = "50%";
-      pulse.style.width = "10px";
-      pulse.style.height = "10px";
-      pulse.style.transform = "translate(-50%, -50%)";
-      pulse.style.boxShadow = "0 0 22px rgba(66, 224, 255, 0.9)";
-      layer.appendChild(pulse);
-      setTimeout(() => pulse.remove(), 800);
+    function recalcAAA(profile) {
+      const xp = profile.xp;
+      const blocks = profile.blockHistory.length;
+      const candles = profile.candleHistory.length;
+      const files = profile.files.length;
+      const sectors = profile.sectorState.sectors.length;
+      const score = xp + blocks * 5 + candles * 3 + files * 2 + sectors * 4;
+      if (score > 800) return 3;
+      if (score > 300) return 2;
+      if (score > 80) return 1;
+      return 0;
     }
 
-    // --- Sektoren / Mini-Sektoren ---
-
-    const SECTOR_NAMES = [
-      "GPCB",
-      "Phoenix Coin",
-      "G-Phoenix Token",
-      "Phoenix LP",
-      "ECCU",
-      "Joule",
-      "XP",
-      "GOLD (42E0)",
-      "RFOF",
-      "RFOF/GOLD LP",
-      "BIP (Master LP)",
-      "Identity Registry",
-      "BRIDGE"
-    ];
-
-    function ensureSectors() {
-      if (!state.sectors || state.sectors.length !== 13) {
-        state.sectors = SECTOR_NAMES.map((name, idx) => ({
-          id: idx,
-          name,
-          lastBlockId: null,
-          lastHash: null,
-          lastTimestamp: null,
-          aaa: "A",
-          clearing: "OK",
-          xpLink: 0
-        }));
-      }
-    }
-
-    function renderMiniSectors() {
-      ensureSectors();
-      miniSectorsContainer.innerHTML = "";
-      state.sectors.forEach((sector, idx) => {
-        const el = document.createElement("div");
-        el.className = "mini-sector";
-        el.dataset.sectorId = sector.id;
-
-        const nameRow = document.createElement("div");
-        nameRow.className = "mini-sector-name row-space";
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = sector.name;
-        const dot = document.createElement("div");
-        dot.className = "mini-sector-dot";
-        nameRow.appendChild(nameSpan);
-        nameRow.appendChild(dot);
-
-        const row1 = document.createElement("div");
-        row1.className = "mini-sector-row";
-        const blockSpan = document.createElement("span");
-        blockSpan.textContent = sector.lastBlockId ? `#${sector.lastBlockId}` : "#–";
-        const aaaSpan = document.createElement("span");
-        aaaSpan.textContent = sector.aaa || "A";
-        row1.appendChild(blockSpan);
-        row1.appendChild(aaaSpan);
-
-        const row2 = document.createElement("div");
-        row2.className = "mini-sector-row";
-        const hashSpan = document.createElement("span");
-        hashSpan.className = "mono";
-        hashSpan.textContent = sector.lastHash ? sector.lastHash.slice(0, 8) + "…" : "–";
-        const clearSpan = document.createElement("span");
-        clearSpan.textContent = sector.clearing || "OK";
-        row2.appendChild(hashSpan);
-        row2.appendChild(clearSpan);
-
-        const row3 = document.createElement("div");
-        row3.className = "mini-sector-row";
-        const tsSpan = document.createElement("span");
-        tsSpan.className = "mono";
-        tsSpan.textContent = sector.lastTimestamp ? sector.lastTimestamp.slice(11, 19) : "–";
-        const xpSpan = document.createElement("span");
-        xpSpan.textContent = `XP:${sector.xpLink || 0}`;
-        row3.appendChild(tsSpan);
-        row3.appendChild(xpSpan);
-
-        el.appendChild(nameRow);
-        el.appendChild(row1);
-        el.appendChild(row2);
-        el.appendChild(row3);
-
-        el.addEventListener("click", () => {
-          logTerminal(`SEKTOR · ${sector.name} · Inline‑Detail geöffnet.`);
-        });
-
-        miniSectorsContainer.appendChild(el);
-      });
-    }
-
-    // --- Blocks / Candles ---
-
-    function createBlock(folder, fileName) {
-      const now = new Date().toISOString();
-      const id = state.blocks.length + 1;
-      const hashSeed = `${folder}/${fileName}/${now}/${state.user ? state.user.masterId : "anon"}`;
-      const hash = hashSeed.split("").reduce((acc, ch, idx) => {
-        const v = ch.charCodeAt(0) ^ (idx * 31);
-        return acc + v.toString(16).padStart(2, "0");
-      }, "").slice(0, 64);
-      const prevHash = state.blocks.length ? state.blocks[state.blocks.length - 1].hash : "0".repeat(64);
-      const aaa = state.aaaLevel >= 1 ? "AAA" : "A";
-      const clearing = "OK";
-      const xpImpact = 1 + Math.min(10, state.xp / 50);
-      const userId = state.user ? state.user.masterId : "anon";
-
+    function addBlock() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      const deterministic = profile.settings.deterministicBlocks;
+      const now = Date.now();
+      const index = profile.blockHistory.length + 1;
+      const xpGain = xpGainFromSettings();
+      const jouleGain = jouleGainFromSettings();
+      const seed = deterministic ? index * 9973 : randomInt(1, 999999);
+      const pathLetter = profile.pathState.current;
       const block = {
-        id,
-        hash,
-        prevHash,
+        index,
         timestamp: now,
-        folder,
-        fileName,
-        aaa,
-        clearing,
-        xpImpact,
-        user: userId
+        xpDelta: xpGain,
+        jouleDelta: jouleGain,
+        seed,
+        path: pathLetter,
+        sectors: profile.sectorState.sectors.map((s) => s.id),
       };
-
-      state.blocks.push(block);
-      if (state.user) {
-        state.user.blockHistory = state.blocks;
-        saveUserToStorage(state.user);
-      }
-
-      spawnCandleForBlock(block);
-      renderBlockHistory();
-      updateBlockCounters();
-      return block;
+      profile.blockHistory.push(block);
+      profile.xp += xpGain;
+      profile.jouleBits += jouleGain;
+      profile.aaaLevel = recalcAAA(profile);
+      AppState.currentUser = profile;
+      persistCurrentUser();
+      updateUIFromProfile();
     }
 
-    function spawnCandleForBlock(block) {
-      const base = 100 + (state.xp % 40);
-      const high = base + 10 + (state.jouleBits % 20);
-      const low = base - 10;
-      const close = base + (Math.random() * 10 - 5);
-
+    function addCandle() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      const now = Date.now();
+      const index = profile.candleHistory.length + 1;
+      const sectors = profile.sectorState.sectors;
+      const sectorCount = sectors.length || 1;
+      const open = randomInt(80, 120);
+      const close = randomInt(80, 120);
+      const high = Math.max(open, close) + randomInt(0, 20);
+      const low = Math.min(open, close) - randomInt(0, 20);
       const candle = {
-        timestamp: block.timestamp,
-        open: base,
+        index,
+        timestamp: now,
+        open,
         high,
         low,
         close,
-        hash: block.hash,
-        blockId: block.id,
-        xpImpact: block.xpImpact,
-        user: block.user
+        sectors: sectorCount,
+        sectorIds: sectors.map((s) => s.id),
       };
+      profile.candleHistory.push(candle);
+      profile.xp += Math.round(xpGainFromSettings() / 2);
+      profile.jouleBits += Math.round(jouleGainFromSettings() / 2);
+      profile.aaaLevel = recalcAAA(profile);
+      AppState.currentUser = profile;
+      persistCurrentUser();
+      updateUIFromProfile();
+    }
 
-      state.candles.push(candle);
-      if (state.user) {
-        state.user.candleHistory = state.candles;
-        saveUserToStorage(state.user);
+    function mutateSector() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      const now = Date.now();
+      const sectors = profile.sectorState.sectors;
+      if (sectors.length === 0 || Math.random() < 0.4) {
+        const id = "S" + (sectors.length + 1);
+        sectors.push({
+          id,
+          load: randomInt(10, 90),
+          status: "genesis",
+          genesis: true,
+          sync: false,
+        });
+      } else {
+        const idx = randomInt(0, sectors.length - 1);
+        const s = sectors[idx];
+        s.load = Math.min(100, Math.max(0, s.load + randomInt(-20, 20)));
+        if (s.load > 85) s.status = "hot";
+        else if (s.load < 15) s.status = "idle";
+        else s.status = "sync";
+        s.genesis = s.genesis || false;
+        s.sync = s.status === "sync" || s.status === "hot";
+        sectors[idx] = s;
       }
-
-      renderCandles();
+      profile.sectorState.sectors = sectors.slice(0, 13);
+      profile.sectorState.lastMutation = now;
+      profile.xp += 3;
+      profile.jouleBits += 2;
+      profile.aaaLevel = recalcAAA(profile);
+      AppState.currentUser = profile;
+      persistCurrentUser();
+      updateUIFromProfile();
     }
 
-    function updateBlockCounters() {
-      genesisBlockCount.textContent = `Blocks: ${state.blocks.length}`;
-      syncBlockCount.textContent = `Blocks: ${state.blocks.length}`;
-      genesisCandleCount.textContent = `Candles: ${state.candles.length}`;
-      syncCandleCount.textContent = `Candles: ${state.candles.length}`;
-      historyCount.textContent = `${state.blocks.length} Blöcke`;
+    function clearHistory() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      profile.blockHistory = [];
+      profile.candleHistory = [];
+      profile.sectorState = { sectors: [], lastMutation: null };
+      profile.files = [];
+      profile.pathState = { current: "A", steps: [] };
+      profile.xp = 0;
+      profile.jouleBits = 0;
+      profile.aaaLevel = 0;
+      profile.mining.mouseEnergy = 0;
+      profile.mining.fps = 0;
+      AppState.currentUser = profile;
+      persistCurrentUser();
+      initSectorsIfNeeded();
+      initFilesIfNeeded();
+      updateUIFromProfile();
     }
+
+    function pathStep() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      const current = profile.pathState.current || "A";
+      const next =
+        current === "Z"
+          ? "A"
+          : String.fromCharCode(current.charCodeAt(0) + 1);
+      const now = Date.now();
+      const step = {
+        from: current,
+        to: next,
+        timestamp: now,
+      };
+      profile.pathState.current = next;
+      profile.pathState.steps.push(step);
+      profile.xp += 2;
+      profile.jouleBits += 1;
+      profile.aaaLevel = recalcAAA(profile);
+      AppState.currentUser = profile;
+      persistCurrentUser();
+      simModeLabelEl.textContent = "A-Z PATH " + next;
+      updateUIFromProfile();
+    }
+
+    btnNewBlock.addEventListener("click", addBlock);
+    btnNewCandle.addEventListener("click", addCandle);
+    btnRandomSector.addEventListener("click", mutateSector);
+    btnClearHistory.addEventListener("click", clearHistory);
+    btnPathStep.addEventListener("click", pathStep);
 
     function renderBlockHistory() {
-      historyScroll.innerHTML = "";
-      const blocks = state.blocks.slice().reverse();
-      blocks.forEach(block => {
-        const item = document.createElement("div");
-        item.className = "history-item";
+      const profile = AppState.currentUser;
+      if (!profile) return;
+      const list = profile.blockHistory;
+      blockListEl.innerHTML = "";
+      const maxItems = 80;
+      const start = Math.max(0, list.length - maxItems);
+      for (let i = list.length - 1; i >= start; i--) {
+        const b = list[i];
+        const el = document.createElement("div");
+        el.className = "sim-block-item";
+        el.dataset.index = b.index;
+        el.innerHTML = `
+          <div class="sim-block-item-header">
+            <div>#${b.index.toString().padStart(3, "0")} · PATH ${b.path}</div>
+            <div><span>XP</span> +${b.xpDelta}</div>
+          </div>
+          <div class="sim-block-item-body">
+            <div>
+              <strong>JouleBits</strong> +${b.jouleDelta}
+            </div>
+            <div class="mono muted">
+              seed=${b.seed}
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", () => openBlockOverlay(b));
+        blockListEl.appendChild(el);
+      }
+    }
 
-        const main = document.createElement("div");
-        main.className = "history-item-main";
-        const idLine = document.createElement("div");
-        idLine.textContent = `#${block.id} · ${block.folder}/${block.fileName}`;
-        const aaaLine = document.createElement("div");
-        aaaLine.className = "tiny";
-        aaaLine.textContent = `AAA: ${block.aaa} · Clearing: ${block.clearing}`;
-        main.appendChild(idLine);
-        main.appendChild(aaaLine);
+    function renderCandleHistory() {
+      const profile = AppState.currentUser;
+      if (!profile) return;
+      const list = profile.candleHistory;
+      candleListEl.innerHTML = "";
+      const maxItems = 80;
+      const start = Math.max(0, list.length - maxItems);
+      for (let i = list.length - 1; i >= start; i--) {
+        const c = list[i];
+        const el = document.createElement("div");
+        el.className = "sim-candle-item";
+        el.dataset.index = c.index;
+        el.innerHTML = `
+          <div class="sim-candle-item-header">
+            <div>#${c.index.toString().padStart(3, "0")}</div>
+            <div><span>SECTORS</span> ${c.sectors}</div>
+          </div>
+          <div class="sim-candle-item-body">
+            <div>
+              <strong>O/H/L/C</strong> ${c.open}/${c.high}/${c.low}/${c.close}
+            </div>
+            <div class="mono muted">
+              ${formatDateTime(c.timestamp)}
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", () => openCandleOverlay(c));
+        candleListEl.appendChild(el);
+      }
+    }
 
-        const meta = document.createElement("div");
-        meta.className = "history-item-meta";
-        const hashLine = document.createElement("div");
-        hashLine.className = "history-hash";
-        hashLine.textContent = block.hash;
-        const userLine = document.createElement("div");
-        userLine.className = "history-user";
-        userLine.textContent = block.user;
-        const tsLine = document.createElement("div");
-        tsLine.className = "tiny";
-        tsLine.textContent = block.timestamp;
-        meta.appendChild(hashLine);
-        meta.appendChild(userLine);
-        meta.appendChild(tsLine);
+    function renderStateJson() {
+      const profile = AppState.currentUser;
+      if (!profile) {
+        stateJsonEl.textContent = "{}";
+        return;
+      }
+      const safeProfile = JSON.parse(JSON.stringify(profile));
+      stateJsonEl.textContent = JSON.stringify(safeProfile, null, 2);
+    }
 
-        item.appendChild(main);
-        item.appendChild(meta);
+    function drawBlockChart() {
+      const profile = AppState.currentUser;
+      if (!profile || !blockChartCanvas) return;
+      const ctx = blockChartCanvas.getContext("2d");
+      const rect = blockChartCanvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      blockChartCanvas.width = rect.width * dpr;
+      blockChartCanvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+      const blocks = profile.blockHistory;
+      if (!blocks.length) {
+        ctx.fillStyle = "rgba(255,255,255,0.12)";
+        ctx.font = "10px system-ui";
+        ctx.fillText("No blocks yet", 8, h / 2);
+        return;
+      }
+      const maxXP = Math.max(...blocks.map((b) => b.xpDelta));
+      const maxJoule = Math.max(...blocks.map((b) => b.jouleDelta));
+      const maxVal = Math.max(maxXP, maxJoule, 1);
+      const padding = 6;
+      const innerW = w - padding * 2;
+      const innerH = h - padding * 2;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.beginPath();
+      ctx.moveTo(padding, h - padding);
+      ctx.lineTo(w - padding, h - padding);
+      ctx.stroke();
 
-        item.addEventListener("click", () => {
-          logTerminal(`BLOCK DETAIL · #${block.id} · ${block.hash.slice(0, 16)}… · XP:${block.xpImpact.toFixed(2)}`);
+      const len = blocks.length;
+      const step = len > 1 ? innerW / (len - 1) : 0;
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#7df9ff";
+      for (let i = 0; i < len; i++) {
+        const b = blocks[i];
+        const x = padding + step * i;
+        const y =
+          h - padding - (b.xpDelta / maxVal) * (innerH - 4);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#ff4b6a";
+      for (let i = 0; i < len; i++) {
+        const b = blocks[i];
+        const x = padding + step * i;
+        const y =
+          h - padding - (b.jouleDelta / maxVal) * (innerH - 4);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      simBlockChartLabelEl.textContent =
+        "XP / JouleBits · " + len + " blocks";
+    }
+
+    function drawCandleChart() {
+      const profile = AppState.currentUser;
+      if (!profile || !candleChartCanvas) return;
+      const ctx = candleChartCanvas.getContext("2d");
+      const rect = candleChartCanvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      candleChartCanvas.width = rect.width * dpr;
+      candleChartCanvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+      const candles = profile.candleHistory;
+      if (!candles.length) {
+        ctx.fillStyle = "rgba(255,255,255,0.12)";
+        ctx.font = "10px system-ui";
+        ctx.fillText("No candles yet", 8, h / 2);
+        return;
+      }
+      const maxHigh = Math.max(...candles.map((c) => c.high));
+      const minLow = Math.min(...candles.map((c) => c.low));
+      const range = Math.max(maxHigh - minLow, 1);
+      const padding = 6;
+      const innerW = w - padding * 2;
+      const innerH = h - padding * 2;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.beginPath();
+      ctx.moveTo(padding, h - padding);
+      ctx.lineTo(w - padding, h - padding);
+      ctx.stroke();
+
+      const len = candles.length;
+      const step = len > 0 ? innerW / len : 0;
+      const candleWidth = Math.max(2, step * 0.4);
+
+      for (let i = 0; i < len; i++) {
+        const c = candles[i];
+        const centerX = padding + step * (i + 0.5);
+        const yHigh =
+          h - padding - ((c.high - minLow) / range) * (innerH - 4);
+        const yLow =
+          h - padding - ((c.low - minLow) / range) * (innerH - 4);
+        const yOpen =
+          h - padding - ((c.open - minLow) / range) * (innerH - 4);
+        const yClose =
+          h - padding - ((c.close - minLow) / range) * (innerH - 4);
+        const bullish = c.close >= c.open;
+        ctx.strokeStyle = bullish ? "#00ff9d" : "#ff4b6a";
+        ctx.fillStyle = bullish
+          ? "rgba(0,255,157,0.6)"
+          : "rgba(255,75,106,0.6)";
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, yHigh);
+        ctx.lineTo(centerX, yLow);
+        ctx.stroke();
+
+        const top = Math.min(yOpen, yClose);
+        const bottom = Math.max(yOpen, yClose);
+        ctx.fillRect(
+          centerX - candleWidth / 2,
+          top,
+          candleWidth,
+          Math.max(2, bottom - top)
+        );
+      }
+
+      simCandleChartLabelEl.textContent =
+        "O/H/L/C · " + len + " candles";
+    }
+
+    function toggleSetting(toggleEl) {
+      if (!AppState.currentUser) return;
+      const key = toggleEl.dataset.settingKey;
+      const on = !toggleEl.classList.contains("on");
+      toggleEl.classList.toggle("on", on);
+      AppState.currentUser.settings[key] = on;
+      persistCurrentUser();
+      updateUIFromProfile();
+    }
+
+    toggleDeterministic.addEventListener("click", () =>
+      toggleSetting(toggleDeterministic)
+    );
+    toggleHighContrast.addEventListener("click", () =>
+      toggleSetting(toggleHighContrast)
+    );
+    toggleShowState.addEventListener("click", () =>
+      toggleSetting(toggleShowState)
+    );
+
+    selectXpMultiplier.addEventListener("change", () => {
+      if (!AppState.currentUser) return;
+      AppState.currentUser.settings.xpMultiplier = Number(
+        selectXpMultiplier.value
+      );
+      persistCurrentUser();
+      updateUIFromProfile();
+    });
+
+    selectJouleIntensity.addEventListener("change", () => {
+      if (!AppState.currentUser) return;
+      AppState.currentUser.settings.jouleIntensity =
+        selectJouleIntensity.value;
+      persistCurrentUser();
+      updateUIFromProfile();
+    });
+
+    function initSectorsIfNeeded() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      if (profile.sectorState.sectors.length >= 13) return;
+      const needed = 13 - profile.sectorState.sectors.length;
+      const base = profile.sectorState.sectors.length;
+      for (let i = 0; i < needed; i++) {
+        const id = "S" + (base + i + 1);
+        profile.sectorState.sectors.push({
+          id,
+          load: randomInt(20, 80),
+          status: i === 0 && base === 0 ? "genesis" : "sync",
+          genesis: i === 0 && base === 0,
+          sync: true,
         });
-
-        historyScroll.appendChild(item);
-      });
-
-      updateBlockCounters();
+      }
+      profile.sectorState.lastMutation = profile.sectorState.lastMutation || Date.now();
+      AppState.currentUser = profile;
+      persistCurrentUser();
     }
 
-    function renderCandles() {
-      genesisCandleLayer.innerHTML = "";
-      syncCandleLayer.innerHTML = "";
-
-      const candles = state.candles.slice(-40);
-      const count = candles.length;
-      if (!count) return;
-
-      candles.forEach((candle, idx) => {
-        const x = (idx / Math.max(1, count - 1)) * 100;
-        const height = Math.max(8, Math.min(40, (candle.high - candle.low) * 0.4));
-        const bottom = 10 + (candle.low % 20);
-
-        const el1 = document.createElement("div");
-        el1.className = "diagram-candle";
-        el1.style.left = `calc(${x}% - 3px)`;
-        el1.style.bottom = `${bottom}px`;
-        el1.style.height = `${height}px`;
-        el1.title = `#${candle.blockId} · O:${candle.open} H:${candle.high} L:${candle.low} C:${candle.close}`;
-
-        const el2 = el1.cloneNode();
-        el2.className = "diagram-candle";
-        el2.style.left = el1.style.left;
-        el2.style.bottom = el1.style.bottom;
-        el2.style.height = el1.style.height;
-        el2.title = el1.title;
-
-        genesisCandleLayer.appendChild(el1);
-        syncCandleLayer.appendChild(el2);
+    function renderSectors() {
+      const profile = AppState.currentUser;
+      if (!profile) return;
+      const sectors = profile.sectorState.sectors;
+      sectorGridEl.innerHTML = "";
+      sectors.forEach((s) => {
+        const el = document.createElement("div");
+        el.className = "sector-card";
+        el.dataset.id = s.id;
+        const statusColor =
+          s.status === "hot"
+            ? "#ff4b6a"
+            : s.status === "idle"
+            ? "#7d7dff"
+            : "#7df9ff";
+        el.innerHTML = `
+          <div class="sector-title">${s.id}</div>
+          <div class="sector-meta">
+            <span style="color:${statusColor}">${s.status}</span>
+            <span class="mono">${s.load}%</span>
+          </div>
+        `;
+        el.addEventListener("click", () => openSectorOverlay(s));
+        sectorGridEl.appendChild(el);
       });
     }
 
-    function spawnBlockFromInteraction(source) {
-      const folder = "SECTOR-" + ((state.takt % 13) + 1).toString().padStart(2, "0");
-      const fileName = `${source.toLowerCase()}_${Date.now().toString(36)}.json`;
-      const block = createBlock(folder, fileName);
-
-      ensureSectors();
-      const idx = block.id % state.sectors.length;
-      const sector = state.sectors[idx];
-      sector.lastBlockId = block.id;
-      sector.lastHash = block.hash;
-      sector.lastTimestamp = block.timestamp;
-      sector.aaa = block.aaa;
-      sector.clearing = block.clearing;
-      sector.xpLink = Math.round(block.xpImpact);
-      renderMiniSectors();
-
-      spawnBlockParticles(genesisBlockLayer);
-      spawnBlockParticles(syncBlockLayer);
-    }
-
-    function spawnBlockParticles(layer) {
-      const p = document.createElement("div");
-      p.className = "diagram-particle";
-      const x = 10 + Math.random() * 80;
-      const y = 20 + Math.random() * 60;
-      p.style.left = `${x}%`;
-      p.style.top = `${y}%`;
-      layer.appendChild(p);
-      setTimeout(() => p.remove(), 1200);
-    }
-
-    // --- Terminal ---
-
-    function logTerminal(message) {
-      const now = new Date().toISOString();
-      const line = document.createElement("div");
-      line.className = "terminal-line";
-      line.textContent = `[${now}] ${message}`;
-      line.addEventListener("click", () => {
-        navigator.clipboard && navigator.clipboard.writeText(line.textContent).catch(() => {});
-      });
-      terminalBody.appendChild(line);
-      terminalBody.scrollTop = terminalBody.scrollHeight;
-    }
-
-    // --- Buttons / Events ---
-
-    loginBtn.addEventListener("click", () => {
-      handleLogin().catch(err => {
-        console.error(err);
-        loginMeta.textContent = "Fehler beim Login.";
-        loginMeta.style.color = "#ff4b81";
-      });
-    });
-
-    loginPassword.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        handleLogin().catch(err => {
-          console.error(err);
-          loginMeta.textContent = "Fehler beim Login.";
-          loginMeta.style.color = "#ff4b81";
+    function initFilesIfNeeded() {
+      if (!AppState.currentUser) return;
+      const profile = AppState.currentUser;
+      if (profile.files.length >= 65) return;
+      const needed = 65 - profile.files.length;
+      const base = profile.files.length;
+      for (let i = 0; i < needed; i++) {
+        const idx = base + i + 1;
+        const name = idx === 1 ? "KACHEL-0.sys" :
+                     idx === 2 ? "42E0.core" :
+                     idx <= 28 ? `PATH-${String.fromCharCode(63 + idx)}.map` :
+                     `FILE-${idx.toString().padStart(2, "0")}.dat`;
+        profile.files.push({
+          id: idx,
+          name,
+          size: randomInt(2, 64) * 1024,
+          modified: Date.now() - randomInt(0, 1000 * 60 * 60 * 24 * 7),
+          status: idx % 7 === 0 ? "locked" : "active",
+          sector: "S" + (((idx - 1) % 13) + 1),
+          content: `Simulated content for ${name}\n\nLinked sector: S${(((idx - 1) % 13) + 1)}\nXP impact: ${5 + (idx % 5)}\nJouleBits impact: ${2 + (idx % 3)}`,
         });
       }
-    });
-
-    profileChip.addEventListener("click", e => {
-      e.stopPropagation();
-      profileDropdown.classList.toggle("visible");
-    });
-
-    document.addEventListener("click", () => {
-      profileDropdown.classList.remove("visible");
-    });
-
-    profileDropdown.addEventListener("click", e => {
-      e.stopPropagation();
-    });
-
-    btnLogout.addEventListener("click", () => {
-      handleLogout();
-    });
-
-    btnWallet.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`WALLET VIEW · ${state.user.masterId} · Explorer‑Ansicht geöffnet.`);
-    });
-
-    btnProfile.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`PROFILE VIEW · ${state.user.username} · XP:${state.xp.toFixed(1)} · Joule:${state.jouleBits.toFixed(1)}b`);
-    });
-
-    btnSettings.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`SETTINGS VIEW · Nutzer‑spezifische Einstellungen geladen.`);
-    });
-
-    btnGenesisSync.addEventListener("click", () => {
-      genesisStatus.textContent = "GENESIS: RE‑HASH";
-      logTerminal("GENESIS · Re‑Hash der 65 Dateien (simuliert).");
-      spawnBlockFromInteraction("GENESIS");
-      setTimeout(() => {
-        genesisStatus.textContent = "GENESIS: READY";
-      }, 600);
-    });
-
-    btnSyncPulse.addEventListener("click", () => {
-      syncStatus.textContent = "SYNC: ACTIVE";
-      logTerminal("SYNC · Clearing‑Impulse ausgelöst.");
-      spawnBlockFromInteraction("SYNC");
-      setTimeout(() => {
-        syncStatus.textContent = "SYNC: IDLE";
-      }, 600);
-    });
-
-    btnHistoryClear.addEventListener("click", () => {
-      state.blocks = [];
-      state.candles = [];
-      if (state.user) {
-        state.user.blockHistory = [];
-        state.user.candleHistory = [];
-        saveUserToStorage(state.user);
-      }
-      renderBlockHistory();
-      renderCandles();
-      logTerminal("BLOCK‑HISTORY · Global und Nutzer‑gebunden geleert.");
-    });
-
-    document.addEventListener("mousemove", handleMouseMove);
-
-    // --- Main Loop ---
-
-    let lastFrameTime = performance.now();
-
-    function loop(now) {
-      const dt = now - lastFrameTime;
-      lastFrameTime = now;
-
-      updateTakt(dt);
-      updateXP(dt);
-      updateKachelZeroTime();
-
-      requestAnimationFrame(loop);
+      AppState.currentUser = profile;
+      persistCurrentUser();
     }
 
-    // --- Init ---
-
-    function init() {
-      ensureSectors();
-      renderMiniSectors();
-      renderBlockHistory();
-      renderCandles();
-      logTerminal("CHAIN‑CLEARING MONOLITH · SPA initialisiert.");
-      logTerminal("Warte auf GUCI‑Login …");
-
-      const existingUser = loadCurrentUser();
-      if (existingUser) {
-        state.user = existingUser;
-        state.xp = existingUser.xp || 0;
-        state.jouleBits = existingUser.jouleBits || 0;
-        state.aaaLevel = existingUser.aaaLevel || 0;
-        state.blocks = existingUser.blockHistory || [];
-        state.candles = existingUser.candleHistory || [];
-        hydrateUIFromUser();
-        loginOverlay.classList.add("hidden");
-        appShell.classList.remove("hidden");
-        appShell.classList.add("fade-in");
-        logTerminal(`AUTO‑LOGIN · ${existingUser.username} · MASTER‑RFOF‑NETWORK‑ID geladen.`);
-      }
-
-      requestAnimationFrame(loop);
+    function renderFiles() {
+      const profile = AppState.currentUser;
+      if (!profile) return;
+      const files = profile.files;
+      fileListEl.innerHTML = "";
+      files.slice(0, 65).forEach((f) => {
+        const el = document.createElement("div");
+        el.className = "file-item";
+        el.dataset.id = f.id;
+        el.innerHTML = `
+          <div class="file-name">${f.name}</div>
+          <div class="file-meta">${(f.size / 1024).toFixed(0)}k · ${f.status}</div>
+        `;
+        el.addEventListener("click", () => openFileOverlay(f));
+        fileListEl.appendChild(el);
+      });
     }
 
-    init();
+    function openOverlay(overlayEl) {
+      overlayEl.classList.add("visible");
+    }
+
+    function closeOverlayById(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("visible");
+    }
+
+    document.querySelectorAll("[data-overlay-close]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-overlay-close");
+        closeOverlayById(id);
+      });
+    });
+
+    function openBlockOverlay(block) {
+      overlayBlockTitle.textContent = `#${block.index.toString().padStart(3, "0")} · PATH ${block.path}`;
+      overlayBlockBody.textContent = JSON.stringify(block, null, 2);
+      openOverlay(overlayBlock);
+    }
+
+    function openCandleOverlay(candle) {
+      overlayCandleTitle.textContent = `#${candle.index.toString().padStart(3, "0")}`;
+      overlayCandleBody.textContent = JSON.stringify(candle, null, 2);
+      openOverlay(overlayCandle);
+    }
+
+    function openFileOverlay(file) {
+      overlayFileTitle.textContent = file.name;
+      overlayFileBody.textContent = JSON.stringify(file, null, 2);
+      openOverlay(overlayFile);
+    }
+
+    function openSectorOverlay(sector) {
+      overlaySectorTitle.textContent = sector.id;
+      overlaySectorBody.textContent = JSON.stringify(sector, null, 2);
+      openOverlay(overlaySector);
+    }
+
+    function miningLoop(timestamp) {
+      const dt = timestamp - AppState.lastFrameTime;
+      AppState.lastFrameTime = timestamp;
+      AppState.fpsAccumulator += dt;
+      AppState.fpsFrames += 1;
+      if (AppState.fpsAccumulator >= 1000) {
+        const fps = (AppState.fpsFrames * 1000) / AppState.fpsAccumulator;
+        AppState.fpsAccumulator = 0;
+        AppState.fpsFrames = 0;
+        if (AppState.currentUser) {
+          AppState.currentUser.mining.fps = fps;
+          const energy = AppState.currentUser.mining.mouseEnergy;
+          const threshold = 200;
+          if (energy > threshold) {
+            const xpGain = Math.floor(energy / threshold);
+            const jouleGain = Math.floor(energy / (threshold * 2));
+            AppState.currentUser.xp += xpGain;
+            AppState.currentUser.jouleBits += jouleGain;
+            AppState.currentUser.mining.mouseEnergy = energy % threshold;
+            AppState.currentUser.aaaLevel = recalcAAA(AppState.currentUser);
+            persistCurrentUser();
+          }
+          updateUIFromProfile();
+        }
+      }
+      requestAnimationFrame(miningLoop);
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      if (!AppState.currentUser) return;
+      if (AppState.lastMouseX === null) {
+        AppState.lastMouseX = e.clientX;
+        AppState.lastMouseY = e.clientY;
+        return;
+      }
+      const dx = e.clientX - AppState.lastMouseX;
+      const dy = e.clientY - AppState.lastMouseY;
+      AppState.lastMouseX = e.clientX;
+      AppState.lastMouseY = e.clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 0) {
+        AppState.currentUser.mining.mouseEnergy += dist;
+      }
+    });
+
+    async function initFromStorage() {
+      AppState.users = loadUsers();
+      const currentUsername = loadCurrentUserId();
+      if (!currentUsername || !AppState.users[currentUsername]) {
+        loginView.classList.remove("hidden");
+        setLoginMode("login");
+        return;
+      }
+      const record = AppState.users[currentUsername];
+      const profile = ensureProfileShape(record.profile);
+      record.profile = profile;
+      AppState.users[currentUsername] = record;
+      saveUsers(AppState.users);
+      AppState.currentUser = profile;
+      AppState.sessionId = generateSessionId();
+      initSectorsIfNeeded();
+      initFilesIfNeeded();
+      loginView.classList.add("hidden");
+      updateUIFromProfile();
+    }
+
+    window.addEventListener("load", () => {
+      setLoginMode("login");
+      initFromStorage();
+      requestAnimationFrame(miningLoop);
+    });
   </script>
 </body>
 </html>

@@ -2,1617 +2,1321 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Chain-Clearing | Monolith</title>
+  <title>chain-clearing / index.html</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #020617;
-      --bg-soft: rgba(15,23,42,0.75);
-      --bg-strong: rgba(15,23,42,0.95);
-      --glass: rgba(15,23,42,0.65);
-      --border: rgba(148,163,184,0.35);
-      --border-strong: rgba(148,163,184,0.7);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #4ade80;
-      --accent-soft: rgba(74,222,128,0.25);
-      --gold: #fbbf24;
-      --eccu: #22c55e;
-      --rfof: #38bdf8;
-      --bip: #a855f7;
-      --danger: #f97373;
-      --shadow-soft: 0 0 40px rgba(15,23,42,0.9);
-      --blur: 40px;
-      --sat: 160%;
+      --bg: #050710;
+      --bg-glass: rgba(10, 14, 30, 0.72);
+      --bg-glass-soft: rgba(15, 20, 40, 0.6);
+      --accent-green: #4af29b;
+      --accent-gold: #f5d36b;
+      --accent-blue: #4ac6ff;
+      --accent-red: #ff4a6b;
+      --accent-purple: #b57bff;
+      --text-main: #f5f7ff;
+      --text-soft: #a5b0d0;
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --blur-strong: 40px;
+      --sat-strong: 1.6;
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.25s ease-out;
+      --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #151a33 0, #050710 55%, #02030a 100%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      overflow: hidden;
     }
 
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Layout */
+
+    .app-root {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 12px 16px 16px;
+      gap: 10px;
+    }
+
+    .app-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2.4fr) minmax(0, 1.5fr);
+      gap: 10px;
+      height: 100%;
+      min-height: 0;
     }
 
     .glass {
-      background: var(--glass);
-      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
+      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
       box-shadow: var(--shadow-soft);
-    }
-
-    /* GLOBAL NAV (BOX B) */
-
-    .top-shell {
-      position: sticky;
-      top: 0;
-      z-index: 2000;
-      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-      background: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0.75));
-      border-bottom: 1px solid var(--border-strong);
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 18px;
-    }
-
-    .brand {
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .core-status {
-      font-family: monospace;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .core-status span {
-      color: var(--accent);
-    }
-
-    .nav-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 18px 12px;
-      gap: 12px;
-    }
-
-    .search-shell {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
-    }
-
-    .search-shell span {
-      font-size: 14px;
-      color: var(--accent);
-    }
-
-    .search-shell input {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 12px;
-      font-family: monospace;
-    }
-
-    .profile-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .pill-btn {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
-      color: var(--text);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-    }
-
-    .pill-btn span.icon {
-      font-size: 13px;
-    }
-
-    .pill-btn.wallet { border-color: rgba(74,222,128,0.7); }
-    .pill-btn.profile { border-color: rgba(59,130,246,0.7); }
-    .pill-btn.settings { border-color: rgba(248,250,252,0.35); }
-
-    .pill-btn:hover {
-      box-shadow: 0 0 18px rgba(148,163,184,0.45);
-      transform: translateY(-1px);
-    }
-
-    /* LAYOUT */
-
-    main {
-      max-width: 1320px;
-      margin: 18px auto 40px;
-      padding: 0 16px 40px;
-    }
-
-    .grid-main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-      gap: 18px;
-      align-items: flex-start;
-    }
-
-    @media (max-width: 1080px) {
-      .grid-main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* KACHEL 0 – MASTER NERVENSYSTEM */
-
-    .kachel-zero {
-      border-radius: 18px;
-      padding: 16px 16px 14px;
       position: relative;
       overflow: hidden;
     }
 
-    .kachel-zero::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at 10% 0, rgba(74,222,128,0.18), transparent 55%),
-                  radial-gradient(circle at 90% 0, rgba(56,189,248,0.18), transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .k0-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .k0-header {
+    .glass-inner {
+      padding: 10px 12px;
+      height: 100%;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
     }
 
-    .k0-title {
+    .section-title {
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .k0-meta {
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--muted);
+      color: var(--text-soft);
       display: flex;
-      gap: 10px;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    .k0-meta span.badge {
+    .section-title span.label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill {
       padding: 2px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.7);
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .k0-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    @media (max-width: 960px) {
-      .k0-row {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .k0-block {
-      border-radius: 14px;
-      padding: 10px 12px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
-    }
-
-    .k0-block-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .k0-block-title {
+      border: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--muted);
+      color: var(--text-soft);
     }
 
-    .k0-block-value {
-      font-family: monospace;
-      font-size: 11px;
-      color: var(--accent);
-    }
-
-    .k0-takt-bar {
-      position: relative;
-      margin-top: 6px;
-      height: 6px;
+    .badge-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      overflow: hidden;
+      background: var(--accent-green);
+      box-shadow: 0 0 12px rgba(74, 242, 155, 0.7);
     }
 
-    .k0-takt-fill {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(74,222,128,0.1), rgba(74,222,128,0.9));
-      transform-origin: left center;
-      transform: scaleX(0.1);
-      transition: transform 0.18s ease-out;
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+      margin: 2px 0 4px;
     }
 
-    .k0-takt-e {
+    /* Top bar */
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(90deg, rgba(10, 14, 30, 0.9), rgba(10, 18, 40, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(26px) saturate(1.4);
+      -webkit-backdrop-filter: blur(26px) saturate(1.4);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-orb {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #4af29b, #4ac6ff 40%, #b57bff 80%);
+      box-shadow:
+        0 0 18px rgba(74, 242, 155, 0.7),
+        0 0 26px rgba(74, 198, 255, 0.5),
+        0 0 40px rgba(181, 123, 255, 0.45);
+      position: relative;
+    }
+
+    .logo-orb::after {
+      content: "";
       position: absolute;
-      top: -3px;
-      width: 2px;
-      bottom: -3px;
-      background: var(--gold);
-      left: 65%;
+      inset: 4px;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      opacity: 0.7;
+    }
+
+    .top-title {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .top-title-main {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .top-title-sub {
+      font-size: 10px;
+      color: var(--text-soft);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .takt-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .takt-pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent-gold), var(--accent-red));
+      box-shadow: 0 0 16px rgba(245, 211, 107, 0.9);
+      transform-origin: center;
+    }
+
+    .profile-shell {
+      position: relative;
+    }
+
+    .profile-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 14, 30, 0.9);
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .profile-button:hover {
+      background: rgba(18, 24, 50, 0.95);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .profile-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, var(--accent-green), var(--accent-blue));
+      box-shadow: 0 0 14px rgba(74, 242, 155, 0.7);
+      position: relative;
+    }
+
+    .profile-avatar::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       opacity: 0.8;
     }
 
-    .k0-history-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .history-box {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
-      padding: 6px 8px;
+    .profile-meta {
       display: flex;
       flex-direction: column;
-      max-height: 140px;
+      gap: 1px;
     }
 
-    .history-title {
+    .profile-name {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .profile-xp {
       font-size: 9px;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .glow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-green);
+      box-shadow: 0 0 12px rgba(74, 242, 155, 0.9);
+    }
+
+    .profile-chevron {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: var(--text-soft);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 210px;
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
+      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(var(--sat-strong));
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow-soft);
+      padding: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 40;
+    }
+
+    .profile-dropdown.visible {
+      display: flex;
+    }
+
+    .dropdown-label {
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      border-bottom: 1px solid rgba(148,163,184,0.35);
-      padding-bottom: 3px;
-      margin-bottom: 4px;
-    }
-
-    .history-scroll {
-      flex: 1;
-      overflow-y: auto;
-      scrollbar-width: thin;
-    }
-
-    .history-item {
-      font-family: monospace;
-      font-size: 9px;
-      color: var(--muted);
-      padding: 2px 0;
-      border-left: 2px solid rgba(148,163,184,0.35);
-      padding-left: 4px;
-      cursor: pointer;
-      transition: color 0.12s ease, border-color 0.12s ease;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-
-    .history-item:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .k0-bottom-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 960px) {
-      .k0-bottom-row {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .az-grid {
-      display: grid;
-      grid-template-columns: repeat(13, minmax(0, 1fr));
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    @media (max-width: 900px) {
-      .az-grid {
-        grid-template-columns: repeat(8, minmax(0, 1fr));
-      }
-    }
-
-    .az-phase {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 3px 4px;
-      font-size: 9px;
-      text-align: center;
-      cursor: pointer;
-      color: var(--muted);
-      background: rgba(15,23,42,0.8);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .az-phase span {
-      font-weight: 600;
-      color: var(--accent);
-      margin-right: 2px;
-    }
-
-    .az-phase.active {
-      border-color: var(--accent);
-      background: rgba(22,163,74,0.25);
-      color: var(--text);
-      box-shadow: 0 0 12px rgba(34,197,94,0.45);
-    }
-
-    .terminal {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
-      padding: 6px 8px;
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 10px;
-      max-height: 180px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-    }
-
-    .term-line {
+      color: var(--text-soft);
       margin-bottom: 2px;
+    }
+
+    .dropdown-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(135deg, rgba(20, 30, 60, 0.95), rgba(10, 18, 40, 0.95));
+      color: var(--text-main);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       cursor: pointer;
-      color: var(--muted);
-      transition: color 0.12s ease;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
-    .term-line:hover {
-      color: var(--accent);
+    .nav-btn span {
+      font-size: 10px;
+      color: var(--text-soft);
     }
 
-    .term-tag {
-      color: var(--gold);
-      font-weight: 600;
+    .nav-btn:hover {
+      background: linear-gradient(135deg, rgba(30, 45, 80, 0.98), rgba(15, 24, 50, 0.98));
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
     }
 
-    .term-meta {
-      color: var(--rfof);
-    }
-
-    .inline-detail {
-      margin-top: 3px;
-      padding: 4px 6px;
-      border-radius: 6px;
-      border: 1px dashed rgba(148,163,184,0.5);
-      background: rgba(15,23,42,0.9);
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    .copy-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      padding: 1px 6px;
-      font-size: 9px;
-      cursor: pointer;
-      background: rgba(15,23,42,0.9);
-      color: var(--muted);
-      margin-left: 4px;
-    }
-
-    .copy-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* GENESIS + SYNC VIEWER */
+    /* GENESIS / SYNC */
 
     .viewer-shell {
-      border-radius: 18px;
-      padding: 12px 12px 10px;
-      margin-top: 16px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 6px;
+      height: 100%;
+      min-height: 0;
     }
 
     .viewer-header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .viewer-title {
+      gap: 8px;
       font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text-soft);
     }
 
-    .viewer-title span {
-      color: var(--accent);
-    }
-
-    .viewer-meta {
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--muted);
+    .viewer-header-left {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 8px;
     }
 
-    .viewer-grid {
+    .viewer-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .tag.green {
+      border-color: rgba(74, 242, 155, 0.6);
+      color: var(--accent-green);
+    }
+
+    .tag.gold {
+      border-color: rgba(245, 211, 107, 0.6);
+      color: var(--accent-gold);
+    }
+
+    .tag.blue {
+      border-color: rgba(74, 198, 255, 0.6);
+      color: var(--accent-blue);
+    }
+
+    .view-panel {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 10px;
-    }
-
-    @media (max-width: 960px) {
-      .viewer-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 6px;
+      min-height: 0;
     }
 
     .view-box {
-      border-radius: 14px;
-      padding: 8px 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top left, rgba(74, 198, 255, 0.12), rgba(10, 14, 30, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 7px;
       display: flex;
       flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .view-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .view-box-title {
+      display: flex;
+      align-items: center;
       gap: 6px;
     }
 
-    .view-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-green);
+      box-shadow: 0 0 12px rgba(74, 242, 155, 0.8);
     }
 
-    .view-label {
-      font-size: 10px;
+    .aaa-pill {
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 211, 107, 0.7);
+      font-size: 9px;
+      color: var(--accent-gold);
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--muted);
     }
 
-    .view-label span {
-      color: var(--accent);
-    }
-
-    .view-status {
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--accent);
-    }
-
-    .files-grid {
+    .view-box-body {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-rows: minmax(0, 1.1fr) minmax(0, 1.1fr);
       gap: 4px;
-      margin-top: 2px;
+      min-height: 0;
     }
 
-    @media (max-width: 1100px) {
-      .files-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 900px) {
-      .files-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    .file-pill {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 3px 5px;
+    .view-metrics {
+      border-radius: var(--radius-sm);
+      background: rgba(5, 8, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 4px 5px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
       font-size: 9px;
-      font-family: monospace;
-      color: var(--muted);
-      cursor: pointer;
-      background: rgba(15,23,42,0.9);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      color: var(--text-soft);
     }
 
-    .file-pill:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 10px rgba(34,197,94,0.45);
-      background: rgba(15,23,42,1);
-    }
-
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .status-badge {
-      border-radius: 999px;
-      padding: 2px 6px;
-      border: 1px solid rgba(148,163,184,0.6);
-      font-size: 9px;
+    .metric-label {
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      font-size: 8px;
+      color: var(--text-soft);
     }
 
-    .status-badge.a { border-color: rgba(148,163,184,0.7); color: var(--muted); }
-    .status-badge.aa { border-color: rgba(56,189,248,0.8); color: var(--rfof); }
-    .status-badge.aaa { border-color: rgba(74,222,128,0.9); color: var(--accent); }
-
-    .xp-indicator {
-      font-family: monospace;
+    .metric-value {
       font-size: 10px;
-      color: var(--accent);
+      color: var(--text-main);
     }
 
-    .clearing-indicator {
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--gold);
+    .view-diagrams {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 4px;
+      min-height: 0;
     }
 
-    .diagram-shell {
-      margin-top: 6px;
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
-      padding: 4px 6px 6px;
+    .diagram-card {
+      border-radius: var(--radius-sm);
+      background: radial-gradient(circle at top, rgba(74, 198, 255, 0.16), rgba(5, 8, 20, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
     }
 
     .diagram-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       font-size: 9px;
-      color: var(--muted);
-      margin-bottom: 2px;
+      color: var(--text-soft);
     }
 
-    .diagram-toggle {
-      display: inline-flex;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
+    .diagram-body {
+      flex: 1;
+      min-height: 0;
+      position: relative;
       overflow: hidden;
     }
 
-    .diagram-toggle button {
-      border: none;
-      background: transparent;
-      padding: 2px 6px;
-      font-size: 9px;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    .diagram-toggle button.active {
-      background: rgba(15,23,42,0.95);
-      color: var(--accent);
-    }
-
-    .diagram-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 4px;
-      margin-top: 2px;
-    }
-
-    @media (max-width: 900px) {
-      .diagram-row {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    canvas.diagram {
+    canvas.diagram-canvas {
       width: 100%;
-      height: 90px;
-      border-radius: 8px;
-      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(15,23,42,0.9));
-      border: 1px solid rgba(15,23,42,1);
+      height: 100%;
       display: block;
     }
 
-    /* 13 DUAL-SEKTOREN */
+    /* Kachel 0 / Nervensystem */
 
-    .sectors-shell {
-      margin-top: 18px;
-      border-radius: 18px;
-      padding: 10px 12px 12px;
-    }
-
-    .sectors-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .sectors-title {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .sectors-title span {
-      color: var(--accent);
-    }
-
-    .sectors-meta {
-      font-family: monospace;
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .sectors-grid {
+    .kachel-shell {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 10px;
-      margin-top: 6px;
+      grid-template-rows: auto auto minmax(0, 1.2fr);
+      gap: 6px;
+      height: 100%;
+      min-height: 0;
     }
 
-    .sector-card {
-      border-radius: 14px;
-      padding: 8px 8px 6px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
+    .kachel-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 6px;
+    }
+
+    .kachel-card {
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top, rgba(245, 211, 107, 0.16), rgba(10, 14, 30, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 7px;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      position: relative;
       overflow: hidden;
     }
 
-    .sector-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      opacity: 0.4;
-      pointer-events: none;
+    .kachel-card.dark {
+      background: radial-gradient(circle at top, rgba(74, 198, 255, 0.16), rgba(5, 8, 20, 0.95));
     }
 
-    .sector-card[data-sector="GOLD"]::before {
-      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.35), transparent 55%);
-    }
-
-    .sector-card[data-sector="GPCB"]::before {
-      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.25), transparent 55%);
-    }
-
-    .sector-card[data-sector="ECCU"]::before {
-      background: radial-gradient(circle at 0 0, rgba(34,197,94,0.25), transparent 55%);
-    }
-
-    .sector-card[data-sector="RFOF"]::before {
-      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.25), transparent 55%);
-    }
-
-    .sector-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .sector-header-row {
+    .kachel-card-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .sector-name {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .sector-aaa {
-      font-family: monospace;
-      font-size: 10px;
-    }
-
-    .sector-aaa span {
-      padding: 1px 5px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-    }
-
-    .sector-aaa span[data-grade="A"] { border-color: rgba(148,163,184,0.7); color: var(--muted); }
-    .sector-aaa span[data-grade="AA"] { border-color: rgba(56,189,248,0.8); color: var(--rfof); }
-    .sector-aaa span[data-grade="AAA"] { border-color: rgba(74,222,128,0.9); color: var(--accent); }
-
-    .sector-box-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 4px;
-      margin-top: 2px;
-    }
-
-    .sector-box {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: rgba(15,23,42,0.95);
-      padding: 4px 5px;
-      font-size: 9px;
-      font-family: monospace;
-      max-height: 70px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-    }
-
-    .sector-box-title {
-      color: var(--muted);
-      margin-bottom: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .sector-line {
-      padding: 1px 0;
-      cursor: pointer;
-      color: var(--muted);
-      border-left: 2px solid rgba(148,163,184,0.35);
-      padding-left: 4px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      transition: color 0.12s ease, border-color 0.12s ease;
-    }
-
-    .sector-line:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .sector-diagram-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 4px;
-      margin-top: 3px;
-    }
-
-    .sector-diagram {
-      border-radius: 8px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(15,23,42,0.9));
-      height: 50px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sector-diagram-label {
-      position: absolute;
-      top: 2px;
-      left: 4px;
-      font-size: 8px;
-      color: var(--muted);
-    }
-
-    .sector-diagram-pulse {
-      position: absolute;
-      inset: 0;
-      opacity: 0.4;
-      pointer-events: none;
-      background: radial-gradient(circle at 50% 100%, rgba(74,222,128,0.25), transparent 60%);
-      transform-origin: center bottom;
-      transform: scaleY(0.2);
-      transition: transform 0.18s ease-out, opacity 0.18s ease-out;
-    }
-
-    .sector-footer-row {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-top: 3px;
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    .sector-footer-row button {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      color: var(--muted);
-      font-size: 9px;
-      padding: 1px 6px;
-      cursor: pointer;
-    }
-
-    .sector-footer-row button:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* X-HUB + RAPP-STORE + MANAGER-ORDNER */
-
-    .side-shell {
-      border-radius: 18px;
-      padding: 10px 12px 12px;
-    }
-
-    .side-section {
-      border-radius: 14px;
-      padding: 8px 8px 6px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.85));
-      margin-bottom: 10px;
-    }
-
-    .side-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       font-size: 10px;
-      color: var(--muted);
-      margin-bottom: 4px;
+      color: var(--text-soft);
     }
 
-    .side-header span.label {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .side-header span.label strong {
-      color: var(--accent);
-    }
-
-    .side-header span.meta {
-      font-family: monospace;
-      font-size: 9px;
-    }
-
-    .xhub-terminal {
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    .kachel-card-body {
       font-size: 10px;
-      max-height: 120px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-    }
-
-    .xhub-input-row {
-      display: flex;
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    .xhub-input-row input {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      color: var(--text);
-      font-size: 10px;
-      padding: 3px 6px;
-      font-family: monospace;
-      outline: none;
-    }
-
-    .xhub-input-row button {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      color: var(--muted);
-      font-size: 9px;
-      padding: 2px 8px;
-      cursor: pointer;
-    }
-
-    .xhub-input-row button:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .rapp-grid {
+      color: var(--text-soft);
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 4px;
-      margin-top: 4px;
     }
 
-    .rapp-pill {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: rgba(15,23,42,0.95);
-      padding: 4px 5px;
+    .kachel-grid {
+      border-radius: var(--radius-md);
+      background: rgba(5, 8, 20, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 5px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .kachel-grid-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .kachel-grid-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
       font-size: 9px;
-      color: var(--muted);
+      overflow-y: auto;
+    }
+
+    .mini-sector {
+      border-radius: var(--radius-sm);
+      background: rgba(10, 14, 30, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 4px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      transition: border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
     }
 
-    .rapp-pill:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 10px rgba(34,197,94,0.45);
+    .mini-sector:hover {
+      border-color: rgba(245, 211, 107, 0.7);
+      box-shadow: 0 0 18px rgba(245, 211, 107, 0.4);
+      transform: translateY(-1px);
+      background: rgba(18, 24, 50, 0.98);
     }
 
-    .rapp-name {
+    .mini-sector-name {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .mini-sector-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .mini-sector-label {
+      font-size: 8px;
+      color: var(--text-soft);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
     }
 
-    .rapp-bar {
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
+    .mini-sector-value {
+      font-size: 8px;
+      color: var(--accent-blue);
+      max-width: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mini-sector-aaa {
+      font-size: 8px;
+      color: var(--accent-gold);
+    }
+
+    /* Terminal / A–Z / Manager */
+
+    .right-shell {
+      display: grid;
+      grid-template-rows: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 6px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .terminal-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, rgba(74, 198, 255, 0.18), rgba(5, 8, 20, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       overflow: hidden;
     }
 
-    .rapp-bar-fill {
-      height: 100%;
-      width: 40%;
-      background: linear-gradient(90deg, rgba(56,189,248,0.2), rgba(56,189,248,0.9));
-      transform-origin: left center;
-      transform: scaleX(0.4);
-      transition: transform 0.18s ease-out;
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .terminal-body {
+      flex: 1;
+      min-height: 0;
+      border-radius: var(--radius-md);
+      background: rgba(3, 5, 12, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+    }
+
+    .terminal-log {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .log-line {
+      padding: 1px 0;
+      cursor: pointer;
+      transition: color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .log-line:hover {
+      color: var(--accent-blue);
+      background: rgba(74, 198, 255, 0.08);
+    }
+
+    .terminal-input-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 3px;
+    }
+
+    .terminal-input {
+      flex: 1;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(5, 8, 20, 0.98);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 3px 5px;
+      outline: none;
+    }
+
+    .terminal-input:focus {
+      border-color: rgba(74, 198, 255, 0.8);
+      box-shadow: 0 0 12px rgba(74, 198, 255, 0.4);
+    }
+
+    .terminal-btn {
+      padding: 3px 7px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(74, 198, 255, 0.7);
+      background: radial-gradient(circle at top, rgba(74, 198, 255, 0.4), rgba(5, 8, 20, 0.98));
+      color: var(--text-main);
+      font-size: 10px;
+      cursor: pointer;
+      transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .terminal-btn:hover {
+      background: radial-gradient(circle at top, rgba(74, 198, 255, 0.6), rgba(10, 14, 30, 0.98));
+      box-shadow: 0 0 16px rgba(74, 198, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .bottom-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, rgba(181, 123, 255, 0.18), rgba(10, 14, 30, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 7px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1.1fr);
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .bottom-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 4px;
+      min-height: 0;
+    }
+
+    .az-card, .manager-card {
+      border-radius: var(--radius-md);
+      background: rgba(5, 8, 20, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .az-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 3px;
+      font-size: 9px;
+    }
+
+    .az-item {
+      border-radius: var(--radius-sm);
+      background: rgba(10, 14, 30, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .az-phase {
+      font-size: 9px;
+      color: var(--text-main);
+    }
+
+    .az-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
     }
 
     .manager-list {
-      max-height: 180px;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
-      scrollbar-width: thin;
-      font-size: 10px;
-      font-family: monospace;
-      color: var(--muted);
-    }
-
-    .manager-group {
-      margin-bottom: 4px;
-      padding-bottom: 3px;
-      border-bottom: 1px dashed rgba(148,163,184,0.35);
-    }
-
-    .manager-title {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
       font-size: 9px;
-      color: var(--accent);
-      margin-bottom: 2px;
+      font-family: var(--font-mono);
     }
 
-    .manager-file {
-      padding-left: 6px;
-      cursor: pointer;
-      border-left: 2px solid rgba(148,163,184,0.35);
-      margin-bottom: 1px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      transition: color 0.12s ease, border-color 0.12s ease;
+    .manager-item {
+      padding: 2px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
     }
 
-    .manager-file:hover {
-      color: var(--accent);
-      border-color: var(--accent);
+    .manager-item span.key {
+      color: var(--accent-blue);
     }
 
-    /* FOOTER */
-
-    .footer-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 6px 16px;
-      border-top: 1px solid rgba(148,163,184,0.45);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(15,23,42,0.9));
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      font-family: monospace;
-      color: var(--muted);
-      z-index: 1500;
+    .manager-item span.file {
+      color: var(--accent-green);
     }
 
-    .footer-bar span.accent {
-      color: var(--accent);
+    .manager-item span.meta {
+      color: var(--text-soft);
     }
 
-    .identity-glow {
-      text-shadow: 0 0 8px rgba(74,222,128,0.8);
+    /* Scrollbars */
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(120, 140, 180, 0.7);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(160, 180, 220, 0.9);
     }
   </style>
 </head>
 <body>
-  <div class="top-shell">
-    <header>
-      <div class="brand">CHAIN-CLEARING / MONOLITH</div>
-      <div class="core-status">
-        CORE-SYNC: <span id="coreSyncState">ULTRA-ACTIVE</span> · Takt <span id="taktDisplay">0</span>/10 · XP <span id="xpDisplay">0</span>
+  <div class="app-root">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <div class="top-left">
+        <div class="logo-orb"></div>
+        <div class="top-title">
+          <div class="top-title-main">CHAIN-CLEARING MONOLITH</div>
+          <div class="top-title-sub">GENESIS · SYNC · 42E0 · A–Z · X-HUB</div>
+        </div>
       </div>
-    </header>
-    <div class="nav-row">
-      <div class="search-shell">
-        <span>🔍</span>
-        <input id="searchInput" placeholder="GUCI, Block, Hash, identity.gt, RFOF/GOLD LP-Token..." />
-      </div>
-      <div class="profile-actions">
-        <button class="pill-btn wallet" id="btnWallet">
-          <span class="icon">💳</span>
-          <span>Wallet</span>
-        </button>
-        <button class="pill-btn profile" id="btnProfile">
-          <span class="icon">👤</span>
-          <span>Profile</span>
-        </button>
-        <button class="pill-btn settings" id="btnSettings">
-          <span class="icon">⚙️</span>
-          <span>Settings</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <main>
-    <div class="grid-main">
-      <!-- LEFT: KACHEL 0 + GENESIS/SYNC + SECTORS -->
-      <div>
-        <!-- KACHEL 0 -->
-        <section class="glass kachel-zero" id="kachelZero">
-          <div class="k0-inner">
-            <div class="k0-header">
-              <div class="k0-title">[02] KACHEL NULL · NERVENSYSTEM</div>
-              <div class="k0-meta">
-                <span class="badge">EREIGNISHORIZONT E (6,5)</span>
-                <span>Takt: <span id="k0TaktLabel">0</span>/10</span>
-                <span>Singularität @10</span>
+      <div class="top-right">
+        <div class="takt-indicator">
+          <div class="takt-pulse" id="taktPulse"></div>
+          <span id="taktLabel">Takt 0 / E(6,5)</span>
+        </div>
+        <div class="profile-shell">
+          <div class="profile-button" id="profileButton">
+            <div class="profile-avatar" id="profileGlow"></div>
+            <div class="profile-meta">
+              <div class="profile-name" id="profileName">SATORAMY-ID: GPCB-ROOT</div>
+              <div class="profile-xp">
+                <div class="glow-dot" id="xpGlow"></div>
+                <span id="xpLabel">XP 0 · Joule 0b · Status A</span>
               </div>
             </div>
-
-            <div class="k0-row">
-              <div class="k0-block">
-                <div class="k0-block-header">
-                  <div class="k0-block-title">42E0 Taktgenerator</div>
-                  <div class="k0-block-value" id="k0TaktValue">0.0</div>
-                </div>
-                <div class="k0-takt-bar">
-                  <div class="k0-takt-fill" id="k0TaktFill"></div>
-                  <div class="k0-takt-e"></div>
-                </div>
-                <div style="margin-top:6px;font-size:9px;color:var(--muted);">
-                  Reset-Pulse bei <strong>0</strong>, Singularitäts-Injektion bei <strong>10</strong>. Alle UI-Elemente pulsieren synchron.
-                </div>
-              </div>
-
-              <div class="k0-block">
-                <div class="k0-block-header">
-                  <div class="k0-block-title">XP / Joule · Identitäts-Glow</div>
-                  <div class="k0-block-value" id="k0XPValue">XP 0 · 0.0 J</div>
-                </div>
-                <div style="font-size:9px;color:var(--muted);">
-                  Mausbewegung + FPS → XP → Joule (Bit → Yotta). XP beeinflusst AAA, Diagramme, Clearing, Genesis/Sync.
-                </div>
-                <div style="margin-top:4px;font-size:9px;color:var(--muted);">
-                  Identity: <span id="k0IdentityGrade" class="status-badge aaa identity-glow">AAA</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="k0-history-grid" id="historyGrid">
-              <div class="history-box">
-                <div class="history-title" style="color:var(--gold);">GPCB-CHAIN</div>
-                <div class="history-scroll" id="hist-gpcb"></div>
-              </div>
-              <div class="history-box">
-                <div class="history-title" style="color:var(--eccu);">ECCU-CHAIN</div>
-                <div class="history-scroll" id="hist-eccu"></div>
-              </div>
-              <div class="history-box">
-                <div class="history-title" style="color:var(--rfof);">RFOF-GOLD</div>
-                <div class="history-scroll" id="hist-rfof"></div>
-              </div>
-              <div class="history-box">
-                <div class="history-title" style="color:var(--bip);">BIP-AGG</div>
-                <div class="history-scroll" id="hist-bip"></div>
-              </div>
-              <div class="history-box">
-                <div class="history-title" style="color:var(--accent);">NEURAL-CACHE</div>
-                <div class="history-scroll" id="hist-cache"></div>
-              </div>
-              <div class="history-box">
-                <div class="history-title">GLOBAL-IDX</div>
-                <div class="history-scroll" id="hist-index"></div>
-              </div>
-            </div>
-
-            <div class="k0-bottom-row">
-              <div class="k0-block">
-                <div class="k0-block-header">
-                  <div class="k0-block-title">A–Z Pfadierung · Backend-Simulation</div>
-                  <div class="k0-block-value" id="azActiveLabel">Phase: A</div>
-                </div>
-                <div class="az-grid" id="azGrid"></div>
-              </div>
-              <div class="k0-block">
-                <div class="k0-block-header">
-                  <div class="k0-block-title">Meta-Console · Terminal (browser.html)</div>
-                  <div class="k0-block-value">META-LOG</div>
-                </div>
-                <div class="terminal" id="metaTerminal"></div>
-              </div>
+            <div class="profile-chevron">⌄</div>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-label">Globale Module</div>
+            <div class="dropdown-buttons">
+              <button class="nav-btn" data-nav="wallet">
+                Wallet
+                <span>Universal-Ledger · Mining · Fees · Staking</span>
+              </button>
+              <button class="nav-btn" data-nav="profile">
+                Profile
+                <span>Social X-Hub · Satoramy-ID · XP-Level</span>
+              </button>
+              <button class="nav-btn" data-nav="settings">
+                Settings
+                <span>SAFE/OWNER/FOND/SYSTEM · VM-Bypass</span>
+              </button>
             </div>
           </div>
-        </section>
-
-        <!-- GENESIS + SYNC VIEWER -->
-        <section class="glass viewer-shell" id="viewerShell">
-          <div class="viewer-header">
-            <div class="viewer-title"><span>BOX I/J</span> · Chain-Clearing Viewer</div>
-            <div class="viewer-meta">
-              <span>GENESIS (statisch) · SYNC (dynamisch)</span>
-              <span>65 Dateien / Cluster</span>
-            </div>
-          </div>
-
-          <div class="viewer-grid">
-            <!-- GENESIS VIEW -->
-            <div class="view-box" id="genesisView">
-              <div class="view-header-row">
-                <div class="view-label"><span>GENESIS-VIEW</span> · Statisch</div>
-                <div class="view-status" id="genesisStatus">A/AA/AAA stabil</div>
-              </div>
-
-              <div class="files-grid" id="genesisFiles"></div>
-
-              <div class="status-row">
-                <div>
-                  <span class="status-badge aa">AAA-Validierung</span>
-                </div>
-                <div>
-                  <span class="xp-indicator" id="genesisXP">XP: 0</span> ·
-                  <span class="clearing-indicator" id="genesisClearing">Clearing: OK</span>
-                </div>
-              </div>
-
-              <div class="diagram-shell">
-                <div class="diagram-header">
-                  <span>Diagramm-Ebene · Genesis</span>
-                  <div class="diagram-toggle">
-                    <button id="btnGenesisCandles" class="active">Candles</button>
-                    <button id="btnGenesisMecha">Mechatronik</button>
-                  </div>
-                </div>
-                <div class="diagram-row">
-                  <canvas class="diagram" id="genesisCandles"></canvas>
-                  <canvas class="diagram" id="genesisMecha"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- SYNC VIEW -->
-            <div class="view-box" id="syncView">
-              <div class="view-header-row">
-                <div class="view-label"><span>SYNC-VIEW</span> · Dynamisch</div>
-                <div class="view-status" id="syncStatus">Clearing-Monitor aktiv</div>
-              </div>
-
-              <div class="files-grid" id="syncFiles"></div>
-
-              <div class="status-row">
-                <div>
-                  <span class="status-badge aaa">AAA-Validierung</span>
-                </div>
-                <div>
-                  <span class="xp-indicator" id="syncXP">XP: 0</span> ·
-                  <span class="clearing-indicator" id="syncClearing">Clearing: 0.2% SAFE/OWNER/FOND/SYSTEM</span>
-                </div>
-              </div>
-
-              <div class="diagram-shell">
-                <div class="diagram-header">
-                  <span>Diagramm-Ebene · Sync</span>
-                  <div class="diagram-toggle">
-                    <button id="btnSyncCandles" class="active">Candles</button>
-                    <button id="btnSyncMecha">Mechatronik</button>
-                  </div>
-                </div>
-                <div class="diagram-row">
-                  <canvas class="diagram" id="syncCandles"></canvas>
-                  <canvas class="diagram" id="syncMecha"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 13 DUAL-SEKTOREN -->
-        <section class="glass sectors-shell" id="sectorsShell">
-          <div class="sectors-header">
-            <div class="sectors-title"><span>13 Dual-Sektoren</span> · Genesis + Sync</div>
-            <div class="sectors-meta">GPCB · Phoenix Coin · G-Phoenix · Phoenix LP · ECCU · Joule · XP · GOLD · RFOF · RFOF/GOLD LP · BIP · Identity Registry · BRIDGE</div>
-          </div>
-          <div class="sectors-grid" id="sectorsGrid"></div>
-        </section>
-      </div>
-
-      <!-- RIGHT: X-HUB, RAPP-STORE, MANAGER-ORDNER -->
-      <div>
-        <section class="glass side-shell">
-          <!-- X-HUB -->
-          <div class="side-section">
-            <div class="side-header">
-              <span class="label"><strong>X-HUB</strong> · Injektor</span>
-              <span class="meta">Axiom-Validator · Bridge-Handshake</span>
-            </div>
-            <div class="xhub-terminal" id="xhubTerminal"></div>
-            <div class="xhub-input-row">
-              <input id="xhubInput" placeholder="injector.bin / axiom / bridge_handshake.go ..." />
-              <button id="xhubSend">Inject</button>
-            </div>
-          </div>
-
-          <!-- RAPP-STORE -->
-          <div class="side-section">
-            <div class="side-header">
-              <span class="label"><strong>RAPP-STORE</strong> · 6 Säulen-Apps</span>
-              <span class="meta">Native Web-Components</span>
-            </div>
-            <div class="rapp-grid" id="rappGrid"></div>
-          </div>
-
-          <!-- MANAGER-ORDNER -->
-          <div class="side-section">
-            <div class="side-header">
-              <span class="label"><strong>MANAGER-ORDNER</strong> · Repo-Simulation</span>
-              <span class="meta">65 Dateien / Cluster</span>
-            </div>
-            <div class="manager-list" id="managerList"></div>
-          </div>
-        </section>
+        </div>
       </div>
     </div>
-  </main>
 
-  <div class="footer-bar">
-    <div>CHAIN-CLEARING / MASTER-STATION · <span class="accent">PERMANENT-DB-STORAGE ACTIVE</span></div>
-    <div>
-      <span id="footerClock">00:00:00</span> · Identity: <span id="footerIdentity" class="identity-glow">AAA</span>
+    <!-- MAIN GRID -->
+    <div class="app-row">
+      <!-- LEFT: GENESIS / SYNC -->
+      <div class="glass">
+        <div class="glass-inner">
+          <div class="section-title">
+            <span class="label">
+              <span class="badge-dot"></span>
+              CHAIN-CLEARING VIEWER
+            </span>
+            <span class="pill">BOX I / J · GENESIS / SYNC</span>
+          </div>
+          <div class="divider"></div>
+          <div class="viewer-shell">
+            <div class="viewer-header">
+              <div class="viewer-header-left">
+                <span class="tag green">GENESIS-VIEW</span>
+                <span class="tag blue">SYNC-VIEW</span>
+              </div>
+              <div class="viewer-header-right">
+                <span class="tag gold" id="viewerAAA">GLOBAL STATUS: A</span>
+                <span class="tag">65 FILES · INTERNAL</span>
+              </div>
+            </div>
+
+            <!-- GENESIS PANEL -->
+            <div class="view-panel">
+              <div class="view-box" id="genesisBox">
+                <div class="view-box-header">
+                  <div class="view-box-title">
+                    <div class="status-dot" id="genesisStatusDot"></div>
+                    <span>GENESIS-VIEW · STATISCH</span>
+                  </div>
+                  <div class="aaa-pill" id="genesisAAA">A</div>
+                </div>
+                <div class="view-box-body">
+                  <div class="view-metrics">
+                    <div>
+                      <div class="metric-label">Clearing</div>
+                      <div class="metric-value" id="genesisClearing">Idle</div>
+                    </div>
+                    <div>
+                      <div class="metric-label">XP/Joule</div>
+                      <div class="metric-value" id="genesisXP">0 / 0b</div>
+                    </div>
+                    <div>
+                      <div class="metric-label">Hash</div>
+                      <div class="metric-value" id="genesisHash">—</div>
+                    </div>
+                  </div>
+                  <div class="view-diagrams">
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Candle-Sticks · GENESIS</span>
+                        <span class="tag">42E0 · ISO</span>
+                      </div>
+                      <div class="diagram-body">
+                        <canvas class="diagram-canvas" id="genesisCandles"></canvas>
+                      </div>
+                    </div>
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Mechatronik · GENESIS</span>
+                        <span class="tag">Partikel · Orbit · Puls</span>
+                      </div>
+                      <div class="diagram-body">
+                        <canvas class="diagram-canvas" id="genesisMecha"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SYNC PANEL -->
+              <div class="view-box" id="syncBox">
+                <div class="view-box-header">
+                  <div class="view-box-title">
+                    <div class="status-dot" id="syncStatusDot"></div>
+                    <span>SYNC-VIEW · DYNAMISCH</span>
+                  </div>
+                  <div class="aaa-pill" id="syncAAA">A</div>
+                </div>
+                <div class="view-box-body">
+                  <div class="view-metrics">
+                    <div>
+                      <div class="metric-label">Clearing</div>
+                      <div class="metric-value" id="syncClearing">Idle</div>
+                    </div>
+                    <div>
+                      <div class="metric-label">XP/Joule</div>
+                      <div class="metric-value" id="syncXP">0 / 0b</div>
+                    </div>
+                    <div>
+                      <div class="metric-label">Hash</div>
+                      <div class="metric-value" id="syncHash">—</div>
+                    </div>
+                  </div>
+                  <div class="view-diagrams">
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Candle-Sticks · SYNC</span>
+                        <span class="tag">42E0 · ISO</span>
+                      </div>
+                      <div class="diagram-body">
+                        <canvas class="diagram-canvas" id="syncCandles"></canvas>
+                      </div>
+                    </div>
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Mechatronik · SYNC</span>
+                        <span class="tag">Partikel · Orbit · Puls</span>
+                      </div>
+                      <div class="diagram-body">
+                        <canvas class="diagram-canvas" id="syncMecha"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 13 DUAL-SEKTOREN (KURZÜBERSICHT) -->
+            <div class="view-panel">
+              <div class="view-box">
+                <div class="view-box-header">
+                  <div class="view-box-title">
+                    <div class="status-dot"></div>
+                    <span>13 DUAL-SEKTOREN · GENESIS</span>
+                  </div>
+                  <div class="aaa-pill">A</div>
+                </div>
+                <div class="view-box-body">
+                  <div class="view-metrics" id="sectorsGenesisMetrics">
+                    <!-- dynamisch gefüllt -->
+                  </div>
+                  <div class="view-diagrams">
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Clearing-Status · GENESIS</span>
+                        <span class="tag">A/AA/AAA</span>
+                      </div>
+                      <div class="diagram-body" id="sectorsGenesisStatus"></div>
+                    </div>
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>XP/Joule · GENESIS</span>
+                        <span class="tag">Sektoren</span>
+                      </div>
+                      <div class="diagram-body" id="sectorsGenesisXP"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="view-box">
+                <div class="view-box-header">
+                  <div class="view-box-title">
+                    <div class="status-dot"></div>
+                    <span>13 DUAL-SEKTOREN · SYNC</span>
+                  </div>
+                  <div class="aaa-pill">A</div>
+                </div>
+                <div class="view-box-body">
+                  <div class="view-metrics" id="sectorsSyncMetrics">
+                    <!-- dynamisch gefüllt -->
+                  </div>
+                  <div class="view-diagrams">
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>Clearing-Status · SYNC</span>
+                        <span class="tag">A/AA/AAA</span>
+                      </div>
+                      <div class="diagram-body" id="sectorsSyncStatus"></div>
+                    </div>
+                    <div class="diagram-card">
+                      <div class="diagram-header">
+                        <span>XP/Joule · SYNC</span>
+                        <span class="tag">Sektoren</span>
+                      </div>
+                      <div class="diagram-body" id="sectorsSyncXP"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: KACHEL 0 / NERVENSYSTEM -->
+      <div class="glass">
+        <div class="glass-inner">
+          <div class="section-title">
+            <span class="label">
+              <span class="badge-dot"></span>
+              KACHEL 0 · NERVENSYSTEM
+            </span>
+            <span class="pill">SEKTOR 02 · 42E0 · E(6,5)</span>
+          </div>
+          <div class="divider"></div>
+          <div class="kachel-shell">
+            <div class="kachel-top">
+              <div class="kachel-card">
+                <div class="kachel-card-header">
+                  <span>42E0 Takt · Ereignishorizont E(6,5)</span>
+                  <span class="tag gold" id="kachelTaktLabel">Takt 0 · ISO —</span>
+                </div>
+                <div class="kachel-card-body">
+                  <div>
+                    <div class="metric-label">Reset-Pulse</div>
+                    <div class="metric-value" id="kachelReset">Bereit</div>
+                  </div>
+                  <div>
+                    <div class="metric-label">Singularität</div>
+                    <div class="metric-value" id="kachelSingularity">Bereit</div>
+                  </div>
+                  <div>
+                    <div class="metric-label">7-Kachel-Skript</div>
+                    <div class="metric-value">A1–Z10 · Monster-Scaling</div>
+                  </div>
+                  <div>
+                    <div class="metric-label">Superposition</div>
+                    <div class="metric-value">.gt ↔ .ton</div>
+                  </div>
+                  <div>
+                    <div class="metric-label">Schatten-Objekte</div>
+                    <div class="metric-value" id="kachelShadows">0</div>
+                  </div>
+                  <div>
+                    <div class="metric-label">Persistenz</div>
+                    <div class="metric-value">localStorage · ISO</div>
+                  </div>
+                </div>
+              </div>
+              <div class="kachel-card dark">
+                <div class="kachel-card-header">
+                  <span>History-Grid · Chains</span>
+                  <span class="tag">GPCB · ECCU · RFOF-GOLD · BIP-AGG · NEURAL-CACHE · GLOBAL-IDX</span>
+                </div>
+                <div class="kachel-card-body" id="historyGrid">
+                  <!-- Kurzstatus, dynamisch -->
+                </div>
+              </div>
+            </div>
+
+            <div class="kachel-grid">
+              <div class="kachel-grid-header">
+                <span>13 Mini-Sektoren · Übersicht</span>
+                <span class="tag">Klickbar · TON-Viewer-Style</span>
+              </div>
+              <div class="kachel-grid-body" id="miniSectors">
+                <!-- 13 Mini-Sektoren -->
+              </div>
+            </div>
+
+            <div class="kachel-grid">
+              <div class="kachel-grid-header">
+                <span>Globale Block-Historie · ISO</span>
+                <span class="tag" id="globalBlockCount">0 Blöcke</span>
+              </div>
+              <div class="kachel-grid-body" id="globalBlockHistory">
+                <!-- globale Block-Historie -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: TERMINAL / A–Z / MANAGER -->
+      <div class="glass">
+        <div class="glass-inner">
+          <div class="section-title">
+            <span class="label">
+              <span class="badge-dot"></span>
+              X-HUB · TERMINAL · A–Z · MANAGER
+            </span>
+            <span class="pill">META-CONSOLE · BACKEND-SIMULATION</span>
+          </div>
+          <div class="divider"></div>
+          <div class="right-shell">
+            <div class="terminal-card">
+              <div class="terminal-header">
+                <span>Meta-Console · X-HUB Injektor</span>
+                <span class="tag">?block · ?query · ?level · ?node</span>
+              </div>
+              <div class="terminal-body">
+                <div class="terminal-log" id="terminalLog">
+                  <!-- Logs -->
+                </div>
+                <div class="terminal-input-row">
+                  <input class="terminal-input" id="terminalInput" placeholder="> inject parity_logic.js --level 02 --node GPCB" />
+                  <button class="terminal-btn" id="terminalSend">RUN</button>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-card">
+              <div class="terminal-header">
+                <span>A–Z Pfadierung · Manager-Ordner</span>
+                <span class="tag">26 Phasen · 16+ Manager</span>
+              </div>
+              <div class="bottom-body">
+                <div class="az-card">
+                  <div class="kachel-card-header">
+                    <span>A–Z Backend-Phasen</span>
+                    <span class="tag" id="azPhaseLabel">Phase: A</span>
+                  </div>
+                  <div class="az-grid" id="azGrid">
+                    <!-- A–Z Phasen -->
+                  </div>
+                </div>
+                <div class="manager-card">
+                  <div class="kachel-card-header">
+                    <span>Manager-Ordner · Simulation</span>
+                    <span class="tag">identity.gt · *.js · *.py · *.bin</span>
+                  </div>
+                  <div class="manager-list" id="managerList">
+                    <!-- Manager-Ordner-Simulation -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script>
-    // -----------------------------
-    // GLOBAL STATE
-    // -----------------------------
-    const state = {
+    /********************************************************************
+     * CORE STATE
+     ********************************************************************/
+
+    const STATE = {
       takt: 0,
+      taktDirection: 1,
+      isoNow: () => new Date().toISOString().replace(/\.\d+Z$/, ".000Z"),
       xp: 0,
-      joule: 0,
-      azPhase: "A",
-      history: {
-        GPCB: [],
-        ECCU: [],
-        RFOF: [],
-        BIP: [],
-        CACHE: [],
-        INDEX: []
-      },
+      jouleBits: 0,
+      aaaLevel: "A",
       sectors: [],
-      diagrams: {},
-      lastFrameTime: performance.now(),
-      fpsAccumulator: 0,
-      fpsFrames: 0
+      miniSectors: [],
+      blocks: [],
+      candlesGenesis: [],
+      candlesSync: [],
+      internalFiles: {},
+      azIndex: 0,
+      azPhases: [
+        ["A", "Autorisierung"],
+        ["B", "Basis-Impuls"],
+        ["C", "Clearing-Initialisierung"],
+        ["D", "Delegations-Prüfung"],
+        ["E", "Emissions-Kern"],
+        ["F", "Fond-Distribution"],
+        ["G", "Gebühren-Injektion"],
+        ["H", "Hash-Verkettung"],
+        ["I", "Identitäts-Maskierung"],
+        ["J", "Joule-Quantisierung"],
+        ["K", "Konsens-Abgleich"],
+        ["L", "Logik-Sicherung"],
+        ["M", "Mechatronik-Feedback"],
+        ["N", "Netzwerk-Stabilisierung"],
+        ["O", "Optimierungs-Protokoll"],
+        ["P", "Profil-Update"],
+        ["Q", "Quellcode-Validierung"],
+        ["R", "Revisions-Logging"],
+        ["S", "Status-Finalisierung"],
+        ["T", "Transaktions-Spiegelung"],
+        ["U", "Universal-Mapping"],
+        ["V", "Varianten-Prüfung"],
+        ["W", "Wert-Anker-Sync"],
+        ["X", "X-Hub Archivierung"],
+        ["Y", "Yield-Analyse"],
+        ["Z", "Zero-Point-Reset"]
+      ],
+      managerFolders: [
+        ["GPCB", ["identity.gt", "bank_exekutive.js", "vault_control.py"]],
+        ["ECCU", ["identity.gt", "parity_logic.js", "monitor.json"]],
+        ["RFOF-GOLD-CHAIN", ["identity.gt", "integrity_check.py", "chain_notary.bin"]],
+        ["APP-API", ["identity.gt", "kaskaden_steuerung.js", "bridge_handshake.go"]],
+        ["STORY-HISTORY", ["ARCHIVE/", "publisher.py", "notary_service.js"]],
+        ["ALPHA-NODES", ["auth.js", "quantizer.py", "map_core.cpp", "reset_pulse.sh"]],
+        ["API", ["actions.js", "resources.json", "event_listener.js", "schema.xsd"]],
+        ["X-HUB", ["injector.bin", "manifest.json"]],
+        ["CROSS-CHECK", ["anti_collision.py", "point_e_check.js"]],
+        ["USER", ["identity.gt", "access_rights.key", "task_executor.js"]],
+        ["ADMIN", ["identity.gt", "system_monitor.py", "fee_notary.js"]],
+        ["DEV", ["identity.gt", "bridge_builder.js", "axiom_validator.py"]],
+        ["MASTER", ["identity.gt", "axiom_override.bin", "identity_injection.py"]],
+        ["ENTERPRISE", ["identity.gt", "settlement.js", "liquidity_flow.py"]],
+        ["PARTNER", ["identity.gt", "sync_bridge.py"]],
+        ["REPOSITORY", ["identity.gt", "performance_boost.py", "app_manifest.json"]]
+      ]
     };
 
-    const STORAGE_KEY = "chain_clearing_history_v1";
-
-    // -----------------------------
-    // UTIL
-    // -----------------------------
-    function formatTime(t) {
-      return t.toString().padStart(2, "0");
-    }
-
-    function updateClock() {
-      const now = new Date();
-      const s = `${formatTime(now.getHours())}:${formatTime(now.getMinutes())}:${formatTime(now.getSeconds())}`;
-      document.getElementById("footerClock").textContent = s;
-    }
-
-    function copyToClipboard(text) {
-      try {
-        navigator.clipboard.writeText(text);
-      } catch (e) {
-        console.log("Clipboard not available", e);
-      }
-    }
-
-    function pseudoHash(seed) {
-      let h = 0;
-      for (let i = 0; i < seed.length; i++) {
-        h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-      }
-      return "0x" + ("00000000" + h.toString(16).toUpperCase()).slice(-8);
-    }
-
-    // -----------------------------
-    // LOCAL STORAGE (KACHEL 0 HISTORY)
-    // -----------------------------
-    function loadHistory() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object") {
-          ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"].forEach(k => {
-            if (Array.isArray(parsed[k])) state.history[k] = parsed[k];
-          });
-        }
-      } catch (e) {
-        console.log("History load failed", e);
-      }
-    }
-
-    function saveHistory() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
-      } catch (e) {
-        console.log("History save failed", e);
-      }
-    }
-
-    // -----------------------------
-    // META TERMINAL
-    // -----------------------------
-    const metaTerminal = document.getElementById("metaTerminal");
-
-    function addMetaLog(msg, tag = "INFO") {
-      const line = document.createElement("div");
-      line.className = "term-line";
-      const time = new Date().toLocaleTimeString();
-      line.innerHTML = `[${time}] <span class="term-tag">${tag}</span> ${msg}`;
-      line.addEventListener("click", () => {
-        if (line.dataset.expanded === "1") {
-          const detail = line.nextSibling;
-          if (detail && detail.classList && detail.classList.contains("inline-detail")) {
-            detail.remove();
-          }
-          line.dataset.expanded = "0";
-          return;
-        }
-        const detail = document.createElement("div");
-        detail.className = "inline-detail";
-        const hash = pseudoHash(msg + time);
-        detail.innerHTML = `
-          Hash: <code>${hash}</code>
-          <button class="copy-btn">copy</button><br/>
-          Block: <code>#${Math.floor(Math.random()*999999)}</code><br/>
-          Level: 02/03 · GUCI-Trace aktiv
-        `;
-        detail.querySelector(".copy-btn").addEventListener("click", (e) => {
-          e.stopPropagation();
-          copyToClipboard(hash);
-        });
-        line.after(detail);
-        line.dataset.expanded = "1";
-      });
-      metaTerminal.appendChild(line);
-      metaTerminal.scrollTop = metaTerminal.scrollHeight;
-    }
-
-    // -----------------------------
-    // A–Z PHASEN
-    // -----------------------------
-    const azPhases = [
-      ["A","Autorisierung"],
-      ["B","Basis-Impuls"],
-      ["C","Clearing-Initialisierung"],
-      ["D","Delegations-Prüfung"],
-      ["E","Emissions-Kern"],
-      ["F","Fond-Distribution"],
-      ["G","Gebühren-Injektion"],
-      ["H","Hash-Verkettung"],
-      ["I","Identitäts-Maskierung"],
-      ["J","Joule-Quantisierung"],
-      ["K","Konsens-Abgleich"],
-      ["L","Logik-Sicherung"],
-      ["M","Mechatronik-Feedback"],
-      ["N","Netzwerk-Stabilisierung"],
-      ["O","Optimierungs-Protokoll"],
-      ["P","Profil-Update"],
-      ["Q","Quellcode-Validierung"],
-      ["R","Revisions-Logging"],
-      ["S","Status-Finalisierung"],
-      ["T","Transaktions-Spiegelung"],
-      ["U","Universal-Mapping"],
-      ["V","Varianten-Prüfung"],
-      ["W","Wert-Anker-Sync"],
-      ["X","X-Hub Archivierung"],
-      ["Y","Yield-Analyse"],
-      ["Z","Zero-Point-Reset"]
-    ];
-
-    function renderAZGrid() {
-      const grid = document.getElementById("azGrid");
-      grid.innerHTML = "";
-      azPhases.forEach(([letter, label]) => {
-        const div = document.createElement("div");
-        div.className = "az-phase";
-        div.dataset.phase = letter;
-        div.innerHTML = `<span>${letter}</span>${label}`;
-        div.addEventListener("click", () => {
-          state.azPhase = letter;
-          document.getElementById("azActiveLabel").textContent = `Phase: ${letter}`;
-          Array.from(grid.children).forEach(c => c.classList.remove("active"));
-          div.classList.add("active");
-          addMetaLog(`A–Z Phase ${letter} (${label}) aktiviert.`, "A-Z");
-        });
-        grid.appendChild(div);
-      });
-      // default A
-      const first = grid.querySelector(".az-phase");
-      if (first) first.classList.add("active");
-    }
-
-    // -----------------------------
-    // HISTORY GRID (KACHEL 0)
-    // -----------------------------
-    function renderHistoryGrid() {
-      const keys = ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"];
-      keys.forEach(key => {
-        const container = document.getElementById("hist-" + key.toLowerCase());
-        if (!container) return;
-        container.innerHTML = "";
-        state.history[key].forEach(entry => {
-          const div = document.createElement("div");
-          div.className = "history-item";
-          div.textContent = "#" + entry.id;
-          div.title = entry.id;
-          div.addEventListener("click", () => {
-            const msg = `${key} BLOCK ${entry.id} · HASH ${entry.hash}`;
-            addMetaLog(msg, "BLOCK");
-          });
-          container.appendChild(div);
-        });
-      });
-    }
-
-    function pushHistory(key, id) {
-      const hash = pseudoHash(key + id);
-      const arr = state.history[key];
-      arr.unshift({ id, hash, ts: Date.now() });
-      if (arr.length > 50) arr.pop();
-      saveHistory();
-      renderHistoryGrid();
-    }
-
-    // -----------------------------
-    // GENESIS / SYNC FILES (65 Dateien / Cluster)
-    // -----------------------------
-    const managerDefinition = {
-      GPCB: ["identity.gt","bank_exekutive.js","vault_control.py"],
-      ECCU: ["identity.gt","parity_logic.js","monitor.json"],
-      "RFOF-GOLD-CHAIN": ["identity.gt","integrity_check.py","chain_notary.bin"],
-      "APP-API": ["identity.gt","kaskaden_steuerung.js","bridge_handshake.go"],
-      "STORY-HISTORY": ["ARCHIVE/","publisher.py","notary_service.js"],
-      "ALPHA-NODES": ["auth.js","quantizer.py","map_core.cpp","reset_pulse.sh"],
-      API: ["actions.js","resources.json","event_listener.js","schema.xsd"],
-      "X-HUB": ["injector.bin","manifest.json"],
-      "CROSS-CHECK": ["anti_collision.py","point_e_check.js"],
-      USER: ["identity.gt","access_rights.key","task_executor.js"],
-      ADMIN: ["identity.gt","system_monitor.py","fee_notary.js"],
-      DEV: ["identity.gt","bridge_builder.js","axiom_validator.py"],
-      MASTER: ["identity.gt","axiom_override.bin","identity_injection.py"],
-      ENTERPRISE: ["identity.gt","settlement.js","liquidity_flow.py"],
-      PARTNER: ["identity.gt","sync_bridge.py"],
-      REPOSITORY: ["identity.gt","performance_boost.py","app_manifest.json"]
-    };
-
-    function collectClusterFiles() {
-      const files = [];
-      Object.entries(managerDefinition).forEach(([folder, arr]) => {
-        arr.forEach(name => {
-          files.push({ folder, name });
-        });
-      });
-      // we only need 65; if more, slice; if less, we still show all
-      return files.slice(0, 65);
-    }
-
-    function renderGenesisSyncFiles() {
-      const files = collectClusterFiles();
-      const genesisContainer = document.getElementById("genesisFiles");
-      const syncContainer = document.getElementById("syncFiles");
-      genesisContainer.innerHTML = "";
-      syncContainer.innerHTML = "";
-
-      files.forEach((file, idx) => {
-        const hash = pseudoHash(file.folder + "/" + file.name + "::GENESIS");
-        const pillG = document.createElement("div");
-        pillG.className = "file-pill";
-        pillG.textContent = `${file.folder}/${file.name}`;
-        pillG.title = `GENESIS · ${hash}`;
-        pillG.addEventListener("click", () => {
-          addMetaLog(`GENESIS-FILE ${file.folder}/${file.name} · HASH ${hash}`, "GENESIS");
-        });
-        genesisContainer.appendChild(pillG);
-
-        const hashS = pseudoHash(file.folder + "/" + file.name + "::SYNC");
-        const pillS = document.createElement("div");
-        pillS.className = "file-pill";
-        pillS.textContent = `${file.folder}/${file.name}`;
-        pillS.title = `SYNC · ${hashS}`;
-        pillS.addEventListener("click", () => {
-          addMetaLog(`SYNC-FILE ${file.folder}/${file.name} · HASH ${hashS}`, "SYNC");
-        });
-        syncContainer.appendChild(pillS);
-      });
-    }
-
-    // -----------------------------
-    // 13 DUAL-SEKTOREN
-    // -----------------------------
-    const sectorNames = [
+    const SECTOR_NAMES = [
       "GPCB",
       "Phoenix Coin",
       "G-Phoenix Token",
@@ -1628,494 +1332,703 @@
       "BRIDGE"
     ];
 
-    function initSectors() {
-      state.sectors = sectorNames.map((name, idx) => {
-        const grade = idx % 3 === 0 ? "AAA" : (idx % 3 === 1 ? "AA" : "A");
-        return {
-          id: idx,
-          name,
-          grade,
-          clearing: "OK",
-          xp: 0
-        };
-      });
+    /********************************************************************
+     * UTIL
+     ********************************************************************/
+
+    function isoNow() {
+      return STATE.isoNow();
     }
 
-    function renderSectors() {
-      const grid = document.getElementById("sectorsGrid");
-      grid.innerHTML = "";
-      state.sectors.forEach(sector => {
-        const card = document.createElement("div");
-        card.className = "sector-card";
-        card.dataset.sector = sector.name.includes("GOLD") ? "GOLD" : sector.name.split(" ")[0].replace(/[()]/g,"");
+    function randomHash(seed) {
+      const base = (seed || "") + isoNow() + Math.random().toString(16).slice(2);
+      let h = 0;
+      for (let i = 0; i < base.length; i++) {
+        h = (h * 31 + base.charCodeAt(i)) >>> 0;
+      }
+      return "0x" + h.toString(16).padStart(8, "0") + Math.random().toString(16).slice(2, 10);
+    }
 
-        const inner = document.createElement("div");
-        inner.className = "sector-inner";
+    function clamp(val, min, max) {
+      return Math.max(min, Math.min(max, val));
+    }
 
-        const header = document.createElement("div");
-        header.className = "sector-header-row";
-        header.innerHTML = `
-          <div class="sector-name">${sector.name}</div>
-          <div class="sector-aaa"><span data-grade="${sector.grade}">${sector.grade}</span></div>
-        `;
+    function xpToAAA(xp) {
+      if (xp > 8000) return "AAA";
+      if (xp > 2000) return "AA";
+      return "A";
+    }
 
-        const boxRow = document.createElement("div");
-        boxRow.className = "sector-box-row";
+    function xpToJouleBits(xp) {
+      return Math.floor(xp * 3.14);
+    }
 
-        const genesisBox = document.createElement("div");
-        genesisBox.className = "sector-box";
-        genesisBox.innerHTML = `<div class="sector-box-title">Genesis</div>`;
-        ["HASH: " + pseudoHash(sector.name + "::GENESIS"),
-         "BLOCK: #" + (1000 + sector.id),
-         "STATE: STATIC",
-         "FILES: 65/65"].forEach(line => {
-          const div = document.createElement("div");
-          div.className = "sector-line";
-          div.textContent = line;
-          div.addEventListener("click", () => {
-            addMetaLog(`GENESIS-SEKTOR ${sector.name} · ${line}`, "GENESIS");
-          });
-          genesisBox.appendChild(div);
-        });
+    function sectorAAAFromXP(xp) {
+      if (xp > 1200) return "AAA";
+      if (xp > 400) return "AA";
+      return "A";
+    }
 
-        const syncBox = document.createElement("div");
-        syncBox.className = "sector-box";
-        syncBox.innerHTML = `<div class="sector-box-title">Sync</div>`;
-        ["HASH: " + pseudoHash(sector.name + "::SYNC"),
-         "BLOCK: #" + (2000 + sector.id),
-         "CLEARING: 0.2% SAFE/OWNER/FOND/SYSTEM",
-         "XP-LINKED"].forEach(line => {
-          const div = document.createElement("div");
-          div.className = "sector-line";
-          div.textContent = line;
-          div.addEventListener("click", () => {
-            addMetaLog(`SYNC-SEKTOR ${sector.name} · ${line}`, "SYNC");
-          });
-          syncBox.appendChild(div);
-        });
+    function addLog(line) {
+      const log = document.getElementById("terminalLog");
+      const div = document.createElement("div");
+      div.className = "log-line";
+      div.textContent = line;
+      div.addEventListener("click", () => {
+        addLog("[RE-VERIFY] " + line);
+      });
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
 
-        boxRow.appendChild(genesisBox);
-        boxRow.appendChild(syncBox);
+    /********************************************************************
+     * PERSISTENZ
+     ********************************************************************/
 
-        const diagRow = document.createElement("div");
-        diagRow.className = "sector-diagram-row";
+    const STORAGE_KEYS = {
+      blocks: "chain-clearing.blocks",
+      candlesGenesis: "chain-clearing.candles.genesis",
+      candlesSync: "chain-clearing.candles.sync",
+      xp: "chain-clearing.xp",
+      sectors: "chain-clearing.sectors"
+    };
 
-        const diagCandles = document.createElement("div");
-        diagCandles.className = "sector-diagram";
-        diagCandles.innerHTML = `<div class="sector-diagram-label">Candles</div><div class="sector-diagram-pulse"></div>`;
+    function loadPersistedState() {
+      try {
+        const blocks = JSON.parse(localStorage.getItem(STORAGE_KEYS.blocks) || "[]");
+        const cg = JSON.parse(localStorage.getItem(STORAGE_KEYS.candlesGenesis) || "[]");
+        const cs = JSON.parse(localStorage.getItem(STORAGE_KEYS.candlesSync) || "[]");
+        const xp = parseInt(localStorage.getItem(STORAGE_KEYS.xp) || "0", 10);
+        const sectors = JSON.parse(localStorage.getItem(STORAGE_KEYS.sectors) || "[]");
 
-        const diagMecha = document.createElement("div");
-        diagMecha.className = "sector-diagram";
-        diagMecha.innerHTML = `<div class="sector-diagram-label">Mechatronik</div><div class="sector-diagram-pulse"></div>`;
+        STATE.blocks = blocks;
+        STATE.candlesGenesis = cg;
+        STATE.candlesSync = cs;
+        STATE.xp = xp;
+        STATE.jouleBits = xpToJouleBits(xp);
+        STATE.aaaLevel = xpToAAA(xp);
 
-        diagRow.appendChild(diagCandles);
-        diagRow.appendChild(diagMecha);
+        if (sectors && sectors.length === SECTOR_NAMES.length) {
+          STATE.sectors = sectors;
+        }
+      } catch (e) {
+        console.warn("Persistenz-Laden fehlgeschlagen", e);
+      }
+    }
 
-        const footer = document.createElement("div");
-        footer.className = "sector-footer-row";
-        footer.innerHTML = `
-          <div>XP: <span id="sectorXP-${sector.id}">0</span> · Clearing: <span id="sectorClearing-${sector.id}">${sector.clearing}</span></div>
-          <div>
-            <button data-sector="${sector.id}" class="btn-drill">Drill-Down</button>
-            <button data-sector="${sector.id}" class="btn-reset">Reset</button>
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.blocks, JSON.stringify(STATE.blocks));
+        localStorage.setItem(STORAGE_KEYS.candlesGenesis, JSON.stringify(STATE.candlesGenesis));
+        localStorage.setItem(STORAGE_KEYS.candlesSync, JSON.stringify(STATE.candlesSync));
+        localStorage.setItem(STORAGE_KEYS.xp, String(STATE.xp));
+        localStorage.setItem(STORAGE_KEYS.sectors, JSON.stringify(STATE.sectors));
+      } catch (e) {
+        console.warn("Persistenz-Speichern fehlgeschlagen", e);
+      }
+    }
+
+    /********************************************************************
+     * INTERNE 65 DATEIEN (SIMULATION)
+     ********************************************************************/
+
+    function initInternalFiles() {
+      // Wir simulieren nur logisch – keine UI-Liste.
+      const files = {};
+      // Wir erzeugen deterministische Seeds pro Manager-Ordner.
+      STATE.managerFolders.forEach(([folder, fileList]) => {
+        files[folder] = fileList.map((f, idx) => ({
+          name: f,
+          seed: folder + "::" + f + "::" + idx
+        }));
+      });
+      STATE.internalFiles = files;
+    }
+
+    function runInternalFileInteraction(folder, fileName) {
+      const folderFiles = STATE.internalFiles[folder] || [];
+      const file = folderFiles.find(f => f.name === fileName);
+      const seed = file ? file.seed : folder + "::" + fileName;
+      const hash = randomHash(seed);
+      const ts = isoNow();
+
+      // XP / Joule-Impuls
+      const xpGain = 5 + Math.floor(Math.random() * 25);
+      STATE.xp += xpGain;
+      STATE.jouleBits = xpToJouleBits(STATE.xp);
+      STATE.aaaLevel = xpToAAA(STATE.xp);
+
+      // Block erzeugen (Interaktion = Block)
+      const block = {
+        id: STATE.blocks.length,
+        hash,
+        prevHash: STATE.blocks.length ? STATE.blocks[STATE.blocks.length - 1].hash : "0x0",
+        timestamp: ts,
+        folder,
+        fileName,
+        aaa: STATE.aaaLevel,
+        clearing: folder === "ECCU" || folder === "GPCB" ? "Cleared" : "Simulated",
+        xpImpact: xpGain
+      };
+      STATE.blocks.push(block);
+
+      // Candle-Update: Genesis + Sync
+      pushCandle(STATE.candlesGenesis, block, "GENESIS");
+      pushCandle(STATE.candlesSync, block, "SYNC");
+
+      // Sektor-Update
+      updateSectorFromBlock(block);
+
+      // Logs
+      addLog(
+        `[BLOCK ${block.id}] ${block.hash} · ${block.timestamp} · ${folder}/${fileName} · AAA=${block.aaa} · XP+${xpGain}`
+      );
+
+      persistState();
+      renderAll();
+    }
+
+    function pushCandle(candleArray, block, view) {
+      const last = candleArray[candleArray.length - 1];
+      const priceBase = block.id + (view === "GENESIS" ? 0 : 0.5);
+      const open = last ? last.close : priceBase;
+      const close = priceBase + (Math.random() - 0.5) * 0.8;
+      const high = Math.max(open, close) + Math.random() * 0.4;
+      const low = Math.min(open, close) - Math.random() * 0.4;
+
+      const candle = {
+        timestamp: block.timestamp,
+        open,
+        high,
+        low,
+        close,
+        blockId: block.id,
+        hash: block.hash,
+        xpImpact: block.xpImpact
+      };
+      candleArray.push(candle);
+
+      // Limit für Performance
+      if (candleArray.length > 200) {
+        candleArray.shift();
+      }
+    }
+
+    function updateSectorFromBlock(block) {
+      const idx = SECTOR_NAMES.indexOf(block.folder);
+      if (idx === -1) return;
+      const sector = STATE.sectors[idx];
+      sector.lastBlockId = block.id;
+      sector.lastHash = block.hash;
+      sector.lastTimestamp = block.timestamp;
+      sector.xp += block.xpImpact;
+      sector.aaa = sectorAAAFromXP(sector.xp);
+      sector.clearing = block.clearing;
+    }
+
+    /********************************************************************
+     * INITIALISIERUNG SEKTOR / MINI-SEKTOR
+     ********************************************************************/
+
+    function initSectors() {
+      if (STATE.sectors.length === SECTOR_NAMES.length) return;
+      STATE.sectors = SECTOR_NAMES.map(name => ({
+        name,
+        lastBlockId: null,
+        lastHash: null,
+        lastTimestamp: null,
+        xp: 0,
+        aaa: "A",
+        clearing: "Idle"
+      }));
+    }
+
+    function initMiniSectors() {
+      STATE.miniSectors = STATE.sectors.map(s => ({
+        name: s.name,
+        lastBlockId: s.lastBlockId,
+        lastHash: s.lastHash,
+        lastTimestamp: s.lastTimestamp,
+        aaa: s.aaa,
+        clearing: s.clearing
+      }));
+    }
+
+    /********************************************************************
+     * Takt / 42E0
+     ********************************************************************/
+
+    function stepTakt() {
+      STATE.takt += STATE.taktDirection;
+      if (STATE.takt >= 10) {
+        STATE.takt = 10;
+        STATE.taktDirection = -1;
+        handleSingularity();
+      } else if (STATE.takt <= 0) {
+        STATE.takt = 0;
+        STATE.taktDirection = 1;
+        handleResetPulse();
+      }
+      renderTakt();
+    }
+
+    function handleResetPulse() {
+      document.getElementById("kachelReset").textContent = "Pulse @ " + isoNow();
+      addLog("[RESET] Takt 0 · Zero-Point-Reset vorbereitet (History bleibt persistent)");
+    }
+
+    function handleSingularity() {
+      document.getElementById("kachelSingularity").textContent = "Singularität @ " + isoNow();
+      addLog("[SINGULARITY] Takt 10 · Ereignishorizont E(6,5) erreicht");
+    }
+
+    /********************************************************************
+     * RENDERING
+     ********************************************************************/
+
+    function renderTakt() {
+      const label = document.getElementById("taktLabel");
+      const kachelLabel = document.getElementById("kachelTaktLabel");
+      const pulse = document.getElementById("taktPulse");
+      const t = STATE.takt;
+      label.textContent = `Takt ${t} / E(6,5)`;
+      kachelLabel.textContent = `Takt ${t} · ISO ${isoNow()}`;
+      const scale = 0.8 + (t / 10) * 0.6;
+      pulse.style.transform = `scale(${scale})`;
+    }
+
+    function renderXP() {
+      const xpLabel = document.getElementById("xpLabel");
+      const profileGlow = document.getElementById("profileGlow");
+      const aaa = STATE.aaaLevel;
+      xpLabel.textContent = `XP ${STATE.xp} · Joule ${STATE.jouleBits}b · Status ${aaa}`;
+      let glowColor = "var(--accent-green)";
+      if (aaa === "AA") glowColor = "var(--accent-gold)";
+      if (aaa === "AAA") glowColor = "var(--accent-purple)";
+      profileGlow.style.boxShadow = `0 0 18px ${glowColor}`;
+    }
+
+    function renderBlocks() {
+      const container = document.getElementById("globalBlockHistory");
+      container.innerHTML = "";
+      const countLabel = document.getElementById("globalBlockCount");
+      countLabel.textContent = `${STATE.blocks.length} Blöcke`;
+
+      const maxShow = 60;
+      const start = Math.max(0, STATE.blocks.length - maxShow);
+      for (let i = STATE.blocks.length - 1; i >= start; i--) {
+        const b = STATE.blocks[i];
+        const div = document.createElement("div");
+        div.className = "mini-sector";
+        div.innerHTML = `
+          <div class="mini-sector-name">#${b.id} · ${b.folder}/${b.fileName}</div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Hash</span>
+            <span class="mini-sector-value">${b.hash}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Time</span>
+            <span class="mini-sector-value">${b.timestamp}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">AAA</span>
+            <span class="mini-sector-aaa">${b.aaa}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Clear</span>
+            <span class="mini-sector-value">${b.clearing}</span>
           </div>
         `;
-
-        inner.appendChild(header);
-        inner.appendChild(boxRow);
-        inner.appendChild(diagRow);
-        inner.appendChild(footer);
-        card.appendChild(inner);
-        grid.appendChild(card);
-
-        // store pulses for takt sync
-        state.diagrams["sectorCandles-" + sector.id] = diagCandles.querySelector(".sector-diagram-pulse");
-        state.diagrams["sectorMecha-" + sector.id] = diagMecha.querySelector(".sector-diagram-pulse");
-      });
-
-      grid.querySelectorAll(".btn-drill").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = parseInt(btn.dataset.sector, 10);
-          const sector = state.sectors.find(s => s.id === id);
-          if (!sector) return;
-          addMetaLog(`DRILL-DOWN Sektor ${sector.name} · Level 03 Rendering aktiviert.`, "L03");
+        div.addEventListener("click", () => {
+          addLog(
+            `[DETAIL BLOCK ${b.id}] ${b.hash} · ${b.timestamp} · AAA=${b.aaa} · XP+${b.xpImpact} · ${b.folder}/${b.fileName}`
+          );
         });
-      });
-
-      grid.querySelectorAll(".btn-reset").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = parseInt(btn.dataset.sector, 10);
-          const sector = state.sectors.find(s => s.id === id);
-          if (!sector) return;
-          sector.xp = 0;
-          sector.clearing = "OK";
-          document.getElementById("sectorXP-" + id).textContent = "0";
-          document.getElementById("sectorClearing-" + id).textContent = "OK";
-          addMetaLog(`RESET Sektor ${sector.name} · Zero-Point-Reset (Z) ausgeführt.`, "RESET");
-        });
-      });
+        container.appendChild(div);
+      }
     }
 
-    // -----------------------------
-    // X-HUB
-    // -----------------------------
-    const xhubTerminal = document.getElementById("xhubTerminal");
-
-    function addXHubLog(msg) {
-      const line = document.createElement("div");
-      line.className = "term-line";
-      const time = new Date().toLocaleTimeString();
-      line.innerHTML = `[${time}] <span class="term-meta">[X-HUB]</span> ${msg}`;
-      xhubTerminal.appendChild(line);
-      xhubTerminal.scrollTop = xhubTerminal.scrollHeight;
-    }
-
-    // -----------------------------
-    // RAPP-STORE
-    // -----------------------------
-    const rappApps = [
-      "CLEARING-APP",
-      "XP-MONITOR",
-      "JOULE-MINER",
-      "IDENTITY-VIEW",
-      "BRIDGE-APP",
-      "RFOF-DASH"
-    ];
-
-    function renderRappStore() {
-      const grid = document.getElementById("rappGrid");
-      grid.innerHTML = "";
-      rappApps.forEach((name, idx) => {
+    function renderMiniSectors() {
+      initMiniSectors();
+      const container = document.getElementById("miniSectors");
+      container.innerHTML = "";
+      STATE.miniSectors.forEach((s, idx) => {
         const div = document.createElement("div");
-        div.className = "rapp-pill";
+        div.className = "mini-sector";
+        const lastBlock = s.lastBlockId != null ? "#" + s.lastBlockId : "—";
+        const lastHash = s.lastHash || "—";
+        const lastTime = s.lastTimestamp || "—";
         div.innerHTML = `
-          <div class="rapp-name">${name}</div>
-          <div style="font-size:8px;">Native Web-Component · Manager-Status: READY</div>
-          <div class="rapp-bar"><div class="rapp-bar-fill" id="rappBar-${idx}"></div></div>
+          <div class="mini-sector-name">${idx + 1}. ${s.name}</div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Block</span>
+            <span class="mini-sector-value">${lastBlock}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Hash</span>
+            <span class="mini-sector-value">${lastHash}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Time</span>
+            <span class="mini-sector-value">${lastTime}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">AAA</span>
+            <span class="mini-sector-aaa">${s.aaa}</span>
+          </div>
+          <div class="mini-sector-row">
+            <span class="mini-sector-label">Clear</span>
+            <span class="mini-sector-value">${s.clearing}</span>
+          </div>
         `;
         div.addEventListener("click", () => {
-          addXHubLog(`RAPP ${name} · Injektions-Status aktualisiert.`);
+          addLog(
+            `[DETAIL SEKTOR] ${s.name} · Block=${lastBlock} · AAA=${s.aaa} · Clear=${s.clearing} · Time=${lastTime}`
+          );
         });
+        container.appendChild(div);
+      });
+    }
+
+    function renderHistoryGrid() {
+      const container = document.getElementById("historyGrid");
+      container.innerHTML = "";
+      const chains = [
+        "GPCB-CHAIN",
+        "ECCU-CHAIN",
+        "RFOF-GOLD",
+        "BIP-AGG",
+        "NEURAL-CACHE",
+        "GLOBAL-IDX"
+      ];
+      chains.forEach(name => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <div class="metric-label">${name}</div>
+          <div class="metric-value">${isoNow()}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderSectorsSummary() {
+      const gMetrics = document.getElementById("sectorsGenesisMetrics");
+      const sMetrics = document.getElementById("sectorsSyncMetrics");
+      gMetrics.innerHTML = "";
+      sMetrics.innerHTML = "";
+
+      STATE.sectors.forEach(s => {
+        const gDiv = document.createElement("div");
+        gDiv.innerHTML = `
+          <div class="metric-label">${s.name}</div>
+          <div class="metric-value">${s.clearing}</div>
+        `;
+        gMetrics.appendChild(gDiv);
+
+        const sDiv = document.createElement("div");
+        sDiv.innerHTML = `
+          <div class="metric-label">${s.name}</div>
+          <div class="metric-value">${s.aaa}</div>
+        `;
+        sMetrics.appendChild(sDiv);
+      });
+    }
+
+    function renderAZ() {
+      const grid = document.getElementById("azGrid");
+      const label = document.getElementById("azPhaseLabel");
+      grid.innerHTML = "";
+      STATE.azPhases.forEach(([letter, name], idx) => {
+        const div = document.createElement("div");
+        div.className = "az-item";
+        div.innerHTML = `
+          <div class="az-phase">${letter}</div>
+          <div class="az-label">${name}</div>
+        `;
+        if (idx === STATE.azIndex) {
+          div.style.borderColor = "rgba(245, 211, 107, 0.8)";
+          div.style.boxShadow = "0 0 14px rgba(245, 211, 107, 0.5)";
+        }
         grid.appendChild(div);
       });
+      const [letter, name] = STATE.azPhases[STATE.azIndex];
+      label.textContent = `Phase: ${letter} · ${name}`;
     }
 
-    // -----------------------------
-    // MANAGER-ORDNER
-    // -----------------------------
-    function renderManagerList() {
+    function renderManager() {
       const list = document.getElementById("managerList");
       list.innerHTML = "";
-      Object.entries(managerDefinition).forEach(([folder, files]) => {
-        const group = document.createElement("div");
-        group.className = "manager-group";
-        const title = document.createElement("div");
-        title.className = "manager-title";
-        title.textContent = folder;
-        group.appendChild(title);
-        files.forEach(name => {
-          const fileDiv = document.createElement("div");
-          fileDiv.className = "manager-file";
-          fileDiv.textContent = name;
-          fileDiv.title = `${folder}/${name}`;
-          fileDiv.addEventListener("click", () => {
-            const hash = pseudoHash(folder + "/" + name);
-            addMetaLog(`MANAGER-FILE ${folder}/${name} · HASH ${hash}`, "FILE");
-          });
-          group.appendChild(fileDiv);
-        });
-        list.appendChild(group);
+      STATE.managerFolders.forEach(([folder, files]) => {
+        const line = document.createElement("div");
+        line.className = "manager-item";
+        line.innerHTML = `<span class="key">${folder}</span>: <span class="file">${files.join(
+          ", "
+        )}</span> <span class="meta">[sim]</span>`;
+        list.appendChild(line);
       });
     }
 
-    // -----------------------------
-    // DIAGRAMME (CANVAS)
-    // -----------------------------
-    function drawCandles(ctx, t) {
-      const w = ctx.canvas.width;
-      const h = ctx.canvas.height;
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "#020617";
-      ctx.fillRect(0,0,w,h);
+    function renderGenesisSyncStatus() {
+      const genesisClearing = document.getElementById("genesisClearing");
+      const syncClearing = document.getElementById("syncClearing");
+      const genesisXP = document.getElementById("genesisXP");
+      const syncXP = document.getElementById("syncXP");
+      const genesisHash = document.getElementById("genesisHash");
+      const syncHash = document.getElementById("syncHash");
+      const viewerAAA = document.getElementById("viewerAAA");
+      const genesisAAA = document.getElementById("genesisAAA");
+      const syncAAA = document.getElementById("syncAAA");
 
-      const count = 16;
-      const candleWidth = w / (count * 1.4);
-      for (let i = 0; i < count; i++) {
-        const x = (i + 0.5) * (w / count);
-        const base = h * 0.8;
-        const height = (Math.sin(t/400 + i*0.4) * 0.3 + 0.7) * (h*0.4);
-        const top = base - height;
-        const color = i % 2 === 0 ? "#4ade80" : "#f97316";
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(x, top);
-        ctx.lineTo(x, base);
-        ctx.stroke();
-        ctx.fillStyle = color;
-        ctx.fillRect(x - candleWidth/2, top + height*0.2, candleWidth, height*0.6);
-      }
+      const lastBlock = STATE.blocks[STATE.blocks.length - 1];
+      const hash = lastBlock ? lastBlock.hash : "—";
+      const clearing = lastBlock ? lastBlock.clearing : "Idle";
+
+      genesisClearing.textContent = clearing;
+      syncClearing.textContent = clearing;
+      genesisXP.textContent = `${STATE.xp} / ${STATE.jouleBits}b`;
+      syncXP.textContent = `${STATE.xp} / ${STATE.jouleBits}b`;
+      genesisHash.textContent = hash;
+      syncHash.textContent = hash;
+
+      viewerAAA.textContent = `GLOBAL STATUS: ${STATE.aaaLevel}`;
+      genesisAAA.textContent = STATE.aaaLevel;
+      syncAAA.textContent = STATE.aaaLevel;
     }
 
-    function drawMecha(ctx, t) {
-      const w = ctx.canvas.width;
-      const h = ctx.canvas.height;
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "#020617";
-      ctx.fillRect(0,0,w,h);
+    function renderAll() {
+      renderTakt();
+      renderXP();
+      renderBlocks();
+      renderMiniSectors();
+      renderHistoryGrid();
+      renderSectorsSummary();
+      renderAZ();
+      renderManager();
+      renderGenesisSyncStatus();
+      drawAllDiagrams();
+    }
 
-      const cx = w/2;
-      const cy = h*0.6;
-      const radius = Math.min(w,h)*0.25;
-      ctx.strokeStyle = "rgba(148,163,184,0.6)";
+    /********************************************************************
+     * DIAGRAMME (CANDLES + MECHATRONIK)
+     ********************************************************************/
+
+    function drawCandles(canvas, candles) {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+
+      if (!candles.length) {
+        ctx.fillStyle = "rgba(255,255,255,0.2)";
+        ctx.font = "10px var(--font-mono)";
+        ctx.fillText("Keine Candles · Interaktion erzeugt Blöcke → Candles", 6, 14);
+        return;
+      }
+
+      const maxShow = Math.min(60, candles.length);
+      const slice = candles.slice(candles.length - maxShow);
+      const prices = slice.flatMap(c => [c.high, c.low]);
+      const minP = Math.min(...prices);
+      const maxP = Math.max(...prices);
+      const range = maxP - minP || 1;
+      const xStep = w / maxShow;
+
+      slice.forEach((c, idx) => {
+        const x = idx * xStep + xStep * 0.5;
+        const yHigh = h - ((c.high - minP) / range) * (h * 0.8) - h * 0.1;
+        const yLow = h - ((c.low - minP) / range) * (h * 0.8) - h * 0.1;
+        const yOpen = h - ((c.open - minP) / range) * (h * 0.8) - h * 0.1;
+        const yClose = h - ((c.close - minP) / range) * (h * 0.8) - h * 0.1;
+
+        const isUp = c.close >= c.open;
+        ctx.strokeStyle = isUp ? "rgba(74,242,155,0.9)" : "rgba(255,74,107,0.9)";
+        ctx.fillStyle = isUp ? "rgba(74,242,155,0.4)" : "rgba(255,74,107,0.4)";
+
+        // Wick
+        ctx.beginPath();
+        ctx.moveTo(x, yHigh);
+        ctx.lineTo(x, yLow);
+        ctx.stroke();
+
+        // Body
+        const bodyTop = Math.min(yOpen, yClose);
+        const bodyBottom = Math.max(yOpen, yClose);
+        const bodyHeight = Math.max(2, bodyBottom - bodyTop);
+        ctx.fillRect(x - xStep * 0.25, bodyTop, xStep * 0.5, bodyHeight);
+      });
+    }
+
+    function drawMecha(canvas, t) {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const radius = Math.min(w, h) * 0.35;
+      const pulses = 6 + STATE.takt;
+      const angleStep = (Math.PI * 2) / pulses;
+
+      ctx.strokeStyle = "rgba(74,198,255,0.4)";
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI*2);
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      const particles = 18;
-      for (let i = 0; i < particles; i++) {
-        const angle = (t/800) + i * (Math.PI*2/particles);
-        const r = radius * (0.7 + 0.3*Math.sin(t/600 + i));
-        const x = cx + Math.cos(angle)*r;
-        const y = cy + Math.sin(angle)*r;
-        const alpha = 0.4 + 0.4*Math.sin(t/500 + i);
-        ctx.fillStyle = `rgba(56,189,248,${alpha})`;
+      for (let i = 0; i < pulses; i++) {
+        const angle = i * angleStep + t * 0.001 * (STATE.taktDirection > 0 ? 1 : -1);
+        const px = cx + Math.cos(angle) * radius;
+        const py = cy + Math.sin(angle) * radius;
+        const innerR = radius * (0.4 + 0.2 * Math.sin(t * 0.001 + i));
+        const ix = cx + Math.cos(angle) * innerR;
+        const iy = cy + Math.sin(angle) * innerR;
+
+        ctx.strokeStyle = "rgba(181,123,255,0.5)";
         ctx.beginPath();
-        ctx.arc(x,y,2,0,Math.PI*2);
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(ix, iy);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(74,198,255,0.9)";
+        ctx.beginPath();
+        ctx.arc(px, py, 2.2, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      ctx.fillStyle = "rgba(74,222,128,0.9)";
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI*2);
-      ctx.fill();
     }
 
-    function initDiagrams() {
-      const genesisCandles = document.getElementById("genesisCandles").getContext("2d");
-      const genesisMecha = document.getElementById("genesisMecha").getContext("2d");
-      const syncCandles = document.getElementById("syncCandles").getContext("2d");
-      const syncMecha = document.getElementById("syncMecha").getContext("2d");
-      state.diagrams.genesisCandles = genesisCandles;
-      state.diagrams.genesisMecha = genesisMecha;
-      state.diagrams.syncCandles = syncCandles;
-      state.diagrams.syncMecha = syncMecha;
+    function drawAllDiagrams() {
+      drawCandles(document.getElementById("genesisCandles"), STATE.candlesGenesis);
+      drawCandles(document.getElementById("syncCandles"), STATE.candlesSync);
+      const t = performance.now();
+      drawMecha(document.getElementById("genesisMecha"), t);
+      drawMecha(document.getElementById("syncMecha"), t);
     }
 
-    function resizeDiagrams() {
-      ["genesisCandles","genesisMecha","syncCandles","syncMecha"].forEach(id => {
-        const canvas = document.getElementById(id);
-        if (!canvas) return;
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width * window.devicePixelRatio;
-        canvas.height = rect.height * window.devicePixelRatio;
-        const ctx = canvas.getContext("2d");
-        ctx.setTransform(window.devicePixelRatio,0,0,window.devicePixelRatio,0,0);
+    /********************************************************************
+     * INTERAKTION = BLOCK-GENERIERUNG
+     ********************************************************************/
+
+    function handleUserInteraction(type, extra) {
+      // XP-Impuls aus Interaktion
+      const baseXP = type === "mouse" ? 1 : 10;
+      const jitter = Math.floor(Math.random() * 5);
+      const gain = baseXP + jitter;
+      STATE.xp += gain;
+      STATE.jouleBits = xpToJouleBits(STATE.xp);
+      STATE.aaaLevel = xpToAAA(STATE.xp);
+
+      // Wähle deterministisch eine interne Datei
+      const folderIdx = Math.floor(Math.random() * STATE.managerFolders.length);
+      const [folder, files] = STATE.managerFolders[folderIdx];
+      const fileIdx = Math.floor(Math.random() * files.length);
+      const fileName = files[fileIdx];
+
+      runInternalFileInteraction(folder, fileName);
+    }
+
+    /********************************************************************
+     * EVENTS
+     ********************************************************************/
+
+    function setupProfileDropdown() {
+      const btn = document.getElementById("profileButton");
+      const dropdown = document.getElementById("profileDropdown");
+
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
+        dropdown.classList.toggle("visible");
+      });
+
+      document.addEventListener("click", () => {
+        dropdown.classList.remove("visible");
+      });
+
+      dropdown.addEventListener("click", e => {
+        e.stopPropagation();
+      });
+
+      dropdown.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const nav = btn.getAttribute("data-nav");
+          addLog(`[NAV] ${nav.toUpperCase()} geöffnet (Simulation)`);
+        });
       });
     }
 
-    // -----------------------------
-    // Takt + XP / JOULE
-    // -----------------------------
-    function updateTakt(dt) {
-      const speed = 0.0015; // cycles per ms
-      state.takt += dt * speed * 10;
-      if (state.takt >= 10.0) {
-        state.takt = 0.0;
-        addMetaLog("42E0 Singularität erreicht · Zero-Point-Reset (Z) getriggert.", "42E0");
-      }
-      const taktInt = Math.floor(state.takt);
-      document.getElementById("taktDisplay").textContent = taktInt;
-      document.getElementById("k0TaktLabel").textContent = taktInt;
-      document.getElementById("k0TaktValue").textContent = state.takt.toFixed(1);
-      const fill = document.getElementById("k0TaktFill");
-      fill.style.transform = `scaleX(${Math.max(0.05, state.takt/10)})`;
+    function setupTerminal() {
+      const input = document.getElementById("terminalInput");
+      const send = document.getElementById("terminalSend");
 
-      // Puls für Sektoren
-      Object.keys(state.diagrams).forEach(key => {
-        if (key.startsWith("sector")) {
-          const el = state.diagrams[key];
-          if (!el) return;
-          const phase = Math.sin(state.takt/10 * Math.PI*2);
-          const scale = 0.2 + 0.4 * (phase*0.5 + 0.5);
-          el.style.transform = `scaleY(${scale})`;
-          el.style.opacity = 0.3 + 0.4*(phase*0.5 + 0.5);
+      function runCommand() {
+        const cmd = input.value.trim();
+        if (!cmd) return;
+        addLog("> " + cmd);
+
+        // Sehr einfache GUCI-Parsing-Simulation
+        if (cmd.includes("parity_logic.js")) {
+          runInternalFileInteraction("ECCU", "parity_logic.js");
+        } else if (cmd.includes("bank_exekutive.js")) {
+          runInternalFileInteraction("GPCB", "bank_exekutive.js");
+        } else if (cmd.includes("integrity_check.py")) {
+          runInternalFileInteraction("RFOF-GOLD-CHAIN", "integrity_check.py");
+        } else {
+          handleUserInteraction("terminal", { cmd });
+        }
+
+        input.value = "";
+      }
+
+      send.addEventListener("click", runCommand);
+      input.addEventListener("keydown", e => {
+        if (e.key === "Enter") runCommand();
+      });
+    }
+
+    function setupXPMining() {
+      let lastTime = performance.now();
+      document.addEventListener("mousemove", () => {
+        const now = performance.now();
+        if (now - lastTime > 120) {
+          lastTime = now;
+          handleUserInteraction("mouse");
         }
       });
-
-      // RAPP bars
-      rappApps.forEach((_, idx) => {
-        const bar = document.getElementById("rappBar-" + idx);
-        if (!bar) return;
-        const phase = Math.sin(state.takt/10 * Math.PI*2 + idx);
-        const scale = 0.2 + 0.6*(phase*0.5 + 0.5);
-        bar.style.transform = `scaleX(${scale})`;
-      });
     }
 
-    function updateXPFromFPS(dt) {
-      const fps = state.fpsFrames > 0 ? state.fpsFrames / (state.fpsAccumulator/1000) : 0;
-      state.fpsAccumulator = 0;
-      state.fpsFrames = 0;
-      const gain = Math.min(0.5, fps/120);
-      state.xp += gain;
-      state.joule = state.xp / 100;
-      document.getElementById("xpDisplay").textContent = state.xp.toFixed(1);
-      document.getElementById("k0XPValue").textContent = `XP ${state.xp.toFixed(1)} · ${state.joule.toFixed(3)} J`;
-
-      // Identity grade
-      let grade = "A";
-      if (state.xp > 200) grade = "AAA";
-      else if (state.xp > 50) grade = "AA";
-      document.getElementById("k0IdentityGrade").textContent = grade;
-      document.getElementById("footerIdentity").textContent = grade;
+    function setupTaktLoop() {
+      setInterval(() => {
+        stepTakt();
+        // A–Z Phase weiterschalten
+        STATE.azIndex = (STATE.azIndex + 1) % STATE.azPhases.length;
+        renderAZ();
+        drawAllDiagrams();
+      }, 900);
     }
 
-    function onMouseMove() {
-      state.xp += 0.02;
-    }
+    /********************************************************************
+     * INIT
+     ********************************************************************/
 
-    // -----------------------------
-    // GENESIS / SYNC STATUS
-    // -----------------------------
-    function updateGenesisSyncStatus() {
-      document.getElementById("genesisXP").textContent = `XP: ${state.xp.toFixed(1)}`;
-      document.getElementById("syncXP").textContent = `XP: ${state.xp.toFixed(1)}`;
-      document.getElementById("genesisClearing").textContent = "Clearing: OK";
-      document.getElementById("syncClearing").textContent = "Clearing: 0.2% SAFE/OWNER/FOND/SYSTEM";
-    }
-
-    // -----------------------------
-    // MAIN LOOP
-    // -----------------------------
-    function loop(now) {
-      const dt = now - state.lastFrameTime;
-      state.lastFrameTime = now;
-      state.fpsAccumulator += dt;
-      state.fpsFrames++;
-
-      updateTakt(dt);
-
-      if (state.fpsAccumulator >= 1000) {
-        updateXPFromFPS(state.fpsAccumulator);
-        updateGenesisSyncStatus();
-      }
-
-      // diagrams
-      if (state.diagrams.genesisCandles) drawCandles(state.diagrams.genesisCandles, now);
-      if (state.diagrams.genesisMecha) drawMecha(state.diagrams.genesisMecha, now);
-      if (state.diagrams.syncCandles) drawCandles(state.diagrams.syncCandles, now + 200);
-      if (state.diagrams.syncMecha) drawMecha(state.diagrams.syncMecha, now + 200);
-
-      requestAnimationFrame(loop);
-    }
-
-    // -----------------------------
-    // SEARCH / GUCI PARAMS
-    // -----------------------------
-    function parseGUCIParams() {
-      const params = new URLSearchParams(window.location.search);
-      const block = params.get("block");
-      const query = params.get("query");
-      const level = params.get("level") || "02";
-      const node = params.get("node") || "SYSTEM";
-
-      addMetaLog(`RENDERING LEVEL: ${level} | NODE: ${node}`, "LEVEL");
-
-      if (block) {
-        addMetaLog(`INSPECTING BLOCK: #${block} · Detail-Analysis initiated.`, "BLOCK");
-        pushHistory("GPCB", block);
-      }
-      if (query) {
-        addMetaLog(`SEARCH GUCI: ${decodeURIComponent(query)} · Fetching Profile-Chain-State.`, "GUCI");
-      }
-      if (level === "03" && block) {
-        addMetaLog(`[L03] Deep-Dive Rendering for Block: ${block}`, "L03");
-      } else if (level === "02") {
-        addMetaLog(`[L02] Browsing Level 02 Meta-Structure of ${node}.`, "L02");
-      }
-    }
-
-    // -----------------------------
-    // WALLET / PROFILE / SETTINGS
-    // -----------------------------
-    function initGlobalButtons() {
-      document.getElementById("btnWallet").addEventListener("click", () => {
-        addMetaLog("WALLET: Universal-Ledger · Mining · Fees · Staking geöffnet.", "WALLET");
-      });
-      document.getElementById("btnProfile").addEventListener("click", () => {
-        addMetaLog("PROFILE: Social X-Hub · Satoramy-ID · XP-Level geöffnet.", "PROFILE");
-      });
-      document.getElementById("btnSettings").addEventListener("click", () => {
-        addMetaLog("SETTINGS: Systemparameter · SAFE/OWNER/FOND/SYSTEM · VM-Bypass geöffnet.", "SETTINGS");
-      });
-    }
-
-    // -----------------------------
-    // INIT
-    // -----------------------------
     function init() {
-      updateClock();
-      setInterval(updateClock, 1000);
-
-      loadHistory();
-      renderHistoryGrid();
-      renderAZGrid();
-      renderGenesisSyncFiles();
+      loadPersistedState();
+      initInternalFiles();
       initSectors();
-      renderSectors();
-      renderRappStore();
-      renderManagerList();
-      initGlobalButtons();
-
-      initDiagrams();
-      resizeDiagrams();
-      window.addEventListener("resize", () => {
-        resizeDiagrams();
-      });
-
-      document.addEventListener("mousemove", onMouseMove);
-
-      // X-HUB input
-      document.getElementById("xhubSend").addEventListener("click", () => {
-        const input = document.getElementById("xhubInput");
-        const val = input.value.trim();
-        if (!val) return;
-        addXHubLog(`Injection: ${val} · Energie-Impuls ausgelöst.`);
-        addMetaLog(`X-HUB Injection: ${val}`, "X-HUB");
-        input.value = "";
-      });
-
-      // initial logs
-      addMetaLog("Initializing Chain-Clearing Monolith...", "INIT");
-      addMetaLog("Merging API Streams: GPCB, ECCU, RFOF-GOLD-CHAIN.", "INIT");
-      addMetaLog("Synchronizing Documentation-Nodes with Live-State.", "INIT");
-      addMetaLog("@RFOF-NETWORK: Alles was einmal gelernt wurde, ist nun im Meta-Clearing aktiv.", "META");
-
-      parseGUCIParams();
-
-      // simulate history growth
-      setInterval(() => {
-        const keys = ["GPCB","ECCU","RFOF","BIP","CACHE","INDEX"];
-        const key = keys[Math.floor(Math.random()*keys.length)];
-        const id = "BLOCK-" + Math.random().toString(36).substring(2,8).toUpperCase();
-        pushHistory(key, id);
-        addMetaLog(`META-SYNC: ${key} ${id} propagated to all Sektoren.`, "SYNC");
-      }, 6000);
-
-      // cross-chain audit
-      setInterval(() => {
-        const neighbors = ["GPCB","ECCU","RFOF-GOLD-CHAIN"];
-        const target = neighbors[Math.floor(Math.random()*neighbors.length)];
-        addMetaLog(`[CROSS-AUDIT] Reading path: ${target}/wallet/ ... INTEGRITY 100%`, "AUDIT");
-      }, 9000);
-
-      state.lastFrameTime = performance.now();
-      requestAnimationFrame(loop);
+      setupProfileDropdown();
+      setupTerminal();
+      setupXPMining();
+      setupTaktLoop();
+      renderAll();
+      addLog("[INIT] chain-clearing/index.html · Monolith geladen · 42E0 aktiv · ISO-Zeitformat aktiv");
     }
 
-    document.addEventListener("DOMContentLoaded", init);
+    window.addEventListener("load", init);
   </script>
 </body>
 </html>

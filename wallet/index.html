@@ -618,8 +618,40 @@
 
 </main>
 
-<!-- WICHTIG: app.js EINBINDEN -->
+<!-- WICHTIG: zuerst den UI-Controller laden -->
 <script src="app.js"></script>
+
+<!-- Brücke: index.html ↔ browser.html (TXf-Viewer) -->
+<script>
+  (function () {
+    // GUCI aus dem bestehenden Persistenz-System holen
+    const guci = localStorage.getItem('globalClientID') || '';
+
+    // 1. Optionaler "Explorer / TXf-Viewer"-Button in der index.html:
+    // <button class="btn-explorer">Explorer / TXf-Viewer</button>
+    const explorerButtons = document.querySelectorAll('.btn-explorer');
+    explorerButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const url = 'browser.html' + (guci ? ('?guci=' + encodeURIComponent(guci)) : '');
+        window.open(url, '_blank'); // oder window.location.href = url;
+      });
+    });
+
+    // 2. Falls du History-Links aus app.js zusätzlich im Browser öffnen willst:
+    // app.js erzeugt bereits ../viewer/index.html?tx=...
+    // Hier kannst du ergänzend alle .hash-link auch in browser.html spiegeln:
+    document.addEventListener('click', (ev) => {
+      const a = ev.target.closest('.hash-link-txf');
+      if (!a) return;
+      ev.preventDefault();
+      const txId = a.getAttribute('data-tx') || '';
+      const url = 'browser.html' +
+        (txId ? ('?tx=' + encodeURIComponent(txId)) : '') +
+        (guci ? ( (txId ? '&' : '?') + 'guci=' + encodeURIComponent(guci)) : '');
+      window.open(url, '_blank');
+    });
+  })();
+</script>
 
 </body>
 </html>

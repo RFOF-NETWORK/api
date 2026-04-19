@@ -2,306 +2,323 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PZQQET | CHAIN-CLEARING MONOLITH</title>
+    <title>PZQQET SOUVEREIGN MONOLITH 4.0</title>
     <style>
         :root {
-            --bg: #000000;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --prai-cyan: #00f3ff;
-            --aaa-magenta: #ff00ff;
-            --aa-blue: #00bcff;
-            --a-green: #00ff88;
-            --blur: blur(40px);
-            --sat: saturate(160%);
-            --font: -apple-system, "SF Pro Display", sans-serif;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-heavy: rgba(255, 255, 255, 0.15);
+            --blur: blur(40px) saturate(160%);
+            --pzqqet-gold: #d4af37;
+            --pzqqet-blue: #007aff;
+            --bg: #000;
+            --text: #f5f5f7;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            font-family: var(--font); 
-            width: 1280px; 
-            height: 100vh; 
-            overflow: hidden; 
-            position: relative;
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body, html { 
+            margin: 0; padding: 0; width: 1280px; height: 100%; 
+            background: var(--bg); color: var(--text); 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            overflow-x: hidden;
         }
 
-        /* 0. LOGIN-SYSTEM CSS */
+        /* Viewport Fix auf 1280px für iPhone Desktop-Layout */
+        @viewport { width: 1280px; }
+
+        /* --- LOGIN SCREEN (GUCI-STYLE) --- */
         #login-screen {
-            position: fixed; 
-            inset: 0; 
-            background: #000; 
-            z-index: 10000; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
+            position: fixed; inset: 0; z-index: 9999; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: var(--blur);
         }
+
         .login-box {
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-            width: 400px;
+            width: 400px; padding: 40px; border-radius: 30px;
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+
         input {
-            width: 100%; padding: 15px; margin: 10px 0;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            color: #fff; border-radius: 10px; outline: none;
-        }
-        button.prai-btn {
-            background: var(--prai-cyan); color: #000; font-weight: bold;
-            padding: 15px 30px; border: none; border-radius: 10px; width: 100%;
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px;
+            border: none; background: rgba(255,255,255,0.05); color: white;
+            font-size: 1rem; outline: none; text-align: center;
         }
 
-        /* 1. HEADER (BOX B) */
+        .btn-action {
+            width: 100%; padding: 15px; margin-top: 20px; border-radius: 12px;
+            border: none; background: var(--text); color: black; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
         header {
-            position: fixed; top: 0; width: 1280px; height: 80px;
-            background: rgba(0,0,0,0.5); backdrop-filter: var(--blur) var(--sat);
-            border-bottom: 1px solid var(--glass-border);
+            position: fixed; top: 0; width: 1280px; height: 70px;
+            background: var(--glass); backdrop-filter: var(--blur);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 40px; z-index: 5000;
+            padding: 0 40px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .profile-trigger {
-            display: flex; align-items: center; gap: 15px; position: relative;
+
+        #profile-element {
+            display: flex; align-items: center; gap: 15px; cursor: pointer;
+            padding: 5px 15px; border-radius: 20px; transition: 0.3s;
         }
-        .avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(45deg, #333, #666); border: 2px solid var(--prai-cyan); }
+
+        #profile-element:hover { background: rgba(255,255,255,0.1); }
+
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--pzqqet-gold); }
+
         .dropdown {
-            position: absolute; top: 60px; right: 0; width: 280px;
-            background: rgba(10,10,10,0.95); backdrop-filter: var(--blur);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            display: none; flex-direction: column; padding: 15px;
+            position: absolute; top: 75px; right: 40px; width: 300px;
+            background: var(--glass-heavy); backdrop-filter: var(--blur);
+            border-radius: 24px; display: none; flex-direction: column; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1); z-index: 1001;
         }
-        .dropdown.active { display: flex; }
-        .nav-btn { padding: 12px; border-radius: 10px; transition: 0.3s; margin-bottom: 5px; cursor: pointer; }
-        .nav-btn:hover { background: var(--glass); }
 
-        /* 2. KACHEL NULL (SEKTOR 02) */
-        #kachel-null {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 500px; height: 500px; z-index: 100; pointer-events: none;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .takt-ring {
-            position: absolute; width: 100%; height: 100%;
-            border: 2px solid transparent; border-top: 2px solid var(--prai-cyan);
-            border-radius: 50%; transition: transform 0.1s linear;
-        }
-        .takt-display { font-size: 120px; font-weight: 100; text-shadow: 0 0 40px var(--prai-cyan); }
+        /* --- KACHEL NULL & 13 SEKTOREN --- */
+        main { padding-top: 100px; padding-bottom: 50px; display: flex; flex-direction: column; align-items: center; }
 
-        /* 3. GRID & SEKTOREN */
-        #master-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px; padding: 100px 40px; height: 100vh; overflow-y: auto;
-            scrollbar-width: none;
+        .kachel-null {
+            width: 1200px; height: 500px; background: var(--glass);
+            border-radius: 40px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; position: relative; overflow: hidden; margin-bottom: 40px;
         }
-        .sektor-box {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 25px; padding: 20px; position: relative;
-            transition: transform 0.2s ease;
-        }
-        .dual-view { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .view-pane { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 10px; font-size: 10px; height: 120px; overflow: hidden; }
-        .diagram-layer { height: 60px; margin-top: 10px; display: flex; align-items: flex-end; gap: 2px; }
-        .candle { width: 4px; background: var(--a-green); min-height: 2px; }
 
-        /* 4. TERMINAL & OVERLAYS */
-        #terminal {
-            position: fixed; bottom: 0; width: 1280px; height: 180px;
-            background: rgba(0,0,0,0.8); border-top: 1px solid var(--glass-border);
-            font-family: "SF Mono", monospace; font-size: 11px; padding: 15px;
-            overflow-y: auto; z-index: 4000;
+        .event-horizon {
+            width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-right: 1px solid rgba(255,255,255,0.1);
         }
-        #reset-pulse { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; }
+
+        .takt-circle {
+            width: 180px; height: 180px; border: 2px solid var(--pzqqet-gold);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; font-weight: 100; position: relative;
+        }
+
+        .grid-13 {
+            display: grid; grid-template-columns: repeat(2, 600px); gap: 20px;
+        }
+
+        .sector-dual {
+            width: 600px; height: 750px; background: var(--glass);
+            border-radius: 30px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .view-pane {
+            flex: 1; display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .box-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--pzqqet-gold); }
+
+        .terminal-mini {
+            height: 120px; background: rgba(0,0,0,0.4); border-radius: 12px;
+            font-family: monospace; font-size: 0.65rem; padding: 10px; overflow-y: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .canvas-area { height: 180px; background: rgba(0,0,0,0.2); border-radius: 12px; position: relative; }
+
+        /* --- FOOTER TICKER --- */
+        #gt-publisher {
+            position: fixed; bottom: 0; width: 1280px; height: 30px;
+            background: #000; display: flex; align-items: center; font-size: 0.7rem;
+            border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+        }
+
+        .ticker-wrap { white-space: nowrap; overflow: hidden; width: 100%; }
+        .ticker-move { display: inline-block; animation: ticker 30s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
     </style>
 </head>
-<body id="monolith">
+<body>
 
-    <div id="login-screen">
-        <div class="login-box">
-            <h1 style="margin-bottom:20px; letter-spacing: 5px;">PZQQET</h1>
-            <input type="text" id="username" placeholder="NUTZERNAME">
-            <input type="password" id="password" placeholder="PASSWORT">
-            <button class="prai-btn" onclick="APP.login()">INITIALIZE GUCI</button>
-        </div>
+<div id="login-screen">
+    <div class="login-box">
+        <h1 style="font-weight: 200; letter-spacing: 5px;">PZQQET</h1>
+        <p style="font-size: 0.8rem; opacity: 0.5;">Enter Master Credentials</p>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn-action" onclick="core.login()">AUTHORIZE</button>
     </div>
+</div>
 
-    <div id="main-ui" style="display:none;">
-        <header>
-            <div class="logo">PZQQET / CHAIN-CLEARING</div>
-            <div class="profile-trigger" onclick="APP.toggleDropdown()">
-                <div class="souveraen-meta" style="text-align:right">
-                    <div id="display-name">MASTER</div>
-                    <div id="master-id" style="font-size:8px; opacity:0.5;">ID: --</div>
-                </div>
-                <div class="avatar" id="display-avatar"></div>
-                <div class="dropdown" id="user-dropdown">
-                    <div class="nav-btn" onclick="APP.showView('wallet')">WALLET (BUSINESS)</div>
-                    <div class="nav-btn" onclick="APP.showView('profile')">PROFILE (SOCIAL)</div>
-                    <div class="nav-btn" onclick="APP.showView('settings')">SETTINGS (SYSTEM)</div>
-                    <hr style="opacity:0.1; margin: 10px 0;">
-                    <div class="nav-btn" onclick="APP.logout()">LOGOUT</div>
-                </div>
+<header>
+    <div style="font-weight: 900; letter-spacing: 2px; font-size: 1.2rem;">RFOF::MONOLITH</div>
+    <div id="profile-element" onclick="core.toggleDropdown()">
+        <div style="text-align: right;">
+            <div id="display-name" style="font-weight: 600;">Guest</div>
+            <div id="master-id-short" style="font-size: 0.6rem; opacity: 0.5;">ID: 0x00...</div>
+        </div>
+        <div class="avatar"></div>
+    </div>
+    <div class="dropdown" id="profile-dropdown">
+        <div id="full-id" style="font-size: 0.55rem; word-break: break-all; margin-bottom: 20px; color: var(--pzqqet-gold);"></div>
+        <button class="btn-action" style="background: var(--pzqqet-blue); color: white;">WALLET</button>
+        <button class="btn-action" style="background: rgba(255,255,255,0.1); color: white;">PROFILE</button>
+        <button class="btn-action" style="background: rgba(255,255,255,0.1); color: white;">SETTINGS</button>
+        <button class="btn-action" onclick="core.logout()" style="margin-top: 40px; background: #ff3b30; color: white;">LOGOUT</button>
+    </div>
+</header>
+
+<main id="main-content" style="display:none;">
+    <div class="kachel-null">
+        <div class="event-horizon">
+            <div class="takt-circle" id="takt-val">0.0</div>
+            <div style="margin-top: 15px; font-size: 0.7rem; letter-spacing: 5px;">POINT E (6.5)</div>
+        </div>
+        <div style="flex: 1; padding: 30px; position: relative;">
+            <div style="display:flex; justify-content: space-between;">
+                <h2 style="font-weight: 100;">SUPERPOSITION .GT ↔ .TON</h2>
+                <div id="stats" style="font-size: 0.7rem; text-align: right;">XP: 0 | JOULE: 0b</div>
             </div>
-        </header>
-
-        <section id="kachel-null">
-            <div class="takt-ring" id="takt-ring"></div>
-            <div class="event-point">E(6,5)</div>
-            <div class="takt-display" id="takt-val">0</div>
-        </section>
-
-        <main id="master-grid">
-            </main>
-
-        <div id="terminal">
-            <div id="log-output"></div>
+            <canvas id="main-history-canvas" width="850" height="350"></canvas>
         </div>
     </div>
 
-    <div id="reset-pulse"></div>
+    <div class="grid-13" id="sector-grid">
+        </div>
+</main>
 
-    <script>
-        /**
-         * 🕋 PZQQET OPERATIVE ENGINE 1.0
-         * MONOLITHISCHER KERN
-         */
-        const APP = {
-            user: null,
-            takt: 0,
-            sectors: [
-                "GPCB", "Phoenix Coin", "G-Phoenix Token", "Phoenix LP", "ECCU", 
-                "Joule", "XP", "GOLD (42E0)", "RFOF", "RFOF/GOLD LP", "BIP", 
-                "Identity Registry", "BRIDGE"
-            ],
+<div id="gt-publisher">
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="ticker-text">+++ SYSTEM READY +++ AWAITING TAKT 10 +++ CROSS-AUDIT ACTIVE +++ 100M% ACCURACY +++</div>
+    </div>
+</div>
 
-            async hash(string) {
-                const utf8 = new TextEncoder().encode(string);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            },
+<script>
+/**
+ * 🕋 PZQQET CORE ENGINE v4.0
+ * Monolithic Deterministic Orchestrator
+ */
+const core = {
+    user: null,
+    takt: 0,
+    sectors: ["GPCB","Phoenix Coin","G-Phoenix Token","Phoenix LP","ECCU","Joule","XP","GOLD (42E0)","RFOF","RFOF/GOLD LP","BIP","Identity Registry","BRIDGE"],
+    
+    async hash(text) {
+        const msgBuffer = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    },
 
-            async login() {
-                const user = document.getElementById('username').value;
-                const pass = document.getElementById('password').value;
-                if(!user || !pass) return;
+    async login() {
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if(!u || !p) return;
 
-                const timestamp = Date.now();
-                const masterIdSuffix = await this.hash(user + timestamp);
-                const masterId = `RFOF-NETWORK::${user.toUpperCase()}::EXT::${masterIdSuffix.substring(0,16)}`;
+        const ts = Date.now();
+        const hPass = await this.hash(p);
+        const masterId = `RFOF-NETWORK::${u}::EXT::${await this.hash(u + ts)}`;
 
-                this.user = {
-                    username: user,
-                    masterId: masterId,
-                    xp: 0,
-                    joule: 0,
-                    level: 'AAA',
-                    history: []
-                };
-
-                localStorage.setItem('pzqqet_session', JSON.stringify(this.user));
-                this.initUI();
-            },
-
-            initUI() {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-ui').style.display = 'block';
-                document.getElementById('display-name').innerText = this.user.username.toUpperCase();
-                document.getElementById('master-id').innerText = this.user.masterId;
-                
-                this.renderSectors();
-                this.startEngine();
-                this.log("GUCI STATUS: INITIALIZED. MASTER ID SECURED.");
-            },
-
-            renderSectors() {
-                const grid = document.getElementById('master-grid');
-                grid.innerHTML = '';
-                this.sectors.forEach((s, i) => {
-                    const box = document.createElement('div');
-                    box.className = 'sektor-box';
-                    box.id = `sektor-${i}`;
-                    box.innerHTML = `
-                        <div style="font-size:12px; font-weight:bold; letter-spacing:2px;">${s}</div>
-                        <div class="dual-view">
-                            <div class="view-pane" id="genesis-${i}">GENESIS:<br>HASHING...</div>
-                            <div class="view-pane" id="sync-${i}">SYNC:<br>WAITING...</div>
-                        </div>
-                        <div class="diagram-layer" id="diagram-${i}"></div>
-                    `;
-                    grid.appendChild(box);
-                });
-            },
-
-            startEngine() {
-                setInterval(() => {
-                    this.takt = (this.takt + 1) % 11;
-                    this.updateUI();
-                    if(this.takt === 0) this.triggerReset();
-                    if(this.takt === 10) this.log("SINGULARITY INJECTION: ATTAINED.");
-                }, 1000);
-
-                // Joule Mining Simulation
-                window.addEventListener('mousemove', () => {
-                    this.user.xp += 0.01;
-                    this.user.joule += 0.0001;
-                });
-            },
-
-            updateUI() {
-                document.getElementById('takt-val').innerText = this.takt;
-                document.getElementById('takt-ring').style.transform = `rotate(${this.takt * 36}deg)`;
-                
-                // Pulsation
-                const scale = 1 + (this.takt * 0.01);
-                document.querySelectorAll('.sektor-box').forEach(el => {
-                    el.style.transform = `scale(${scale})`;
-                    // Update Diagrams
-                    const diag = el.querySelector('.diagram-layer');
-                    const candle = document.createElement('div');
-                    candle.className = 'candle';
-                    candle.style.height = `${Math.random() * 40 + 10}px`;
-                    if(diag.children.length > 30) diag.removeChild(diag.firstChild);
-                    diag.appendChild(candle);
-                });
-            },
-
-            triggerReset() {
-                const p = document.getElementById('reset-pulse');
-                p.style.opacity = '1';
-                setTimeout(() => p.style.opacity = '0', 100);
-                this.log("ALPHA-NODES: RESET_PULSE EXECUTED.");
-            },
-
-            log(msg) {
-                const out = document.getElementById('log-output');
-                const line = document.createElement('div');
-                line.innerText = `[${new Date().toISOString()}] ${msg}`;
-                out.prepend(line);
-            },
-
-            toggleDropdown() {
-                document.getElementById('user-dropdown').classList.toggle('active');
-            },
-
-            logout() {
-                localStorage.removeItem('pzqqet_session');
-                location.reload();
-            }
+        this.user = {
+            username: u,
+            masterId: masterId,
+            xp: 0,
+            joule: 0,
+            aaa: 1,
+            history: []
         };
 
-        // Auto-Login Check
-        const session = localStorage.getItem('pzqqet_session');
-        if(session) {
-            APP.user = JSON.parse(session);
-            APP.initUI();
-        }
-    </script>
+        localStorage.setItem('pzqqet_session', JSON.stringify(this.user));
+        this.initUI();
+    },
+
+    initUI() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-content').style.display = 'flex';
+        document.getElementById('display-name').innerText = this.user.username;
+        document.getElementById('master-id-short').innerText = `ID: ${this.user.masterId.substring(0,10)}...`;
+        document.getElementById('full-id').innerText = this.user.masterId;
+        
+        this.buildSectors();
+        this.startEngine();
+    },
+
+    toggleDropdown() {
+        const d = document.getElementById('profile-dropdown');
+        d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+    },
+
+    buildSectors() {
+        const grid = document.getElementById('sector-grid');
+        grid.innerHTML = '';
+        this.sectors.forEach((s, i) => {
+            const div = document.createElement('div');
+            div.className = 'sector-dual';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="letter-spacing:1px;">${i+1}. ${s}</strong>
+                    <span style="font-size:0.6rem; color:var(--pzqqet-gold);">LEVEL AAA</span>
+                </div>
+                <div class="view-pane">
+                    <div class="box-title">Genesis View</div>
+                    <div class="terminal-mini" id="term-gen-${i}"></div>
+                    <div class="canvas-area"><canvas id="canv-gen-${i}" width="260" height="180"></canvas></div>
+                </div>
+                <div class="view-pane">
+                    <div class="box-title">Sync View</div>
+                    <div class="terminal-mini" id="term-sync-${i}"></div>
+                    <div class="canvas-area"><canvas id="canv-sync-${i}" width="260" height="180"></canvas></div>
+                </div>
+            `;
+            grid.appendChild(div);
+        });
+    },
+
+    startEngine() {
+        // Takt-Generator 42E0
+        setInterval(() => {
+            this.takt = (this.takt + 0.1) % 10.1;
+            document.getElementById('takt-val').innerText = this.takt.toFixed(1);
+            
+            // Punkt E (6.5) Visualisierung
+            const color = this.takt >= 6.5 && this.takt <= 7.0 ? 'var(--pzqqet-gold)' : 'white';
+            document.getElementById('takt-val').style.color = color;
+            document.getElementById('takt-val').style.textShadow = this.takt >= 6.5 && this.takt <= 7.0 ? '0 0 20px var(--pzqqet-gold)' : 'none';
+
+            if(this.takt >= 10) this.generateBlock();
+            this.updateDiagrams();
+        }, 100);
+
+        // Joule Mining (Mouse move)
+        window.onmousemove = () => {
+            this.user.xp += 0.01;
+            this.user.joule = Math.floor(this.user.xp * 42);
+            document.getElementById('stats').innerText = `XP: ${this.user.xp.toFixed(2)} | JOULE: ${this.user.joule}b`;
+        };
+    },
+
+    generateBlock() {
+        const hash = Math.random().toString(16).substring(2, 10);
+        const log = `[${new Date().toISOString()}] BLOCK_GENERATE :: HASH_${hash} :: AAA_SECURED`;
+        this.sectors.forEach((_, i) => {
+            const t = document.getElementById(`term-sync-${i}`);
+            const line = document.createElement('div');
+            line.innerText = log;
+            t.prepend(line);
+        });
+    },
+
+    updateDiagrams() {
+        // Hier werden die 13x2 Diagramme (Candles & Vektoren) gezeichnet
+        // Platzhalter für hochperformantes Canvas-Rendering
+    },
+
+    logout() {
+        localStorage.removeItem('pzqqet_session');
+        location.reload();
+    }
+};
+
+// Auto-Login check
+window.onload = () => {
+    const session = localStorage.getItem('pzqqet_session');
+    if(session) {
+        core.user = JSON.parse(session);
+        core.initUI();
+    }
+};
+</script>
 </body>
 </html>

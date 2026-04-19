@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>CHAIN-CLEARING – Viewer-Kern (browser.html)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --canvas-width: 1440px;
+      --bg-gradient: radial-gradient(circle at top left, #1b2735 0, #090a0f 55%, #020308 100%);
+      --glass-bg: rgba(15, 23, 42, 0.72);
+      --glass-border: rgba(148, 163, 184, 0.35);
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.25);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-strong: #f9fafb;
+      --ok: #4ade80;
+      --muted-bg: rgba(15, 23, 42, 0.85);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --shadow-subtle: 0 14px 35px rgba(15, 23, 42, 0.7);
+      --border-subtle: 1px solid rgba(148, 163, 184, 0.35);
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #020617;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+    }
+
+    body {
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+    .root-shell {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 32px 0 48px;
+    }
+
+    .canvas {
+      width: var(--canvas-width);
+      max-width: var(--canvas-width);
+      margin: 0 auto;
+      padding: 20px 24px 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.78));
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      position: relative;
+      overflow: visible;
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+    }
+
+    .canvas::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.16), transparent 55%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .canvas-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title-main {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-strong);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.25), transparent 55%);
+    }
+
+    .title-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .meta-value {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-strong);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.25);
+    }
+
+    /* Top grid */
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1.1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.16), transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
+      border: var(--border-subtle);
+      box-shadow: var(--shadow-subtle);
+      padding: 12px 14px 12px;
+      overflow: hidden;
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title span {
+      color: var(--accent);
+    }
+
+    .card-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.7), transparent);
+      margin: 4px 0 8px;
+      opacity: 0.7;
+    }
+
+    /* Status bars */
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .status-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .status-value {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-strong);
+    }
+
+    .status-bar {
+      position: relative;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .status-bar-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #4ade80, #a3e635);
+      box-shadow: 0 0 12px rgba(74, 222, 128, 0.7);
+      width: 100%;
+    }
+
+    .status-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .status-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-chip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* Identity / viewer */
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .identity-block {
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .identity-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .identity-value {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-strong);
+      word-break: break-all;
+    }
+
+    .identity-role {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .identity-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .identity-tag {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    /* Main layout */
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1.1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .tree-card {
+      height: 560px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tree-scroll {
+      margin-top: 6px;
+      padding: 6px 8px 4px;
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 510px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .tree-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .tree-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .tree-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.8);
+      border-radius: 999px;
+    }
+
+    .tree-line {
+      white-space: pre;
+    }
+
+    .tree-dir {
+      color: #e5e7eb;
+    }
+
+    .tree-file {
+      color: #9ca3af;
+    }
+
+    .tree-anno {
+      color: #38bdf8;
+    }
+
+    .tree-manager {
+      color: #a5b4fc;
+    }
+
+    .tree-root {
+      color: #f97316;
+    }
+
+    /* Right column: Kachel-0, Sektoren, Files */
+
+    .viewer-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 560px;
+    }
+
+    .kachel-card {
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 9px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 10px;
+    }
+
+    .kachel-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 8px;
+    }
+
+    .kachel-main {
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.18), transparent 60%),
+                  rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 8px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kachel-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kachel-title span {
+      color: var(--accent);
+    }
+
+    .kachel-body {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .kachel-pill {
+      padding: 4px 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .kachel-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .kachel-value {
+      font-size: 10px;
+      color: var(--text-strong);
+    }
+
+    .kachel-meta {
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+
+    .kachel-side {
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 7px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kachel-side-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+    }
+
+    .kachel-side-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .kachel-side-value {
+      font-family: var(--font-mono);
+      color: var(--text-strong);
+    }
+
+    .kachel-side-tag {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sectors-card {
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 9px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 10px;
+    }
+
+    .sectors-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .sectors-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .sector-pill {
+      padding: 4px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.95);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sector-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+
+    .sector-value {
+      font-size: 10px;
+      color: var(--text-strong);
+    }
+
+    .sector-meta {
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+
+    .files-card {
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 9px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 10px;
+    }
+
+    .files-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .files-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .file-pill {
+      padding: 4px 5px;
+      border-radius: 9px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.96);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .file-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .file-value {
+      font-size: 10px;
+      color: var(--text-strong);
+    }
+
+    .file-meta {
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+
+    /* Footer */
+
+    .footer-row {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-chip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-right span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Login overlay */
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .overlay.visible {
+      display: flex;
+    }
+
+    .overlay-panel {
+      width: 420px;
+      max-width: 90%;
+      border-radius: 22px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.8);
+      padding: 18px 20px 16px;
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+    }
+
+    .overlay-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-strong);
+      margin-bottom: 6px;
+    }
+
+    .overlay-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .overlay-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .overlay-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .overlay-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .overlay-hint {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .overlay-hint strong {
+      color: var(--text-strong);
+    }
+  </style>
+</head>
+<body>
+  <!-- Global login dependency overlay (no own login) -->
+  <div id="loginOverlay" class="overlay">
+    <div class="overlay-panel">
+      <div class="overlay-title">Globaler Root-Login erforderlich</div>
+      <div class="overlay-sub">
+        Diese CHAIN-CLEARING Viewer-Instanz übernimmt ausschließlich den bestehenden Root-Login
+        (<code>localStorage["api.currentUser"]</code>).<br />
+        Es wird <strong>kein eigenes Login</strong> bereitgestellt.
+      </div>
+      <div class="overlay-meta">
+        Erwartete Struktur: api.currentUser, api.users, MASTER-RFOF-NETWORK-ID (Root-System)
+      </div>
+      <div class="overlay-footer">
+        <div class="overlay-pill">Status: Warten auf Root-Session</div>
+        <div class="overlay-hint">
+          Öffne zuerst das <strong>Root-System</strong> und melde dich dort an.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="root-shell">
+    <div class="canvas">
+      <div class="canvas-inner">
+        <!-- Header -->
+        <header class="header-row">
+          <div class="title-block">
+            <div class="title-main">
+              CHAIN-CLEARING
+              <span class="title-pill">VIEWER-KERN · BROWSER.HTML</span>
+            </div>
+            <div class="title-sub">
+              Kachel-0 · Diagramme · Sektoren · Files · A–Z Navigation
+            </div>
+          </div>
+          <div class="header-meta">
+            <div class="meta-row">
+              <span class="meta-label">Rolle</span>
+              <span id="roleLabel" class="meta-value">BROWSER · VIEWER-KERN</span>
+              <span class="status-dot" title="Deterministisch · Online"></span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">MASTER-RFOF-NETWORK-ID</span>
+              <span id="networkId" class="meta-value">– wartet auf Root-Login –</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Top grid: status + identity -->
+        <section class="top-grid">
+          <!-- Status -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <span>Systemstatus</span> · Anzeige &amp; Energie
+              </div>
+              <div class="card-badge">Deterministisch · 100%</div>
+            </div>
+            <div class="divider"></div>
+            <div class="status-grid">
+              <div class="status-item">
+                <div class="status-label-row">
+                  <span>XP</span>
+                  <span class="status-value">100</span>
+                </div>
+                <div class="status-bar">
+                  <div class="status-bar-fill"></div>
+                </div>
+              </div>
+              <div class="status-item">
+                <div class="status-label-row">
+                  <span>JouleBits</span>
+                  <span class="status-value">100</span>
+                </div>
+                <div class="status-bar">
+                  <div class="status-bar-fill"></div>
+                </div>
+              </div>
+              <div class="status-item">
+                <div class="status-label-row">
+                  <span>AAA</span>
+                  <span class="status-value">100</span>
+                </div>
+                <div class="status-bar">
+                  <div class="status-bar-fill"></div>
+                </div>
+              </div>
+              <div class="status-item">
+                <div class="status-label-row">
+                  <span>MouseEnergy</span>
+                  <span class="status-value">100</span>
+                </div>
+                <div class="status-bar">
+                  <div class="status-bar-fill"></div>
+                </div>
+              </div>
+              <div class="status-item">
+                <div class="status-label-row">
+                  <span>FPS</span>
+                  <span class="status-value">100</span>
+                </div>
+                <div class="status-bar">
+                  <div class="status-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+            <div class="status-footer">
+              <span>
+                <span class="status-chip">Viewer-Takt</span>
+                Darstellung ohne Simulation · keine Zufallswerte
+              </span>
+              <span>
+                <span class="status-chip">Fees 0,2%</span>
+                45 / 42 / 10 / 3 (Logik-Kern)
+              </span>
+            </div>
+          </div>
+
+          <!-- Identity / user -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <span>Identität</span> · Root-Login &amp; Viewer
+              </div>
+              <div class="card-badge">Read-Only · Root-Session</div>
+            </div>
+            <div class="divider"></div>
+            <div class="identity-grid">
+              <div class="identity-block">
+                <div class="identity-label">Aktueller Nutzer (api.currentUser)</div>
+                <div id="currentUserName" class="identity-value">– kein Root-Login gefunden –</div>
+                <div class="identity-tag-row">
+                  <span class="identity-tag">Quelle: localStorage</span>
+                  <span class="identity-tag">Kein eigenes Login</span>
+                </div>
+              </div>
+              <div class="identity-block">
+                <div class="identity-label">Rollen-Instanz</div>
+                <div class="identity-role">VIEWER-KERN · KACHEL-0 · SEKTOR-ANSICHT</div>
+                <div class="identity-tag-row">
+                  <span class="identity-tag">browser.html</span>
+                  <span class="identity-tag">Logik-Kern: index.html</span>
+                  <span class="identity-tag">A–Z Navigation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main layout -->
+        <main class="main-grid">
+          <!-- Directory tree -->
+          <section class="card tree-card">
+            <div class="card-header">
+              <div class="card-title">
+                <span>Verzeichnisstruktur</span> · 13 Dual-Sektoren · 65 Files
+              </div>
+              <div class="card-badge">Deterministische Darstellung</div>
+            </div>
+            <div class="divider"></div>
+            <div class="tree-scroll" aria-label="CHAIN-CLEARING Verzeichnisstruktur">
+<span class="tree-line tree-root">/chain-clearing/</span>
+<span class="tree-line tree-file">├── <span class="tree-file">index.html</span>                      &lt;-- <span class="tree-anno">Logik-Kern / Takt / Fees / AAA / Validator</span></span>
+<span class="tree-line tree-file">├── <span class="tree-file">browser.html</span>                    &lt;-- <span class="tree-anno">Viewer-Kern / Kachel-0 / Diagramme</span></span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /GPCB/ <span class="tree-anno">[GLOBAL PHOENIX COIN BANK]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── bank_exekutive.js</span>
+<span class="tree-line tree-file">│       └── vault_control.py</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /ECCU/ <span class="tree-anno">[CENTRAL VALUE]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── parity_logic.js</span>
+<span class="tree-line tree-file">│       └── monitor.json</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /RFOF-GOLD-CHAIN/ <span class="tree-anno">[INTEGRITY]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── integrity_check.py</span>
+<span class="tree-line tree-file">│       └── chain_notary.bin</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /APP-API/ <span class="tree-anno">[DIGITAL STAFF]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── kaskaden_steuerung.js</span>
+<span class="tree-line tree-file">│       └── bridge_handshake.go</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /STORY-HISTORY/ <span class="tree-anno">[PUBLISHER-KERN]</span></span>
+<span class="tree-line tree-dir">│   ├── /ARCHIVE/</span>
+<span class="tree-line tree-file">│   ├── publisher.py</span>
+<span class="tree-line tree-file">│   └── notary_service.js</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /ALPHA-NODES/ <span class="tree-anno">[A-ZZ NAVIGATION]</span></span>
+<span class="tree-line tree-dir">│   ├── /A-G/</span>
+<span class="tree-line tree-dir">│   ├── /H-N/</span>
+<span class="tree-line tree-dir">│   ├── /O-U/</span>
+<span class="tree-line tree-dir">│   └── /V-Z/</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /API/ <span class="tree-anno">[OPEN API VEKTOR]</span></span>
+<span class="tree-line tree-file">│   ├── actions.js</span>
+<span class="tree-line tree-file">│   ├── resources.json</span>
+<span class="tree-line tree-file">│   ├── event_listener.js</span>
+<span class="tree-line tree-file">│   └── schema.xsd</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /X-HUB/ <span class="tree-anno">[CODE-INJEKTION]</span></span>
+<span class="tree-line tree-file">│   ├── injector.bin</span>
+<span class="tree-line tree-file">│   └── manifest.json</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /CROSS-CHECK/ <span class="tree-anno">[VALIDIERUNG]</span></span>
+<span class="tree-line tree-file">│   ├── anti_collision.py</span>
+<span class="tree-line tree-file">│   └── point_e_check.js</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /USER/ <span class="tree-anno">[INDIVIDUAL-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── access_rights.key</span>
+<span class="tree-line tree-file">│       └── task_executor.js</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /ADMIN/ <span class="tree-anno">[CONTROL-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── system_monitor.py</span>
+<span class="tree-line tree-file">│       └── fee_notary.js</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /DEV/ <span class="tree-anno">[DEVELOPER-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── bridge_builder.js</span>
+<span class="tree-line tree-file">│       └── axiom_validator.py</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /MASTER/ <span class="tree-anno">[OWNER-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── axiom_override.bin</span>
+<span class="tree-line tree-file">│       └── identity_injection.py</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /ENTERPRISE/ <span class="tree-anno">[CORPORATE-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       ├── settlement.js</span>
+<span class="tree-line tree-file">│       └── liquidity_flow.py</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">├── /PARTNER/ <span class="tree-anno">[ALLIANCE-CLUSTER]</span></span>
+<span class="tree-line tree-dir">│   └── /MANAGER/</span>
+<span class="tree-line tree-file">│       ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">│       └── sync_bridge.py</span>
+<span class="tree-line tree-file">│</span>
+<span class="tree-line tree-dir">└── /REPOSITORY/ <span class="tree-anno">[APP-LOGIK-INSTANZ]</span></span>
+<span class="tree-line tree-dir">    └── /MANAGER/</span>
+<span class="tree-line tree-file">        ├── <span class="tree-manager">identity.gt</span></span>
+<span class="tree-line tree-file">        ├── performance_boost.py</span>
+<span class="tree-line tree-file">        └── app_manifest.json</span>
+            </div>
+          </section>
+
+          <!-- Viewer column -->
+          <section class="viewer-column">
+            <!-- Kachel-0 -->
+            <div class="kachel-card">
+              <div class="card-header">
+                <div class="card-title">
+                  <span>Kachel-0</span> · Viewer-Kern
+                </div>
+                <div class="card-badge">Read-Only · 100%</div>
+              </div>
+              <div class="divider"></div>
+              <div class="kachel-grid">
+                <div class="kachel-main">
+                  <div class="kachel-title">
+                    <span>CHAIN-CLEARING</span>
+                    <span>SEKTOR-ÜBERSICHT</span>
+                  </div>
+                  <div class="kachel-body">
+                    <div class="kachel-pill">
+                      <div class="kachel-label">GPCB</div>
+                      <div class="kachel-value">GLOBAL PHOENIX COIN BANK</div>
+                      <div class="kachel-meta">Vault · Bank-Exekutive</div>
+                    </div>
+                    <div class="kachel-pill">
+                      <div class="kachel-label">ECCU</div>
+                      <div class="kachel-value">CENTRAL VALUE</div>
+                      <div class="kachel-meta">Parity · Monitor</div>
+                    </div>
+                    <div class="kachel-pill">
+                      <div class="kachel-label">RFOF-GOLD-CHAIN</div>
+                      <div class="kachel-value">INTEGRITY</div>
+                      <div class="kachel-meta">Integrity · Notary</div>
+                    </div>
+                    <div class="kachel-pill">
+                      <div class="kachel-label">APP-API</div>
+                      <div class="kachel-value">DIGITAL STAFF</div>
+                      <div class="kachel-meta">Kaskaden · Bridge</div>
+                    </div>
+                    <div class="kachel-pill">
+                      <div class="kachel-label">STORY-HISTORY</div>
+                      <div class="kachel-value">PUBLISHER-KERN</div>
+                      <div class="kachel-meta">Archive · Notary</div>
+                    </div>
+                    <div class="kachel-pill">
+                      <div class="kachel-label">ALPHA-NODES</div>
+                      <div class="kachel-value">A–ZZ NAVIGATION</div>
+                      <div class="kachel-meta">A-G · H-N · O-U · V-Z</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="kachel-side">
+                  <div class="kachel-side-row">
+                    <span class="kachel-side-label">Instanz</span>
+                    <span class="kachel-side-value">browser.html</span>
+                  </div>
+                  <div class="kachel-side-row">
+                    <span class="kachel-side-label">Modus</span>
+                    <span class="kachel-side-tag">Viewer · Keine Simulation</span>
+                  </div>
+                  <div class="kachel-side-row">
+                    <span class="kachel-side-label">Takt</span>
+                    <span class="kachel-side-value">100%</span>
+                  </div>
+                  <div class="kachel-side-row">
+                    <span class="kachel-side-label">AAA</span>
+                    <span class="kachel-side-value">100</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sektoren -->
+            <div class="sectors-card">
+              <div class="sectors-header">
+                <span>Dual-Sektoren &amp; Cluster</span>
+                <span class="status-chip">13 Sektoren · 65 Files</span>
+              </div>
+              <div class="sectors-grid">
+                <div class="sector-pill">
+                  <div class="sector-label">Individual</div>
+                  <div class="sector-value">USER</div>
+                  <div class="sector-meta">identity.gt · access_rights.key</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Control</div>
+                  <div class="sector-value">ADMIN</div>
+                  <div class="sector-meta">system_monitor.py · fee_notary.js</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Developer</div>
+                  <div class="sector-value">DEV</div>
+                  <div class="sector-meta">bridge_builder.js · axiom_validator.py</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Owner</div>
+                  <div class="sector-value">MASTER</div>
+                  <div class="sector-meta">identity_injection.py · axiom_override.bin</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Enterprise</div>
+                  <div class="sector-value">ENTERPRISE</div>
+                  <div class="sector-meta">liquidity_flow.py · settlement.js</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Partner</div>
+                  <div class="sector-value">PARTNER</div>
+                  <div class="sector-meta">sync_bridge.py</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">API</div>
+                  <div class="sector-value">OPEN API VEKTOR</div>
+                  <div class="sector-meta">actions.js · schema.xsd</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">X-HUB</div>
+                  <div class="sector-value">CODE-INJEKTION</div>
+                  <div class="sector-meta">injector.bin · manifest.json</div>
+                </div>
+                <div class="sector-pill">
+                  <div class="sector-label">Cross-Check</div>
+                  <div class="sector-value">VALIDIERUNG</div>
+                  <div class="sector-meta">anti_collision.py · point_e_check.js</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Files overview -->
+            <div class="files-card">
+              <div class="files-header">
+                <span>Files &amp; Manager-Instanzen</span>
+                <span class="status-chip">Viewer-Only</span>
+              </div>
+              <div class="files-grid">
+                <div class="file-pill">
+                  <div class="file-label">Manager</div>
+                  <div class="file-value">identity.gt</div>
+                  <div class="file-meta">Alle Cluster</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Vault</div>
+                  <div class="file-value">vault_control.py</div>
+                  <div class="file-meta">GPCB</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Parity</div>
+                  <div class="file-value">parity_logic.js</div>
+                  <div class="file-meta">ECCU</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Integrity</div>
+                  <div class="file-value">integrity_check.py</div>
+                  <div class="file-meta">RFOF-GOLD-CHAIN</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Bridge</div>
+                  <div class="file-value">bridge_handshake.go</div>
+                  <div class="file-meta">APP-API</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Notary</div>
+                  <div class="file-value">notary_service.js</div>
+                  <div class="file-meta">STORY-HISTORY</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Access</div>
+                  <div class="file-value">access_rights.key</div>
+                  <div class="file-meta">USER</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Fee</div>
+                  <div class="file-value">fee_notary.js</div>
+                  <div class="file-meta">ADMIN</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Axiom</div>
+                  <div class="file-value">axiom_validator.py</div>
+                  <div class="file-meta">DEV</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Override</div>
+                  <div class="file-value">axiom_override.bin</div>
+                  <div class="file-meta">MASTER</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Liquidity</div>
+                  <div class="file-value">liquidity_flow.py</div>
+                  <div class="file-meta">ENTERPRISE</div>
+                </div>
+                <div class="file-pill">
+                  <div class="file-label">Performance</div>
+                  <div class="file-value">performance_boost.py</div>
+                  <div class="file-meta">REPOSITORY</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer-row">
+          <div class="footer-left">
+            <span class="footer-chip">CHAIN-CLEARING · BROWSER.HTML</span>
+            <span>Viewer-Kern · Kachel-0 · Sektoren · Files · Keine Simulation</span>
+          </div>
+          <div class="footer-right">
+            <span>
+              <span class="status-dot"></span>
+              Darstellung aktiv
+            </span>
+            <span>Root-Login: <span id="footerLoginState">unbekannt</span></span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      function safeParse(json) {
+        try {
+          return JSON.parse(json);
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function detectRole() {
+        var path = (window.location && window.location.pathname) || "";
+        var isBrowser = /browser\.html$/i.test(path);
+        return isBrowser ? "BROWSER · VIEWER-KERN" : "INDEX · LOGIK-KERN";
+      }
+
+      function readRootUser() {
+        var raw = localStorage.getItem("api.currentUser");
+        var usersRaw = localStorage.getItem("api.users");
+        var user = safeParse(raw);
+        var users = safeParse(usersRaw);
+        return { user: user, users: users };
+      }
+
+      function readNetworkId(rootUser) {
+        if (!rootUser || typeof rootUser !== "object") return null;
+        return (
+          rootUser.masterRfofNetworkId ||
+          rootUser.masterRFOFNetworkId ||
+          rootUser.networkId ||
+          null
+        );
+      }
+
+      function updateIdentityUI(rootUser) {
+        var nameEl = document.getElementById("currentUserName");
+        var footerLoginState = document.getElementById("footerLoginState");
+        var networkIdEl = document.getElementById("networkId");
+
+        if (!nameEl || !footerLoginState || !networkIdEl) return;
+
+        if (!rootUser) {
+          nameEl.textContent = "– kein Root-Login gefunden –";
+          footerLoginState.textContent = "nicht vorhanden";
+          networkIdEl.textContent = "– wartet auf Root-Login –";
+          return;
+        }
+
+        var label =
+          rootUser.username ||
+          rootUser.name ||
+          rootUser.id ||
+          "[Root-User ohne Name]";
+
+        nameEl.textContent = String(label);
+        footerLoginState.textContent = "aktiv";
+
+        var nid = readNetworkId(rootUser);
+        networkIdEl.textContent = nid
+          ? String(nid)
+          : "– MASTER-RFOF-NETWORK-ID nicht im Root-Objekt gefunden –";
+      }
+
+      function toggleOverlay(hasRootUser) {
+        var overlay = document.getElementById("loginOverlay");
+        if (!overlay) return;
+        overlay.classList.toggle("visible", !hasRootUser);
+      }
+
+      function validateStaticStructure() {
+        var expectedRoots = [
+          "GPCB",
+          "ECCU",
+          "RFOF-GOLD-CHAIN",
+          "APP-API",
+          "STORY-HISTORY",
+          "ALPHA-NODES",
+          "API",
+          "X-HUB",
+          "CROSS-CHECK",
+          "USER",
+          "ADMIN",
+          "DEV",
+          "MASTER",
+          "ENTERPRISE",
+          "PARTNER",
+          "REPOSITORY"
+        ];
+
+        var tree = document.querySelector(".tree-scroll");
+        if (!tree) return;
+
+        var text = tree.textContent || "";
+        var missing = expectedRoots.filter(function (key) {
+          return text.indexOf("/" + key + "/") === -1;
+        });
+
+        void missing;
+      }
+
+      function init() {
+        var roleLabel = document.getElementById("roleLabel");
+        if (roleLabel) {
+          roleLabel.textContent = detectRole();
+        }
+
+        var root = readRootUser();
+        var hasUser = !!root.user;
+
+        toggleOverlay(hasUser);
+        updateIdentityUI(root.user);
+
+        // Keine Simulation, keine Timer, keine Zufallswerte.
+        validateStaticStructure();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init, { once: true });
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>

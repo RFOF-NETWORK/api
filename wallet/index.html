@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RFOF‑NETWORK | Wallet Dashboard</title>
+  <title>RFOF‑NETWORK | WALLET</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -18,12 +18,20 @@
     * { box-sizing:border-box; }
     body {
       margin:0;
-      font-family:system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-family:system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background:var(--bg);
       color:var(--text);
+      display: flex;
+      flex-direction: column;
     }
     a { color:inherit; text-decoration:none; }
 
+    /* Kapitel 1: MASTER-ONLY SICHTBARKEIT */
+    .master-only { display: none !important; }
+    body.is-master .master-only { display: block !important; }
+    body.is-master span.master-only, body.is-master div.master-only.btn-chip { display: inline-block !important; }
+
+    /* Kapitel 4: HEADER */
     header {
       padding:14px 20px;
       border-bottom:1px solid var(--border);
@@ -31,8 +39,6 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
       position:sticky;
       top:0;
       z-index:100;
@@ -41,12 +47,11 @@
     .brand span { color:var(--accent); }
     .guci-display { font-size:12px; font-family:monospace; color:var(--muted); }
 
-    .guci-link {
-      color:var(--accent);
-      text-decoration:none;
-      cursor:pointer;
-    }
+    /* Kapitel 2: HASH-LINK MECHANIK */
+    .hash-link { color:var(--accent); text-decoration:none; cursor:pointer; }
+    .hash-link:hover { text-shadow: 0 0 8px var(--accent); }
 
+    /* Kapitel 5: STATUS-BAR */
     .status-bar {
       background:#020617;
       border:1px solid var(--border);
@@ -55,66 +60,36 @@
       margin:20px;
       display:flex;
       justify-content:space-between;
-      align-items:center;
-      gap:10px;
       font-size:12px;
       color:var(--muted);
-      flex-wrap:wrap;
     }
     .status-bar b { color:var(--accent); font-family:monospace; }
-    .status-ok { color:#4ade80; }
 
-    main { padding:0 20px 30px; max-width:960px; margin:0 auto; }
+    main { padding:0 20px 30px; max-width:960px; margin:0 auto; width: 100%; }
 
-    /* BEGIN: Euro-Gesamtbalance */
+    /* Kapitel 6: EURO-GESAMTBALANCE */
     .euro-balance {
       background:var(--bg-alt);
       border:1px solid var(--border);
       border-radius:14px;
       padding:16px 18px;
       margin-bottom:20px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
     }
-    .euro-balance-label {
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color:var(--muted);
-    }
-    .euro-balance-value {
-      font-size:26px;
-      font-weight:700;
-      color:var(--accent);
-    }
-    .euro-balance-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:4px;
-    }
+    .euro-balance-value { font-size:26px; font-weight:700; color:var(--accent); margin: 8px 0; }
     .btn-chip {
       border-radius:999px;
       border:1px solid var(--border);
       background:#020617;
       color:var(--muted);
       font-size:11px;
-      padding:6px 10px;
-      cursor:default;
-    }
-    .btn-chip-primary {
-      border-color:var(--accent);
-      color:var(--accent);
-      background:var(--accent-soft);
+      padding:6px 12px;
       cursor:pointer;
+      margin-right: 5px;
+      display: inline-block;
     }
-    .btn-chip.master-only {
-      cursor:pointer;
-    }
-    /* END: Euro-Gesamtbalance */
+    .btn-chip-primary { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
-    /* Balance-Grid */
+    /* Kapitel 7: BALANCE-GRID */
     .balance-grid {
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
@@ -127,171 +102,37 @@
       border-radius:12px;
       padding:14px;
       cursor:pointer;
-      transition:0.18s border-color, 0.18s background-color, 0.18s transform;
+      transition: 0.2s;
     }
-    .coin-tile:hover {
-      border-color:var(--accent);
-      background:var(--accent-soft);
-      transform:translateY(-1px);
-    }
-    .coin-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:6px;
-    }
-    .coin-name {
-      font-size:13px;
-      font-weight:600;
-    }
-    .coin-tag {
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color:var(--muted);
-    }
-    .amount {
-      font-size:20px;
-      font-weight:700;
-      margin:4px 0;
-      color:var(--accent);
-    }
-    .val-fiat {
-      font-size:11px;
-      color:var(--accent);
-    }
+    .coin-tile:hover { border-color:var(--accent); background:var(--accent-soft); }
+    .amount { font-size:20px; font-weight:700; color:var(--accent); margin: 4px 0; }
+    .coin-tag { font-size:10px; text-transform:uppercase; color:var(--muted); }
 
-    /* Detail-View / Trading-Charts */
+    /* Kapitel 8 & 9: DETAIL-VIEW & CANVAS ENGINE */
     #detail-view {
       background:var(--bg-alt);
       border:1px solid var(--border);
       border-radius:14px;
-      padding:18px 18px 20px;
+      padding:18px;
       margin-bottom:24px;
       border-left:4px solid var(--accent);
       display:none;
     }
-    .detail-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      margin-bottom:12px;
-    }
-    .detail-title {
-      margin:0;
-      font-size:15px;
-    }
-    .detail-meta {
-      margin:2px 0 0;
-      font-size:11px;
-      color:var(--muted);
-    }
-    .detail-close {
-      background:transparent;
-      border:1px solid var(--border);
-      color:var(--muted);
-      border-radius:4px;
-      font-size:11px;
-      padding:4px 8px;
-      cursor:pointer;
-    }
-    .chart-tabs {
-      display:flex;
-      gap:6px;
-      margin-bottom:8px;
-      font-size:11px;
-    }
-    .chart-tab {
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-      cursor:pointer;
-    }
-    .chart-tab-active {
-      border-color:var(--accent);
-      color:var(--accent);
-      background:var(--accent-soft);
-    }
-    .chart-placeholder {
+    .chart-container {
       width:100%;
-      height:200px;
+      height:220px;
       background:#000;
       border:1px solid #1e293b;
       border-radius:8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
+      margin: 10px 0;
+      position: relative;
     }
+    canvas { width: 100%; height: 100%; display: block; }
+    .chart-tabs { display:flex; gap:6px; margin-bottom:8px; font-size:11px; }
+    .chart-tab { padding:4px 10px; border-radius:999px; border:1px solid var(--border); cursor:pointer; color: var(--muted); }
+    .chart-tab.active { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
-    .trade-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:10px;
-    }
-    .btn-action {
-      border:none;
-      border-radius:6px;
-      padding:8px 12px;
-      font-size:11px;
-      font-weight:600;
-      cursor:pointer;
-    }
-    .btn-buy {
-      background:#16a34a;
-      color:#e5f9ed;
-    }
-    .btn-sell {
-      background:#b91c1c;
-      color:#fee2e2;
-    }
-    .btn-dex {
-      background:var(--accent);
-      color:#020617;
-    }
-
-    .detail-performance {
-      font-size:11px;
-      color:var(--muted);
-      margin-top:4px;
-    }
-
-    .master-admin-box {
-      border:1px solid var(--accent);
-      background:var(--accent-soft);
-      border-radius:10px;
-      padding:10px 12px;
-      margin-top:10px;
-      display:none;
-    }
-    .master-admin-title {
-      margin:0 0 4px;
-      font-size:12px;
-      color:var(--accent);
-    }
-    .master-admin-text {
-      margin:0;
-      font-size:11px;
-      color:var(--muted);
-    }
-    .btn-master {
-      margin-top:8px;
-      border-radius:6px;
-      border:none;
-      padding:8px 12px;
-      font-size:11px;
-      font-weight:600;
-      background:var(--accent);
-      color:#020617;
-      cursor:pointer;
-    }
-
-    /* Mining */
+    /* Kapitel 12, 13, 14: SEKTIONEN */
     .section-card {
       background:var(--bg-alt);
       border:1px solid var(--border);
@@ -299,366 +140,167 @@
       padding:18px;
       margin-bottom:20px;
     }
-    .section-tag {
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color:var(--muted);
-      margin-bottom:4px;
-    }
-    .section-title {
-      margin:0 0 6px;
-      font-size:15px;
-    }
-    .section-sub {
-      margin:0 0 10px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .mining-stats {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:10px;
-      font-size:11px;
-    }
-    .mining-pill {
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-    .mining-pill-active {
-      border-color:#4ade80;
-      color:#4ade80;
-      background:rgba(34,197,94,0.08);
-    }
-    .btn-mining {
-      border-radius:6px;
-      border:1px solid var(--accent);
-      background:var(--accent-soft);
-      color:var(--accent);
-      font-size:11px;
-      font-weight:600;
-      padding:8px 12px;
-      cursor:pointer;
-    }
-
-    /* Launchpad */
-    .launchpad-note {
-      font-size:11px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-    .btn-outline {
-      border-radius:6px;
-      border:1px solid var(--accent);
-      background:transparent;
-      color:var(--accent);
-      font-size:11px;
-      font-weight:600;
-      padding:8px 12px;
-      cursor:pointer;
-      margin-top:8px;
-    }
-
-    /* Historie */
-    .history-list {
-      font-family:monospace;
-      font-size:11px;
-      color:var(--muted);
-      margin-top:8px;
-      line-height:1.5;
-    }
-    .history-entry {
-      margin-bottom:2px;
-    }
-    .hash-link {
-      color:var(--accent);
-      text-decoration:none;
-      cursor:pointer;
-    }
+    .history-list { font-family:monospace; font-size:11px; color:var(--muted); line-height:1.6; }
   </style>
 </head>
-<body>
+<body id="rfof-body">
 
 <header>
   <div class="brand">
-    <a href="../index.html"><span>RFOF‑NETWORK</span> · WALLET</a>
+    <a href="index.html"><span>RFOF‑NETWORK</span> · WALLET</a>
   </div>
   <div class="guci-display">
-    GUCI:
-    <a class="guci-link" href="../wallet/browser.html?guci=83f74bfc-1067-4be8-a959-9368111126b9">
-      83f74bfc-1067-4be8-a959-9368111126b9
-    </a>
+    <span class="master-only">GUCI: 
+      <span class="hash-link" id="guci-link-val" data-tx="GUCI-VIEW">LOADING...</span>
+    </span>
   </div>
 </header>
 
 <div class="status-bar">
-  <div>XP/JOUL: <b>80</b></div>
-  <div>ECCU‑ANKER: <b>2,50€</b></div>
-  <div>STATUS: <b class="status-ok">SYNCHRONIZED</b></div>
+  <div>XP/JOUL: <b id="stat-joul">80</b></div>
+  <div>ECCU‑ANKER: <b id="stat-eccu">2,50€</b></div>
+  <div>STATUS: <b style="color:#4ade80">SYNCHRONIZED</b></div>
 </div>
 
 <main>
-
-  <!-- BEGIN: Euro-Gesamtbalance -->
   <section class="euro-balance">
-    <div class="euro-balance-label">Gesamtwert der Wallet</div>
-    <div class="euro-balance-value">0.00€</div>
+    <div style="font-size:11px; text-transform:uppercase; color:var(--muted);">Gesamtwert der Wallet</div>
+    <div class="euro-balance-value" id="main-balance-val">0.00€</div>
     <div class="euro-balance-actions">
-      <div class="btn-chip-primary" onclick="openSend()">Send</div>
-      <div class="btn-chip-primary" onclick="openReceive()">Receive</div>
-      <div class="btn-chip-primary" onclick="openSwap()">Swap (Bridge)</div>
-      <div class="btn-chip master-only" onclick="openDeposit()">Einzahlen (EUR/BTC/TON)</div>
-      <div class="btn-chip master-only" onclick="openWithdraw()">Auszahlen (EUR/BTC/TON)</div>
+      <div class="btn-chip btn-chip-primary" onclick="triggerTX('SEND')">Send</div>
+      <div class="btn-chip btn-chip-primary" onclick="triggerTX('RECEIVE')">Receive</div>
+      <div class="btn-chip btn-chip-primary" onclick="triggerTX('SWAP')">Swap</div>
+      <div class="btn-chip master-only" onclick="triggerMasterTX('DEPOSIT')">Einzahlen (MASTER)</div>
+      <div class="btn-chip master-only" onclick="triggerMasterTX('WITHDRAW')">Auszahlen (MASTER)</div>
     </div>
   </section>
-  <!-- END: Euro-Gesamtbalance -->
 
-  <!-- Balance-Grid -->
   <section class="balance-grid">
-
-    <!-- Standard-Token -->
     <article class="coin-tile" onclick="openDetail('RFOF')">
-      <div class="coin-header">
-        <div class="coin-name">RFOF</div>
-        <div class="coin-tag">Basis‑Token</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Exponentieller Floor: 0.00€</div>
+      <div class="coin-tag">Basis‑Token</div>
+      <div style="font-weight:600;">RFOF</div>
+      <div class="amount" id="amt-rfof">0.0000</div>
     </article>
-
     <article class="coin-tile" onclick="openDetail('GOLD (42E0)')">
-      <div class="coin-header">
-        <div class="coin-name">GOLD (42E0)</div>
-        <div class="coin-tag">Basis‑Token</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Safe‑Anker: 0.00€</div>
+      <div class="coin-tag">Basis‑Token</div>
+      <div style="font-weight:600;">GOLD (42E0)</div>
+      <div class="amount" id="amt-gold">0.0000</div>
     </article>
-
     <article class="coin-tile" onclick="openDetail('Phoenix Coin')">
-      <div class="coin-header">
-        <div class="coin-name">Phoenix Coin</div>
-        <div class="coin-tag">Native Währung</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Preis‑Floor: 0.00€</div>
+      <div class="coin-tag">Native Währung</div>
+      <div style="font-weight:600;">Phoenix Coin</div>
+      <div class="amount" id="amt-phx">0.0000</div>
     </article>
-
-    <article class="coin-tile" onclick="openDetail('G‑Phoenix Token')">
-      <div class="coin-header">
-        <div class="coin-name">G‑Phoenix Token</div>
-        <div class="coin-tag">Governance & Utility</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Governance‑Anteil: 0.00€</div>
-    </article>
-
     <article class="coin-tile" onclick="openDetail('ECCU')">
-      <div class="coin-header">
-        <div class="coin-name">ECCU</div>
-        <div class="coin-tag">Utility‑Basis</div>
-      </div>
-      <div class="amount">0.00</div>
-      <div class="val-fiat">Utility‑Basis (Gesperrt)</div>
+      <div class="coin-tag">Utility‑Basis</div>
+      <div style="font-weight:600;">ECCU</div>
+      <div class="amount" id="amt-eccu">0.00</div>
     </article>
-
-    <!-- LP-Token -->
-    <article class="coin-tile" data-lp="true" onclick="openDetail('Phoenix LP')">
-      <div class="coin-header">
-        <div class="coin-name">Phoenix LP</div>
-        <div class="coin-tag">LP‑Token</div>
-      </div>
+    <article class="coin-tile lp-token" onclick="openDetail('Phoenix LP')">
+      <div class="coin-tag">LP‑Token</div>
+      <div style="font-weight:600;">Phoenix LP</div>
       <div class="amount">0.0000</div>
-      <div class="val-fiat">LP‑Anteil (nur bei Besitz sichtbar)</div>
     </article>
-
-    <article class="coin-tile" data-lp="true" onclick="openDetail('RFOF/GOLD LP')">
-      <div class="coin-header">
-        <div class="coin-name">RFOF/GOLD LP</div>
-        <div class="coin-tag">LP‑Token</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Stabilitäts‑Pool (nur bei Besitz sichtbar)</div>
-    </article>
-
-    <article class="coin-tile" data-lp="true" onclick="openDetail('BIP (Ability API LP)')">
-      <div class="coin-header">
-        <div class="coin-name">BIP (Ability API LP)</div>
-        <div class="coin-tag">Master‑LP</div>
-      </div>
-      <div class="amount">0.0000</div>
-      <div class="val-fiat">Ability API LP (nur bei Besitz sichtbar)</div>
-    </article>
-
   </section>
 
-  <!-- Detail-View -->
   <section id="detail-view">
-    <div class="detail-header">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
       <div>
-        <h2 class="detail-title">TOKEN PERFORMANCE</h2>
-        <p class="detail-meta">
-          Balance: 0.0000&nbsp;|&nbsp;Steigerung: 0,2% pro Interaktion · 0,4% Roundtrip (Basis‑Token)
-        </p>
+        <h2 id="detail-title" style="margin:0; font-size:16px;">TOKEN PERFORMANCE</h2>
+        <p id="detail-meta" style="font-size:11px; color:var(--muted); margin:4px 0;">Balance: 0.0000</p>
       </div>
-      <button class="detail-close" onclick="closeDetail()">✕ Schließen</button>
+      <button onclick="closeDetail()" style="background:none; border:1px solid var(--border); color:var(--muted); cursor:pointer; padding:4px 8px; border-radius:4px;">✕</button>
     </div>
 
     <div class="chart-tabs">
-      <div class="chart-tab chart-tab-active" onclick="switchChartMode('standard')">Standard‑Candlesticks</div>
-      <div class="chart-tab" onclick="switchChartMode('mecha')">Mechatronische Ansicht</div>
+      <div id="tab-std" class="chart-tab active" onclick="switchChart('std')">Standard</div>
+      <div id="tab-mec" class="chart-tab" onclick="switchChart('mec')">Mechatronic</div>
     </div>
 
-    <div id="chart-standard" class="chart-placeholder">
-      [ TRADING CHART RENDERING... ]
-    </div>
-    <div id="chart-mecha" class="chart-placeholder" style="display:none;">
-      [ MECHATRONIC BLUE CANDLES ]
+    <div class="chart-container">
+      <canvas id="candleCanvasStandard"></canvas>
+      <canvas id="candleCanvasMecha" style="display:none;"></canvas>
     </div>
 
-    <div class="trade-actions">
-      <button class="btn-action btn-buy">Buy</button>
-      <button class="btn-action btn-sell">Sell</button>
-      <button class="btn-action btn-dex" onclick="openDEX()">Zum DEX (RFOF‑GOLDEN‑DEX)</button>
-    </div> <!-- Ende .trade-actions -->
-
-    <div class="detail-performance">
-      Basis‑Token (RFOF, GOLD, Phoenix, G‑Phoenix): 0,2% pro Interaktion · 0,4% Roundtrip<br />
-      LP‑Token (RFOF/GOLD LP, Phoenix LP): 0,4% pro Interaktion · 0,8% Roundtrip<br />
-      Master‑Token (BIP): 0,8% pro Interaktion · 1,6% Roundtrip
+    <div style="display:flex; gap:8px; margin: 10px 0;">
+      <button style="background:#16a34a; border:none; color:white; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Buy</button>
+      <button style="background:#b91c1c; border:none; color:white; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Sell</button>
     </div>
 
-    <!-- MASTER ADMIN BOX -->
-    <div class="master-admin-box">
-      <h4 class="master-admin-title">MASTER‑ADMIN: RFOF‑NETWORK ACCESS</h4>
-      <p class="master-admin-text">
-        ECCU Auszahlungs‑Zyklen & 45% SAFE Management aktiviert. Nur für Master‑Rolle sichtbar.
-      </p>
-      <button class="btn-master">ECCU PHYSISCH AUSZAHLEN</button>
-    </div>
-
-    <!-- TOKEN HISTORIE -->
-    <div style="margin-top:16px;">
-      <h3 style="font-size:13px; margin:0 0 4px;">TOKEN HISTORIE (SHA256 UTX)</h3>
-      <div class="history-list">
-        <div class="history-entry">
-          [15:13:30] UTX_VALIDATED:
-          <a class="hash-link" href="../wallet/browser.html?tx=0x12390d8d8b">0x12390d8d8b...</a>
-          +0.2% UP
-        </div>
-        <div class="history-entry">
-          [15:13:36] UTX_VALIDATED:
-          <a class="hash-link" href="../wallet/browser.html?tx=0xec717da0b9">0xec717da0b9...</a>
-          +0.2% UP
-        </div>
-      </div>
-    </div>
-
-  </section> <!-- Ende #detail-view -->
-
-  <!-- MINING SEKTION -->
-  <section class="section-card">
-    <div class="section-tag">Mining</div>
-    <h2 class="section-title">Neural Cache (Joule)</h2>
-    <p class="section-sub">
-      Energetischer Output (Mining/Speicher) – TXi‑Spiegelung der Wallet‑Konsole.
-    </p>
-
-    <div class="mining-stats">
-      <div class="mining-pill mining-pill-active">Status: ACTIVE (Platzhalter)</div>
-      <div class="mining-pill">Output: +5 Joule / Tick (Platzhalter)</div>
-    </div>
-
-    <button class="btn-mining" onclick="startMining()">Mining starten</button>
-  </section>
-
-  <!-- LAUNCHPAD -->
-  <section class="section-card">
-    <div class="section-tag">Kachel 9</div>
-    <h2 class="section-title">Meme‑Token Launchpad</h2>
-    <p class="section-sub">
-      Erstelle Token mit Koppelung an den RFOF‑Preis‑Floor. Launchpad‑Einstieg aus der Wallet.
-    </p>
-    <button class="btn-outline" onclick="openLaunchpad()">NEUEN TOKEN MINTEN</button>
-    <p class="launchpad-note">
-      Das Launchpad wird später im API Marketplace als eigene Seite gerendert.
-    </p>
-  </section>
-
-  <!-- WALLET TRANSAKTIONSHISTORIE -->
-  <section class="section-card">
-    <div class="section-tag">Historie</div>
-    <h2 class="section-title">Wallet Transaktionshistorie</h2>
-    <p class="section-sub">
-      Übersicht aller Interaktionen: Send, Receive, Swap, Mining, Launchpad, DEX‑Aktionen (UI‑Platzhalter).
-    </p>
-
-    <div class="history-list">
-      <div class="history-entry">
-        [15:13:30]
-        <a class="hash-link" href="../viewer/index.html?tx=0xsend001">SEND: 10 RFOF an GUCI‑XYZ...</a>
-      </div>
-      <div class="history-entry">
-        [15:14:02]
-        <a class="hash-link" href="../viewer/index.html?tx=0xswap001">SWAP: 5 GOLD → 2 ECCU...</a>
-      </div>
-      <div class="history-entry">
-        [15:15:10]
-        <a class="hash-link" href="../viewer/index.html?tx=0xlaunch001">LAUNCHPAD: Meme‑Token „PHX‑MEME“ erstellt...</a>
-      </div>
-      <div class="history-entry">
-        [15:16:45]
-        <a class="hash-link" href="../viewer/index.html?tx=0xmine001">MINING: +5 Joule quantisiert...</a>
-      </div>
+    <div class="master-only section-card" style="border-color:var(--accent); margin-top:15px;">
+      <div style="color:var(--accent); font-size:12px; font-weight:bold;">MASTER‑ADMIN</div>
+      <button class="btn-chip" style="margin-top:8px;" onclick="triggerMasterTX('ECCU-PAY')">ECCU PHYSISCH AUSZAHLEN</button>
     </div>
   </section>
 
+  <section class="section-card">
+    <div style="font-size:10px; text-transform:uppercase; color:var(--muted);">Neural Cache</div>
+    <h2 style="font-size:15px; margin:4px 0;">Joule Mining</h2>
+    <button class="btn-chip btn-chip-primary" onclick="startMining()">Mining starten</button>
+  </section>
+
+  <section class="section-card">
+    <h2 style="font-size:15px; margin:0 0 10px;">Meme-Token Launchpad</h2>
+    <button class="btn-chip" onclick="openLaunchpad()">NEUEN TOKEN MINTEN</button>
+  </section>
+
+  <section class="section-card">
+    <h2 style="font-size:15px; margin:0 0 10px;">Wallet Historie (TXi/TXf)</h2>
+    <div class="history-list" id="wallet-history-list">
+      </div>
+  </section>
 </main>
 
-<!-- WICHTIG: app.js EINBINDEN -->
 <script src="app.js"></script>
 
-<!-- HASH-LINK FIX: Weiterleitung zu browser.html -->
 <script>
-document.addEventListener('click', (ev) => {
-  const link = ev.target.closest('.hash-link');
-  if (!link) return;
-
-  ev.preventDefault();
-
-  const tx = link.getAttribute('data-tx') || '';
-  const guci = localStorage.getItem('globalClientID') || '';
-
-  let url = 'browser.html';
-  const params = [];
-
-  if (tx) params.push('tx=' + encodeURIComponent(tx));
-  if (guci) params.push('guci=' + encodeURIComponent(guci));
-
-  if (params.length > 0) {
-    url += '?' + params.join('&');
-  }
-
-  window.location.href = url;
-});
-</script>
-
-<!-- VERKNÜPFUNG ZUM TXf-VIEWER -->
-<script>
-(function () {
-  const guci = localStorage.getItem('globalClientID') || '';
-
-  document.querySelectorAll('.btn-explorer').forEach(btn => {
-    btn.addEventListener('click', () => {
-      let url = 'browser.html';
-      if (guci) url += '?guci=' + encodeURIComponent(guci);
-      window.location.href = url;
-    });
+  /**
+   * Kapitel 2: GLOBALER HASH-LINK LISTENER
+   * Verhindert relative Pfadfehler, leitet immer auf browser.html um.
+   */
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('.hash-link');
+    if (!el) return;
+    
+    e.preventDefault();
+    const tx = el.dataset.tx || el.innerText;
+    const guci = localStorage.getItem('globalClientID') || '';
+    const isMaster = localStorage.getItem('rfof_user') === 'RFOF-NETWORK';
+    
+    let url = 'browser.html?tx=' + encodeURIComponent(tx);
+    if (isMaster && guci) url += '&guci=' + encodeURIComponent(guci);
+    
+    window.location.href = url;
   });
-})();
+
+  /**
+   * Kapitel 1: INITIALER IDENTITÄTS-CHECK
+   */
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = localStorage.getItem('rfof_user');
+    const guci = localStorage.getItem('globalClientID') || 'NOT_SET';
+    
+    if (user === 'RFOF-NETWORK') {
+      document.body.classList.add('is-master');
+      const gLink = document.getElementById('guci-link-val');
+      if(gLink) {
+        gLink.innerText = guci;
+        gLink.dataset.tx = 'GUCI-' + guci;
+      }
+    }
+  });
+
+  function closeDetail() { document.getElementById('detail-view').style.display = 'none'; }
+  function switchChart(m) {
+    const s = document.getElementById('candleCanvasStandard');
+    const me = document.getElementById('candleCanvasMecha');
+    const ts = document.getElementById('tab-std');
+    const tm = document.getElementById('tab-mec');
+    s.style.display = (m === 'std' ? 'block' : 'none');
+    me.style.display = (m === 'mec' ? 'block' : 'none');
+    ts.classList.toggle('active', m === 'std');
+    tm.classList.toggle('active', m === 'mec');
+  }
 </script>
 
 </body>

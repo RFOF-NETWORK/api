@@ -41,14 +41,12 @@
     .brand span { color:var(--accent); }
     .guci-display { font-size:12px; font-family:monospace; color:var(--muted); }
 
-    /* Zusatz: GUCI-Link */
     .guci-link {
       color:var(--accent);
       text-decoration:none;
       cursor:pointer;
     }
 
-    /* Status-Bar */
     .status-bar {
       background:#020617;
       border:1px solid var(--border);
@@ -171,7 +169,7 @@
       padding:18px 18px 20px;
       margin-bottom:24px;
       border-left:4px solid var(--accent);
-      display:none; /* initial versteckt, wird per app.js geöffnet */
+      display:none;
     }
     .detail-header {
       display:flex;
@@ -229,7 +227,7 @@
       font-size:12px;
       margin-bottom:10px;
     }
-    /* BEGIN: DEX-Buttons */
+
     .trade-actions {
       display:flex;
       flex-wrap:wrap;
@@ -256,7 +254,6 @@
       background:var(--accent);
       color:#020617;
     }
-    /* END: DEX-Buttons */
 
     .detail-performance {
       font-size:11px;
@@ -264,14 +261,13 @@
       margin-top:4px;
     }
 
-    /* Master-Admin Bereich (nur Anzeige) */
     .master-admin-box {
       border:1px solid var(--accent);
       background:var(--accent-soft);
       border-radius:10px;
       padding:10px 12px;
       margin-top:10px;
-      display:none; /* wird per app.js für MASTER sichtbar */
+      display:none;
     }
     .master-admin-title {
       margin:0 0 4px;
@@ -295,7 +291,7 @@
       cursor:pointer;
     }
 
-    /* BEGIN: Mining-Sektion */
+    /* Mining */
     .section-card {
       background:var(--bg-alt);
       border:1px solid var(--border);
@@ -347,9 +343,8 @@
       padding:8px 12px;
       cursor:pointer;
     }
-    /* END: Mining-Sektion */
 
-    /* Launchpad (Kachel 9) */
+    /* Launchpad */
     .launchpad-note {
       font-size:11px;
       color:var(--muted);
@@ -367,7 +362,7 @@
       margin-top:8px;
     }
 
-    /* BEGIN: Wallet Transaktionshistorie */
+    /* Historie */
     .history-list {
       font-family:monospace;
       font-size:11px;
@@ -383,7 +378,6 @@
       text-decoration:none;
       cursor:pointer;
     }
-    /* END: Wallet Transaktionshistorie */
   </style>
 </head>
 <body>
@@ -424,6 +418,7 @@
 
   <!-- Balance-Grid -->
   <section class="balance-grid">
+
     <!-- Standard-Token -->
     <article class="coin-tile" onclick="openDetail('RFOF')">
       <div class="coin-header">
@@ -470,7 +465,7 @@
       <div class="val-fiat">Utility‑Basis (Gesperrt)</div>
     </article>
 
-    <!-- LP-Token (nur anzeigen, wenn vorhanden – hier nur UI-Platzhalter) -->
+    <!-- LP-Token -->
     <article class="coin-tile" data-lp="true" onclick="openDetail('Phoenix LP')">
       <div class="coin-header">
         <div class="coin-name">Phoenix LP</div>
@@ -497,9 +492,10 @@
       <div class="amount">0.0000</div>
       <div class="val-fiat">Ability API LP (nur bei Besitz sichtbar)</div>
     </article>
+
   </section>
 
-  <!-- Trading-Charts / Detail-View -->
+  <!-- Detail-View -->
   <section id="detail-view">
     <div class="detail-header">
       <div>
@@ -523,13 +519,11 @@
       [ MECHATRONIC BLUE CANDLES ]
     </div>
 
-    <!-- BEGIN: DEX-Buttons -->
     <div class="trade-actions">
       <button class="btn-action btn-buy">Buy</button>
       <button class="btn-action btn-sell">Sell</button>
       <button class="btn-action btn-dex" onclick="openDEX()">Zum DEX (RFOF‑GOLDEN‑DEX)</button>
-    </div>
-    <!-- END: DEX-Buttons -->
+    </div> <!-- Ende .trade-actions -->
 
     <div class="detail-performance">
       Basis‑Token (RFOF, GOLD, Phoenix, G‑Phoenix): 0,2% pro Interaktion · 0,4% Roundtrip<br />
@@ -537,6 +531,7 @@
       Master‑Token (BIP): 0,8% pro Interaktion · 1,6% Roundtrip
     </div>
 
+    <!-- MASTER ADMIN BOX -->
     <div class="master-admin-box">
       <h4 class="master-admin-title">MASTER‑ADMIN: RFOF‑NETWORK ACCESS</h4>
       <p class="master-admin-text">
@@ -545,6 +540,7 @@
       <button class="btn-master">ECCU PHYSISCH AUSZAHLEN</button>
     </div>
 
+    <!-- TOKEN HISTORIE -->
     <div style="margin-top:16px;">
       <h3 style="font-size:13px; margin:0 0 4px;">TOKEN HISTORIE (SHA256 UTX)</h3>
       <div class="history-list">
@@ -560,13 +556,16 @@
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- BEGIN: Mining-Sektion -->
+  </section> <!-- Ende #detail-view -->
+
+  <!-- MINING SEKTION -->
   <section class="section-card">
     <div class="section-tag">Mining</div>
     <h2 class="section-title">Neural Cache (Joule)</h2>
-    <p class="section-sub">Energetischer Output (Mining/Speicher) – TXi‑Spiegelung der Wallet‑Konsole.</p>
+    <p class="section-sub">
+      Energetischer Output (Mining/Speicher) – TXi‑Spiegelung der Wallet‑Konsole.
+    </p>
 
     <div class="mining-stats">
       <div class="mining-pill mining-pill-active">Status: ACTIVE (Platzhalter)</div>
@@ -575,9 +574,8 @@
 
     <button class="btn-mining" onclick="startMining()">Mining starten</button>
   </section>
-  <!-- END: Mining-Sektion -->
 
-  <!-- Meme-Token Launchpad (Kachel 9) -->
+  <!-- LAUNCHPAD -->
   <section class="section-card">
     <div class="section-tag">Kachel 9</div>
     <h2 class="section-title">Meme‑Token Launchpad</h2>
@@ -590,13 +588,14 @@
     </p>
   </section>
 
-  <!-- BEGIN: Wallet Transaktionshistorie -->
+  <!-- WALLET TRANSAKTIONSHISTORIE -->
   <section class="section-card">
     <div class="section-tag">Historie</div>
     <h2 class="section-title">Wallet Transaktionshistorie</h2>
     <p class="section-sub">
       Übersicht aller Interaktionen: Send, Receive, Swap, Mining, Launchpad, DEX‑Aktionen (UI‑Platzhalter).
     </p>
+
     <div class="history-list">
       <div class="history-entry">
         [15:13:30]
@@ -616,9 +615,11 @@
       </div>
     </div>
   </section>
-  <!-- END: Wallet Transaktionshistorie -->
 
 </main>
+
+<!-- WICHTIG: app.js EINBINDEN -->
+<script src="app.js"></script>
 
 </body>
 </html>

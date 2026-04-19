@@ -1,1983 +1,307 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>chain-clearing / index.html</title>
-  <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <style>
-    :root {
-      --bg: #05060a;
-      --bg-elevated: rgba(15, 18, 30, 0.85);
-      --accent: #42e0ff;
-      --accent-soft: rgba(66, 224, 255, 0.35);
-      --accent-strong: rgba(66, 224, 255, 0.8);
-      --danger: #ff4b81;
-      --success: #42ff9e;
-      --text: #f5f7ff;
-      --muted: #8b92b0;
-      --border: rgba(255, 255, 255, 0.08);
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 10px;
-      --blur-strong: 40px;
-      --glass-bg: rgba(10, 12, 22, 0.78);
-      --glass-bg-soft: rgba(10, 12, 22, 0.6);
-      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.65);
-      --shadow-subtle: 0 14px 40px rgba(0, 0, 0, 0.55);
-      --grid-gap: 14px;
-      --header-height: 72px;
-      --transition-fast: 0.18s ease-out;
-      --transition-med: 0.25s ease-out;
-      --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      width: 1280px;
-      max-width: 1280px;
-      min-width: 1280px;
-      height: 100%;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #15192b 0, #05060a 52%, #000 100%);
-      color: var(--text);
-      font-family: var(--font-sans);
-    }
-
-    body {
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    #app-root {
-      width: 1280px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 16px 18px 18px 18px;
-      gap: 12px;
-    }
-
-    .glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .glass-soft {
-      background: var(--glass-bg-soft);
-      backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--blur-strong)) saturate(160%);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-subtle);
-    }
-
-    .pill {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.9));
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 6px 14px;
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.16), rgba(10, 12, 22, 0.95));
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-    }
-
-    .btn:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.26), rgba(10, 12, 22, 0.98));
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      border-color: rgba(66, 224, 255, 0.6);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-
-    .btn-ghost:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.9));
-    }
-
-    .badge {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.2), rgba(10, 12, 22, 0.9));
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .badge-muted {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--muted);
-      border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-    }
-
-    .row-space {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .col {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .mono {
-      font-family: var(--font-mono);
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .tiny {
-      font-size: 10px;
-    }
-
-    .small {
-      font-size: 12px;
-    }
-
-    .title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .headline {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .glow-accent {
-      box-shadow: 0 0 18px rgba(66, 224, 255, 0.55);
-    }
-
-    .glow-aaa {
-      box-shadow: 0 0 18px rgba(66, 255, 158, 0.55);
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.16), transparent);
-      margin: 8px 0;
-    }
-
-    /* Layout */
-
-    #app-shell {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      height: 100%;
-    }
-
-    #app-header {
-      height: var(--header-height);
-      min-height: var(--header-height);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    #app-main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 340px 1fr 320px;
-      grid-template-rows: 1fr;
-      gap: var(--grid-gap);
-      min-height: 0;
-    }
-
-    #left-column,
-    #center-column,
-    #right-column {
-      display: flex;
-      flex-direction: column;
-      gap: var(--grid-gap);
-      min-height: 0;
-    }
-
-    /* Login Screen */
-
-    #login-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.08), rgba(0, 0, 0, 0.96));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-
-    #login-card {
-      width: 420px;
-      padding: 26px 26px 22px 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .login-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .login-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .field-label {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .field {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.96));
-      padding: 8px 14px;
-      color: var(--text);
-      font-size: 13px;
-      outline: none;
-      font-family: var(--font-sans);
-    }
-
-    .field::placeholder {
-      color: rgba(255, 255, 255, 0.35);
-    }
-
-    .field:focus {
-      border-color: rgba(66, 224, 255, 0.7);
-      box-shadow: 0 0 0 1px rgba(66, 224, 255, 0.4);
-    }
-
-    .login-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-
-    .login-meta {
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Header */
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 14px;
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.4), rgba(10, 12, 22, 0.98));
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-    }
-
-    .brand-logo span {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-    }
-
-    .brand-text-main {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .brand-text-sub {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .profile-shell {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-
-    .xp-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.96));
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-    }
-
-    .xp-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 12px rgba(66, 224, 255, 0.7);
-    }
-
-    .profile-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 8px 4px 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.18), rgba(10, 12, 22, 0.96));
-      cursor: pointer;
-      transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .profile-chip:hover {
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.26), rgba(10, 12, 22, 0.98));
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: radial-gradient(circle at top left, rgba(66, 224, 255, 0.4), rgba(10, 12, 22, 0.98));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    }
-
-    .profile-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .profile-name {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .profile-id {
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-family: var(--font-mono);
-    }
-
-    .profile-aaa {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: radial-gradient(circle at top, rgba(66, 255, 158, 0.2), rgba(10, 12, 22, 0.9));
-      color: var(--success);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .profile-dropdown {
-      position: absolute;
-      top: 40px;
-      right: 0;
-      width: 260px;
-      padding: 12px 12px 10px 12px;
-      display: none;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 20;
-    }
-
-    .profile-dropdown.visible {
-      display: flex;
-    }
-
-    .profile-dropdown-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .profile-dropdown-buttons {
-      display: flex;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .profile-dropdown-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    /* Left Column: Kachel 0 + Mini-Sektoren */
-
-    #kachel-zero {
-      flex: 1;
-      padding: 12px 12px 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 0;
-    }
-
-    #kachel-zero-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #kachel-zero-main {
-      display: grid;
-      grid-template-rows: 120px 1fr;
-      gap: 8px;
-      min-height: 0;
-    }
-
-    .takt-strip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .takt-bar {
-      flex: 1;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(66, 224, 255, 0.1), rgba(66, 224, 255, 0.6), rgba(66, 224, 255, 0.1));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .takt-pulse {
-      position: absolute;
-      top: -4px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 18px rgba(66, 224, 255, 0.8);
-      transform: translateX(0);
-    }
-
-    .takt-label {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--muted);
-    }
-
-    .horizon-grid {
-      flex: 1;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.08), rgba(10, 12, 22, 0.96));
-      padding: 8px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .horizon-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    .horizon-canvas {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(5, 6, 10, 0.98));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .horizon-canvas-inner {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 22px 22px;
-      opacity: 0.9;
-    }
-
-    .horizon-node {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 14px rgba(66, 224, 255, 0.7);
-    }
-
-    .horizon-node-core {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 22px rgba(66, 224, 255, 0.9);
-    }
-
-    #mini-sectors {
-      height: 180px;
-      padding: 8px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 1fr;
-      gap: 6px;
-    }
-
-    .mini-sector {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px 7px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
-    }
-
-    .mini-sector:hover {
-      border-color: rgba(66, 224, 255, 0.6);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.98));
-    }
-
-    .mini-sector-name {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .mini-sector-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    .mini-sector-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--success), rgba(66, 255, 158, 0.1));
-      box-shadow: 0 0 10px rgba(66, 255, 158, 0.7);
-    }
-
-    /* Center Column: Genesis + Sync */
-
-    #center-column {
-      min-height: 0;
-    }
-
-    .viewer-shell {
-      flex: 1;
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: var(--grid-gap);
-      min-height: 0;
-    }
-
-    .viewer-panel {
-      padding: 10px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .viewer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .viewer-title {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .viewer-body {
-      display: grid;
-      grid-template-columns: 1.1fr 1.1fr 0.9fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .viewer-block {
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px 7px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 4px;
-      min-height: 0;
-    }
-
-    .viewer-block-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-    }
-
-    .viewer-block-body {
-      min-height: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .diagram-canvas {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-sm);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.04), rgba(5, 6, 10, 0.98));
-      overflow: hidden;
-    }
-
-    .diagram-layer-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 18px 18px;
-      opacity: 0.9;
-    }
-
-    .diagram-layer-particles {
-      position: absolute;
-      inset: 0;
-    }
-
-    .diagram-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: radial-gradient(circle, var(--accent), rgba(66, 224, 255, 0.1));
-      box-shadow: 0 0 10px rgba(66, 224, 255, 0.7);
-    }
-
-    .diagram-candle {
-      position: absolute;
-      width: 6px;
-      border-radius: 999px;
-      background: linear-gradient(to top, rgba(66, 224, 255, 0.1), rgba(66, 224, 255, 0.9));
-    }
-
-    .viewer-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Right Column: Block History + Terminal */
-
-    #right-column {
-      min-height: 0;
-    }
-
-    #block-history-panel {
-      flex: 1;
-      padding: 10px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 6px;
-      min-height: 0;
-    }
-
-    .history-list {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .history-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .history-item {
-      border-radius: 9px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 4px 6px;
-      display: grid;
-      grid-template-columns: 1.4fr 1.2fr;
-      gap: 4px;
-      font-size: 10px;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .history-item:hover {
-      border-color: rgba(66, 224, 255, 0.6);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.12), rgba(10, 12, 22, 0.98));
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .history-item-main {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .history-item-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      align-items: flex-end;
-      text-align: right;
-    }
-
-    .history-hash {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 160px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .history-user {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--muted);
-      max-width: 140px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #terminal-panel {
-      height: 210px;
-      padding: 8px 9px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 4px;
-    }
-
-    .terminal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-    }
-
-    .terminal-body {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top, rgba(66, 224, 255, 0.06), rgba(10, 12, 22, 0.96));
-      padding: 6px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--muted);
-      overflow-y: auto;
-    }
-
-    .terminal-line {
-      padding: 1px 0;
-      cursor: pointer;
-      transition: color var(--transition-fast), background var(--transition-fast);
-    }
-
-    .terminal-line:hover {
-      color: var(--accent);
-      background: rgba(66, 224, 255, 0.06);
-    }
-
-    /* Scrollbars */
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.16);
-      border-radius: 999px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.26);
-    }
-
-    /* Utility */
-
-    .hidden {
-      display: none !important;
-    }
-
-    .fade-in {
-      animation: fadeIn 0.25s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <div id="app-root">
-    <!-- LOGIN OVERLAY -->
-    <div id="login-overlay">
-      <div id="login-card" class="glass">
-        <div class="row-space">
-          <div class="col" style="gap:4px;">
-            <div class="login-title">CHAIN CLEARING LOGIN</div>
-            <div class="login-sub">
-              GUCI‑Style Identity · MASTER‑RFOF‑NETWORK‑ID · Lokale, deterministische Session
-            </div>
-          </div>
-          <div class="badge">/chain-clearing</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="col" style="gap:10px;">
-          <div class="col">
-            <label class="field-label" for="login-username">Username</label>
-            <input id="login-username" class="field" type="text" autocomplete="off" placeholder="z.B. phoenix.operator" />
-          </div>
-
-          <div class="col">
-            <label class="field-label" for="login-password">Passphrase</label>
-            <input id="login-password" class="field" type="password" autocomplete="off" placeholder="••••••••" />
-          </div>
-        </div>
-
-        <div class="login-footer">
-          <div class="login-meta" id="login-meta">
-            MASTER-RFOF-NETWORK-ID wird deterministisch aus Username + Loginzeitpunkt erzeugt.
-          </div>
-          <div class="row" style="gap:6px;">
-            <button id="login-btn" class="btn">
-              <span>Login</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- APP SHELL -->
-    <div id="app-shell" class="hidden">
-      <!-- HEADER -->
-      <header id="app-header" class="glass">
-        <div class="brand">
-          <div class="brand-logo">
-            <span>CC</span>
-          </div>
-          <div class="col" style="gap:2px;">
-            <div class="brand-text-main">CHAIN CLEARING MONOLITH</div>
-            <div class="brand-text-sub">GENESIS · SYNC · CLEARING · XP/JOULE · AAA</div>
-          </div>
-        </div>
-
-        <div class="profile-shell">
-          <div class="xp-pill" id="xp-pill">
-            <div class="xp-dot" id="xp-dot"></div>
-            <span class="small">XP</span>
-            <span class="mono small" id="xp-value">0</span>
-            <span class="tiny muted">Joule</span>
-            <span class="mono tiny" id="joule-value">0 b</span>
-          </div>
-
-          <div class="profile-chip" id="profile-chip">
-            <div class="avatar" id="avatar">
-              <span id="avatar-initials">CC</span>
-            </div>
-            <div class="profile-meta">
-              <div class="row" style="gap:6px; align-items:center;">
-                <span class="profile-name" id="profile-name">–</span>
-                <span class="profile-aaa" id="profile-aaa">AAA-0</span>
-              </div>
-              <div class="profile-id" id="profile-id">RFOF-NETWORK::–</div>
-            </div>
-          </div>
-
-          <div id="profile-dropdown" class="profile-dropdown glass-soft">
-            <div class="profile-dropdown-header">
-              <div class="avatar" style="width:26px;height:26px;font-size:12px;" id="dropdown-avatar">
-                <span id="dropdown-avatar-initials">CC</span>
-              </div>
-              <div class="col" style="gap:2px;">
-                <span class="small" id="dropdown-name">–</span>
-                <span class="tiny mono muted" id="dropdown-id">RFOF-NETWORK::–</span>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <div class="profile-dropdown-buttons">
-              <button class="btn btn-ghost small" id="btn-wallet">Wallet</button>
-              <button class="btn btn-ghost small" id="btn-profile">Profile</button>
-              <button class="btn btn-ghost small" id="btn-settings">Settings</button>
-            </div>
-            <div class="profile-dropdown-footer">
-              <span class="tiny muted mono" id="dropdown-last-login">last: –</span>
-              <button class="btn btn-ghost tiny" id="btn-logout">Logout</button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- MAIN GRID -->
-      <main id="app-main">
-        <!-- LEFT COLUMN -->
-        <section id="left-column">
-          <div id="kachel-zero" class="glass">
-            <div id="kachel-zero-header">
-              <div class="col" style="gap:2px;">
-                <span class="title">KACHEL 0 · SEKTOR 02</span>
-                <span class="small muted">Nervensystem · Ereignishorizont E(6,5) · 42E0 Takt</span>
-              </div>
-              <div class="row" style="gap:6px;">
-                <span class="badge-muted mono tiny" id="kachel-zero-time">–</span>
-                <span class="badge tiny">AAA NEXUS</span>
-              </div>
-            </div>
-
-            <div id="kachel-zero-main">
-              <div class="col" style="gap:6px;">
-                <div class="takt-strip">
-                  <span class="takt-label">42E0</span>
-                  <div class="takt-bar">
-                    <div class="takt-pulse" id="takt-pulse"></div>
-                  </div>
-                  <span class="takt-label" id="takt-label">t=0</span>
-                </div>
-                <div class="row-space">
-                  <span class="tiny muted mono">RESET @ t=0 · SINGULARITÄT @ t=10</span>
-                  <span class="tiny muted mono">E(6,5) · 7‑Kachel‑Skript A1–Z10</span>
-                </div>
-              </div>
-
-              <div class="horizon-grid">
-                <div class="horizon-meta">
-                  <span>HISTORY‑GRID · 6 CHAINS</span>
-                  <span id="horizon-meta-right">.gt ↔ .ton · SUPERPOSITION</span>
-                </div>
-                <div class="horizon-canvas">
-                  <div class="horizon-canvas-inner"></div>
-                  <div class="horizon-node-core" id="horizon-core"></div>
-                  <div class="horizon-node" id="horizon-node-gt"></div>
-                  <div class="horizon-node" id="horizon-node-ton"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div id="mini-sectors">
-              <!-- 13 Mini-Sektoren -->
-            </div>
-          </div>
-        </section>
-
-        <!-- CENTER COLUMN -->
-        <section id="center-column">
-          <div class="viewer-shell">
-            <!-- GENESIS VIEW -->
-            <div class="viewer-panel glass" id="genesis-panel">
-              <div class="viewer-header">
-                <div class="col" style="gap:2px;">
-                  <span class="viewer-title">GENESIS‑VIEW</span>
-                  <span class="tiny muted">Statische Initialisierung · 65 Dateien · deterministische Seeds</span>
-                </div>
-                <div class="row" style="gap:6px;">
-                  <span class="badge-muted tiny mono" id="genesis-status">GENESIS: READY</span>
-                  <button class="btn-ghost btn tiny" id="btn-genesis-sync">Re‑Hash</button>
-                </div>
-              </div>
-
-              <div class="viewer-body">
-                <!-- Block / Clearing / AAA -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">BLOCK‑/CLEARING‑STATUS</span>
-                    <span class="tiny mono muted" id="genesis-block-count">Blocks: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-block-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Candle-Sticks -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">CANDLE‑STICKS</span>
-                    <span class="tiny mono muted" id="genesis-candle-count">Candles: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-candle-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Mechatronische Interaktion -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">MECHATRONISCHE INTERAKTION</span>
-                    <span class="tiny mono muted" id="genesis-xp-link">XP→Joule</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="genesis-mecha-layer"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="viewer-footer">
-                <span class="tiny mono" id="genesis-footer-left">GENESIS · A→Z Pfadierung · Manager‑Ordner simuliert</span>
-                <span class="tiny mono muted" id="genesis-footer-right">ECCU‑Parity · 0,2 % Fee‑Mechanik</span>
-              </div>
-            </div>
-
-            <!-- SYNC VIEW -->
-            <div class="viewer-panel glass" id="sync-panel">
-              <div class="viewer-header">
-                <div class="col" style="gap:2px;">
-                  <span class="viewer-title">SYNC‑VIEW</span>
-                  <span class="tiny muted">Dynamische Synchronisation · XP/Joule‑gekoppelt · AAA‑Validierung</span>
-                </div>
-                <div class="row" style="gap:6px;">
-                  <span class="badge-muted tiny mono" id="sync-status">SYNC: IDLE</span>
-                  <button class="btn tiny" id="btn-sync-pulse">Sync‑Impulse</button>
-                </div>
-              </div>
-
-              <div class="viewer-body">
-                <!-- Block / Clearing / AAA -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">BLOCK‑/CLEARING‑STATUS</span>
-                    <span class="tiny mono muted" id="sync-block-count">Blocks: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-block-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Candle-Sticks -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">CANDLE‑STICKS</span>
-                    <span class="tiny mono muted" id="sync-candle-count">Candles: 0</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-candle-layer"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Mechatronische Interaktion -->
-                <div class="viewer-block">
-                  <div class="viewer-block-header">
-                    <span class="tiny">MECHATRONISCHE INTERAKTION</span>
-                    <span class="tiny mono muted" id="sync-xp-link">XP→Joule</span>
-                  </div>
-                  <div class="viewer-block-body">
-                    <div class="diagram-canvas">
-                      <div class="diagram-layer-grid"></div>
-                      <div class="diagram-layer-particles" id="sync-mecha-layer"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="viewer-footer">
-                <span class="tiny mono" id="sync-footer-left">SYNC · Cross‑Chain‑Audit · X‑Hub Injektor</span>
-                <span class="tiny mono muted" id="sync-footer-right">bank_exekutive.js · parity_logic.js · integrity_check.py</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- RIGHT COLUMN -->
-        <section id="right-column">
-          <div id="block-history-panel" class="glass">
-            <div class="row-space">
-              <div class="col" style="gap:2px;">
-                <span class="title">BLOCK‑HISTORY</span>
-                <span class="tiny muted">Global · Kachel 0 · Nutzergebunden (`MASTER‑RFOF‑NETWORK‑ID`)</span>
-              </div>
-              <div class="row" style="gap:6px;">
-                <span class="badge-muted tiny mono" id="history-count">0 Blöcke</span>
-                <button class="btn-ghost btn tiny" id="btn-history-clear">History leeren</button>
-              </div>
-            </div>
-            <div class="history-list">
-              <div class="history-scroll" id="history-scroll"></div>
-            </div>
-          </div>
-
-          <div id="terminal-panel" class="glass">
-            <div class="terminal-header">
-              <span class="tiny">X‑HUB · META‑CONSOLE</span>
-              <span class="tiny mono muted" id="terminal-status">LEVEL 02 · GUCI‑PARAMETER</span>
-            </div>
-            <div class="terminal-body" id="terminal-body"></div>
-          </div>
-        </section>
-      </main>
-    </div>
-  </div>
-
-  <script>
-    // --- Utility: SHA-256 (minimal) ---
-    async function sha256(text) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(text);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    // --- Storage Keys ---
-    const STORAGE_KEY_USER = "chain-clearing.current-user-id";
-    const STORAGE_PREFIX_USER = "chain-clearing.user.";
-
-    // --- Global State ---
-    const state = {
-      user: null,
-      takt: 0,
-      taktDirection: 1,
-      xp: 0,
-      jouleBits: 0,
-      aaaLevel: 0,
-      blocks: [],
-      candles: [],
-      sectors: [],
-      mouseEnergy: 0,
-      lastMouseTime: performance.now(),
-      lastTaktTime: performance.now(),
-      lastXPUpdate: performance.now()
-    };
-
-    // --- DOM Refs ---
-    const loginOverlay = document.getElementById("login-overlay");
-    const loginBtn = document.getElementById("login-btn");
-    const loginUsername = document.getElementById("login-username");
-    const loginPassword = document.getElementById("login-password");
-    const loginMeta = document.getElementById("login-meta");
-
-    const appShell = document.getElementById("app-shell");
-
-    const profileChip = document.getElementById("profile-chip");
-    const profileDropdown = document.getElementById("profile-dropdown");
-    const btnLogout = document.getElementById("btn-logout");
-    const btnWallet = document.getElementById("btn-wallet");
-    const btnProfile = document.getElementById("btn-profile");
-    const btnSettings = document.getElementById("btn-settings");
-
-    const avatar = document.getElementById("avatar");
-    const avatarInitials = document.getElementById("avatar-initials");
-    const dropdownAvatar = document.getElementById("dropdown-avatar");
-    const dropdownAvatarInitials = document.getElementById("dropdown-avatar-initials");
-    const profileName = document.getElementById("profile-name");
-    const profileAAA = document.getElementById("profile-aaa");
-    const profileId = document.getElementById("profile-id");
-    const dropdownName = document.getElementById("dropdown-name");
-    const dropdownId = document.getElementById("dropdown-id");
-    const dropdownLastLogin = document.getElementById("dropdown-last-login");
-
-    const xpValue = document.getElementById("xp-value");
-    const jouleValue = document.getElementById("joule-value");
-    const xpDot = document.getElementById("xp-dot");
-
-    const taktPulse = document.getElementById("takt-pulse");
-    const taktLabel = document.getElementById("takt-label");
-    const kachelZeroTime = document.getElementById("kachel-zero-time");
-
-    const horizonCore = document.getElementById("horizon-core");
-    const horizonNodeGt = document.getElementById("horizon-node-gt");
-    const horizonNodeTon = document.getElementById("horizon-node-ton");
-
-    const miniSectorsContainer = document.getElementById("mini-sectors");
-
-    const genesisBlockLayer = document.getElementById("genesis-block-layer");
-    const genesisCandleLayer = document.getElementById("genesis-candle-layer");
-    const genesisMechaLayer = document.getElementById("genesis-mecha-layer");
-    const syncBlockLayer = document.getElementById("sync-block-layer");
-    const syncCandleLayer = document.getElementById("sync-candle-layer");
-    const syncMechaLayer = document.getElementById("sync-mecha-layer");
-
-    const genesisBlockCount = document.getElementById("genesis-block-count");
-    const genesisCandleCount = document.getElementById("genesis-candle-count");
-    const syncBlockCount = document.getElementById("sync-block-count");
-    const syncCandleCount = document.getElementById("sync-candle-count");
-    const genesisStatus = document.getElementById("genesis-status");
-    const syncStatus = document.getElementById("sync-status");
-    const genesisFooterLeft = document.getElementById("genesis-footer-left");
-    const genesisFooterRight = document.getElementById("genesis-footer-right");
-    const syncFooterLeft = document.getElementById("sync-footer-left");
-    const syncFooterRight = document.getElementById("sync-footer-right");
-
-    const btnGenesisSync = document.getElementById("btn-genesis-sync");
-    const btnSyncPulse = document.getElementById("btn-sync-pulse");
-
-    const historyScroll = document.getElementById("history-scroll");
-    const historyCount = document.getElementById("history-count");
-    const btnHistoryClear = document.getElementById("btn-history-clear");
-
-    const terminalBody = document.getElementById("terminal-body");
-    const terminalStatus = document.getElementById("terminal-status");
-
-    const dropdownLastLoginEl = dropdownLastLogin;
-
-    // --- Helpers: User Storage ---
-
-    function userStorageKey(masterId) {
-      return STORAGE_PREFIX_USER + masterId;
-    }
-
-    function loadUserFromStorage(masterId) {
-      const raw = localStorage.getItem(userStorageKey(masterId));
-      if (!raw) return null;
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
-    }
-
-    function saveUserToStorage(user) {
-      if (!user || !user.masterId) return;
-      localStorage.setItem(userStorageKey(user.masterId), JSON.stringify(user));
-      localStorage.setItem(STORAGE_KEY_USER, user.masterId);
-    }
-
-    function clearCurrentUser() {
-      localStorage.removeItem(STORAGE_KEY_USER);
-    }
-
-    function loadCurrentUser() {
-      const masterId = localStorage.getItem(STORAGE_KEY_USER);
-      if (!masterId) return null;
-      return loadUserFromStorage(masterId);
-    }
-
-    // --- MASTER-RFOF-NETWORK-ID ---
-
-    async function createMasterId(username, loginTimestamp) {
-      const hash = await sha256(username + loginTimestamp);
-      return `RFOF-NETWORK::${username}::EXT::${hash}`;
-    }
-
-    function initialsFromUsername(username) {
-      if (!username) return "CC";
-      const parts = username.split(/[\s._-]+/).filter(Boolean);
-      if (parts.length === 0) return username.slice(0, 2).toUpperCase();
-      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-
-    // --- Login Flow ---
-
-    async function handleLogin() {
-      const username = (loginUsername.value || "").trim();
-      const password = loginPassword.value || "";
-
-      if (!username || !password) {
-        loginMeta.textContent = "Bitte Username und Passphrase eingeben.";
-        loginMeta.style.color = "#ff4b81";
-        return;
-      }
-
-      loginMeta.textContent = "Erzeuge MASTER‑RFOF‑NETWORK‑ID …";
-      loginMeta.style.color = "#8b92b0";
-
-      const loginTimestamp = new Date().toISOString();
-      const masterId = await createMasterId(username, loginTimestamp);
-      const passwordHash = await sha256(password);
-
-      let user = loadUserFromStorage(masterId);
-      if (!user) {
-        user = {
-          username,
-          masterId,
-          avatar: initialsFromUsername(username),
-          xp: 0,
-          jouleBits: 0,
-          aaaLevel: 0,
-          lastLogin: loginTimestamp,
-          blockHistory: [],
-          candleHistory: [],
-          sectorState: {},
-          settings: {},
-          passwordHash
-        };
-        logTerminal(`NEW USER · ${username} · MASTER‑RFOF‑NETWORK‑ID initialisiert.`);
-      } else {
-        user.lastLogin = loginTimestamp;
-        logTerminal(`LOGIN · ${username} · bestehendes Profil geladen.`);
-      }
-
-      state.user = user;
-      state.xp = user.xp || 0;
-      state.jouleBits = user.jouleBits || 0;
-      state.aaaLevel = user.aaaLevel || 0;
-      state.blocks = user.blockHistory || [];
-      state.candles = user.candleHistory || [];
-
-      saveUserToStorage(user);
-      hydrateUIFromUser();
-      loginOverlay.classList.add("hidden");
-      appShell.classList.remove("hidden");
-      appShell.classList.add("fade-in");
-    }
-
-    function handleLogout() {
-      if (!state.user) return;
-      logTerminal(`LOGOUT · ${state.user.username} · Session beendet.`);
-      clearCurrentUser();
-      state.user = null;
-      appShell.classList.add("hidden");
-      loginOverlay.classList.remove("hidden");
-      loginOverlay.classList.add("fade-in");
-      loginPassword.value = "";
-    }
-
-    // --- UI Hydration ---
-
-    function hydrateUIFromUser() {
-      const user = state.user;
-      if (!user) return;
-
-      const initials = user.avatar || initialsFromUsername(user.username);
-      avatarInitials.textContent = initials;
-      dropdownAvatarInitials.textContent = initials;
-      profileName.textContent = user.username;
-      dropdownName.textContent = user.username;
-      profileId.textContent = user.masterId;
-      dropdownId.textContent = user.masterId;
-      profileAAA.textContent = `AAA-${user.aaaLevel || 0}`;
-      xpValue.textContent = user.xp || 0;
-      jouleValue.textContent = `${user.jouleBits || 0} b`;
-      dropdownLastLoginEl.textContent = `last: ${user.lastLogin || "–"}`;
-
-      renderBlockHistory();
-      renderMiniSectors();
-      updateKachelZeroTime();
-    }
-
-    // --- XP / Joule / Mouse Energy ---
-
-    function handleMouseMove(e) {
-      const now = performance.now();
-      const dt = now - state.lastMouseTime;
-      state.lastMouseTime = now;
-      const energy = Math.min(5, Math.max(0.2, 16 / Math.max(8, dt)));
-      state.mouseEnergy += energy;
-    }
-
-    function updateXP(dt) {
-      const energyDrain = Math.min(state.mouseEnergy, dt * 0.02);
-      const xpGain = energyDrain * 0.8;
-      state.mouseEnergy -= energyDrain;
-      if (xpGain > 0.01) {
-        state.xp += xpGain;
-        const jouleGain = xpGain * 0.05;
-        state.jouleBits += jouleGain;
-        if (state.jouleBits > 1000) {
-          state.aaaLevel = Math.min(999, Math.floor(state.jouleBits / 1000));
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PZQQET | CHAIN-CLEARING MONOLITH</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --prai-cyan: #00f3ff;
+            --aaa-magenta: #ff00ff;
+            --aa-blue: #00bcff;
+            --a-green: #00ff88;
+            --blur: blur(40px);
+            --sat: saturate(160%);
+            --font: -apple-system, "SF Pro Display", sans-serif;
         }
-        xpValue.textContent = state.xp.toFixed(1);
-        jouleValue.textContent = `${state.jouleBits.toFixed(1)} b`;
-        profileAAA.textContent = `AAA-${state.aaaLevel}`;
-        xpDot.style.boxShadow = `0 0 14px rgba(66, 224, 255, ${0.4 + Math.min(0.6, state.mouseEnergy / 40)})`;
-      }
-    }
-
-    // --- Takt / Kachel 0 ---
-
-    function updateTakt(dt) {
-      const now = performance.now();
-      if (now - state.lastTaktTime < 420) return;
-      state.lastTaktTime = now;
-
-      state.takt += state.taktDirection;
-      if (state.takt >= 10) {
-        state.takt = 10;
-        state.taktDirection = -1;
-        logTerminal("42E0 · SINGULARITÄTS‑IMPULS @ t=10");
-        spawnSingularityPulse();
-      } else if (state.takt <= 0) {
-        state.takt = 0;
-        state.taktDirection = 1;
-        logTerminal("42E0 · RESET‑PULSE @ t=0");
-      }
-
-      const t = state.takt;
-      taktLabel.textContent = `t=${t}`;
-      const barWidth = document.querySelector(".takt-bar").clientWidth || 1;
-      const x = (t / 10) * (barWidth - 18);
-      taktPulse.style.transform = `translateX(${x}px)`;
-
-      const core = horizonCore;
-      const gt = horizonNodeGt;
-      const ton = horizonNodeTon;
-
-      const centerX = 50;
-      const centerY = 50;
-      core.style.left = `${centerX - 7}px`;
-      core.style.top = `${centerY - 7}px`;
-
-      const angle = (t / 10) * Math.PI * 2;
-      const radius = 26;
-      const gtX = centerX + radius * Math.cos(angle);
-      const gtY = centerY + radius * Math.sin(angle);
-      const tonX = centerX + radius * Math.cos(angle + Math.PI);
-      const tonY = centerY + radius * Math.sin(angle + Math.PI);
-
-      gt.style.left = `${gtX - 5}px`;
-      gt.style.top = `${gtY - 5}px`;
-      ton.style.left = `${tonX - 5}px`;
-      ton.style.top = `${tonY - 5}px`;
-    }
-
-    function updateKachelZeroTime() {
-      const now = new Date().toISOString();
-      kachelZeroTime.textContent = now;
-    }
-
-    function spawnSingularityPulse() {
-      const layer = genesisMechaLayer;
-      const pulse = document.createElement("div");
-      pulse.className = "diagram-particle";
-      pulse.style.left = "50%";
-      pulse.style.top = "50%";
-      pulse.style.width = "10px";
-      pulse.style.height = "10px";
-      pulse.style.transform = "translate(-50%, -50%)";
-      pulse.style.boxShadow = "0 0 22px rgba(66, 224, 255, 0.9)";
-      layer.appendChild(pulse);
-      setTimeout(() => pulse.remove(), 800);
-    }
-
-    // --- Sektoren / Mini-Sektoren ---
-
-    const SECTOR_NAMES = [
-      "GPCB",
-      "Phoenix Coin",
-      "G-Phoenix Token",
-      "Phoenix LP",
-      "ECCU",
-      "Joule",
-      "XP",
-      "GOLD (42E0)",
-      "RFOF",
-      "RFOF/GOLD LP",
-      "BIP (Master LP)",
-      "Identity Registry",
-      "BRIDGE"
-    ];
-
-    function ensureSectors() {
-      if (!state.sectors || state.sectors.length !== 13) {
-        state.sectors = SECTOR_NAMES.map((name, idx) => ({
-          id: idx,
-          name,
-          lastBlockId: null,
-          lastHash: null,
-          lastTimestamp: null,
-          aaa: "A",
-          clearing: "OK",
-          xpLink: 0
-        }));
-      }
-    }
-
-    function renderMiniSectors() {
-      ensureSectors();
-      miniSectorsContainer.innerHTML = "";
-      state.sectors.forEach((sector, idx) => {
-        const el = document.createElement("div");
-        el.className = "mini-sector";
-        el.dataset.sectorId = sector.id;
-
-        const nameRow = document.createElement("div");
-        nameRow.className = "mini-sector-name row-space";
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = sector.name;
-        const dot = document.createElement("div");
-        dot.className = "mini-sector-dot";
-        nameRow.appendChild(nameSpan);
-        nameRow.appendChild(dot);
-
-        const row1 = document.createElement("div");
-        row1.className = "mini-sector-row";
-        const blockSpan = document.createElement("span");
-        blockSpan.textContent = sector.lastBlockId ? `#${sector.lastBlockId}` : "#–";
-        const aaaSpan = document.createElement("span");
-        aaaSpan.textContent = sector.aaa || "A";
-        row1.appendChild(blockSpan);
-        row1.appendChild(aaaSpan);
-
-        const row2 = document.createElement("div");
-        row2.className = "mini-sector-row";
-        const hashSpan = document.createElement("span");
-        hashSpan.className = "mono";
-        hashSpan.textContent = sector.lastHash ? sector.lastHash.slice(0, 8) + "…" : "–";
-        const clearSpan = document.createElement("span");
-        clearSpan.textContent = sector.clearing || "OK";
-        row2.appendChild(hashSpan);
-        row2.appendChild(clearSpan);
-
-        const row3 = document.createElement("div");
-        row3.className = "mini-sector-row";
-        const tsSpan = document.createElement("span");
-        tsSpan.className = "mono";
-        tsSpan.textContent = sector.lastTimestamp ? sector.lastTimestamp.slice(11, 19) : "–";
-        const xpSpan = document.createElement("span");
-        xpSpan.textContent = `XP:${sector.xpLink || 0}`;
-        row3.appendChild(tsSpan);
-        row3.appendChild(xpSpan);
-
-        el.appendChild(nameRow);
-        el.appendChild(row1);
-        el.appendChild(row2);
-        el.appendChild(row3);
-
-        el.addEventListener("click", () => {
-          logTerminal(`SEKTOR · ${sector.name} · Inline‑Detail geöffnet.`);
-        });
-
-        miniSectorsContainer.appendChild(el);
-      });
-    }
-
-    // --- Blocks / Candles ---
-
-    function createBlock(folder, fileName) {
-      const now = new Date().toISOString();
-      const id = state.blocks.length + 1;
-      const hashSeed = `${folder}/${fileName}/${now}/${state.user ? state.user.masterId : "anon"}`;
-      const hash = hashSeed.split("").reduce((acc, ch, idx) => {
-        const v = ch.charCodeAt(0) ^ (idx * 31);
-        return acc + v.toString(16).padStart(2, "0");
-      }, "").slice(0, 64);
-      const prevHash = state.blocks.length ? state.blocks[state.blocks.length - 1].hash : "0".repeat(64);
-      const aaa = state.aaaLevel >= 1 ? "AAA" : "A";
-      const clearing = "OK";
-      const xpImpact = 1 + Math.min(10, state.xp / 50);
-      const userId = state.user ? state.user.masterId : "anon";
-
-      const block = {
-        id,
-        hash,
-        prevHash,
-        timestamp: now,
-        folder,
-        fileName,
-        aaa,
-        clearing,
-        xpImpact,
-        user: userId
-      };
-
-      state.blocks.push(block);
-      if (state.user) {
-        state.user.blockHistory = state.blocks;
-        saveUserToStorage(state.user);
-      }
-
-      spawnCandleForBlock(block);
-      renderBlockHistory();
-      updateBlockCounters();
-      return block;
-    }
-
-    function spawnCandleForBlock(block) {
-      const base = 100 + (state.xp % 40);
-      const high = base + 10 + (state.jouleBits % 20);
-      const low = base - 10;
-      const close = base + (Math.random() * 10 - 5);
-
-      const candle = {
-        timestamp: block.timestamp,
-        open: base,
-        high,
-        low,
-        close,
-        hash: block.hash,
-        blockId: block.id,
-        xpImpact: block.xpImpact,
-        user: block.user
-      };
-
-      state.candles.push(candle);
-      if (state.user) {
-        state.user.candleHistory = state.candles;
-        saveUserToStorage(state.user);
-      }
-
-      renderCandles();
-    }
-
-    function updateBlockCounters() {
-      genesisBlockCount.textContent = `Blocks: ${state.blocks.length}`;
-      syncBlockCount.textContent = `Blocks: ${state.blocks.length}`;
-      genesisCandleCount.textContent = `Candles: ${state.candles.length}`;
-      syncCandleCount.textContent = `Candles: ${state.candles.length}`;
-      historyCount.textContent = `${state.blocks.length} Blöcke`;
-    }
-
-    function renderBlockHistory() {
-      historyScroll.innerHTML = "";
-      const blocks = state.blocks.slice().reverse();
-      blocks.forEach(block => {
-        const item = document.createElement("div");
-        item.className = "history-item";
-
-        const main = document.createElement("div");
-        main.className = "history-item-main";
-        const idLine = document.createElement("div");
-        idLine.textContent = `#${block.id} · ${block.folder}/${block.fileName}`;
-        const aaaLine = document.createElement("div");
-        aaaLine.className = "tiny";
-        aaaLine.textContent = `AAA: ${block.aaa} · Clearing: ${block.clearing}`;
-        main.appendChild(idLine);
-        main.appendChild(aaaLine);
-
-        const meta = document.createElement("div");
-        meta.className = "history-item-meta";
-        const hashLine = document.createElement("div");
-        hashLine.className = "history-hash";
-        hashLine.textContent = block.hash;
-        const userLine = document.createElement("div");
-        userLine.className = "history-user";
-        userLine.textContent = block.user;
-        const tsLine = document.createElement("div");
-        tsLine.className = "tiny";
-        tsLine.textContent = block.timestamp;
-        meta.appendChild(hashLine);
-        meta.appendChild(userLine);
-        meta.appendChild(tsLine);
-
-        item.appendChild(main);
-        item.appendChild(meta);
-
-        item.addEventListener("click", () => {
-          logTerminal(`BLOCK DETAIL · #${block.id} · ${block.hash.slice(0, 16)}… · XP:${block.xpImpact.toFixed(2)}`);
-        });
-
-        historyScroll.appendChild(item);
-      });
-
-      updateBlockCounters();
-    }
-
-    function renderCandles() {
-      genesisCandleLayer.innerHTML = "";
-      syncCandleLayer.innerHTML = "";
-
-      const candles = state.candles.slice(-40);
-      const count = candles.length;
-      if (!count) return;
-
-      candles.forEach((candle, idx) => {
-        const x = (idx / Math.max(1, count - 1)) * 100;
-        const height = Math.max(8, Math.min(40, (candle.high - candle.low) * 0.4));
-        const bottom = 10 + (candle.low % 20);
-
-        const el1 = document.createElement("div");
-        el1.className = "diagram-candle";
-        el1.style.left = `calc(${x}% - 3px)`;
-        el1.style.bottom = `${bottom}px`;
-        el1.style.height = `${height}px`;
-        el1.title = `#${candle.blockId} · O:${candle.open} H:${candle.high} L:${candle.low} C:${candle.close}`;
-
-        const el2 = el1.cloneNode();
-        el2.className = "diagram-candle";
-        el2.style.left = el1.style.left;
-        el2.style.bottom = el1.style.bottom;
-        el2.style.height = el1.style.height;
-        el2.title = el1.title;
-
-        genesisCandleLayer.appendChild(el1);
-        syncCandleLayer.appendChild(el2);
-      });
-    }
-
-    function spawnBlockFromInteraction(source) {
-      const folder = "SECTOR-" + ((state.takt % 13) + 1).toString().padStart(2, "0");
-      const fileName = `${source.toLowerCase()}_${Date.now().toString(36)}.json`;
-      const block = createBlock(folder, fileName);
-
-      ensureSectors();
-      const idx = block.id % state.sectors.length;
-      const sector = state.sectors[idx];
-      sector.lastBlockId = block.id;
-      sector.lastHash = block.hash;
-      sector.lastTimestamp = block.timestamp;
-      sector.aaa = block.aaa;
-      sector.clearing = block.clearing;
-      sector.xpLink = Math.round(block.xpImpact);
-      renderMiniSectors();
-
-      spawnBlockParticles(genesisBlockLayer);
-      spawnBlockParticles(syncBlockLayer);
-    }
-
-    function spawnBlockParticles(layer) {
-      const p = document.createElement("div");
-      p.className = "diagram-particle";
-      const x = 10 + Math.random() * 80;
-      const y = 20 + Math.random() * 60;
-      p.style.left = `${x}%`;
-      p.style.top = `${y}%`;
-      layer.appendChild(p);
-      setTimeout(() => p.remove(), 1200);
-    }
-
-    // --- Terminal ---
-
-    function logTerminal(message) {
-      const now = new Date().toISOString();
-      const line = document.createElement("div");
-      line.className = "terminal-line";
-      line.textContent = `[${now}] ${message}`;
-      line.addEventListener("click", () => {
-        navigator.clipboard && navigator.clipboard.writeText(line.textContent).catch(() => {});
-      });
-      terminalBody.appendChild(line);
-      terminalBody.scrollTop = terminalBody.scrollHeight;
-    }
-
-    // --- Buttons / Events ---
-
-    loginBtn.addEventListener("click", () => {
-      handleLogin().catch(err => {
-        console.error(err);
-        loginMeta.textContent = "Fehler beim Login.";
-        loginMeta.style.color = "#ff4b81";
-      });
-    });
-
-    loginPassword.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        handleLogin().catch(err => {
-          console.error(err);
-          loginMeta.textContent = "Fehler beim Login.";
-          loginMeta.style.color = "#ff4b81";
-        });
-      }
-    });
-
-    profileChip.addEventListener("click", e => {
-      e.stopPropagation();
-      profileDropdown.classList.toggle("visible");
-    });
-
-    document.addEventListener("click", () => {
-      profileDropdown.classList.remove("visible");
-    });
-
-    profileDropdown.addEventListener("click", e => {
-      e.stopPropagation();
-    });
-
-    btnLogout.addEventListener("click", () => {
-      handleLogout();
-    });
-
-    btnWallet.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`WALLET VIEW · ${state.user.masterId} · Explorer‑Ansicht geöffnet.`);
-    });
-
-    btnProfile.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`PROFILE VIEW · ${state.user.username} · XP:${state.xp.toFixed(1)} · Joule:${state.jouleBits.toFixed(1)}b`);
-    });
-
-    btnSettings.addEventListener("click", () => {
-      if (!state.user) return;
-      logTerminal(`SETTINGS VIEW · Nutzer‑spezifische Einstellungen geladen.`);
-    });
-
-    btnGenesisSync.addEventListener("click", () => {
-      genesisStatus.textContent = "GENESIS: RE‑HASH";
-      logTerminal("GENESIS · Re‑Hash der 65 Dateien (simuliert).");
-      spawnBlockFromInteraction("GENESIS");
-      setTimeout(() => {
-        genesisStatus.textContent = "GENESIS: READY";
-      }, 600);
-    });
-
-    btnSyncPulse.addEventListener("click", () => {
-      syncStatus.textContent = "SYNC: ACTIVE";
-      logTerminal("SYNC · Clearing‑Impulse ausgelöst.");
-      spawnBlockFromInteraction("SYNC");
-      setTimeout(() => {
-        syncStatus.textContent = "SYNC: IDLE";
-      }, 600);
-    });
-
-    btnHistoryClear.addEventListener("click", () => {
-      state.blocks = [];
-      state.candles = [];
-      if (state.user) {
-        state.user.blockHistory = [];
-        state.user.candleHistory = [];
-        saveUserToStorage(state.user);
-      }
-      renderBlockHistory();
-      renderCandles();
-      logTerminal("BLOCK‑HISTORY · Global und Nutzer‑gebunden geleert.");
-    });
-
-    document.addEventListener("mousemove", handleMouseMove);
-
-    // --- Main Loop ---
-
-    let lastFrameTime = performance.now();
-
-    function loop(now) {
-      const dt = now - lastFrameTime;
-      lastFrameTime = now;
-
-      updateTakt(dt);
-      updateXP(dt);
-      updateKachelZeroTime();
-
-      requestAnimationFrame(loop);
-    }
-
-    // --- Init ---
-
-    function init() {
-      ensureSectors();
-      renderMiniSectors();
-      renderBlockHistory();
-      renderCandles();
-      logTerminal("CHAIN‑CLEARING MONOLITH · SPA initialisiert.");
-      logTerminal("Warte auf GUCI‑Login …");
-
-      const existingUser = loadCurrentUser();
-      if (existingUser) {
-        state.user = existingUser;
-        state.xp = existingUser.xp || 0;
-        state.jouleBits = existingUser.jouleBits || 0;
-        state.aaaLevel = existingUser.aaaLevel || 0;
-        state.blocks = existingUser.blockHistory || [];
-        state.candles = existingUser.candleHistory || [];
-        hydrateUIFromUser();
-        loginOverlay.classList.add("hidden");
-        appShell.classList.remove("hidden");
-        appShell.classList.add("fade-in");
-        logTerminal(`AUTO‑LOGIN · ${existingUser.username} · MASTER‑RFOF‑NETWORK‑ID geladen.`);
-      }
-
-      requestAnimationFrame(loop);
-    }
-
-    init();
-  </script>
+
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            font-family: var(--font); 
+            width: 1280px; 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* 0. LOGIN-SYSTEM CSS */
+        #login-screen {
+            position: fixed; 
+            inset: 0; 
+            background: #000; 
+            z-index: 10000; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            backdrop-filter: var(--blur);
+        }
+        .login-box {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            width: 400px;
+        }
+        input {
+            width: 100%; padding: 15px; margin: 10px 0;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #fff; border-radius: 10px; outline: none;
+        }
+        button.prai-btn {
+            background: var(--prai-cyan); color: #000; font-weight: bold;
+            padding: 15px 30px; border: none; border-radius: 10px; width: 100%;
+        }
+
+        /* 1. HEADER (BOX B) */
+        header {
+            position: fixed; top: 0; width: 1280px; height: 80px;
+            background: rgba(0,0,0,0.5); backdrop-filter: var(--blur) var(--sat);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; z-index: 5000;
+        }
+        .profile-trigger {
+            display: flex; align-items: center; gap: 15px; position: relative;
+        }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(45deg, #333, #666); border: 2px solid var(--prai-cyan); }
+        .dropdown {
+            position: absolute; top: 60px; right: 0; width: 280px;
+            background: rgba(10,10,10,0.95); backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            display: none; flex-direction: column; padding: 15px;
+        }
+        .dropdown.active { display: flex; }
+        .nav-btn { padding: 12px; border-radius: 10px; transition: 0.3s; margin-bottom: 5px; cursor: pointer; }
+        .nav-btn:hover { background: var(--glass); }
+
+        /* 2. KACHEL NULL (SEKTOR 02) */
+        #kachel-null {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 500px; height: 500px; z-index: 100; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .takt-ring {
+            position: absolute; width: 100%; height: 100%;
+            border: 2px solid transparent; border-top: 2px solid var(--prai-cyan);
+            border-radius: 50%; transition: transform 0.1s linear;
+        }
+        .takt-display { font-size: 120px; font-weight: 100; text-shadow: 0 0 40px var(--prai-cyan); }
+
+        /* 3. GRID & SEKTOREN */
+        #master-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px; padding: 100px 40px; height: 100vh; overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .sektor-box {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 25px; padding: 20px; position: relative;
+            transition: transform 0.2s ease;
+        }
+        .dual-view { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .view-pane { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 10px; font-size: 10px; height: 120px; overflow: hidden; }
+        .diagram-layer { height: 60px; margin-top: 10px; display: flex; align-items: flex-end; gap: 2px; }
+        .candle { width: 4px; background: var(--a-green); min-height: 2px; }
+
+        /* 4. TERMINAL & OVERLAYS */
+        #terminal {
+            position: fixed; bottom: 0; width: 1280px; height: 180px;
+            background: rgba(0,0,0,0.8); border-top: 1px solid var(--glass-border);
+            font-family: "SF Mono", monospace; font-size: 11px; padding: 15px;
+            overflow-y: auto; z-index: 4000;
+        }
+        #reset-pulse { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body id="monolith">
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 style="margin-bottom:20px; letter-spacing: 5px;">PZQQET</h1>
+            <input type="text" id="username" placeholder="NUTZERNAME">
+            <input type="password" id="password" placeholder="PASSWORT">
+            <button class="prai-btn" onclick="APP.login()">INITIALIZE GUCI</button>
+        </div>
+    </div>
+
+    <div id="main-ui" style="display:none;">
+        <header>
+            <div class="logo">PZQQET / CHAIN-CLEARING</div>
+            <div class="profile-trigger" onclick="APP.toggleDropdown()">
+                <div class="souveraen-meta" style="text-align:right">
+                    <div id="display-name">MASTER</div>
+                    <div id="master-id" style="font-size:8px; opacity:0.5;">ID: --</div>
+                </div>
+                <div class="avatar" id="display-avatar"></div>
+                <div class="dropdown" id="user-dropdown">
+                    <div class="nav-btn" onclick="APP.showView('wallet')">WALLET (BUSINESS)</div>
+                    <div class="nav-btn" onclick="APP.showView('profile')">PROFILE (SOCIAL)</div>
+                    <div class="nav-btn" onclick="APP.showView('settings')">SETTINGS (SYSTEM)</div>
+                    <hr style="opacity:0.1; margin: 10px 0;">
+                    <div class="nav-btn" onclick="APP.logout()">LOGOUT</div>
+                </div>
+            </div>
+        </header>
+
+        <section id="kachel-null">
+            <div class="takt-ring" id="takt-ring"></div>
+            <div class="event-point">E(6,5)</div>
+            <div class="takt-display" id="takt-val">0</div>
+        </section>
+
+        <main id="master-grid">
+            </main>
+
+        <div id="terminal">
+            <div id="log-output"></div>
+        </div>
+    </div>
+
+    <div id="reset-pulse"></div>
+
+    <script>
+        /**
+         * 🕋 PZQQET OPERATIVE ENGINE 1.0
+         * MONOLITHISCHER KERN
+         */
+        const APP = {
+            user: null,
+            takt: 0,
+            sectors: [
+                "GPCB", "Phoenix Coin", "G-Phoenix Token", "Phoenix LP", "ECCU", 
+                "Joule", "XP", "GOLD (42E0)", "RFOF", "RFOF/GOLD LP", "BIP", 
+                "Identity Registry", "BRIDGE"
+            ],
+
+            async hash(string) {
+                const utf8 = new TextEncoder().encode(string);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            },
+
+            async login() {
+                const user = document.getElementById('username').value;
+                const pass = document.getElementById('password').value;
+                if(!user || !pass) return;
+
+                const timestamp = Date.now();
+                const masterIdSuffix = await this.hash(user + timestamp);
+                const masterId = `RFOF-NETWORK::${user.toUpperCase()}::EXT::${masterIdSuffix.substring(0,16)}`;
+
+                this.user = {
+                    username: user,
+                    masterId: masterId,
+                    xp: 0,
+                    joule: 0,
+                    level: 'AAA',
+                    history: []
+                };
+
+                localStorage.setItem('pzqqet_session', JSON.stringify(this.user));
+                this.initUI();
+            },
+
+            initUI() {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-ui').style.display = 'block';
+                document.getElementById('display-name').innerText = this.user.username.toUpperCase();
+                document.getElementById('master-id').innerText = this.user.masterId;
+                
+                this.renderSectors();
+                this.startEngine();
+                this.log("GUCI STATUS: INITIALIZED. MASTER ID SECURED.");
+            },
+
+            renderSectors() {
+                const grid = document.getElementById('master-grid');
+                grid.innerHTML = '';
+                this.sectors.forEach((s, i) => {
+                    const box = document.createElement('div');
+                    box.className = 'sektor-box';
+                    box.id = `sektor-${i}`;
+                    box.innerHTML = `
+                        <div style="font-size:12px; font-weight:bold; letter-spacing:2px;">${s}</div>
+                        <div class="dual-view">
+                            <div class="view-pane" id="genesis-${i}">GENESIS:<br>HASHING...</div>
+                            <div class="view-pane" id="sync-${i}">SYNC:<br>WAITING...</div>
+                        </div>
+                        <div class="diagram-layer" id="diagram-${i}"></div>
+                    `;
+                    grid.appendChild(box);
+                });
+            },
+
+            startEngine() {
+                setInterval(() => {
+                    this.takt = (this.takt + 1) % 11;
+                    this.updateUI();
+                    if(this.takt === 0) this.triggerReset();
+                    if(this.takt === 10) this.log("SINGULARITY INJECTION: ATTAINED.");
+                }, 1000);
+
+                // Joule Mining Simulation
+                window.addEventListener('mousemove', () => {
+                    this.user.xp += 0.01;
+                    this.user.joule += 0.0001;
+                });
+            },
+
+            updateUI() {
+                document.getElementById('takt-val').innerText = this.takt;
+                document.getElementById('takt-ring').style.transform = `rotate(${this.takt * 36}deg)`;
+                
+                // Pulsation
+                const scale = 1 + (this.takt * 0.01);
+                document.querySelectorAll('.sektor-box').forEach(el => {
+                    el.style.transform = `scale(${scale})`;
+                    // Update Diagrams
+                    const diag = el.querySelector('.diagram-layer');
+                    const candle = document.createElement('div');
+                    candle.className = 'candle';
+                    candle.style.height = `${Math.random() * 40 + 10}px`;
+                    if(diag.children.length > 30) diag.removeChild(diag.firstChild);
+                    diag.appendChild(candle);
+                });
+            },
+
+            triggerReset() {
+                const p = document.getElementById('reset-pulse');
+                p.style.opacity = '1';
+                setTimeout(() => p.style.opacity = '0', 100);
+                this.log("ALPHA-NODES: RESET_PULSE EXECUTED.");
+            },
+
+            log(msg) {
+                const out = document.getElementById('log-output');
+                const line = document.createElement('div');
+                line.innerText = `[${new Date().toISOString()}] ${msg}`;
+                out.prepend(line);
+            },
+
+            toggleDropdown() {
+                document.getElementById('user-dropdown').classList.toggle('active');
+            },
+
+            logout() {
+                localStorage.removeItem('pzqqet_session');
+                location.reload();
+            }
+        };
+
+        // Auto-Login Check
+        const session = localStorage.getItem('pzqqet_session');
+        if(session) {
+            APP.user = JSON.parse(session);
+            APP.initUI();
+        }
+    </script>
 </body>
 </html>
